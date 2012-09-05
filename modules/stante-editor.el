@@ -5,7 +5,7 @@
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stantepede.git
 ;; Version: 1.0.0
-;; Keywords: convenience
+;; Keywords: abbrev convenience wp
 
 ;; This file is not part of GNU Emacs.
 
