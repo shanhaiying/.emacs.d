@@ -67,6 +67,12 @@
 ;; Save and restore minibuffer history, recent files and the location of point
 ;; in files.
 
+;; Expansion
+;; ---------
+;;
+;; Provide powerful word expansion with a reasonable `hippie-expand'
+;; configuration.
+
 ;; Keybindings
 ;; -----------
 ;;
