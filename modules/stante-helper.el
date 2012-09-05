@@ -44,6 +44,13 @@
 ;;
 ;; `stante-get-file-lines' gets the lines in a file as list.
 
+;; Maintenaince
+;; ------------
+;;
+;; `stante-update-autoload-file' updates the autoload definitions of Stante
+;; Pede.
+;;
+;; `stante-byte-recompile' byte-compiles all Stante Pede modules.
 
 ;;; Code:
 
@@ -73,6 +80,15 @@
   (interactive)
   (let ((generated-autoload-file stante-autoload-file))
     (update-directory-autoloads stante-modules-dir)))
+
+;;;###autoload
+(defun stante-byte-recompile ()
+  "Byte-compile all modules of Stante pede."
+  (interactive)
+  (byte-recompile-directory stante-modules-dir 0 t)
+  (byte-recompile-file stante-init-file t 0))
+
+;;;
 
 (provide 'stante-helper)
 

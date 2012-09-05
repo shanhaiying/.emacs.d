@@ -3,9 +3,9 @@
 ;;; Code:
 
 
-;;;### (autoloads (stante-update-autoload-file stante-get-file-lines
-;;;;;;  stante-get-file-contents package-install-if-needed) "stante-helper"
-;;;;;;  "stante-helper.el" (20551 48275))
+;;;### (autoloads (stante-byte-recompile stante-update-autoload-file
+;;;;;;  stante-get-file-lines stante-get-file-contents package-install-if-needed)
+;;;;;;  "stante-helper" "stante-helper.el" (20551 54893))
 ;;; Generated autoloads from stante-helper.el
 
 (autoload 'package-install-if-needed "stante-helper" "\
@@ -28,11 +28,16 @@ Update the autoload file of Stante Pede.
 
 \(fn)" t nil)
 
+(autoload 'stante-byte-recompile "stante-helper" "\
+Byte-compile all modules of Stante pede.
+
+\(fn)" t nil)
+
 ;;;***
 
 ;;;### (autoloads nil nil ("stante-editor.el" "stante-emacs-lisp.el"
 ;;;;;;  "stante-german.el" "stante-git.el" "stante-osx.el" "stante-programming.el"
-;;;;;;  "stante-ui.el") (20551 48392 427214))
+;;;;;;  "stante-ui.el") (20551 54906 263641))
 
 ;;;***
 
