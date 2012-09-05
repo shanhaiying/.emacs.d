@@ -2,6 +2,8 @@
 var/
 # Installed packages
 elpa/
+# Recovery directory from Emacs
+auto-save-list/
 
 # Elisp byte code
 *.elc
