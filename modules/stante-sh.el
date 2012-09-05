@@ -1,12 +1,12 @@
-;;; init.el --- Stante Pede: Instantly awesome Emacs
-;;; -*- coding: utf-8 -*-
+;;; stante-sh.el --- Stante Pede: Shell scripting support
+;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stantepede.git
 ;; Version: 1.0.0
-;; Keywords: convenience
+;; Keywords: extensions
 
 ;; This file is not part of GNU Emacs.
 
@@ -28,34 +28,26 @@
 
 ;;; Commentary:
 
-;; Your personal Emacs configuration.  Load Stante Pede, and choose your modules
-;; wisely.
+;; Provide support for shell scripting.
 
+;; Indentation
+;; -----------
+;;
+;; Set basic indentation offset to 2.
+;;
+;; Use C-c > to automatically update the indentation style to the conventions
+;; used in the current buffer.
 
 ;;; Code:
 
-;; Load Stante Pede
-(load (concat (file-name-directory load-file-name) "stante-init"))
+(require 'stante-programming)
 
-;; Load Stante modules as you like
-;; Basic modules
-(require 'stante-ui)
-(require 'stante-osx)
-(require 'stante-editor)
+(eval-after-load 'sh-mode
+  '(setq-default 'sh-basic-offset 2))
 
-;; ;; Tool support
-(require 'stante-git)
+;; Also consider .zsh files as `sh-mode' files.
+(add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
 
-;; ;; Programming languages
-(require 'stante-emacs-lisp)
-(require 'stante-sh)
+(provide 'stante-sh)
 
-;; ;; Localization support
-(require 'stante-german)
-
-;; Customize as you like here.  Please try to put your configuration into Stante
-;; modules, or even write new Stante modules, and contribute these changes back
-;; via Github Pull Requests for the profit of other users.
-
-
-;;; init.el ends here
+;;; stante-sh.el ends here
