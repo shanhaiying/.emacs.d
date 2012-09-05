@@ -41,6 +41,12 @@
 ;; files, recent file lists or whatever.  These paths are guaranteed to end with
 ;; a slash so that they can simply be concatenated with relative file names.
 
+;; Package support
+;; ---------------
+
+;; Enable support for packages, and add the MELPA archive. See
+;; http://melpa.milkbox.net/packages.
+
 ;; Custom file
 ;; -----------
 ;;
@@ -69,5 +75,11 @@
 (setq custom-file (concat stante-dir "custom.el"))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;; Enable packages
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
 
 ;;; stante-init.el ends here
