@@ -46,4 +46,4 @@
 
 (provide 'stante-german)
 
-;;; stante-editor.el ends here
+;;; stante-german.el ends here
