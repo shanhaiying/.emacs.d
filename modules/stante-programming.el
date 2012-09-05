@@ -1,4 +1,5 @@
 ;;; stante-programming.el --- Stante Pede: Basic programming support
+;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -91,6 +92,7 @@
 ;;
 ;; `stante-configure-programming-mode-hook' sets up a given hook with all of the
 ;; above functions, simply for convenience.
+
 
 ;;; Code:
 

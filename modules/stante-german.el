@@ -1,4 +1,5 @@
 ;;; stante-german.el --- Stante Pede: Support for German language environments
+;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

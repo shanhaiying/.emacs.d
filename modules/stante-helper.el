@@ -1,4 +1,5 @@
 ;;; stante-helper.el --- Stante Pede: Utility functions for all modules
+;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -35,6 +36,7 @@
 ;; `package-install-if-needed' installs a package if it is not already
 ;; installed.
 
+;;; Code:
 
 (eval-after-load 'package
   '(unless (fboundp 'package-install-if-needed)
@@ -44,4 +46,4 @@
 
 (provide 'stante-helper)
 
-;;; stante-editor.el ends here
+;;; stante-helper.el ends here

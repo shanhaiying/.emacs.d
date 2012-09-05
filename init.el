@@ -1,4 +1,5 @@
 ;;; init.el --- Stante Pede: Instantly awesome Emacs
+;;; -*- coding: utf-8 -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -37,6 +38,23 @@
 (load (concat (file-name-directory load-file-name) "stante-init"))
 
 ;; Load Stante modules as you like
+;; Basic modules
 (require 'stante-ui)
+(require 'stante-osx)
+(require 'stante-editor)
+
+;; ;; Tool support
+(require 'stante-git)
+
+;; ;; Programming languages
+(require 'stante-emacs-lisp)
+
+;; ;; Localization support
+(require 'stante-german)
+
+;; Customize as you like here.  Please try to put your configuration into Stante
+;; modules, or even write new Stante modules, and contribute these changes back
+;; via Github Pull Requests for the profit of other users.
+
 
 ;;; init.el ends here

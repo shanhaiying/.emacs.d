@@ -1,4 +1,5 @@
 ;;; stante-init.el --- Stante Pede entry point
+;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -63,11 +64,11 @@
 ;;; Code:
 
 ;; Stante directories
-(defvar stante-dir (expand-file-name "~/.emacs.d/")
+(defconst stante-dir (expand-file-name "~/.emacs.d/")
   "The root directory of Stante Pede")
-(defvar stante-modules-dir (concat stante-dir "modules/")
+(defconst stante-modules-dir (concat stante-dir "modules/")
   "The directory containing all Stante Pede modules")
-(defvar stante-var-dir (concat stante-dir "var/")
+(defconst stante-var-dir (concat stante-dir "var/")
   "This folder stores auomatically generated files.")
 
 (add-to-list 'load-path stante-modules-dir)
@@ -77,9 +78,12 @@
   (make-directory stante-var-dir))
 
 ;; Move settings from customize UI out of place.
-(setq custom-file (concat stante-dir "custom.el"))
-(when (file-exists-p custom-file)
-  (load custom-file))
+(defconst stante-custom-file (concat stante-dir "custom.el")
+  "The location of the `custom-file' for Stante Pede.")
+(eval-after-load 'cus-edit
+  '(setq custom-file stante-custom-file))
+(when (file-exists-p stante-custom-file)
+  (load stante-custom-file))
 
 ;; Enable packages
 (require 'package)

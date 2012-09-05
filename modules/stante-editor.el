@@ -1,4 +1,5 @@
 ;;; stante-editor.el --- Stante Pede: Basic text editing
+;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -94,15 +95,16 @@
 ;; Return inserts a new line and indents according to mode (see
 ;; `newline-and-indent').
 
-;; Code:
+
+;;; Code:
+
 (require 'stante-helper)
 
 ;; Move backup and autosave files to var directory.
-(setq
- backup-directory-alist
- `((".*" . ,(concat stante-var-dir "backup")))
- auto-save-file-name-transforms
- `((".*" ,(concat stante-var-dir "auto-save") t)))
+(setq backup-directory-alist
+      `((".*" . ,(concat stante-var-dir "backup")))
+      auto-save-file-name-transforms
+      `((".*" ,(concat stante-var-dir "auto-save") t)))
 
 ;; No tabs for indentation
 (setq-default indent-tabs-mode nil
@@ -115,8 +117,9 @@
 ;; Power up parenthesis
 (electric-pair-mode 1)
 (show-paren-mode 1)
-;; Highlight only the parenthesis if it is visible, or the expression if not
-(setq show-paren-style 'mixed)
+(eval-after-load 'paren
+  ;; Highlight only the parenthesis if it is visible, or the expression if not
+  '(setq show-paren-style 'mixed))
 
 ;; Highlights
 (global-hl-line-mode 1)
@@ -138,40 +141,46 @@
 
 ;; Remember various histories
 ;; Minibuffer history
-(setq savehist-save-minibuffer-history t
-      ;; Save every three minutes (the default five minutes is a bit long)
-      savehist-autosave-interval 180
-      ;; Move save file into proper directory
-      savehist-file (concat stante-var-dir "savehist"))
+(eval-after-load 'savehist
+  '(setq savehist-save-minibuffer-history t
+         ;; Save every three minutes (the default five minutes is a bit long)
+         savehist-autosave-interval 180
+         ;; Move save file into proper directory
+         savehist-file (concat stante-var-dir "savehist")))
 (savehist-mode t)
 ;; Recent files
-(setq recentf-max-saved-items 200
-      recentf-max-menu-items 15
-      ;; Move to property directory
-      recentf-save-file (concat stante-var-dir "recentf"))
+(eval-after-load 'recentf
+  '(setq recentf-max-saved-items 200
+         recentf-max-menu-items 15
+         ;; Move to property directory
+         recentf-save-file (concat stante-var-dir "recentf")))
 (recentf-mode t)
 ;; Locations in files
-(setq save-place-file (concat stante-var-dir "saveplace"))
-(setq-default save-place t)
+(eval-after-load 'saveplace
+  '(progn
+     (setq save-place-file (concat stante-var-dir "saveplace"))
+     (setq-default save-place t)))
 (require 'saveplace)
 
 ;; Configure bookmarks
-(setq bookmark-default-file (concat stante-var-dir "bookmarks")
-      ;; Save on every modification
-      bookmark-save-flag 1)
+(eval-after-load 'bookmark
+  '(setq bookmark-default-file (concat stante-var-dir "bookmarks")
+         ;; Save on every modification
+         bookmark-save-flag 1))
 
 ;; Expansion functions
-(setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-complete-file-name-partially
-        try-complete-file-name
-        try-expand-all-abbrevs
-        try-expand-list
-        try-expand-line
-        try-complete-lisp-symbol-partially
-        try-complete-lisp-symbol))
+(eval-after-load 'hippie-exp
+  '(setq hippie-expand-try-functions-list
+         '(try-expand-dabbrev
+           try-expand-dabbrev-all-buffers
+           try-expand-dabbrev-from-kill
+           try-complete-file-name-partially
+           try-complete-file-name
+           try-expand-all-abbrevs
+           try-expand-list
+           try-expand-line
+           try-complete-lisp-symbol-partially
+           try-complete-lisp-symbol)))
 
 ;; Keybindings
 (global-set-key (kbd "RET") 'newline-and-indent)

@@ -1,4 +1,5 @@
 ;;; prelude-ui.el --- Stante Pede: User interface improvements
+;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -126,26 +127,28 @@
 
 ;; De-duplicate buffer names
 (require 'uniquify)
-(setq uniquify-buffer-name-style 'forward
-      uniquify-separator "/"
-      ;; Re-uniquify after killing buffers
-      uniquify-after-kill-buffer-p t
-      ;; Ignore special buffers
-      uniquify-ignore-buffers-re "^\\*")
+(eval-after-load 'uniquify
+  '(setq uniquify-buffer-name-style 'forward
+         uniquify-separator "/"
+         ;; Re-uniquify after killing buffers
+         uniquify-after-kill-buffer-p t
+         ;; Ignore special buffers
+         uniquify-ignore-buffers-re "^\\*"))
 
 ;; Improve completion for file and buffer names
 (ido-mode t)
-(setq
- ;; Match characters if string doesn't match
- ido-enable-flex-matching t
- ;; Create a new buffer if absolutely nothing matches
- ido-create-new-buffer 'always
- ;; Start with filename at point if any can be guessed
- ido-use-filename-at-point 'guess
- ;; Remember ido state
- ido-save-directory-list-file (concat stante-var-dir "ido.hist")
- ;; When opening a new file, do so in the previously selected window
- ido-default-file-method 'selected-window)
+(eval-after-load 'ido
+  '(setq
+    ;; Match characters if string doesn't match
+    ido-enable-flex-matching t
+    ;; Create a new buffer if absolutely nothing matches
+    ido-create-new-buffer 'always
+    ;; Start with filename at point if any can be guessed
+    ido-use-filename-at-point 'guess
+    ;; Remember ido state
+    ido-save-directory-list-file (concat stante-var-dir "ido.hist")
+    ;; When opening a new file, do so in the previously selected window
+    ido-default-file-method 'selected-window))
 ;; Move summary and "output" (i.e. from Auctex) to the end to keep these out of
 ;; the way
 (add-hook 'ido-make-buffer-list-hook 'ido-summary-buffers-to-end)
@@ -168,10 +171,11 @@
  (t
   ;; A reasonable choice for all other systems
   (set-face-attribute 'default nil :family "Dejavu Sans Mono" :height 100))
-)
+ )
 
 ;; Reuse current frame for EDiff
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(eval-after-load 'ediff-wind
+  '(setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 ;; Key bindings
 (global-set-key (kbd "C-x C-b") 'ibuffer)
