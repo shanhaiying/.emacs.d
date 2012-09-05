@@ -45,7 +45,8 @@
 ;; Parenthesis, brackets, etc.
 ;; --------------------------
 ;;
-;; Automatically insert matching parenthesis, and highlight matching parenthesis.
+;; Automatically insert matching parenthesis, and highlight matching
+;; parenthesis.
 
 ;; Highlighting
 ;; ------------
@@ -98,8 +99,10 @@
 
 ;; Move backup and autosave files to var directory.
 (setq
- backup-directory-alist `((".*" . ,(concat stante-var-dir "backup")))
- auto-save-file-name-transforms `((".*" ,(concat stante-var-dir "auto-save") t)))
+ backup-directory-alist
+ `((".*" . ,(concat stante-var-dir "backup")))
+ auto-save-file-name-transforms
+ `((".*" ,(concat stante-var-dir "auto-save") t)))
 
 ;; No tabs for indentation
 (setq-default indent-tabs-mode nil

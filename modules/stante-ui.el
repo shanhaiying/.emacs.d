@@ -122,7 +122,7 @@
 ;; Show file name or buffer name in frame title
 (setq frame-title-format
       '(:eval (if (buffer-file-name)
-		  (abbreviate-file-name (buffer-file-name)) "%b")))
+                  (abbreviate-file-name (buffer-file-name)) "%b")))
 
 ;; De-duplicate buffer names
 (require 'uniquify)

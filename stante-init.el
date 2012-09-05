@@ -41,8 +41,8 @@
 ;; modules.  This directory is added to `load-path' so that modules can be
 ;; loaded directly with `require'.
 ;;
-;;  `stante-var-dir' points to a directory, where modules can store variable
-;; data files, like autosave files, recent file lists or whatever.
+;; `stante-var-dir' points to a directory, where modules can store variable data
+;; files, like autosave files, recent file lists or whatever.
 
 ;; All of theses paths end with a slash to allow for concatenation (see
 ;; `concat') with relative file names.
@@ -84,7 +84,7 @@
 ;; Enable packages
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
 ;;; stante-init.el ends here
