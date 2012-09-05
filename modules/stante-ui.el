@@ -63,6 +63,13 @@
 ;; switching between buffers or visiting files.  It also enables icomplete mode
 ;; to improve the minibuffer completion.
 
+;; Key bindings
+;; ------------
+;;
+;; `buffer-menu' is replaced with `ibuffer' on C-x C-b.  C-x p is bound to
+;; `proced' for consistency with `dired' on C-x d.  C-h A is bound to `apropos'
+;; (any object!).
+
 
 ;;; Code:
 
@@ -153,6 +160,13 @@
 
 ;; Reuse current frame for EDiff
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+;; Key bindings
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+;; Similar to C-x d
+(global-set-key (kbd "C-x p") 'proced)
+;; Complementary to C-h a
+(global-set-key (kbd "C-h A") 'apropos)
 
 (provide 'stante-ui)
 
