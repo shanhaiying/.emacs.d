@@ -64,10 +64,12 @@
 ;;; Code:
 
 ;; Stante directories
-(defconst stante-dir (expand-file-name "~/.emacs.d/")
-  "The root directory of Stante Pede")
+(defconst stante-init-file load-file-name
+  "The location of the `stante-init' file.")
+(defconst stante-dir (file-name-directory load-file-name)
+  "The root directory of Stante Pede.")
 (defconst stante-modules-dir (concat stante-dir "modules/")
-  "The directory containing all Stante Pede modules")
+  "The directory containing all Stante Pede modules.")
 (defconst stante-var-dir (concat stante-dir "var/")
   "This folder stores auomatically generated files.")
 
