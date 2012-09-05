@@ -166,7 +166,6 @@
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
 
-
 ;; Keybindings
 (global-set-key (kbd "C-x j") 'join-line)
 (global-set-key (kbd "M-/") 'hippie-expand)
