@@ -1,4 +1,4 @@
-;;; prelude-ui.el --- Stante Pede: Configure Emacs user interface
+;;; prelude-ui.el --- Stante Pede: User interface improvements
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

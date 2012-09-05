@@ -1,4 +1,4 @@
-;;; stante-editor.el --- Stante Pede: Configure for general editing
+;;; stante-editor.el --- Stante Pede: Basic text editing
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

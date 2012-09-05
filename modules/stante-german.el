@@ -1,4 +1,4 @@
-;;; stante-german.el --- Stante Pede: Better support for German keyboard layouts
+;;; stante-german.el --- Stante Pede: Support for German language environments
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

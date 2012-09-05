@@ -1,4 +1,4 @@
-;;; init.el --- Get your Emacs running, Stante Pede
+;;; init.el --- Stante Pede: Instantly awesome Emacs
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

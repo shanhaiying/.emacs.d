@@ -1,4 +1,4 @@
-;;; stante-init.el --- Initial setup of Stante Pede
+;;; stante-init.el --- Stante Pede entry point
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

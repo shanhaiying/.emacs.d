@@ -1,4 +1,4 @@
-;;; stante-programming.el --- Stante Pede: Setup programming mode
+;;; stante-programming.el --- Stante Pede: Basic programming support
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
