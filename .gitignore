@@ -1,5 +1,5 @@
-# Cache directory
-cache/
+# Variable files directory
+var/
 
 # Elisp byte code
 *.elc
