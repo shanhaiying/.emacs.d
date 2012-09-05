@@ -37,6 +37,14 @@
 ;; `package-install-if-needed' installs a package if it is not already
 ;; installed.
 
+;; IO utilities
+;; ------------
+;;
+;; `stante-get-file-contents' gets the contents of a file as string.
+;;
+;; `stante-get-file-lines' gets the lines in a file as list.
+
+
 ;;; Code:
 
 (require 'package)
@@ -48,6 +56,17 @@
   (unless (package-installed-p name) (package-install name)))
 
 ;;;###autoload
+(defun stante-get-file-contents (filename)
+  "Return the contents of the file FILENAME."
+  (with-temp-buffer
+    (insert-file-contents filename)
+    (buffer-string)))
+
+;;;###autoload
+(defun stante-get-file-lines (filename)
+  "Return a list of lines of file FILENAME."
+  (split-string (stante-get-file-contents filename) "\n" t))
+
 ;;;###autoload
 (defun stante-update-autoload-file ()
   "Update the autoload file of Stante Pede."
