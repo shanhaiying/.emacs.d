@@ -71,6 +71,13 @@
 (defconst stante-var-dir (concat stante-dir "var/")
   "This folder stores auomatically generated files.")
 
+;; Stante files
+(defconst stante-custom-file (concat stante-dir "custom.el")
+  "The location of the `custom-file' for Stante Pede.")
+(defconst stante-autoload-file (concat stante-modules-dir "stante-autoloads.el")
+  "The location of the file containing the autoload definition of
+  Stante Pede functions.")
+
 (add-to-list 'load-path stante-modules-dir)
 
 ;; Create cache directory
@@ -78,8 +85,6 @@
   (make-directory stante-var-dir))
 
 ;; Move settings from customize UI out of place.
-(defconst stante-custom-file (concat stante-dir "custom.el")
-  "The location of the `custom-file' for Stante Pede.")
 (eval-after-load 'cus-edit
   '(setq custom-file stante-custom-file))
 (when (file-exists-p stante-custom-file)
@@ -90,5 +95,9 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
+
+;; Bring autoload definitions into scope
+(when (file-exists-p stante-autoload-file)
+  (load stante-autoload-file))
 
 ;;; stante-init.el ends here

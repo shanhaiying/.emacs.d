@@ -28,7 +28,8 @@
 
 ;;; Commentary:
 
-;; Provide utility functions.
+;; Provide utility functions.  Use `stante-autoloads' instead of loading this
+;; module, to only load this file as needed.
 
 ;; Package management
 ;; ------------------
@@ -38,11 +39,21 @@
 
 ;;; Code:
 
-(eval-after-load 'package
-  '(unless (fboundp 'package-install-if-needed)
-     (defun package-install-if-needed (name)
-       "Install the package named NAME, unless it is already installed."
-       (unless (package-installed-p name) (package-install name)))))
+(require 'package)
+(require 'autoload)
+
+;;;###autoload
+(defun package-install-if-needed (name)
+  "Install the package named NAME, unless it is already installed."
+  (unless (package-installed-p name) (package-install name)))
+
+;;;###autoload
+;;;###autoload
+(defun stante-update-autoload-file ()
+  "Update the autoload file of Stante Pede."
+  (interactive)
+  (let ((generated-autoload-file stante-autoload-file))
+    (update-directory-autoloads stante-modules-dir)))
 
 (provide 'stante-helper)
 

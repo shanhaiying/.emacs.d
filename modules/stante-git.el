@@ -61,7 +61,7 @@
 
 ;;; Code:
 
-(require 'stante-helper)
+(require 'stante-autoloads)
 
 (package-install-if-needed 'magit)
 (package-install-if-needed 'magithub)
