@@ -66,9 +66,12 @@
 ;; Key bindings
 ;; ------------
 ;;
-;; `buffer-menu' is replaced with `ibuffer' on C-x C-b.  C-x p is bound to
-;; `proced' for consistency with `dired' on C-x d.  C-h A is bound to `apropos'
-;; (any object!).
+;; C-x C-b is bound to `ibuffer', replacing `buffer-menu'.
+;;
+;; C-x p is bound to; `proced' for consistency with `dired' on C-x d.
+;;
+;; C-h A is bound to `apropos' (any object!), complementary to the standard C-h
+;; a.
 
 
 ;;; Code:
