@@ -33,6 +33,7 @@
 ;; --------------------
 ;;
 ;; Set the default `tab-width' is set to 8, but disable indentation with tabs.
+;; Setup Return key to indent automatically.
 
 ;; Filling
 ;; -------
@@ -88,6 +89,9 @@
 ;;
 ;; M-x w expands the current region with the closest surrounding semantic unit
 ;; (see `er/expand-region').
+;;
+;; Return inserts a new line and indents according to mode (see
+;; `newline-and-indent').
 
 ;; Code:
 (require 'stante-helper)
@@ -167,6 +171,7 @@
         try-complete-lisp-symbol))
 
 ;; Keybindings
+(global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x j") 'join-line)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-x w") 'er/expand-region)
