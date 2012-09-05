@@ -1,5 +1,7 @@
 # Variable files directory
 var/
+# Installed packages
+elpa/
 
 # Elisp byte code
 *.elc
