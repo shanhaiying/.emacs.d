@@ -53,6 +53,11 @@
 ;; some text operations like yanking, killing and deleting (see
 ;; `volatile-highlights-mode').
 
+;; Region
+;; ------
+;;
+;; Expand the region by semantic units with `er/expand-region'.
+
 ;; Narrowing and widening
 ;; ----------------------
 ;;
@@ -80,6 +85,9 @@
 ;; `join-line'.
 ;;
 ;; M-/ dynamically expands the word under point with `hippie-expand'.
+;;
+;; M-x w expands the current region with the closest surrounding semantic unit
+;; (see `er/expand-region').
 
 ;; Code:
 (require 'stante-helper)
@@ -111,6 +119,10 @@
 
 ;; Cleanup stale buffers
 (require 'midnight)
+
+;; Region expansion
+(package-install-if-needed 'expand-region)
+(require 'expand-region)
 
 ;; Narrowing
 (put 'narrow-to-region 'disabled nil)
@@ -158,6 +170,7 @@
 ;; Keybindings
 (global-set-key (kbd "C-x j") 'join-line)
 (global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-x w") 'er/expand-region)
 
 (provide 'stante-editor)
 
