@@ -1,4 +1,4 @@
-;;; prelude-ui.el --- Stante Pede user interface configuration
+;;; prelude-ui.el --- Stante Pede: Configure Emacs user interface
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -27,51 +27,60 @@
 
 ;;; Commentary:
 
-;; This module improves the general Emacs user interface.
+;; Improve the general user interface of Emacs.
 
 ;; Default fonts
 ;; -------------
 ;;
-;; The default face of Emacs is modified to use the platform default font, if
-;; possible: On OS X, this is Menlo at 13pt, on Windows Consolas at 10pt (same
-;; as in Visual Studio for the sake of consistency). On other systems Dejavu
-;; Sans Mono at 10pt is used.
+;; Set the default font.
+;;
+;; On OS X, use Menlo 13pt.
+;;
+;; On Windows, use Consolas 10pt, matching the Visual Studio defaults.  Consolas
+;; is not available by default, but comes with many Microsoft programs,
+;; including Visual Studio, Office, and others.
+;;
+;; On all other systems, use Dejavu Sans Mono 10pt.  This font is used as
+;; standard monospace font on many Linux distributions, hence seems a good
+;; choice for Stante Pede, too.
 
 ;; Noise reduction
 ;; ---------------
 ;;
-;; This module reduces the user interface noise of Emacs.  It disables the tool
-;; bar and the menu bar, the startup screen, the blinking cursor and the alarm
-;; beeps.  Yes/No questions are simplified to y/n questions. Frame fringes are
-;; reduced to occupy less screen space.
+;; Reduce the user interface noise of Emacs.
+;;
+;; Disable the tool bar, the menu bar (except on OS X where the menu bar is
+;; always present), the startup screen, the blinking cursor and the alarm beeps.
+;; Simplify Yes/No questions to y/n, and reduce frame fringes to occupy less
+;; screen space.
 
 ;; More information
 ;; ----------------
 ;;
-;; The user interface is also improved to provide more information.  This module
-;; sets a reasonable frame title, and configures the mode line to show the
-;; current line and column number, as well as an indication of the size of the
-;; current buffer.
+;; Add more information to the user interface.
 ;;
-;; Buffer names are modified to avoid naming collisions, using the uniquify
-;; feature of Emacs.
+;; Set a reasonable frame title and configure the mode line to show the current
+;; line and column number, as well as an indication of the size of the current
+;; buffer.
+;;
+;; Uniquify buffer names in case of naming collisions.
 
 ;; Completion
 ;; ----------
 ;;
-;; This module configures ido - interactive do - to improve completion when
-;; switching between buffers or visiting files.  It also enables icomplete mode
-;; to improve the minibuffer completion.
+;; Enable completion via ido – interactive do – for buffer switching and file
+;; visiting.  Enable icomplete mode to improve minibuffer completion.
 
 ;; Key bindings
 ;; ------------
 ;;
-;; C-x C-b is bound to `ibuffer', replacing `buffer-menu'.
+;; C-x C-b shows IBuffer (see  `ibuffer').  Replaces the standard `buffer-menu'.
 ;;
-;; C-x p is bound to; `proced' for consistency with `dired' on C-x d.
+;; C-x p shows a list of running processes similar to the Unix command line
+;; utility "top".
 ;;
-;; C-h A is bound to `apropos' (any object!), complementary to the standard C-h
-;; a.
+;; C-h A searches for any Lisp symbol matching a regular expression (see
+;; `apropos').
 
 
 ;;; Code:

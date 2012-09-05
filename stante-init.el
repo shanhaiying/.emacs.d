@@ -32,27 +32,32 @@
 ;; Stante Pede paths
 ;; -----------------
 ;;
-;; Stante Pede sets some variables to provide standard paths to modules and
-;; users.  `stante-dir' contains the path of the Stante Pede root directory,
-;; typically "~/.emacs.d/". `stante-modules-dir' contains the path of the
-;; directory containing the modules.  This directory is added to `load-path' so
-;; that modules can be loaded directly with `require'.  `stante-var-dir' points
-;; to a directory, where modules can store variable data files, like autosave
-;; files, recent file lists or whatever.  These paths are guaranteed to end with
-;; a slash so that they can simply be concatenated with relative file names.
+;; Set some variables to provide standard paths to modules and users:
+;;
+;; `stante-dir' contains the path of the Stante Pede root directory, typically
+;; "~/.emacs.d/".
+;;
+;; `stante-modules-dir' contains the path of the directory containing the
+;; modules.  This directory is added to `load-path' so that modules can be
+;; loaded directly with `require'.
+;;
+;;  `stante-var-dir' points to a directory, where modules can store variable
+;; data files, like autosave files, recent file lists or whatever.
+
+;; All of theses paths end with a slash to allow for concatenation (see
+;; `concat') with relative file names.
 
 ;; Package support
 ;; ---------------
 
-;; Enable support for packages, and add the MELPA archive. See
+;; Enable support for packages and add the MELPA archive. See
 ;; http://melpa.milkbox.net/packages.
 
 ;; Custom file
 ;; -----------
 ;;
-;; Customize settings are moved to `stante-dir'/custom.el to keep "init.el" free
-;; of noise.  This file is automatically loaded if it exists. See `custom-file'
-;; for more information.
+;; Move customize settings to `stante-dir'/custom.el to keep "init.el" free
+;; of noise (see `custom-file').  Also load this file, if present.
 
 
 ;;; Code:

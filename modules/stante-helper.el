@@ -1,4 +1,4 @@
-;;; stante-helper.el --- Stante Pede: Utility functions for all modes
+;;; stante-helper.el --- Stante Pede: Utility functions for all modules
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -27,14 +27,13 @@
 
 ;;; Commentary:
 
-;; Provides some utility functions to other modules.  Modules load this module
-;; automatically as needed, but you can load it explicitly, if you would like to
-;; use functions contained therein in your Emacs configuration.
+;; Provide utility functions.
 
 ;; Package management
 ;; ------------------
 ;;
-;; `package-install-if-needed' installs a package if it's not already there.
+;; `package-install-if-needed' installs a package if it is not already
+;; installed.
 
 
 (eval-after-load 'package

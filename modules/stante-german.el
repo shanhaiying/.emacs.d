@@ -1,4 +1,4 @@
-;;; stante-german.el --- Stante Pede: Improve experience on German keyboards
+;;; stante-german.el --- Stante Pede: Better support for German keyboard layouts
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -27,16 +27,16 @@
 
 ;;; Commentary:
 
-;; Improves the experience on German keyboard layouts by re-mapping some
-;; commands so that they are located at a similar place as on US layouts. Note
-;; that this is almost never the exactly same place, because such binding would
-;; shadow useful bindings.
+;; Improve experience on German keyboard layouts.
 
 ;; Remappings
 ;; ----------
 ;;
-;; `indent-region' is bound to C-M-ö (standard binding C-M-\).
-;; `hippie-expand' is bound to C-M-ä (standard binding M-/).
+;; Map some commands to better reachable keys.
+;;
+;; C-M-ö indents the current region (see `indent-region').
+;;
+;; C-M-ä expands the word under point with `hippie-expand'.
 
 
 ;;; Code:

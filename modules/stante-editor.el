@@ -1,4 +1,4 @@
-;;; stante-editor.el --- Stante Pede: Configuration for general editing
+;;; stante-editor.el --- Stante Pede: Configure for general editing
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
@@ -27,40 +27,45 @@
 
 ;;; Commentary:
 
-;; Setup editing.
+;; Configure general editing.
 
 ;; Indentation and tabs
 ;; --------------------
 ;;
-;; The default `tab-width' is set to 8, but indentation with tabs is disabled.
+;; Set the default `tab-width' is set to 8, but disable indentation with tabs.
 
 ;; Filling
 ;; -------
 ;;
-;; Auto filling is enabled in all text modes, and the default fill column is
-;; increased to 80 characters.
+;; Enable `auto-fill-mode' in all text modes and increase the default fill
+;; column to 80 characters, which is the maximum recommended by most programming
+;; style guides.
 
 ;; Parenthesis, brackets, etc.
 ;; --------------------------
 ;;
-;; Electric pairing and highlighting of matching parens are enabled.
+;; Automatically insert matching parenthesis, and highlight matching parenthesis.
 
 ;; Highlighting
 ;; ------------
 ;;
-;; The current line is highlighted, and `volatile-highlights-mode' is enabled.
-;; This mode highlights the results of some text operations, like yanking,
-;; killing or deleting.
+;; Highlight the current line (see `global-hl-line-mode') and the results of
+;; some text operations like yanking, killing and deleting (see
+;; `volatile-highlights-mode').
 
-;; Narrowing
-;; ---------
+;; Narrowing and widening
+;; ----------------------
 ;;
-;; Narrowing commands are enabled, so C-x n n, C-x n d and C-x n p are available.
+;; Enable narrowing commands `narrow-to-region' (C-x n n), `narrow-to-page' (C-x
+;; n p) and `narrow-to-defun' (C-x n d).  These commands reduce the visible text
+;; to the current region (or page or defun, respectively).  Use `widen' (C-x n
+;; w) to remove narrowing.
 
 ;; History
 ;; -------
 ;;
-;; Minibuffer history, recent files and location in files are saved and restored.
+;; Save and restore minibuffer history, recent files and the location of point
+;; in files.
 
 ;; Keybindings
 ;; -----------
@@ -68,8 +73,7 @@
 ;; C-x j joins this line with the preceding line and cleans up whitespace via
 ;; `join-line'.
 ;;
-;; M-/ does `hippie-expand', replacing the much less powerfull `dabbrev-expand'.
-
+;; M-/ dynamically expands the word under point with `hippie-expand'.
 
 ;; Code:
 (require 'stante-helper)
