@@ -43,7 +43,7 @@
 (require 'stante-programming)
 
 (eval-after-load 'sh-mode
-  '(setq-default 'sh-basic-offset 2))
+  #'(setq-default 'sh-basic-offset 2))
 
 ;; Also consider .zsh files as `sh-mode' files.
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))

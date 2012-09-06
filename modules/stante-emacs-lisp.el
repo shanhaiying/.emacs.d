@@ -52,14 +52,14 @@
 (package-install-if-needed 'paredit)
 
 (eval-after-load 'lisp-mode
-  '(progn
+  #'(progn
 
-     (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-       (add-hook hook 'turn-on-eldoc-mode)
-       (add-hook hook 'paredit-mode))
+      (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+        (add-hook hook 'turn-on-eldoc-mode)
+        (add-hook hook 'paredit-mode))
 
-     (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
-     ))
+      (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
+      ))
 
 (provide 'stante-emacs-lisp)
 

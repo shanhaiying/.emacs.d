@@ -128,27 +128,27 @@
 ;; De-duplicate buffer names
 (require 'uniquify)
 (eval-after-load 'uniquify
-  '(setq uniquify-buffer-name-style 'forward
-         uniquify-separator "/"
-         ;; Re-uniquify after killing buffers
-         uniquify-after-kill-buffer-p t
-         ;; Ignore special buffers
-         uniquify-ignore-buffers-re "^\\*"))
+  #'(setq uniquify-buffer-name-style 'forward
+          uniquify-separator "/"
+          ;; Re-uniquify after killing buffers
+          uniquify-after-kill-buffer-p t
+          ;; Ignore special buffers
+          uniquify-ignore-buffers-re "^\\*"))
 
 ;; Improve completion for file and buffer names
 (ido-mode t)
 (eval-after-load 'ido
-  '(setq
-    ;; Match characters if string doesn't match
-    ido-enable-flex-matching t
-    ;; Create a new buffer if absolutely nothing matches
-    ido-create-new-buffer 'always
-    ;; Start with filename at point if any can be guessed
-    ido-use-filename-at-point 'guess
-    ;; Remember ido state
-    ido-save-directory-list-file (concat stante-var-dir "ido.hist")
-    ;; When opening a new file, do so in the previously selected window
-    ido-default-file-method 'selected-window))
+  #'(setq
+     ;; Match characters if string doesn't match
+     ido-enable-flex-matching t
+     ;; Create a new buffer if absolutely nothing matches
+     ido-create-new-buffer 'always
+     ;; Start with filename at point if any can be guessed
+     ido-use-filename-at-point 'guess
+     ;; Remember ido state
+     ido-save-directory-list-file (concat stante-var-dir "ido.hist")
+     ;; When opening a new file, do so in the previously selected window
+     ido-default-file-method 'selected-window))
 ;; Move summary and "output" (i.e. from Auctex) to the end to keep these out of
 ;; the way
 (add-hook 'ido-make-buffer-list-hook 'ido-summary-buffers-to-end)
@@ -158,7 +158,8 @@
 
 ;; Move between windows with Shift + Arrows
 (require 'windmove)
-(windmove-default-keybindings)
+(eval-after-load 'windmove
+  #'(windmove-default-keybindings))
 
 ;; Default font
 (cond
@@ -175,7 +176,7 @@
 
 ;; Reuse current frame for EDiff
 (eval-after-load 'ediff-wind
-  '(setq ediff-window-setup-function 'ediff-setup-windows-plain))
+  #'(setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 ;; Key bindings
 (global-set-key (kbd "C-x C-b") 'ibuffer)

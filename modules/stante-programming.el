@@ -107,44 +107,44 @@
 (setq semanticdb-default-save-directory (concat stante-var-dir "semanticdb"))
 
 (eval-after-load 'simple ;; prog-mode is contained in simple.el
-  '(progn
+  #'(progn
 
-     (defun stante-add-task-keywords ()
-       "Highlight tasks in the current buffer.
+      (defun stante-add-task-keywords ()
+        "Highlight tasks in the current buffer.
 
 Tasks are marked by FIX:, TODO:, FIXME: and HACK: keywords, and are highlighted
 with `font-lock-warning-face'."
-       (font-lock-add-keywords
-        nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\):"
-               1 font-lock-warning-face t))))
+        (font-lock-add-keywords
+         nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\):"
+                1 font-lock-warning-face t))))
 
-     (defun stante-auto-fill-comments ()
-       "Enable auto-filling for comments in the current buffer."
-       (set (make-local-variable 'comment-auto-fill-only-comments) t)
-       (auto-fill-mode 1))
+      (defun stante-auto-fill-comments ()
+        "Enable auto-filling for comments in the current buffer."
+        (set (make-local-variable 'comment-auto-fill-only-comments) t)
+        (auto-fill-mode 1))
 
-     (defun stante-whitespace-mode ()
-       "Enable whitespace mode for the current buffer and cleanup whitespace
+      (defun stante-whitespace-mode ()
+        "Enable whitespace mode for the current buffer and cleanup whitespace
        before saving the current buffer."
-       (whitespace-mode 1)
-       (add-hook 'before-save-hook 'whitespace-cleanup nil t))
+        (whitespace-mode 1)
+        (add-hook 'before-save-hook 'whitespace-cleanup nil t))
 
-     (defun stante-setup-programming-mode-hook (hook)
-       "Add all local programming setup functions to HOOK.
+      (defun stante-setup-programming-mode-hook (hook)
+        "Add all local programming setup functions to HOOK.
 
 Currently this functions adds `stante-auto-fill-comments',
 `stante-whitespace-mode' and `stante-add-task-keywords' to
 HOOK."
-       (dolist (func '(stante-auto-fill-comments
-                       stante-whitespace-mode
-                       stante-add-task-keywords))
-         (add-hook hook func)))
+        (dolist (func '(stante-auto-fill-comments
+                        stante-whitespace-mode
+                        stante-add-task-keywords))
+          (add-hook hook func)))
 
-     (stante-setup-programming-mode-hook 'prog-mode-hook)
+      (stante-setup-programming-mode-hook 'prog-mode-hook)
 
-     ;; Enable semantic mode
-     (semantic-mode 1)
-     ))
+      ;; Enable semantic mode
+      (semantic-mode 1)
+      ))
 
 (provide 'stante-programming)
 

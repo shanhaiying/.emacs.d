@@ -69,47 +69,47 @@
 
 ;; Make this module a no-op if not on OS X.
 (eval-after-load 'ns-win
-  '(progn
-     ;; Setup modifier maps for OS X
-     (setq mac-option-modifier 'meta
-           mac-command-modifier 'meta
-           mac-function-modifier 'control
-           mac-right-option-modifier 'none
-           mac-right-command-modifier 'super)
+  #'(progn
+      ;; Setup modifier maps for OS X
+      (setq mac-option-modifier 'meta
+            mac-command-modifier 'meta
+            mac-function-modifier 'control
+            mac-right-option-modifier 'none
+            mac-right-command-modifier 'super)
 
-     (defconst stante-default-osx-paths
-       '("/usr/local/bin" "/usr/local/sbin"
-         "/usr/bin" "/usr/sbin"
-         "/bin" "/sbin"))
+      (defconst stante-default-osx-paths
+        '("/usr/local/bin" "/usr/local/sbin"
+          "/usr/bin" "/usr/sbin"
+          "/bin" "/sbin"))
 
-     (defun stante-osx-paths ()
-       "Return a list of executable paths for OS X."
-       (concatenate 'list
-                    stante-default-osx-paths
-                    (stante-read-osx-pathfiles)))
+      (defun stante-osx-paths ()
+        "Return a list of executable paths for OS X."
+        (concatenate 'list
+                     stante-default-osx-paths
+                     (stante-read-osx-pathfiles)))
 
-     (defun stante-read-osx-pathfiles ()
-       "Return a list of executable paths read from the files in /etc/paths.d."
-       (condition-case nil
-           (let* ((contents (directory-files "/etc/paths.d" t))
-                  (files (remove-if-not 'file-regular-p contents)))
-             (mapcan 'stante-get-file-lines files))
-         (file-error nil)))
+      (defun stante-read-osx-pathfiles ()
+        "Return a list of executable paths read from the files in /etc/paths.d."
+        (condition-case nil
+            (let* ((contents (directory-files "/etc/paths.d" t))
+                   (files (remove-if-not 'file-regular-p contents)))
+              (mapcan 'stante-get-file-lines files))
+          (file-error nil)))
 
-     (defun stante-fix-osx-paths ()
-       "Fix $PATH and `exec-path' on OS X."
-       (interactive)
-       (let*
-           ((paths (concatenate 'list (stante-osx-paths) exec-path))
-            (unique-paths (remove-duplicates paths
-                                             :test 'string-equal
-                                             :from-end t)))
-         (setenv "PATH" (mapconcat 'identity unique-paths ":"))
-         (setq exec-path unique-paths)))
+      (defun stante-fix-osx-paths ()
+        "Fix $PATH and `exec-path' on OS X."
+        (interactive)
+        (let*
+            ((paths (concatenate 'list (stante-osx-paths) exec-path))
+             (unique-paths (remove-duplicates paths
+                                              :test 'string-equal
+                                              :from-end t)))
+          (setenv "PATH" (mapconcat 'identity unique-paths ":"))
+          (setq exec-path unique-paths)))
 
-     ;; Fixup paths
-     (stante-fix-osx-paths)
-     ))
+      ;; Fixup paths
+      (stante-fix-osx-paths)
+      ))
 
 (provide 'stante-osx)
 

@@ -142,45 +142,45 @@
 ;; Remember various histories
 ;; Minibuffer history
 (eval-after-load 'savehist
-  '(setq savehist-save-minibuffer-history t
-         ;; Save every three minutes (the default five minutes is a bit long)
-         savehist-autosave-interval 180
-         ;; Move save file into proper directory
-         savehist-file (concat stante-var-dir "savehist")))
+  #'(setq savehist-save-minibuffer-history t
+          ;; Save every three minutes (the default five minutes is a bit long)
+          savehist-autosave-interval 180
+          ;; Move save file into proper directory
+          savehist-file (concat stante-var-dir "savehist")))
 (savehist-mode t)
 ;; Recent files
 (eval-after-load 'recentf
-  '(setq recentf-max-saved-items 200
-         recentf-max-menu-items 15
-         ;; Move to property directory
-         recentf-save-file (concat stante-var-dir "recentf")))
+  #'(setq recentf-max-saved-items 200
+          recentf-max-menu-items 15
+          ;; Move to property directory
+          recentf-save-file (concat stante-var-dir "recentf")))
 (recentf-mode t)
 ;; Locations in files
 (eval-after-load 'saveplace
-  '(progn
-     (setq save-place-file (concat stante-var-dir "saveplace"))
-     (setq-default save-place t)))
+  #'(progn
+      (setq save-place-file (concat stante-var-dir "saveplace"))
+      (setq-default save-place t)))
 (require 'saveplace)
 
 ;; Configure bookmarks
 (eval-after-load 'bookmark
-  '(setq bookmark-default-file (concat stante-var-dir "bookmarks")
-         ;; Save on every modification
-         bookmark-save-flag 1))
+  #'(setq bookmark-default-file (concat stante-var-dir "bookmarks")
+          ;; Save on every modification
+          bookmark-save-flag 1))
 
 ;; Expansion functions
 (eval-after-load 'hippie-exp
-  '(setq hippie-expand-try-functions-list
-         '(try-expand-dabbrev
-           try-expand-dabbrev-all-buffers
-           try-expand-dabbrev-from-kill
-           try-complete-file-name-partially
-           try-complete-file-name
-           try-expand-all-abbrevs
-           try-expand-list
-           try-expand-line
-           try-complete-lisp-symbol-partially
-           try-complete-lisp-symbol)))
+  #'(setq hippie-expand-try-functions-list
+          '(try-expand-dabbrev
+            try-expand-dabbrev-all-buffers
+            try-expand-dabbrev-from-kill
+            try-complete-file-name-partially
+            try-complete-file-name
+            try-expand-all-abbrevs
+            try-expand-list
+            try-expand-line
+            try-complete-lisp-symbol-partially
+            try-complete-lisp-symbol)))
 
 ;; Keybindings
 (global-set-key (kbd "RET") 'newline-and-indent)

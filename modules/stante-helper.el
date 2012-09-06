@@ -88,8 +88,6 @@
   (byte-recompile-directory stante-modules-dir 0 t)
   (byte-recompile-file stante-init-file t 0))
 
-;;;
-
 (provide 'stante-helper)
 
 ;;; stante-helper.el ends here

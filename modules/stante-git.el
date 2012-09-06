@@ -69,7 +69,7 @@
 
 ;; Open newly created Gists in browser.
 (eval-after-load 'gist
-  '(setq gist-view-gist t))
+  #'(setq gist-view-gist t))
 
 ;; Keybindings
 (global-set-key (kbd "C-x g") 'magit-status)
