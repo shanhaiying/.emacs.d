@@ -43,19 +43,29 @@
 (require 'stante-osx)
 (require 'stante-editor)
 
-;; ;; Tool support
+;; Tool support
 (require 'stante-git)
 
-;; ;; Programming languages
+;; Programming languages
 (require 'stante-emacs-lisp)
 (require 'stante-sh)
 
-;; ;; Localization support
+;; Localization support
 (require 'stante-german)
+
+;; Choose a nice color theme.  See `customize-theme' for a list of themes that
+;; are already installed, and `stante-known-themes-alist' for a list of themes
+;; that can be installed from the Emacs package archives.  The following themes
+;; are recommendable, and definitely a good start.  Try these, and possibly
+;; others from the aforementioned lists to find one that you like.
+
+;;(load-theme 'inkpot)
+;;(load-theme 'solarized-light)
+;;(load-theme 'solarized-dark)
+;;(load-theme 'zenburn)
 
 ;; Customize as you like here.  Please try to put your configuration into Stante
 ;; modules, or even write new Stante modules, and contribute these changes back
 ;; via Github Pull Requests for the profit of other users.
-
 
 ;;; init.el ends here

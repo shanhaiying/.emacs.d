@@ -86,6 +86,8 @@
 
 ;;; Code:
 
+(require 'stante-autoloads)
+
 ;; Disable toolbar and menu bar (except on OS X where the menubar is present
 ;; anyway)
 (when (fboundp 'tool-bar-mode)
@@ -177,6 +179,41 @@
 ;; Reuse current frame for EDiff
 (eval-after-load 'ediff-wind
   #'(setq ediff-window-setup-function 'ediff-setup-windows-plain))
+
+;; Theme support
+(defvar stante-known-themes-alist
+  ;;
+  '((birds-of-paradise-plus . birds-of-paradise-plus-theme)
+    (inkpot . inkpot-theme)
+    (ir-black . ir-black-theme)
+    (molokai . molokai-theme)
+    (pastels-on-dark . pastels-on-dark-theme)
+    (solarized-light . solarized-theme)
+    (solarized-dark . solarized-theme)
+    (tango-2 . tango-2-theme)
+    (twilight-anti-bright . twilight-anti-bright-theme)
+    (twilight-bright . twilight-bright-theme)
+    (twilight . twilight-theme)
+    (zen-and-art . zen-and-art-theme)
+    (zenburn . zenburn-theme))
+  "Color themes know to stante.
+
+Maps the theme name to the package that contains this theme.
+This is is naturally incomplete.  Feel free to extend, and please
+report color themes not contained in this list to
+https://github.com/lunaryorn/stante-pede/issues.")
+
+(defadvice load-theme (before load-theme-install-package)
+  "Install the theme package before loading the theme.
+
+See `stante-known-themes-alist' for a list of known theme names and
+corresponding packages."
+  (let* ((theme (ad-get-arg 0))
+         (package (cdr (assoc theme stante-known-themes-alist))))
+    (when package
+      (message "Installing package %s for theme %s." package theme)
+      (package-install-if-needed package))))
+(ad-activate 'load-theme t)
 
 ;; Key bindings
 (global-set-key (kbd "C-x C-b") 'ibuffer)
