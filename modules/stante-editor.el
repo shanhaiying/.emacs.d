@@ -81,6 +81,14 @@
 ;; Provide powerful word expansion with a reasonable `hippie-expand'
 ;; configuration.
 
+;; Emacs server
+;; ------------
+;;
+;; Start an Emacs server, if there is none running yet.
+;;
+;; This allows to edit files within the currently running Emacs session with
+;; "emacsclient".
+
 ;; Keybindings
 ;; -----------
 ;;
@@ -181,6 +189,11 @@
             try-expand-line
             try-complete-lisp-symbol-partially
             try-complete-lisp-symbol)))
+
+;; Bring up Emacs server
+(require 'server)
+(eval-after-load 'server
+  #'(unless (server-running-p) (server-start)))
 
 ;; Keybindings
 (global-set-key (kbd "RET") 'newline-and-indent)
