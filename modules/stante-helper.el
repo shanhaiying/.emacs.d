@@ -85,8 +85,8 @@
 (defun stante-byte-recompile ()
   "Byte-compile all modules of Stante pede."
   (interactive)
-  (byte-recompile-directory stante-modules-dir 0 t)
-  (byte-recompile-file stante-init-file t 0))
+  (byte-recompile-directory stante-modules-dir 0)
+  (byte-recompile-file stante-init-file nil 0))
 
 (provide 'stante-helper)
 
