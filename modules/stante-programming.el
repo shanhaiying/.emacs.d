@@ -90,8 +90,17 @@
 ;; arranges for whitespace to be cleaned up before the current buffer is saved
 ;; (see `whitespace-cleanup').
 ;;
+;; `stante-programming-keybindings' configures the keybindings of this module
+;; for the current local mode map.
+;;
 ;; `stante-configure-programming-mode-hook' sets up a given hook with all of the
 ;; above functions, simply for convenience.
+
+;; Keybindings
+;; -----------
+;;
+;; C-# toggles commenting for current region (see
+;; `comment-or-uncomment-region').
 
 
 ;;; Code:
@@ -129,14 +138,19 @@ with `font-lock-warning-face'."
         (whitespace-mode 1)
         (add-hook 'before-save-hook 'whitespace-cleanup nil t))
 
+      (defun stante-programming-keybindings ()
+        "Add the keybindings of this module to the `current-local-map'."
+        (local-set-key (kbd "C-#") 'comment-or-uncomment-region))
+
       (defun stante-setup-programming-mode-hook (hook)
         "Add all local programming setup functions to HOOK.
 
 Currently this functions adds `stante-auto-fill-comments',
-`stante-whitespace-mode' and `stante-add-task-keywords' to
-HOOK."
+`stante-whitespace-mode', `stante-programming-keybindings' and
+`stante-add-task-keywords' to HOOK."
         (dolist (func '(stante-auto-fill-comments
                         stante-whitespace-mode
+                        stante-programming-keybindings
                         stante-add-task-keywords))
           (add-hook hook func)))
 
