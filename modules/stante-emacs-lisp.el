@@ -44,6 +44,11 @@
 ;; Read the reference table at http://mumble.net/~campbell/emacs/paredit.html
 ;; for a list of available commands.
 
+;; Keybindings
+;; -----------
+;;
+;; C-c i starts an interactive Emacs LISP shell (see `ielm').
+
 ;;; Code:
 
 (require 'stante-autoloads)
@@ -59,6 +64,7 @@
         (add-hook hook 'paredit-mode))
 
       (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
+      (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
       ))
 
 (provide 'stante-emacs-lisp)
