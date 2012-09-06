@@ -63,6 +63,12 @@
 
 ;;; Code:
 
+;; Stante metadata
+(defconst stante-url "https://github.com/lunaryorn/stante-pede"
+  "The URL of the Stante Pede project.")
+(defconst stante-issues-url "https://github.com/lunaryorn/stante-pede/issues"
+  "The URL of the Stante Pede issue tracker.")
+
 ;; Stante directories
 (defconst stante-init-file load-file-name
   "The location of the `stante-init' file.")
