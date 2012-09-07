@@ -4,6 +4,8 @@ var/
 elpa/
 # Recovery directory from Emacs
 auto-save-list/
+# Tutorial states
+tutorial/
 
 # Elisp byte code
 *.elc
