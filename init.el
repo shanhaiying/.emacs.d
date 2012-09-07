@@ -58,11 +58,14 @@
 ;; that can be installed from the Emacs package archives.  The following themes
 ;; are recommendable, and definitely a good start.  Try these, and possibly
 ;; others from the aforementioned lists to find one that you like.
+;;
+;; WARNING:  Loading themes can execute *arbitrary* code.  Do NEVER load themes
+;; from untrusted sources!
 
-;;(load-theme 'inkpot)
-;;(load-theme 'solarized-light)
-;;(load-theme 'solarized-dark)
-;;(load-theme 'zenburn)
+;;(load-theme 'inkpot t)
+;;(load-theme 'solarized-light t)
+;;(load-theme 'solarized-dark t)
+;;(load-theme 'zenburn t)
 
 ;; Customize as you like here.  Please try to put your configuration into Stante
 ;; modules, or even write new Stante modules, and contribute these changes back
