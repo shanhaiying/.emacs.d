@@ -48,7 +48,10 @@
 ;; Tab expands snippets if the word under point is a snippet trigger.  Otherwise
 ;; Tab does what the current mode wants it to do.
 
+
 ;;; Code:
+
+(require 'stante-autoloads)
 
 (defconst stante-snippets-dir (concat stante-dir "snippets/")
   "The directory where Stante Pede snippets are stored.")
