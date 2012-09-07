@@ -65,6 +65,17 @@
 
       (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
       (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
+
+      (eval-after-load 'auto-complete
+        #'(progn
+            (defun stante-emacs-lisp-ac-setup ()
+              "Configure auto-complete for Emacs lisp."
+              (setq ac-sources (append '(ac-source-features
+                                         ac-source-functions
+                                         ac-source-variables
+                                         ac-source-symbols)
+                                       ac-sources)))
+            (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-ac-setup)))
       ))
 
 (provide 'stante-emacs-lisp)
