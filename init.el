@@ -42,6 +42,7 @@
 (require 'stante-ui)
 (require 'stante-osx)
 (require 'stante-editor)
+(require 'stante-snippets)
 
 ;; Tool support
 (require 'stante-git)
