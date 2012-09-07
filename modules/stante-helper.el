@@ -37,6 +37,11 @@
 ;; `package-install-if-needed' installs a package if it is not already
 ;; installed.
 
+;; Strings
+;; -------
+;;
+;; `stante-string-trim' removes leading and trailing whitespace from a string.
+
 ;; IO utilities
 ;; ------------
 ;;
@@ -63,6 +68,14 @@
 (defun package-install-if-needed (name)
   "Install the package named NAME, unless it is already installed."
   (unless (package-installed-p name) (package-install name)))
+
+;;;###autoload
+(defun stante-string-trim (str)
+  "Remove leading and trailing whitespace from STR."
+  (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
+                       str)
+    (setq str (replace-match "" t t str)))
+  str)
 
 ;;;###autoload
 (defun stante-get-file-contents (filename)
