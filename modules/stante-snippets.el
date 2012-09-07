@@ -68,7 +68,7 @@
             `(,stante-snippets-dir ; Our snippets first
               ,(concat (file-name-directory yas--load-file-name) "snippets")))
       ;; Enable yasnippet in all modes.
-      (yas-global-mode)))
+      (yas-global-mode 1)))
 
 (provide 'stante-snippets)
 
