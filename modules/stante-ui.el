@@ -72,6 +72,14 @@
 ;; Enable completion via ido – interactive do – for buffer switching and file
 ;; visiting.  Enable icomplete mode to improve minibuffer completion.
 
+;; Initial frame position and size
+;; -------------------------------
+;;
+;; Save the position and size of the current frame when killing Emacs and apply
+;; these saved parameters to the initial frame.  If Emacs is with a single
+;; frame, effectively remembers the frame position and size like other GUI
+;; applications.
+
 ;; Key bindings
 ;; ------------
 ;;
@@ -214,6 +222,45 @@ corresponding packages."
       (message "Installing package %s for theme %s." package theme)
       (package-install-if-needed package))))
 (ad-activate 'load-theme t)
+
+(defvar stante-save-frame-parameters-file
+  (concat stante-var-dir "frame-parameters")
+  "File in which to storce frame parameters on exit.")
+
+(defun stante-restore-frame-parameters ()
+  "Restore the frame parameters of the initial frame."
+  (condition-case nil
+      (let* ((contents (stante-get-file-contents
+                        stante-save-frame-parameters-file))
+             (parts (split-string (stante-string-trim contents) "x"))
+             (params (mapcar 'string-to-number parts)))
+        (setq initial-frame-alist
+              (stante-merge-alists initial-frame-alist
+                                   `((left . ,(nth 0 params))
+                                     (top . ,(nth 1 params))
+                                     (width . ,(max (nth 2 params) 80))
+                                     (height . ,(max (nth 3 params) 35))))))
+    (error nil)))
+
+(defun stante-save-frame-parameters ()
+  "Save frame parameters of the selected frame.
+
+Save the top left position and the width and height to
+`stante-save-frame-parameters-file'."
+  (condition-case nil
+      (let ((frame (selected-frame)))
+        (when (and frame (display-graphic-p frame)) ; GUI frames only!
+          (let ((params (format "%sx%sx%sx%s\n"
+                                (frame-parameter frame 'left)
+                                (frame-parameter frame 'top)
+                                (frame-parameter frame 'width)
+                                (frame-parameter frame 'height))))
+            (stante-set-file-contents stante-save-frame-parameters-file params)
+            t)))
+    (file-error nil)))
+(unless noninteractive
+       (add-hook 'after-init-hook 'stante-restore-frame-parameters)
+       (add-hook 'kill-emacs-hook 'stante-save-frame-parameters))
 
 ;; Key bindings
 (global-set-key (kbd "C-x C-b") 'ibuffer)
