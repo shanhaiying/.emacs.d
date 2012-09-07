@@ -42,6 +42,8 @@
 ;;
 ;; `stante-get-file-contents' gets the contents of a file as string.
 ;;
+;; `stante-set-file-contents' sets the contents of a file.
+;;
 ;; `stante-get-file-lines' gets the lines in a file as list.
 
 ;; Maintenaince
@@ -68,6 +70,16 @@
   (with-temp-buffer
     (insert-file-contents filename)
     (buffer-string)))
+
+;;;###autoload
+(defun stante-set-file-contents (filename contents)
+  "Set the contents of the file FILENAME.
+
+Create the file FILENAME if it does not exist, or completely
+overwrite it if it does."
+  (with-temp-buffer
+    (insert contents)
+    (write-region (point-min) (point-max) filename nil 0)))
 
 ;;;###autoload
 (defun stante-get-file-lines (filename)

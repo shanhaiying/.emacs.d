@@ -4,8 +4,9 @@
 
 
 ;;;### (autoloads (stante-byte-recompile stante-update-autoload-file
-;;;;;;  stante-get-file-lines stante-get-file-contents package-install-if-needed)
-;;;;;;  "stante-helper" "stante-helper.el" (20551 54893))
+;;;;;;  stante-get-file-lines stante-set-file-contents stante-get-file-contents
+;;;;;;  package-install-if-needed) "stante-helper" "stante-helper.el"
+;;;;;;  (20553 48398))
 ;;; Generated autoloads from stante-helper.el
 
 (autoload 'package-install-if-needed "stante-helper" "\
@@ -17,6 +18,11 @@ Install the package named NAME, unless it is already installed.
 Return the contents of the file FILENAME.
 
 \(fn FILENAME)" nil nil)
+
+(autoload 'stante-set-file-contents "stante-helper" "\
+Set the contents of the file FILENAME.
+
+\(fn FILENAME CONTENTS)" nil nil)
 
 (autoload 'stante-get-file-lines "stante-helper" "\
 Return a list of lines of file FILENAME.
@@ -37,7 +43,7 @@ Byte-compile all modules of Stante pede.
 
 ;;;### (autoloads nil nil ("stante-editor.el" "stante-emacs-lisp.el"
 ;;;;;;  "stante-german.el" "stante-git.el" "stante-osx.el" "stante-programming.el"
-;;;;;;  "stante-ui.el") (20551 54906 263641))
+;;;;;;  "stante-sh.el" "stante-ui.el") (20553 48414 271538))
 
 ;;;***
 
