@@ -114,7 +114,7 @@ homebrew. In future, more sophisticated logic might be added."
         (let*
             ((paths (concatenate 'list (stante-osx-paths) exec-path))
              (unique-paths (remove-duplicates paths
-                                              :test 'string-equal
+                                              :test 'string=
                                               :from-end t)))
           (setenv "PATH" (mapconcat 'identity unique-paths ":"))
           (setq exec-path unique-paths)
@@ -125,7 +125,7 @@ homebrew. In future, more sophisticated logic might be added."
                 ;; Do *not* add the GNU coreutils directory to $PATH because it
                 ;; must not be exported to Emacs subprocesses.  On OS X programs
                 ;; might break if the call out to GNU utilities!
-                (add-to-list 'exec-path coreutils-dir nil 'string-equal)
+                (add-to-list 'exec-path coreutils-dir nil 'string=)
               (message "GNU Coreutils not found.  Install coreutils \
 with homebrew, or report an issue to %s." stante-issues-url)))))
 
