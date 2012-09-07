@@ -43,6 +43,7 @@
 (require 'stante-osx)
 (require 'stante-editor)
 (require 'stante-snippets)
+(require 'stante-completion)
 
 ;; Tool support
 (require 'stante-git)
