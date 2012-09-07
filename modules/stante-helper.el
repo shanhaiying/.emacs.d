@@ -37,6 +37,11 @@
 ;; `package-install-if-needed' installs a package if it is not already
 ;; installed.
 
+;; Lists
+;; -----
+;;
+;; `stante-merge-alists' merges two association lists.
+
 ;; Strings
 ;; -------
 ;;
@@ -76,6 +81,13 @@
                        str)
     (setq str (replace-match "" t t str)))
   str)
+
+;;;###autoload
+(defun stante-merge-alists (a b)
+  "Update the alist A with B.
+
+Items in B replace items in A with matching `car'."
+  (apply 'append (remove-if (lambda (item) (assoc (car item) b)) a) b nil))
 
 ;;;###autoload
 (defun stante-get-file-contents (filename)

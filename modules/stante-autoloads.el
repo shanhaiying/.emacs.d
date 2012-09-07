@@ -5,8 +5,8 @@
 
 ;;;### (autoloads (stante-byte-recompile stante-update-autoload-file
 ;;;;;;  stante-get-file-lines stante-set-file-contents stante-get-file-contents
-;;;;;;  stante-string-trim package-install-if-needed) "stante-helper"
-;;;;;;  "stante-helper.el" (20553 52322))
+;;;;;;  stante-merge-alists stante-string-trim package-install-if-needed)
+;;;;;;  "stante-helper" "stante-helper.el" (20553 55704))
 ;;; Generated autoloads from stante-helper.el
 
 (autoload 'package-install-if-needed "stante-helper" "\
@@ -18,6 +18,13 @@ Install the package named NAME, unless it is already installed.
 Remove leading and trailing whitespace from STR.
 
 \(fn STR)" nil nil)
+
+(autoload 'stante-merge-alists "stante-helper" "\
+Update the alist A with B.
+
+Items in B replace items in A with matching `car'.
+
+\(fn A B)" nil nil)
 
 (autoload 'stante-get-file-contents "stante-helper" "\
 Return the contents of the file FILENAME.
@@ -51,7 +58,7 @@ Byte-compile all modules of Stante pede.
 
 ;;;### (autoloads nil nil ("stante-editor.el" "stante-emacs-lisp.el"
 ;;;;;;  "stante-german.el" "stante-git.el" "stante-osx.el" "stante-programming.el"
-;;;;;;  "stante-sh.el" "stante-ui.el") (20553 52328 594946))
+;;;;;;  "stante-sh.el" "stante-ui.el") (20553 56858 978166))
 
 ;;;***
 
