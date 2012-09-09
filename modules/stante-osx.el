@@ -67,7 +67,7 @@
 ;; For `remove-duplicates'
 (require 'cl)
 
-;; Make this module a no-op if not on OS X.
+;; Make this module a no-op if not on OS X GUI.
 (eval-after-load 'ns-win
   #'(progn
       ;; Setup modifier maps for OS X
@@ -77,10 +77,15 @@
             mac-right-option-modifier 'none
             mac-right-command-modifier 'super)
 
+      ;; We don't need to fix paths for terminal emacs sessions, because these
+      ;; will inherit the correct path from the shell which is hopefully
+      ;; correct.  Hence we can also depend on `ns-win' for this feature.
+
       (defconst stante-default-osx-paths
         '("/usr/local/bin" "/usr/local/sbin"
           "/usr/bin" "/usr/sbin"
-          "/bin" "/sbin"))
+          "/bin" "/sbin")
+        "Default executable paths on OS X.")
 
       (defun stante-osx-paths ()
         "Return a list of executable paths for OS X."
