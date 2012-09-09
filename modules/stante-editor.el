@@ -114,6 +114,9 @@
       auto-save-file-name-transforms
       `((".*" ,(concat stante-var-dir "auto-save") t)))
 
+;; Automatically revert buffers from changed files
+(global-auto-revert-mode 1)
+
 ;; No tabs for indentation
 (setq-default indent-tabs-mode nil
               tab-width 8)
