@@ -75,7 +75,7 @@
 
       ;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
       ;;installed, because it supports SyncTex.  Preview does not.
-      (when (eq system-type 'darwin)
+      (when (stante-is-os-x)
 
         (defun stante-find-skim-bundle ()
           "Return the location of the Skim bundle, or `nil' if

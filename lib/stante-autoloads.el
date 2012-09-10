@@ -5,7 +5,7 @@
 
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-io" "stante-io.el" (20557
-;;;;;;  64097))
+;;;;;;  64604))
 ;;; Generated autoloads from stante-io.el
 
 (autoload 'stante-get-file-contents "stante-io" "\
@@ -29,7 +29,7 @@ Return a list of lines of file FILENAME.
 ;;;***
 
 ;;;### (autoloads (stante-merge-alists) "stante-lists" "stante-lists.el"
-;;;;;;  (20557 64090))
+;;;;;;  (20557 64604))
 ;;; Generated autoloads from stante-lists.el
 
 (autoload 'stante-merge-alists "stante-lists" "\
@@ -42,7 +42,7 @@ Items in B replace items in A with matching `car'.
 ;;;***
 
 ;;;### (autoloads (stante-byte-recompile stante-update-autoload-file)
-;;;;;;  "stante-maintenance" "stante-maintenance.el" (20557 64290))
+;;;;;;  "stante-maintenance" "stante-maintenance.el" (20557 64604))
 ;;; Generated autoloads from stante-maintenance.el
 
 (defconst stante-autoload-file (concat stante-lib-dir "stante-autoloads.el") "\
@@ -61,7 +61,7 @@ Byte-compile all modules of Stante pede.
 ;;;***
 
 ;;;### (autoloads (package-install-if-needed) "stante-package" "stante-package.el"
-;;;;;;  (20557 64153))
+;;;;;;  (20557 64604))
 ;;; Generated autoloads from stante-package.el
 
 (autoload 'package-install-if-needed "stante-package" "\
@@ -71,22 +71,43 @@ Install the package named NAME, unless it is already installed.
 
 ;;;***
 
+;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
+;;;;;;  stante-is-os-x) "stante-platform" "stante-platform.el" (20558
+;;;;;;  896))
+;;; Generated autoloads from stante-platform.el
+
+(autoload 'stante-is-os-x "stante-platform" "\
+Return t if running on OS X, or nil otherwise.
+
+\(fn)" nil nil)
+
+(autoload 'stante-is-kde "stante-platform" "\
+Return t if running in a KDE session, or nil otherwise.
+
+\(fn)" nil nil)
+
+(autoload 'stante-is-gnome "stante-platform" "\
+Return t if running on Gnome, or nil otherwise.
+
+\(fn)" nil nil)
+
+(autoload 'stante-is-windows "stante-platform" "\
+Return t if running natively on Windows, or nil otherwise.
+
+Return nil if running in cygwin or under MS-DOS.
+
+\(fn)" nil nil)
+
+;;;***
+
 ;;;### (autoloads (stante-string-trim) "stante-strings" "stante-strings.el"
-;;;;;;  (20557 64171))
+;;;;;;  (20557 64604))
 ;;; Generated autoloads from stante-strings.el
 
 (autoload 'stante-string-trim "stante-strings" "\
 Remove leading and trailing whitespace from STR.
 
 \(fn STR)" nil nil)
-
-;;;***
-
-;;;### (autoloads nil nil ("../modules/stante-completion.el" "../modules/stante-editor.el"
-;;;;;;  "../modules/stante-emacs-lisp.el" "../modules/stante-german.el"
-;;;;;;  "../modules/stante-git.el" "../modules/stante-osx.el" "../modules/stante-programming.el"
-;;;;;;  "../modules/stante-sh.el" "../modules/stante-snippets.el"
-;;;;;;  "../modules/stante-ui.el") (20557 64299 749334))
 
 ;;;***
 

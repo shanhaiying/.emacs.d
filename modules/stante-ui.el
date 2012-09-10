@@ -100,7 +100,7 @@
 ;; anyway)
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
-(unless (eq system-type 'darwin)
+(unless (stante-is-os-x)
   (when (fboundp 'menu-bar-mode)
     (menu-bar-mode -1)))
 
@@ -173,10 +173,10 @@
 
 ;; Default font
 (cond
- ((eq system-type 'darwin)
+ ((stante-is-os-x)
   ;; OS X default font, but larger font size
   (set-face-attribute 'default nil :family "Menlo" :height 130))
- ((eq system-type 'windows-nt)
+ ((stante-is-windows)
   ;; Visual Studio defaults
   (set-face-attribute 'default nil :family "Consolas" :height 10))
  (t
