@@ -42,6 +42,9 @@
 ;; modules.  This directory is added to `load-path' so that modules can be
 ;; loaded directly with `require'.
 ;;
+;; `stante-lib-dir' contains utility libraries used by Stante modules.  Almost
+;; all functions in this directory are non-interactive.
+;;
 ;; `stante-var-dir' points to a directory, where modules can store variable data
 ;; files, like autosave files, recent file lists or whatever.
 
@@ -76,17 +79,17 @@
   "The root directory of Stante Pede.")
 (defconst stante-modules-dir (concat stante-dir "modules/")
   "The directory containing all Stante Pede modules.")
+(defconst stante-lib-dir (concat stante-dir "lib/")
+  "The directory containing Stante Pede utility libraries. ")
 (defconst stante-var-dir (concat stante-dir "var/")
-  "This folder stores auomatically generated files.")
+  "This folder stores automatically generated files.")
 
 ;; Stante files
 (defconst stante-custom-file (concat stante-dir "custom.el")
   "The location of the `custom-file' for Stante Pede.")
-(defconst stante-autoload-file (concat stante-modules-dir "stante-autoloads.el")
-  "The location of the file containing the autoload definition of
-  Stante Pede functions.")
 
 (add-to-list 'load-path stante-modules-dir)
+(add-to-list 'load-path stante-lib-dir)
 
 ;; Create cache directory
 (unless (file-exists-p stante-var-dir)
@@ -103,9 +106,5 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
-
-;; Bring autoload definitions into scope
-(when (file-exists-p stante-autoload-file)
-  (load stante-autoload-file))
 
 ;;; stante-init.el ends here
