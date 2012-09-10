@@ -42,6 +42,7 @@
 (require 'stante-ui)
 (require 'stante-osx)
 (require 'stante-editor)
+(require 'stante-spelling)
 (require 'stante-snippets)
 (require 'stante-completion)
 
