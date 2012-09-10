@@ -53,6 +53,9 @@
 (require 'stante-emacs-lisp)
 (require 'stante-sh)
 
+;; Markup languages
+(require 'stante-latex)
+
 ;; Localization support
 (require 'stante-german)
 
