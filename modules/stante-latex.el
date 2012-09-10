@@ -43,7 +43,15 @@
 ;; -------
 ;;
 ;; Enable forward and inverse search via SyncTex.
-
+;;
+;; The PDF reader will open the PDF at the line under cursor, and provide means
+;; to jump to the corresponding source file line in Emacs.  You need a PDF
+;; viewer that supports SyncTex to use this feature:
+;;
+;; OS X Preview does not support SyncTex.  Install Skim from
+;; http://skim-app.sourceforge.net/ and restart Emacs to use SyncTex on OS X.
+;; Do not configure Skim as default PDF viewer (unless you want to do so).  This
+;; module will automatically choose Skim if it is installed.
 
 ;;; Code:
 
@@ -53,17 +61,68 @@
 
 (eval-after-load 'tex-site
   #'(progn
-      (setq TeX-auto-save t ; Autosave documents
+      (setq TeX-auto-save t             ; Autosave documents
             ;; Parse document structure
             TeX-parse-self t
             ;; Use SyncTeX for source correlation
             TeX-source-correlate-method 'synctex
             ;; Enable source correlation mode
             TeX-source-correlate-mode t)
-      (setq-default TeX-master nil ; Ask for master document
+      (setq-default TeX-master nil    ; Ask for master document
                     ;; Use a modern LaTeX engine to build PDFs
                     TeX-engine 'xetex
                     TeX-PDF-mode t)
+
+      ;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
+      ;;installed, because it supports SyncTex.  Preview does not.
+      (when (eq system-type 'darwin)
+
+        (defun stante-find-skim-bundle ()
+          "Return the location of the Skim bundle, or `nil' if
+        Skim is not installed.
+
+Skim is an advanced PDF viewer for OS X with SyncTex support.
+See http://skim-app.sourceforge.net/ for more information."
+          (car (process-lines "mdfind" "kMDItemCFBundleIdentifier \
+== 'net.sourceforge.skim-app.skim'")))
+
+        (defun stante-find-skim-displayline ()
+          "Return the path of the displayline frontend of Skim,
+or `nil' if Skim is not installed.
+
+See `stante-find-skim-bundle'."
+          (let ((skim-bundle (stante-find-skim-bundle)))
+            (when skim-bundle
+              (concat (directory-file-name skim-bundle)
+                      "/Contents/SharedSupport/displayline"))))
+
+        (defun stante-TeX-find-view-programs ()
+          "Find TeX view programs on OS X.
+
+Populate `TeX-view-program-list' with installed viewers."
+          ;; The default application, usually Preview
+          (add-to-list 'TeX-view-program-list
+                       '("Default application" "open %o"))
+          ;; Skim if installed
+          (let ((skim-displayline (stante-find-skim-displayline)))
+            (when skim-displayline
+              (add-to-list 'TeX-view-program-list
+                           `("Skim" (,skim-displayline " -b -r %n %o %b"))))))
+
+        (defun stante-TeX-select-view-programs ()
+          "Select the best view programs on OS X.
+
+Choose Skim if available, or fall back to the default application."
+          ;; Find view programs
+          (stante-TeX-find-view-programs)
+          (setq TeX-view-program-selection
+                `((output-dvi "Default application")
+                  (output-html "Default application")
+                  ;; Use Skim if installed for SyncTex support.
+                  (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
+                                   "Skim" "Default application")))))
+
+        (eval-after-load 'tex #'(stante-TeX-select-view-programs)))
       ))
 
 (provide 'stante-latex)
