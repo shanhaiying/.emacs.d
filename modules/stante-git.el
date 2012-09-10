@@ -1,4 +1,4 @@
-;;; stante-git.el --- Stante Pede: Support for the Git VCS
+;;; stante-git.el --- Stante Pede Modules: Git support
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner

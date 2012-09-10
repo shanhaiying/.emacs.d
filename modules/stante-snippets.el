@@ -1,4 +1,4 @@
-;;; stante-snippets.el --- Stante Pede: Support for text snippets
+;;; stante-snippets.el --- Stante Pede Modules: Text snippets
 ;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
