@@ -75,6 +75,9 @@
                     TeX-engine 'xetex
                     TeX-PDF-mode t)
 
+      ;; Enable on-the-fly checking for latex documents
+      (add-hook 'LaTeX-mode-hook 'flymake-mode-on)
+
       ;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
       ;;installed, because it supports SyncTex.  Preview does not.
       (when (stante-is-os-x)
@@ -125,6 +128,19 @@ Choose Skim if available, or fall back to the default application."
                                    "Skim" "Default application")))))
 
         (eval-after-load 'tex #'(stante-TeX-select-view-programs)))
+      ))
+
+(eval-after-load 'flymake
+  #'(progn
+      ;; Override the default flymake syntax checking for LaTeX to use chktex
+      (defun flymake-get-tex-args (filename)
+        "Get the command to check TeX documents on the fly."
+        `("chktex" ("-v0" "-q" "-I",filename)))
+
+      ;; Treat master/child documents like simple documents because chktex
+      ;; doesn't do a full compilation
+      (defun flymake-master-tex-init ()
+        (flymake-simple-tex-init))
       ))
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
