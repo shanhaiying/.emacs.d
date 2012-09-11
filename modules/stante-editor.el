@@ -198,6 +198,10 @@
 (eval-after-load 'server
   #'(unless (server-running-p) (server-start)))
 
+;; Show flymake errors in minibuffer when cursor is over the affected line.
+(eval-after-load 'flymake
+  #'(package-install-if-needed 'flymake-cursor))
+
 ;; Keybindings
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x j") 'join-line)
