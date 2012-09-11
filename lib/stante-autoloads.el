@@ -72,8 +72,8 @@ Install the package named NAME, unless it is already installed.
 ;;;***
 
 ;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
-;;;;;;  stante-is-os-x) "stante-platform" "stante-platform.el" (20558
-;;;;;;  896))
+;;;;;;  stante-is-os-x) "stante-platform" "stante-platform.el" (20559
+;;;;;;  18967))
 ;;; Generated autoloads from stante-platform.el
 
 (autoload 'stante-is-os-x "stante-platform" "\
