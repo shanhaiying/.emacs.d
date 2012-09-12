@@ -60,6 +60,8 @@
                                  ac-source-abbrev
                                  ac-source-words-in-same-mode-buffers
                                  ac-source-dictionary)
+                    ;; Set a default trigger key
+                    ac-trigger-key "TAB"
                     ;; Move history file to property directory
                     ac-comphist-file (concat stante-var-dir "ac-comphist"))
       (global-auto-complete-mode 1)
