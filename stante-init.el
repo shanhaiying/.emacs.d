@@ -63,6 +63,11 @@
 ;; Move customize settings to `stante-dir'/custom.el to keep "init.el" free
 ;; of noise (see `custom-file').  Also load this file, if present.
 
+(when (or (< emacs-major-version 24)
+          (and (= emacs-major-version 24) (< emacs-minor-version 1)))
+  (error "Stante Pede needs at least GNU Emacs 24.1, but this is Emacs %s.
+Please install GNU Emacs 24.1 to use Stante Pede."
+         emacs-version))
 
 ;;; Code:
 
