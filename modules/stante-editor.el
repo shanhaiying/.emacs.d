@@ -114,6 +114,9 @@
       auto-save-file-name-transforms
       `((".*" ,(concat stante-var-dir "auto-save") t)))
 
+;; Sane coding system choice
+(prefer-coding-system 'utf-8)
+
 ;; Automatically revert buffers from changed files
 (global-auto-revert-mode 1)
 
