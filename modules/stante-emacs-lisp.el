@@ -44,6 +44,11 @@
 ;; Read the reference table at http://mumble.net/~campbell/emacs/paredit.html
 ;; for a list of available commands.
 
+;; Bytecode
+;; --------
+;;
+;; Remove byte code file when Emacs LISP buffers are saved.
+
 ;; Keybindings
 ;; -----------
 ;;
@@ -59,9 +64,25 @@
 (eval-after-load 'lisp-mode
   #'(progn
 
+      (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
+        "Remove byte code file corresponding to the Emacs LISP BUFFER.
+
+BUFFER defaults to the current buffer."
+        (when (eq major-mode 'emacs-lisp-mode)
+          (let ((bytecode (concat  (buffer-file-name buffer) "c")))
+            (when (file-exists-p bytecode)
+              (delete-file bytecode)))))
+
+      (defun stante-emacs-lisp-clean-byte-code-on-save ()
+        "Arrange for byte code to be cleaned on save."
+        (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil t))
+
       (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
         (add-hook hook 'turn-on-eldoc-mode)
         (add-hook hook 'paredit-mode))
+
+      (add-hook 'emacs-lisp-mode-hook
+                'stante-emacs-lisp-clean-byte-code-on-save)
 
       (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
       (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
