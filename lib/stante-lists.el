@@ -37,6 +37,8 @@
 
 ;;; Code:
 
+(require 'cl)
+
 ;;;###autoload
 (defun stante-merge-alists (a b)
   "Update the alist A with B.

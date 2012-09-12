@@ -64,7 +64,6 @@
 
 ;;; Code:
 
-;; For `remove-duplicates'
 (require 'cl)
 
 ;; Make this module a no-op if not on OS X GUI.
