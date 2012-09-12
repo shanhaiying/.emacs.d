@@ -53,6 +53,15 @@
 ;; key is the outermost left key, and can easily be pressed accidentally if
 ;; trying to reach the Control key.
 
+;; Full screen support
+;; -------------------
+;;
+;; Officially GNU Emacs does not support the full screen feature of OS X 10.7
+;; and later.  Various patches exist to add this functionality.  Either build
+;; Emacs manually with any of these patches applied, or install Emacs via
+;; homebrew: "brew install emacs --cocoa".  Note that the patch included in
+;; homebrew does not create a separate space for a full screen Emacs.
+
 ;; Paths
 ;; -----
 ;;
@@ -60,6 +69,12 @@
 ;;
 ;; Add common directories with executables as well as files from /etc/paths.d to
 ;; $PATH and `exec-path'.
+
+;; Keybindings
+;; -----------
+;;
+;; S-Enter (right option key + enter) toggles full screen mode, or shows a
+;; warning message if full screen mode is not supported.
 
 
 ;;; Code:
@@ -75,6 +90,14 @@
             mac-function-modifier 'control
             mac-right-option-modifier 'none
             mac-right-command-modifier 'super)
+
+      (unless (fboundp 'ns-toggle-fullscreen)
+        (defun ns-toggle-fullscreen ()
+          "Dummy for OS X fullscreen functionality."
+          (message "Your Emacs build does not provide fullscreen functionality.
+Install Emacs from homebrew with \"brew install emacs --cocoa\".")))
+
+      (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen)
 
       ;; We don't need to fix paths for terminal emacs sessions, because these
       ;; will inherit the correct path from the shell which is hopefully
