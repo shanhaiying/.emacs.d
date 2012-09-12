@@ -41,6 +41,19 @@
 ;;
 ;; Support Biber as BibTeX backend for full Unicode support.
 
+;; References and citations
+;; ------------------------
+;;
+;; Enable RefTeX to manage citations.  See the RefTeX manual at
+;; http://www.gnu.org/software/auctex/manual/reftex/index.html for more
+;; information.
+;;
+;; Configure RefTeX to support the biblatex package.
+;;
+;; Optimize RefTeX configuration for large documents.  Save parse state when
+;; killing LaTeX buffers.  This will create "MASTER.rel" along with your
+;; "MASTER.tex" file.
+
 ;; Synctex
 ;; -------
 ;;
@@ -77,6 +90,7 @@
 
       ;; Enable on-the-fly checking for latex documents
       (add-hook 'LaTeX-mode-hook 'flymake-mode-on)
+      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 
       ;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
       ;;installed, because it supports SyncTex.  Preview does not.
@@ -129,6 +143,32 @@ Choose Skim if available, or fall back to the default application."
 
         (eval-after-load 'tex #'(stante-TeX-select-view-programs)))
       ))
+
+;; Configure RefTeX
+(eval-after-load 'reftex
+  #'(progn
+
+      ;; Recommended optimizations
+      (setq reftex-enable-partial-scans t ; Recommended optimizations
+            reftex-save-parse-info t
+            reftex-use-multiple-selection-buffers t)
+
+      (unless (assq 'biblatex reftex-cite-format-builtin)
+        ;; Add biblatex support if not already builtin
+        (add-to-list 'reftex-cite-format-builtin
+                     '(biblatex "The biblatex package"
+                                ((?\C-m . "\\cite[]{%l}")
+                                 (?t . "\\textcite{%l}")
+                                 (?a . "\\autocite[]{%l}")
+                                 (?p . "\\parencite{%l}")
+                                 (?f . "\\footcite[][]{%l}")
+                                 (?F . "\\fullcite[]{%l}")
+                                 (?x . "[]{%l}")
+                                 (?X . "{%l}")))))
+      ;; Use biblatex as default citation style
+      (setq reftex-cite-format 'biblatex)
+      ;; Make RefTeX recognize biblatex bibliographies
+      (add-to-list 'reftex-bibliography-commands "addbibresource")))
 
 (eval-after-load 'flymake
   #'(progn
