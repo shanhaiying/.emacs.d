@@ -229,7 +229,8 @@ Choose Skim if available, or fall back to the default application."
           "Run Biber if necessary."
           (cond ((and (save-excursion
                         (re-search-forward
-                         "^Package biblatex Warning: Please (re)run Biber" nil t))
+                         "^Package biblatex Warning: Please (re)run Biber"
+                         nil t))
                       (with-current-buffer TeX-command-buffer
                         (TeX-check-files (TeX-master-file "bcf")
                                          (TeX-style-list)
