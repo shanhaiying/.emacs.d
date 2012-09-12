@@ -207,6 +207,9 @@
 (eval-after-load 'flymake
   #'(package-install-if-needed 'flymake-cursor))
 
+;; Update copyright lines automatically
+(add-hook 'find-file-hook 'copyright-update)
+
 ;; Keybindings
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "RET") 'newline-and-indent)
