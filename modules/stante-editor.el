@@ -92,6 +92,8 @@
 ;; Keybindings
 ;; -----------
 ;;
+;; C-c o shows matching lines in a new window via `occur'.
+;;
 ;; C-x j joins this line with the preceding line and cleans up whitespace via
 ;; `join-line'.
 ;;
@@ -206,6 +208,7 @@
   #'(package-install-if-needed 'flymake-cursor))
 
 ;; Keybindings
+(global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x j") 'join-line)
 (global-set-key (kbd "M-/") 'hippie-expand)
