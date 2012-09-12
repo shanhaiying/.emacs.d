@@ -149,70 +149,75 @@ Choose Skim if available, or fall back to the default application."
 (eval-after-load 'tex-buf
   #'(progn
 
-      (defvar TeX-command-biber "Biber"
-        "The name of the biber command.")
+      (if (boundp 'TeX-command-biber)
+          (message "Detected Biber support in AUCTeX.")
 
-      (defun TeX-run-Biber (name command file)
-        "Create a process for NAME using COMMAND to format FILE with Biber."
-        (let ((process (TeX-run-command name command file)))
-          (setq TeX-sentinel-function 'TeX-Biber-sentinel)
-          (if TeX-process-asynchronous
-              process
-            (TeX-synchronous-sentinel name file process))))
+        (message "No Biber support in AUCTeX, enabling experimental support.")
 
-      (defun TeX-Biber-sentinel (process name)
-        "Cleanup TeX output buffer after running Biber."
-        (goto-char (point-max))
-        (cond
-         ;; Check whether Biber reports any warnings or errors.
-         ((re-search-backward (concat
-                               "^(There \\(?:was\\|were\\) \\([0-9]+\\) "
-                               "\\(warnings?\\|error messages?\\))") nil t)
-          ;; Tell the user their number so that she sees whether the
-          ;; situation is getting better or worse.
-          (message (concat "Biber finished with %s %s. "
-                           "Type `%s' to display output.")
-                   (match-string 1) (match-string 2)
-                   (substitute-command-keys
-                    "\\\\[TeX-recenter-output-buffer]")))
-         (t
-          (message (concat "Biber finished successfully. "
-                           "Run LaTeX again to get citations right."))))
-        (setq TeX-command-next TeX-command-default))
+        (defvar TeX-command-biber "Biber"
+          "The name of the biber command.")
 
-      (defadvice TeX-LaTeX-sentinel (around TeX-LaTeX-sentinal-need-biber)
-        "Run Biber if necessary."
-        (cond ((and (save-excursion
-                      (re-search-forward
-                       "^Package biblatex Warning: Please (re)run Biber" nil t))
-                    (with-current-buffer TeX-command-buffer
-                      (TeX-check-files (TeX-master-file "bcf")
-                                       (TeX-style-list)
-                                       (append TeX-file-extensions
-                                               BibTeX-file-extensions))))
-               (message "%s%s" "You should run Biber to get citations right, "
-                        (TeX-current-pages))
-               (setq TeX-command-next (with-current-buffer TeX-command-buffer
-                                        TeX-command-biber)))
-              ((save-excursion
-                 (re-search-forward
-                  "^Package biblatex Warning: Please rerun LaTeX\\." nil t))
-               (message "%s%s" "You should run LaTeX to get citations right, "
-                        (TeX-current-pages))
-               (setq TeX-command-next (with-current-buffer TeX-command-buffer
-                                         TeX-command-default)))
-              (t ad-do-it)))
-      (ad-activate 'TeX-LaTeX-sentinel t)
+        (defun TeX-run-Biber (name command file)
+          "Create a process for NAME using COMMAND to format FILE with Biber."
+          (let ((process (TeX-run-command name command file)))
+            (setq TeX-sentinel-function 'TeX-Biber-sentinel)
+            (if TeX-process-asynchronous
+                process
+              (TeX-synchronous-sentinel name file process))))
 
-      ;; Declare Biber command
-      (unless (assoc TeX-command-biber TeX-command-list)
-        (add-to-list 'TeX-command-list
-                     `(,TeX-command-biber "biber %s" TeX-run-Biber nil t
-                                          :help "Run Biber")))
+        (defun TeX-Biber-sentinel (process name)
+          "Cleanup TeX output buffer after running Biber."
+          (goto-char (point-max))
+          (cond
+           ;; Check whether Biber reports any warnings or errors.
+           ((re-search-backward (concat
+                                 "^(There \\(?:was\\|were\\) \\([0-9]+\\) "
+                                 "\\(warnings?\\|error messages?\\))") nil t)
+            ;; Tell the user their number so that she sees whether the
+            ;; situation is getting better or worse.
+            (message (concat "Biber finished with %s %s. "
+                             "Type `%s' to display output.")
+                     (match-string 1) (match-string 2)
+                     (substitute-command-keys
+                      "\\\\[TeX-recenter-output-buffer]")))
+           (t
+            (message (concat "Biber finished successfully. "
+                             "Run LaTeX again to get citations right."))))
+          (setq TeX-command-next TeX-command-default))
 
-      ;; Clean Biber files
-      (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.bcf")
-      (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.run\\.xml")))
+        (defadvice TeX-LaTeX-sentinel (around TeX-LaTeX-sentinal-need-biber)
+          "Run Biber if necessary."
+          (cond ((and (save-excursion
+                        (re-search-forward
+                         "^Package biblatex Warning: Please (re)run Biber" nil t))
+                      (with-current-buffer TeX-command-buffer
+                        (TeX-check-files (TeX-master-file "bcf")
+                                         (TeX-style-list)
+                                         (append TeX-file-extensions
+                                                 BibTeX-file-extensions))))
+                 (message "%s%s" "You should run Biber to get citations right, "
+                          (TeX-current-pages))
+                 (setq TeX-command-next (with-current-buffer TeX-command-buffer
+                                          TeX-command-biber)))
+                ((save-excursion
+                   (re-search-forward
+                    "^Package biblatex Warning: Please rerun LaTeX\\." nil t))
+                 (message "%s%s" "You should run LaTeX to get citations right, "
+                          (TeX-current-pages))
+                 (setq TeX-command-next (with-current-buffer TeX-command-buffer
+                                          TeX-command-default)))
+                (t ad-do-it)))
+        (ad-activate 'TeX-LaTeX-sentinel t)
+
+        ;; Declare Biber command
+        (unless (assoc TeX-command-biber TeX-command-list)
+          (add-to-list 'TeX-command-list
+                       `(,TeX-command-biber "biber %s" TeX-run-Biber nil t
+                                            :help "Run Biber")))
+
+        ;; Clean Biber files
+        (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.bcf")
+        (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.run\\.xml"))))
 
 (provide 'stante-latex)
 
