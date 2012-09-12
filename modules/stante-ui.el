@@ -190,7 +190,6 @@
 
 ;; Theme support
 (defvar stante-known-themes-alist
-  ;;
   '((birds-of-paradise-plus . birds-of-paradise-plus-theme)
     (inkpot . inkpot-theme)
     (ir-black . ir-black-theme)
