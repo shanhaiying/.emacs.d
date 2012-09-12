@@ -106,5 +106,7 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;;; stante-init.el ends here
