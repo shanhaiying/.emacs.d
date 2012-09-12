@@ -98,8 +98,8 @@
 ;; Move settings from customize UI out of place.
 (eval-after-load 'cus-edit
   '(setq custom-file stante-custom-file))
-(when (file-exists-p stante-custom-file)
-  (load stante-custom-file))
+;; Load customize settings without errors and loading messages
+(load stante-custom-file t t)
 
 ;; Enable packages
 (require 'package)
