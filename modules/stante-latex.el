@@ -102,9 +102,11 @@
 (eval-after-load 'reftex
   #'(progn
       ;; Recommended optimizations
-      (setq reftex-enable-partial-scans t ; Recommended optimizations
+      (setq reftex-enable-partial-scans t
             reftex-save-parse-info t
-            reftex-use-multiple-selection-buffers t)
+            reftex-use-multiple-selection-buffers t
+            ;; Plug RefTeX into AUCTeX
+            reftex-plug-into-AUCTeX t)
 
       (unless (assq 'biblatex reftex-cite-format-builtin)
         ;; Add biblatex support if not already builtin
