@@ -63,22 +63,30 @@
 
 (package-install-if-needed 'paredit)
 
-(eval-after-load 'lisp-mode
-  #'(progn
 
-      (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
-        "Remove byte code file corresponding to the Emacs lisp BUFFER.
+(defun stante-emacs-lisp-clean-byte-code (&optional buffer)
+  "Remove byte code file corresponding to the Emacs Lisp BUFFER.
 
 BUFFER defaults to the current buffer."
-        (when (eq major-mode 'emacs-lisp-mode)
-          (let ((bytecode (concat  (buffer-file-name buffer) "c")))
-            (when (file-exists-p bytecode)
-              (delete-file bytecode)))))
+  (when (eq major-mode 'emacs-lisp-mode)
+    (let ((bytecode (concat  (buffer-file-name buffer) "c")))
+      (when (file-exists-p bytecode)
+        (delete-file bytecode)))))
 
-      (defun stante-emacs-lisp-clean-byte-code-on-save ()
-        "Arrange for byte code to be cleaned on save."
-        (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil t))
+(defun stante-emacs-lisp-clean-byte-code-on-save ()
+    "Arrange for byte code to be cleaned on save."
+    (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil t))
 
+(defun stante-emacs-lisp-ac-setup ()
+  "Configure auto-complete for Emacs lisp."
+  (setq ac-sources (append '(ac-source-features
+                             ac-source-functions
+                             ac-source-variables
+                             ac-source-symbols)
+                           ac-sources)))
+
+(eval-after-load 'lisp-mode
+  #'(progn
       (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
         (add-hook hook 'turn-on-eldoc-mode)
         (add-hook hook 'paredit-mode))
@@ -93,15 +101,7 @@ BUFFER defaults to the current buffer."
       (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
 
       (eval-after-load 'auto-complete
-        #'(progn
-            (defun stante-emacs-lisp-ac-setup ()
-              "Configure auto-complete for Emacs lisp."
-              (setq ac-sources (append '(ac-source-features
-                                         ac-source-functions
-                                         ac-source-variables
-                                         ac-source-symbols)
-                                       ac-sources)))
-            (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-ac-setup)))
+        #'(add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-ac-setup))
       ))
 
 (provide 'stante-emacs-lisp)

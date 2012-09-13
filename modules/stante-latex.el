@@ -74,6 +74,55 @@
 
 (package-install-if-needed 'auctex)
 
+(defun stante-find-skim-bundle ()
+  "Return the location of the Skim bundle, or nil if Skim is not installed.
+
+Skim is an advanced PDF viewer for OS X with SyncTex support.
+See http://skim-app.sourceforge.net/ for more information."
+  (car (process-lines "mdfind" "kMDItemCFBundleIdentifier \
+== 'net.sourceforge.skim-app.skim'")))
+
+(defun stante-find-skim-displayline ()
+  "Return the path of the displayline frontend of Skim.
+
+Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
+  (let ((skim-bundle (stante-find-skim-bundle)))
+    (when skim-bundle
+      (concat (directory-file-name skim-bundle)
+              "/Contents/SharedSupport/displayline"))))
+
+(defun stante-TeX-find-view-programs ()
+  "Find TeX view programs on OS X.
+
+Populate `TeX-view-program-list' with installed viewers."
+  ;; The default application, usually Preview
+  (add-to-list 'TeX-view-program-list
+               '("Default application" "open %o"))
+  ;; Skim if installed
+  (let ((skim-displayline (stante-find-skim-displayline)))
+    (when skim-displayline
+      (add-to-list 'TeX-view-program-list
+                   `("Skim" (,skim-displayline " -b -r %n %o %b"))))))
+
+(defun stante-TeX-select-view-programs ()
+  "Select the best view programs on OS X.
+
+Choose Skim if available, or fall back to the default application."
+  ;; Find view programs
+  (stante-TeX-find-view-programs)
+  (setq TeX-view-program-selection
+        `((output-dvi "Default application")
+          (output-html "Default application")
+          ;; Use Skim if installed for SyncTex support.
+          (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
+                           "Skim" "Default application")))))
+
+;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
+;; installed, because it supports SyncTex.  Preview does not.
+(when (stante-is-os-x)
+  (eval-after-load 'tex #'(stante-TeX-select-view-programs)))
+
+
 (eval-after-load 'tex-site
   #'(progn
       (setq TeX-auto-save t             ; Autosave documents
@@ -90,59 +139,7 @@
 
       ;; Enable on-the-fly checking for latex documents
       (add-hook 'LaTeX-mode-hook 'flymake-mode-on)
-      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-
-      ;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
-      ;;installed, because it supports SyncTex.  Preview does not.
-      (when (stante-is-os-x)
-
-        (defun stante-find-skim-bundle ()
-          "Return the location of the Skim bundle, or `nil' if
-        Skim is not installed.
-
-Skim is an advanced PDF viewer for OS X with SyncTex support.
-See http://skim-app.sourceforge.net/ for more information."
-          (car (process-lines "mdfind" "kMDItemCFBundleIdentifier \
-== 'net.sourceforge.skim-app.skim'")))
-
-        (defun stante-find-skim-displayline ()
-          "Return the path of the displayline frontend of Skim,
-or `nil' if Skim is not installed.
-
-See `stante-find-skim-bundle'."
-          (let ((skim-bundle (stante-find-skim-bundle)))
-            (when skim-bundle
-              (concat (directory-file-name skim-bundle)
-                      "/Contents/SharedSupport/displayline"))))
-
-        (defun stante-TeX-find-view-programs ()
-          "Find TeX view programs on OS X.
-
-Populate `TeX-view-program-list' with installed viewers."
-          ;; The default application, usually Preview
-          (add-to-list 'TeX-view-program-list
-                       '("Default application" "open %o"))
-          ;; Skim if installed
-          (let ((skim-displayline (stante-find-skim-displayline)))
-            (when skim-displayline
-              (add-to-list 'TeX-view-program-list
-                           `("Skim" (,skim-displayline " -b -r %n %o %b"))))))
-
-        (defun stante-TeX-select-view-programs ()
-          "Select the best view programs on OS X.
-
-Choose Skim if available, or fall back to the default application."
-          ;; Find view programs
-          (stante-TeX-find-view-programs)
-          (setq TeX-view-program-selection
-                `((output-dvi "Default application")
-                  (output-html "Default application")
-                  ;; Use Skim if installed for SyncTex support.
-                  (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
-                                   "Skim" "Default application")))))
-
-        (eval-after-load 'tex #'(stante-TeX-select-view-programs)))
-      ))
+      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)))
 
 ;; Configure RefTeX
 (eval-after-load 'reftex
@@ -170,18 +167,18 @@ Choose Skim if available, or fall back to the default application."
       ;; Make RefTeX recognize biblatex bibliographies
       (add-to-list 'reftex-bibliography-commands "addbibresource")))
 
+(defun flymake-get-tex-args-chktex (filename)
+  "Get the command to check TeX documents on the fly."
+  `("chktex" ("-v0" "-q" "-I",filename)))
+
 (eval-after-load 'flymake
   #'(progn
       ;; Override the default flymake syntax checking for LaTeX to use chktex
-      (defun flymake-get-tex-args (filename)
-        "Get the command to check TeX documents on the fly."
-        `("chktex" ("-v0" "-q" "-I",filename)))
+      (fset 'flymake-get-tex-args 'flymake-get-tex-args-chktex)
 
       ;; Treat master/child documents like simple documents because chktex
       ;; doesn't do a full compilation
-      (defun flymake-master-tex-init ()
-        (flymake-simple-tex-init))
-      ))
+      (fset 'flymake-master-tex-init 'flymake-simple-tex-init)))
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
 ;; more advanced support is missing.  Look into using the patches provided by

@@ -59,7 +59,7 @@
 ;; Officially GNU Emacs does not support the full screen feature of OS X 10.7
 ;; and later.  Various patches exist to add this functionality.  Either build
 ;; Emacs manually with any of these patches applied, or install Emacs via
-;; homebrew: "brew install emacs --cocoa".  Note that the patch included in
+;; homebrew: "brew install Emacs --cocoa".  Note that the patch included in
 ;; homebrew does not create a separate space for a full screen Emacs.
 
 ;; Paths
@@ -80,6 +80,59 @@
 ;;; Code:
 
 (require 'cl)
+
+(defconst stante-default-osx-paths
+  '("/usr/local/bin" "/usr/local/sbin"
+    "/usr/bin" "/usr/sbin"
+    "/bin" "/sbin")
+  "Default executable paths on OS X.")
+
+(defun stante-osx-paths ()
+  "Return a list of executable paths for OS X."
+  (concatenate 'list
+               stante-default-osx-paths
+               (stante-read-osx-pathfiles)))
+
+(defun stante-read-osx-pathfiles ()
+  "Return a list of executable paths read from the files in /etc/paths.d."
+  (condition-case nil
+      (let* ((contents (directory-files "/etc/paths.d" t))
+             (files (remove-if-not 'file-regular-p contents)))
+        (mapcan 'stante-get-file-lines files))
+    (file-error nil)))
+
+(defun stante-find-osx-coreutils ()
+  "Return the directory containing the unprefixed GNU coreutils on OS X.
+
+If the directory cannot be determined, return nil.
+
+Currently this function only checks for coreutils installed with
+homebrew.  In future, more sophisticated logic might be added."
+  (condition-case nil
+      (let ((prefix (car (process-lines "brew" "--prefix" "coreutils"))))
+        (concat (directory-file-name prefix) "/libexec/gnubin"))
+    (error nil)))
+
+(defun stante-fix-osx-paths ()
+  "Fix $PATH and `exec-path' on OS X."
+  (interactive)
+  (let*
+      ((paths (concatenate 'list (stante-osx-paths) exec-path))
+       (unique-paths (remove-duplicates paths
+                                        :test 'string=
+                                        :from-end t)))
+    (setenv "PATH" (mapconcat 'identity unique-paths ":"))
+    (setq exec-path unique-paths)
+    ;; Search coreutils *after* basic path fixing to make sure that "brew"
+    ;; is in `exec-path'.
+    (let ((coreutils-dir (stante-find-osx-coreutils)))
+      (if coreutils-dir
+          ;; Do *not* add the GNU coreutils directory to $PATH because it
+          ;; must not be exported to Emacs subprocesses.  On OS X programs
+          ;; might break if the call out to GNU utilities!
+          (add-to-list 'exec-path coreutils-dir nil 'string=)
+        (message "GNU Coreutils not found.  Install coreutils \
+with homebrew, or report an issue to %s." stante-issues-url)))))
 
 ;; Make this module a no-op if not on OS X GUI.
 (eval-after-load 'ns-win
@@ -102,61 +155,6 @@ Install Emacs from homebrew with \"brew install emacs --cocoa\".")))
       ;; We don't need to fix paths for terminal emacs sessions, because these
       ;; will inherit the correct path from the shell which is hopefully
       ;; correct.  Hence we can also depend on `ns-win' for this feature.
-
-      (defconst stante-default-osx-paths
-        '("/usr/local/bin" "/usr/local/sbin"
-          "/usr/bin" "/usr/sbin"
-          "/bin" "/sbin")
-        "Default executable paths on OS X.")
-
-      (defun stante-osx-paths ()
-        "Return a list of executable paths for OS X."
-        (concatenate 'list
-                     stante-default-osx-paths
-                     (stante-read-osx-pathfiles)))
-
-      (defun stante-read-osx-pathfiles ()
-        "Return a list of executable paths read from the files in /etc/paths.d."
-        (condition-case nil
-            (let* ((contents (directory-files "/etc/paths.d" t))
-                   (files (remove-if-not 'file-regular-p contents)))
-              (mapcan 'stante-get-file-lines files))
-          (file-error nil)))
-
-      (defun stante-find-osx-coreutils ()
-        "Return the directory containing the unprefixed GNU
-        coreutils on OSX, or nil if the location of the GNU
-        coreutils could not be determined.
-
-Currently this function only checks for coreutils installed with
-homebrew. In future, more sophisticated logic might be added."
-        (condition-case nil
-            (let ((prefix (car (process-lines "brew" "--prefix" "coreutils"))))
-              (concat (directory-file-name prefix) "/libexec/gnubin"))
-          (error nil)))
-
-      (defun stante-fix-osx-paths ()
-        "Fix $PATH and `exec-path' on OS X."
-        (interactive)
-        (let*
-            ((paths (concatenate 'list (stante-osx-paths) exec-path))
-             (unique-paths (remove-duplicates paths
-                                              :test 'string=
-                                              :from-end t)))
-          (setenv "PATH" (mapconcat 'identity unique-paths ":"))
-          (setq exec-path unique-paths)
-          ;; Search coreutils *after* basic path fixing to make sure that "brew"
-          ;; is in `exec-path'.
-          (let ((coreutils-dir (stante-find-osx-coreutils)))
-            (if coreutils-dir
-                ;; Do *not* add the GNU coreutils directory to $PATH because it
-                ;; must not be exported to Emacs subprocesses.  On OS X programs
-                ;; might break if the call out to GNU utilities!
-                (add-to-list 'exec-path coreutils-dir nil 'string=)
-              (message "GNU Coreutils not found.  Install coreutils \
-with homebrew, or report an issue to %s." stante-issues-url)))))
-
-      ;; Fixup paths
       (stante-fix-osx-paths)
       ))
 
