@@ -123,6 +123,9 @@
       ;; Make RefTeX recognize biblatex bibliographies
       (add-to-list 'reftex-bibliography-commands "addbibresource")))
 
+;; Plug RefTeX into bib-cite
+(eval-after-load 'bib-cite #'(setq bib-cite-use-reftex-view-crossref t))
+
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
 ;; more advanced support is missing.  Look into using the patches provided by
