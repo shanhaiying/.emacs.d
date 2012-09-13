@@ -1,4 +1,4 @@
-;;; stante-osx.el --- Stante Pede Modules: OS X support
+;;; stante-os-x.el --- Stante Pede Modules: OS X support
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
@@ -106,6 +106,6 @@ Install Emacs from homebrew with \"brew install emacs --cocoa\".")))
       (stante-fix-os-x-paths)
       ))
 
-(provide 'stante-osx)
+(provide 'stante-os-x)
 
-;;; stante-osx.el ends here
+;;; stante-os-x.el ends here

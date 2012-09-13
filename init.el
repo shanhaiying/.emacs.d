@@ -40,7 +40,7 @@
 ;; Load Stante modules as you like
 ;; Basic modules
 (require 'stante-ui)
-(require 'stante-osx)
+(require 'stante-os-x)
 (require 'stante-editor)
 (require 'stante-spelling)
 (require 'stante-snippets)
