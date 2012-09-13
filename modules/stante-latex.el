@@ -74,54 +74,9 @@
 
 (package-install-if-needed 'auctex)
 
-(defun stante-find-skim-bundle ()
-  "Return the location of the Skim bundle, or nil if Skim is not installed.
-
-Skim is an advanced PDF viewer for OS X with SyncTex support.
-See http://skim-app.sourceforge.net/ for more information."
-  (car (process-lines "mdfind" "kMDItemCFBundleIdentifier \
-== 'net.sourceforge.skim-app.skim'")))
-
-(defun stante-find-skim-displayline ()
-  "Return the path of the displayline frontend of Skim.
-
-Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
-  (let ((skim-bundle (stante-find-skim-bundle)))
-    (when skim-bundle
-      (concat (directory-file-name skim-bundle)
-              "/Contents/SharedSupport/displayline"))))
-
-(defun stante-TeX-find-view-programs ()
-  "Find TeX view programs on OS X.
-
-Populate `TeX-view-program-list' with installed viewers."
-  ;; The default application, usually Preview
-  (add-to-list 'TeX-view-program-list
-               '("Default application" "open %o"))
-  ;; Skim if installed
-  (let ((skim-displayline (stante-find-skim-displayline)))
-    (when skim-displayline
-      (add-to-list 'TeX-view-program-list
-                   `("Skim" (,skim-displayline " -b -r %n %o %b"))))))
-
-(defun stante-TeX-select-view-programs ()
-  "Select the best view programs on OS X.
-
-Choose Skim if available, or fall back to the default application."
-  ;; Find view programs
-  (stante-TeX-find-view-programs)
-  (setq TeX-view-program-selection
-        `((output-dvi "Default application")
-          (output-html "Default application")
-          ;; Use Skim if installed for SyncTex support.
-          (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
-                           "Skim" "Default application")))))
-
 ;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
 ;; installed, because it supports SyncTex.  Preview does not.
-(when (stante-is-os-x)
-  (eval-after-load 'tex #'(stante-TeX-select-view-programs)))
-
+(eval-after-load 'tex #'(stante-TeX-select-view-programs))
 
 (eval-after-load 'tex-site
   #'(progn
@@ -144,7 +99,6 @@ Choose Skim if available, or fall back to the default application."
 ;; Configure RefTeX
 (eval-after-load 'reftex
   #'(progn
-
       ;; Recommended optimizations
       (setq reftex-enable-partial-scans t ; Recommended optimizations
             reftex-save-parse-info t
@@ -184,78 +138,11 @@ Choose Skim if available, or fall back to the default application."
 ;; more advanced support is missing.  Look into using the patches provided by
 ;; the Biber author itself, and check how Auctex upstream works on this.
 (eval-after-load 'tex-buf
-  #'(progn
+  #'(if (boundp 'TeX-command-biber)
+        (message "Detected Biber support in AUCTeX.")
 
-      (if (boundp 'TeX-command-biber)
-          (message "Detected Biber support in AUCTeX.")
-
-        (message "No Biber support in AUCTeX, enabling experimental support.")
-
-        (defvar TeX-command-biber "Biber"
-          "The name of the biber command.")
-
-        (defun TeX-run-Biber (name command file)
-          "Create a process for NAME using COMMAND to format FILE with Biber."
-          (let ((process (TeX-run-command name command file)))
-            (setq TeX-sentinel-function 'TeX-Biber-sentinel)
-            (if TeX-process-asynchronous
-                process
-              (TeX-synchronous-sentinel name file process))))
-
-        (defun TeX-Biber-sentinel (process name)
-          "Cleanup TeX output buffer after running Biber."
-          (goto-char (point-max))
-          (cond
-           ;; Check whether Biber reports any warnings or errors.
-           ((re-search-backward (concat
-                                 "^(There \\(?:was\\|were\\) \\([0-9]+\\) "
-                                 "\\(warnings?\\|error messages?\\))") nil t)
-            ;; Tell the user their number so that she sees whether the
-            ;; situation is getting better or worse.
-            (message (concat "Biber finished with %s %s. "
-                             "Type `%s' to display output.")
-                     (match-string 1) (match-string 2)
-                     (substitute-command-keys
-                      "\\\\[TeX-recenter-output-buffer]")))
-           (t
-            (message (concat "Biber finished successfully. "
-                             "Run LaTeX again to get citations right."))))
-          (setq TeX-command-next TeX-command-default))
-
-        (defadvice TeX-LaTeX-sentinel (around TeX-LaTeX-sentinal-need-biber)
-          "Run Biber if necessary."
-          (cond ((and (save-excursion
-                        (re-search-forward
-                         "^Package biblatex Warning: Please (re)run Biber"
-                         nil t))
-                      (with-current-buffer TeX-command-buffer
-                        (TeX-check-files (TeX-master-file "bcf")
-                                         (TeX-style-list)
-                                         (append TeX-file-extensions
-                                                 BibTeX-file-extensions))))
-                 (message "%s%s" "You should run Biber to get citations right, "
-                          (TeX-current-pages))
-                 (setq TeX-command-next (with-current-buffer TeX-command-buffer
-                                          TeX-command-biber)))
-                ((save-excursion
-                   (re-search-forward
-                    "^Package biblatex Warning: Please rerun LaTeX\\." nil t))
-                 (message "%s%s" "You should run LaTeX to get citations right, "
-                          (TeX-current-pages))
-                 (setq TeX-command-next (with-current-buffer TeX-command-buffer
-                                          TeX-command-default)))
-                (t ad-do-it)))
-        (ad-activate 'TeX-LaTeX-sentinel t)
-
-        ;; Declare Biber command
-        (unless (assoc TeX-command-biber TeX-command-list)
-          (add-to-list 'TeX-command-list
-                       `(,TeX-command-biber "biber %s" TeX-run-Biber nil t
-                                            :help "Run Biber")))
-
-        ;; Clean Biber files
-        (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.bcf")
-        (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.run\\.xml"))))
+      (message "No Biber support in AUCTeX, enabling experimental support.")
+      (require 'stante-lib-TeX-biber)))
 
 (provide 'stante-latex)
 
