@@ -63,20 +63,18 @@
 ;; to jump to the corresponding source file line in Emacs.  You need a PDF
 ;; viewer that supports SyncTex to use this feature:
 ;;
-;; OS X Preview does not support SyncTex.  Install Skim from
-;; http://skim-app.sourceforge.net/ and restart Emacs to use SyncTex on OS X.
-;; Do not configure Skim as default PDF viewer (unless you want to do so).  This
-;; module will automatically choose Skim if it is installed.
+;; On OS X install Skim from http://skim-app.sourceforge.net/ and restart Emacs.
+;; The default OS X Preview application does not support SyncTex.  You do not
+;; neet to configure Skim as default PDF viewer, this module will automatically
+;; find Skim if it is installed.
+
 
 ;;; Code:
 
 (require 'stante-lib-autoloads)
 
+;; Install and configure *the* LaTeX environment
 (package-install-if-needed 'auctex)
-
-;; OS X specific LaTeX setup, mostly viewer selection.  We prefer Skim if
-;; installed, because it supports SyncTex.  Preview does not.
-(eval-after-load 'tex #'(stante-TeX-select-view-programs))
 
 (eval-after-load 'tex-site
   #'(progn
@@ -95,6 +93,10 @@
       ;; Enable on-the-fly checking for latex documents
       (add-hook 'LaTeX-mode-hook 'flymake-mode-on)
       (add-hook 'LaTeX-mode-hook 'turn-on-reftex)))
+
+;; Select best viewing programs
+(eval-after-load 'tex #'(stante-TeX-select-view-programs))
+
 
 ;; Configure RefTeX
 (eval-after-load 'reftex
@@ -121,6 +123,18 @@
       ;; Make RefTeX recognize biblatex bibliographies
       (add-to-list 'reftex-bibliography-commands "addbibresource")))
 
+
+;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
+;; more advanced support is missing.  Look into using the patches provided by
+;; the Biber author itself, and check how Auctex upstream works on this.
+(eval-after-load 'tex-buf
+  #'(if (boundp 'TeX-command-biber)
+        (message "Detected Biber support in AUCTeX.")
+
+      (message "No Biber support in AUCTeX, enabling experimental support.")
+      (require 'stante-lib-TeX-biber)))
+
+
 (defun flymake-get-tex-args-chktex (filename)
   "Get the command to check TeX documents on the fly."
   `("chktex" ("-v0" "-q" "-I",filename)))
@@ -134,15 +148,6 @@
       ;; doesn't do a full compilation
       (fset 'flymake-master-tex-init 'flymake-simple-tex-init)))
 
-;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
-;; more advanced support is missing.  Look into using the patches provided by
-;; the Biber author itself, and check how Auctex upstream works on this.
-(eval-after-load 'tex-buf
-  #'(if (boundp 'TeX-command-biber)
-        (message "Detected Biber support in AUCTeX.")
-
-      (message "No Biber support in AUCTeX, enabling experimental support.")
-      (require 'stante-lib-TeX-biber)))
 
 (provide 'stante-latex)
 
