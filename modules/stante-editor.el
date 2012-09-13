@@ -108,7 +108,7 @@
 
 ;;; Code:
 
-(require 'stante-autoloads)
+(require 'stante-lib-autoloads)
 
 ;; Move backup and autosave files to var directory.
 (setq backup-directory-alist

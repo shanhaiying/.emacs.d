@@ -49,7 +49,7 @@
 
 ;;; Code:
 
-(require 'stante-autoloads)
+(require 'stante-lib-autoloads)
 
 (package-install-if-needed 'auto-complete)
 (require 'auto-complete-config)

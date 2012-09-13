@@ -94,7 +94,7 @@
 
 ;;; Code:
 
-(require 'stante-autoloads)
+(require 'stante-lib-autoloads)
 
 ;; Disable toolbar and menu bar (except on OS X where the menubar is present
 ;; anyway)

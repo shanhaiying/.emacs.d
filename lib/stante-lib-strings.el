@@ -1,4 +1,4 @@
-;;; stante-maintenance.el --- Stante Pede Library: Maintenance functions
+;;; stante-lib-strings.el --- Stante Pede Library: String functions
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
@@ -28,38 +28,23 @@
 
 ;;; Commentary:
 
-;; Stante Pede maintenance.
+;; String functions
 
-;; `stante-update-autoload-file' updates the autoload definitions of Stante
-;; Pede.
-;;
-;; `stante-byte-recompile' byte-compiles all Stante Pede modules.
+;; `stante-string-trim' removes leading and trailing whitespace from a string.
 
-;; Load `stante-autoloads' to use the functions of this library.
+;; Load `stante-lib-autoloads' to use functions of this library.
+
 
 ;;; Code:
 
-(require 'autoload)
-
 ;;;###autoload
-(defconst stante-autoload-file (concat stante-lib-dir "stante-autoloads.el")
-  "Location of the autoload file for the Stante Pede Library.")
+(defun stante-string-trim (str)
+  "Remove leading and trailing whitespace from STR."
+  (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
+                       str)
+    (setq str (replace-match "" t t str)))
+  str)
 
-;;;###autoload
-(defun stante-update-autoload-file ()
-  "Update the autoload file of Stante Pede."
-  (interactive)
-  (let ((generated-autoload-file stante-autoload-file))
-    (update-directory-autoloads stante-lib-dir)))
+(provide 'stante-lib-strings)
 
-;;;###autoload
-(defun stante-byte-recompile ()
-  "Byte-compile all modules of Stante pede."
-  (interactive)
-  (byte-recompile-directory stante-lib-dir 0)
-  (byte-recompile-directory stante-modules-dir 0)
-  (byte-recompile-file stante-init-file nil 0))
-
-(provide 'stante-maintenance)
-
-;;; stante-maintenance.el ends here
+;;; stante-lib-strings.el ends here

@@ -1,4 +1,4 @@
-;;; stante-package.el --- Stante Pede Library: Package management functions
+;;; stante-lib-package.el --- Stante Pede Library: Package management functions
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
@@ -33,7 +33,7 @@
 ;; `package-install-if-needed' installs a package if it is not already
 ;; installed.
 
-;; Load `stante-autoloads' to use the functions of this module.
+;; Load `stante-lib-autoloads' to use the functions of this module.
 
 
 ;;; Code:
@@ -45,6 +45,6 @@
   "Install the package named NAME, unless it is already installed."
   (unless (package-installed-p name) (package-install name)))
 
-(provide 'stante-package)
+(provide 'stante-lib-package)
 
-;;; stante-package.el ends here
+;;; stante-lib-package.el ends here

@@ -51,7 +51,7 @@
 
 ;;; Code:
 
-(require 'stante-autoloads)
+(require 'stante-lib-autoloads)
 
 (defconst stante-snippets-dir (concat stante-dir "snippets/")
   "The directory where Stante Pede snippets are stored.")

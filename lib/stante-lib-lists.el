@@ -1,4 +1,4 @@
-;;; stante-lists.el --- Stante Pede Library: List functions
+;;; stante-lib-lists.el --- Stante Pede Library: List functions
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
@@ -32,7 +32,7 @@
 
 ;; `stante-merge-alists' merges two association lists.
 
-;; Load `stante-autoloads' to use the functions of this library..
+;; Load `stante-lib-autoloads' to use the functions of this library..
 
 
 ;;; Code:
@@ -46,6 +46,6 @@
 Items in B replace items in A with matching `car'."
   (apply 'append (remove-if (lambda (item) (assoc (car item) b)) a) b nil))
 
-(provide 'stante-lists)
+(provide 'stante-lib-lists)
 
-;;; stante-lists.el ends here
+;;; stante-lib-lists.el ends here

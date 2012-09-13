@@ -33,7 +33,7 @@
 
 ;;; Code:
 
-(require 'stante-autoloads)
+(require 'stante-lib-autoloads)
 
 (package-install-if-needed 'markdown-mode)
 

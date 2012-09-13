@@ -1,4 +1,4 @@
-;;; stante-platform.el --- Stante Pede Library: Platform identification
+;;; stante-lib-io.el --- Stante Pede Library: IO functions
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
@@ -28,43 +28,40 @@
 
 ;;; Commentary:
 
-;; Platform identification functions.
+;; IO functions.
 
-;; `stante-is-os-x' determines whether Emacs is running on OS X.
+;; `stante-get-file-contents' gets the contents of a file as string.
 ;;
-;; `stante-is-kde' determines whether Emacs is running in a KDE session.
+;; `stante-set-file-contents' sets the contents of a file.
 ;;
-;; `stante-is-gnome' determines whether Emacs is running in a Gnome session.
-;;
-;; `stante-is-windows' determines whether Emacs is running natively on Windows.
+;; `stante-get-file-lines' gets the lines in a file as list.
 
-;; Load `stante-autoloads' to use the functions of this module.
-
+;; Load `stante-lib-autoloads' to use the functions of this library.
 
 ;;; Code:
 
 ;;;###autoload
-(defun stante-is-os-x ()
-  "Return t if running on OS X, or nil otherwise."
-  (eq system-type 'darwin))
+(defun stante-get-file-contents (filename)
+  "Return the contents of the file FILENAME."
+  (with-temp-buffer
+    (insert-file-contents filename)
+    (buffer-string)))
 
 ;;;###autoload
-(defun stante-is-kde ()
-  "Return t if running in a KDE session, or nil otherwise."
-  (equal (length (getenv "KDE_FULL_SESSION")) 0))
+(defun stante-set-file-contents (filename contents)
+  "Set the contents of the file FILENAME.
+
+Create the file FILENAME if it does not exist, or completely
+overwrite it if it does."
+  (with-temp-buffer
+    (insert contents)
+    (write-region (point-min) (point-max) filename nil 0)))
 
 ;;;###autoload
-(defun stante-is-gnome ()
-  "Return t if running on Gnome, or nil otherwise."
-  (equal (length (getenv "GNOME_DESKTOP_SESSION_ID")) 0))
+(defun stante-get-file-lines (filename)
+  "Return a list of lines of file FILENAME."
+  (split-string (stante-get-file-contents filename) "\n" t))
 
-;;;###autoload
-(defun stante-is-windows ()
-  "Return t if running natively on Windows, or nil otherwise.
+(provide 'stante-lib-io)
 
-Return nil if running in cygwin or under MS-DOS."
-  (eq system-type 'windows-nt))
-
-(provide 'stante-platform)
-
-;;; stante-platform.el ends here
+;;; stante-lib-io.el ends here

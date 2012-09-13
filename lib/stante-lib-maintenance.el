@@ -1,4 +1,4 @@
-;;; stante-io.el --- Stante Pede Library: IO functions
+;;; stante-lib-maintenance.el --- Stante Pede Library: Maintenance functions
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
@@ -28,40 +28,38 @@
 
 ;;; Commentary:
 
-;; IO functions.
+;; Stante Pede maintenance.
 
-;; `stante-get-file-contents' gets the contents of a file as string.
+;; `stante-update-autoload-file' updates the autoload definitions of Stante
+;; Pede.
 ;;
-;; `stante-set-file-contents' sets the contents of a file.
-;;
-;; `stante-get-file-lines' gets the lines in a file as list.
+;; `stante-byte-recompile' byte-compiles all Stante Pede modules.
 
-;; Load `stante-autoloads' to use the functions of this library.
+;; Load `stante-lib-autoloads' to use the functions of this library.
 
 ;;; Code:
 
-;;;###autoload
-(defun stante-get-file-contents (filename)
-  "Return the contents of the file FILENAME."
-  (with-temp-buffer
-    (insert-file-contents filename)
-    (buffer-string)))
+(require 'autoload)
 
 ;;;###autoload
-(defun stante-set-file-contents (filename contents)
-  "Set the contents of the file FILENAME.
-
-Create the file FILENAME if it does not exist, or completely
-overwrite it if it does."
-  (with-temp-buffer
-    (insert contents)
-    (write-region (point-min) (point-max) filename nil 0)))
+(defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el")
+  "Location of the autoload file for the Stante Pede Library.")
 
 ;;;###autoload
-(defun stante-get-file-lines (filename)
-  "Return a list of lines of file FILENAME."
-  (split-string (stante-get-file-contents filename) "\n" t))
+(defun stante-update-autoload-file ()
+  "Update the autoload file of Stante Pede."
+  (interactive)
+  (let ((generated-autoload-file stante-autoload-file))
+    (update-directory-autoloads stante-lib-dir)))
 
-(provide 'stante-io)
+;;;###autoload
+(defun stante-byte-recompile ()
+  "Byte-compile all modules of Stante pede."
+  (interactive)
+  (byte-recompile-directory stante-lib-dir 0)
+  (byte-recompile-directory stante-modules-dir 0)
+  (byte-recompile-file stante-init-file nil 0))
 
-;;; stante-io.el ends here
+(provide 'stante-lib-maintenance)
+
+;;; stante-lib-maintenance.el ends here
