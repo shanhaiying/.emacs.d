@@ -39,6 +39,7 @@
 ;;; Code:
 
 (require 'stante-lib-autoloads)
+(require 'tex-buf)
 
 (defun stante-find-skim-bundle ()
   "Return the location of the Skim bundle, or nil if Skim is not installed.

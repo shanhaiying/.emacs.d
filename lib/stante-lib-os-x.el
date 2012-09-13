@@ -34,6 +34,10 @@
 
 ;; Load `stante-lib-autoloads' to use the functions of this library.
 
+;;; Code:
+
+(require 'cl)
+
 (defconst stante-default-os-x-paths
   '("/usr/local/bin" "/usr/local/sbin"
     "/usr/bin" "/usr/sbin"
@@ -65,7 +69,6 @@ homebrew.  In future, more sophisticated logic might be added."
       (let ((prefix (car (process-lines "brew" "--prefix" "coreutils"))))
         (concat (directory-file-name prefix) "/libexec/gnubin"))
     (error nil)))
-
 
 ;;;###autoload
 (defun stante-fix-os-x-paths ()

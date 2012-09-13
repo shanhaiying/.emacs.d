@@ -35,6 +35,9 @@
 
 ;;; Code:
 
+(require 'tex-buf)
+(require 'latex)
+
 (defvar TeX-command-biber "Biber"
   "The name of the biber command.")
 

@@ -80,7 +80,6 @@
 ;;; Code:
 
 (require 'stante-lib-autoloads)
-(require 'cl)
 
 ;; Make this module a no-op if not on OS X GUI.
 (eval-after-load 'ns-win
