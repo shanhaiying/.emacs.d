@@ -81,6 +81,24 @@
 
 (require 'stante-lib-autoloads)
 
+(when (stante-is-os-x)
+  (when (display-graphic-p)
+    ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
+    ;; the `$PATH'.
+    (package-install-if-needed 'exec-path-from-shell)
+    (exec-path-from-shell-initialize))
+
+  ;; Find GNU Coreutils (mostly for "ls --dired").  Do this *after* fixing path
+  ;; in graphical Emacs to bring the necessary utilities in space.
+  (let ((coreutils-dir (stante-find-os-x-coreutils)))
+      (if coreutils-dir
+          ;; Do *not* add the GNU coreutils directory to $PATH because it
+          ;; must not be exported to Emacs subprocesses.  On OS X programs
+          ;; might break if the call out to GNU utilities!
+          (add-to-list 'exec-path coreutils-dir nil 'string=)
+        (message "GNU Coreutils not found.  Install coreutils \
+with homebrew, or report an issue to %s." stante-issues-url))))
+
 ;; Make this module a no-op if not on OS X GUI.
 (eval-after-load 'ns-win
   #'(progn
@@ -97,13 +115,7 @@
           (message "Your Emacs build does not provide fullscreen functionality.
 Install Emacs from homebrew with \"brew install emacs --cocoa\".")))
 
-      (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen)
-
-      ;; We don't need to fix paths for terminal emacs sessions, because these
-      ;; will inherit the correct path from the shell which is hopefully
-      ;; correct.  Hence we can also depend on `ns-win' for this feature.
-      (stante-fix-os-x-paths)
-      ))
+      (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen)))
 
 (provide 'stante-os-x)
 

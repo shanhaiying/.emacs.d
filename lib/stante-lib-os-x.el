@@ -30,7 +30,7 @@
 
 ;; OS X support functions.
 
-;;
+;; `stante-find-os-x-coreutils' searches for GNU Coreutils on OS X.
 
 ;; Load `stante-lib-autoloads' to use the functions of this library.
 
@@ -38,26 +38,7 @@
 
 (require 'cl)
 
-(defconst stante-default-os-x-paths
-  '("/usr/local/bin" "/usr/local/sbin"
-    "/usr/bin" "/usr/sbin"
-    "/bin" "/sbin")
-  "Default executable paths on OS X.")
-
-(defun stante-os-x-paths ()
-  "Return a list of executable paths for OS X."
-  (concatenate 'list
-               stante-default-os-x-paths
-               (stante-read-os-x-pathfiles)))
-
-(defun stante-read-os-x-pathfiles ()
-  "Return a list of executable paths read from the files in /etc/paths.d."
-  (condition-case nil
-      (let* ((contents (directory-files "/etc/paths.d" t))
-             (files (remove-if-not 'file-regular-p contents)))
-        (mapcan 'stante-get-file-lines files))
-    (file-error nil)))
-
+;;;###autoload
 (defun stante-find-os-x-coreutils ()
   "Return the directory containing the unprefixed GNU coreutils on OS X.
 
@@ -69,30 +50,6 @@ homebrew.  In future, more sophisticated logic might be added."
       (let ((prefix (car (process-lines "brew" "--prefix" "coreutils"))))
         (concat (directory-file-name prefix) "/libexec/gnubin"))
     (error nil)))
-
-;;;###autoload
-(defun stante-fix-os-x-paths ()
-  "Fix $PATH and `exec-path' on OS X."
-  (interactive)
-  (let*
-      ((paths (concatenate 'list (stante-os-x-paths) exec-path))
-       (unique-paths (remove-duplicates paths
-                                        :test 'string=
-                                        :from-end t)))
-    (setenv "PATH" (mapconcat 'identity unique-paths ":"))
-    (setq exec-path unique-paths)
-    ;; Search coreutils *after* basic path fixing to make sure that "brew"
-    ;; is in `exec-path'.
-    (let ((coreutils-dir (stante-find-os-x-coreutils)))
-      (if coreutils-dir
-          ;; Do *not* add the GNU coreutils directory to $PATH because it
-          ;; must not be exported to Emacs subprocesses.  On OS X programs
-          ;; might break if the call out to GNU utilities!
-          (add-to-list 'exec-path coreutils-dir nil 'string=)
-        (message "GNU Coreutils not found.  Install coreutils \
-with homebrew, or report an issue to %s." stante-issues-url)))))
-
-;;; Code:
 
 (provide 'stante-lib-os-x)
 
