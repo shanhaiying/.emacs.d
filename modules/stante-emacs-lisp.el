@@ -35,6 +35,8 @@
 ;;
 ;; Show information about a function or variable at point in the echo area (see
 ;; `eldoc-mode').
+;;
+;; Check documentation style automatically with `checkdoc-minor-mode'.
 
 ;; Balanced parenthesis
 ;; --------------------
@@ -65,7 +67,7 @@
   #'(progn
 
       (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
-        "Remove byte code file corresponding to the Emacs LISP BUFFER.
+        "Remove byte code file corresponding to the Emacs lisp BUFFER.
 
 BUFFER defaults to the current buffer."
         (when (eq major-mode 'emacs-lisp-mode)
@@ -83,6 +85,9 @@ BUFFER defaults to the current buffer."
 
       (add-hook 'emacs-lisp-mode-hook
                 'stante-emacs-lisp-clean-byte-code-on-save)
+
+      ;; Check documentation in Emacs LISP
+      (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
       (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
       (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
