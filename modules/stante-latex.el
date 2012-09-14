@@ -76,6 +76,9 @@
 ;; Install and configure *the* LaTeX environment
 (package-install-if-needed 'auctex)
 
+;; Handle .latex files with AUCTeX, too.
+(add-to-list 'auto-mode-alist '("\\.[lL]a[tT]e[xX]\\'" . latex-mode))
+
 (eval-after-load 'tex-site
   #'(progn
       (setq TeX-auto-save t             ; Autosave documents
