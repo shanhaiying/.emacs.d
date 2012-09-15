@@ -229,16 +229,12 @@ corresponding packages."
 (defun stante-restore-frame-parameters ()
   "Restore the frame parameters of the initial frame."
   (condition-case nil
-      (let* ((contents (stante-get-file-contents
-                        stante-save-frame-parameters-file))
-             (parts (split-string (stante-string-trim contents) "x"))
-             (params (mapcar 'string-to-number parts)))
-        (setq initial-frame-alist
-              (stante-merge-alists initial-frame-alist
-                                   `((left . ,(nth 0 params))
-                                     (top . ,(nth 1 params))
-                                     (width . ,(max (nth 2 params) 80))
-                                     (height . ,(max (nth 3 params) 35))))))
+      (let* ((params (read (stante-get-file-contents
+                            stante-save-frame-parameters-file))))
+        ;; Verify the read expression
+        (when (and (listp params) (eq (length params) 4))
+          (setq initial-frame-alist
+                (stante-merge-alists initial-frame-alist params))))
     (error nil)))
 
 (defun stante-save-frame-parameters ()
@@ -247,14 +243,15 @@ corresponding packages."
 Save the top left position and the width and height to
 `stante-save-frame-parameters-file'."
   (condition-case nil
-      (let ((frame (selected-frame)))
-        (when (and frame (display-graphic-p frame)) ; GUI frames only!
-          (let ((params (format "%sx%sx%sx%s\n"
-                                (frame-parameter frame 'left)
-                                (frame-parameter frame 'top)
-                                (frame-parameter frame 'width)
-                                (frame-parameter frame 'height))))
-            (stante-set-file-contents stante-save-frame-parameters-file params)
+      (let ((params (frame-parameters)))
+        (when (and params (display-graphic-p)) ; GUI frames only!
+          (let ((extends (list (assq 'left params)
+                               (assq 'top params)
+                               (assq 'width params)
+                               (assq 'height params))))
+            (stante-set-file-contents
+             stante-save-frame-parameters-file
+             (with-output-to-string (prin1 extends) (terpri)))
             t)))
     (file-error nil)))
 (unless noninteractive
