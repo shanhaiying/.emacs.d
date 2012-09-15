@@ -44,8 +44,8 @@
 (defun stante-get-file-contents (filename)
   "Return the contents of the file FILENAME."
   (with-temp-buffer
-    (insert-file-contents filename)
-    (buffer-string)))
+    (insert-file-contents-literally filename)
+    (buffer-substring-no-properties (point-min) (point-max))))
 
 ;;;###autoload
 (defun stante-set-file-contents (filename contents)
