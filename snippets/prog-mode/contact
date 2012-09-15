@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: contact
+# key: contact
+# binding: direct-keybinding
+# contributor:  Sebastian Wiesner <lunaryorn@gmail.com>
+# --
+`user-full-name` <`user-mail-address`>
