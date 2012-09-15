@@ -78,4 +78,8 @@
 ;; modules, or even write new Stante modules, and contribute these changes back
 ;; via Github Pull Requests for the profit of other users.
 
+;; Set your name and email address
+;; (setq user-full-name "John Doe"
+;;       user-mail-address "john.doe@example.com")
+
 ;;; init.el ends here
