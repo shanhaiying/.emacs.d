@@ -42,7 +42,7 @@
 
 (require 'stante-programming)
 
-(eval-after-load 'sh-mode
+(eval-after-load 'sh-script
   #'(setq-default 'sh-basic-offset 2))
 
 ;; Also consider .zsh files as `sh-mode' files.
