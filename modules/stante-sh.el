@@ -33,17 +33,49 @@
 ;; Indentation
 ;; -----------
 ;;
-;; Set basic indentation offset to 2.
+;; Define some standard shell script indentation styles:
 ;;
-;; Use C-c > to automatically update the indentation style to the conventions
-;; used in the current buffer.
+;; "zsh" defines the standard 2-space indentation used in most Zsh scripts.
+;;
+;; Use C-c s to load one of these styles for the current buffer.  Use C-c > to
+;; automatically learn an indentation for the current buffer instead.
+
+;; Keybindings
+;; -----------
+;;
+;; C-c s in `sh-mode' loads an indentation style.
 
 ;;; Code:
 
 (require 'stante-programming)
 
 (eval-after-load 'sh-script
-  #'(setq-default 'sh-basic-offset 2))
+  #'(progn
+
+      ;; Standard indentation styles
+      (setq sh-styles-alist
+          '(("zsh"
+             (sh-basic-offset . 2)
+             (sh-first-lines-indent . 0)
+             (sh-indent-after-case . +)
+             (sh-indent-after-do . +)
+             (sh-indent-after-done . 0)
+             (sh-indent-after-else . +)
+             (sh-indent-after-if . +)
+             (sh-indent-after-loop-construct . +)
+             (sh-indent-after-open . +)
+             (sh-indent-comment)
+             (sh-indent-for-case-alt . ++)
+             (sh-indent-for-case-label . +)
+             (sh-indent-for-continuation . +)
+             (sh-indent-for-do . 0)
+             (sh-indent-for-done . 0)
+             (sh-indent-for-else . 0)
+             (sh-indent-for-fi . 0)
+             (sh-indent-for-then . 0))))
+
+      ;; Key binding to choose the style
+      (define-key sh-mode-map (kbd "C-c s") 'sh-load-style)))
 
 ;; Also consider .zsh files as `sh-mode' files.
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
