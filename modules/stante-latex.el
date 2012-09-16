@@ -72,6 +72,7 @@
 ;;; Code:
 
 (require 'stante-lib-autoloads)
+(require 'stante-text)
 
 ;; Install and configure *the* LaTeX environment
 (package-install-if-needed 'auctex)

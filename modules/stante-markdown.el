@@ -34,6 +34,7 @@
 ;;; Code:
 
 (require 'stante-lib-autoloads)
+(require 'stante-text)
 
 (package-install-if-needed 'markdown-mode)
 

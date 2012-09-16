@@ -128,7 +128,6 @@
 
 ;; Configure filling
 (setq-default fill-column 80)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Power up parenthesis
 (electric-pair-mode 1)
