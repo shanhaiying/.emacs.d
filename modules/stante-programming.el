@@ -28,7 +28,7 @@
 
 ;;; Commentary:
 
-;; Setup programming modes.
+;; Setup programming modes based on `prog-mode'.
 
 ;; This module is automatically loaded by Stante Pede modules that configure
 ;; specific programming modes so you should normally not need to enable it
