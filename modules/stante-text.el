@@ -58,8 +58,10 @@ Also arrange for trailing whitespace to be removed before saving."
   (whitespace-mode 1)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(add-hook 'text-mode-hook 'stante-text-whitespace)
+(eval-after-load "text-mode"
+  #'(progn
+      (add-hook 'text-mode-hook 'turn-on-auto-fill)
+      (add-hook 'text-mode-hook 'stante-text-whitespace)))
 
 (provide 'stante-text)
 
