@@ -86,9 +86,9 @@
 ;; `stante-auto-fill-comments' enables auto-filling for comments and strings in
 ;; the current buffer.
 ;;
-;; `stante-whitespace-mode' enables `whitespace-mode' for the current buffer and
-;; arranges for whitespace to be cleaned up before the current buffer is saved
-;; (see `whitespace-cleanup').
+;; `stante-programming-whitespace' enables `whitespace-mode' for the current
+;; buffer and arranges for whitespace to be cleaned up before the current buffer
+;; is saved (see `whitespace-cleanup').
 ;;
 ;; `stante-programming-keybindings' configures the keybindings of this module
 ;; for the current local mode map.
@@ -129,7 +129,7 @@ with `font-lock-warning-face'."
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   (auto-fill-mode 1))
 
-(defun stante-whitespace-mode ()
+(defun stante-programming-whitespace ()
   "Enable whitespace mode for the current buffer.
 
 Also arrange for a whitespace cleanup before saving."
@@ -144,10 +144,10 @@ Also arrange for a whitespace cleanup before saving."
   "Add all local programming setup functions to HOOK.
 
 Currently this functions adds `stante-auto-fill-comments',
-`stante-whitespace-mode', `stante-programming-keybindings' and
-`stante-add-task-keywords' to HOOK."
+`stante-programming-whitespace', `stante-programming-keybindings'
+and `stante-add-task-keywords' to HOOK."
   (dolist (func '(stante-auto-fill-comments
-                  stante-whitespace-mode
+                  stante-programming-whitespace
                   stante-programming-keybindings
                   stante-add-task-keywords))
     (add-hook hook func)))
