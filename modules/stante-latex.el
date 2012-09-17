@@ -53,6 +53,10 @@
 ;; Optimize RefTeX configuration for large documents.  Save parse state when
 ;; killing LaTeX buffers.  This will create "MASTER.rel" along with your
 ;; "MASTER.tex" file.
+;;
+;; Install the BibTeX manager EBib from http://ebib.sourceforge.net/.  Use M-x
+;; ebib to start EBib and read the manual at
+;; http://ebib.sourceforge.net/manual/ebib-manual.html.
 
 ;; Synctex
 ;; -------
@@ -131,6 +135,14 @@
 
 ;; Plug RefTeX into bib-cite
 (eval-after-load 'bib-cite #'(setq bib-cite-use-reftex-view-crossref t))
+
+
+;; BibTeX manager
+(package-install-if-needed 'ebib)
+
+(eval-after-load 'ebib
+  ;; Automatically generate keys
+  #'(setq ebib-autogenerate-keys t))
 
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
