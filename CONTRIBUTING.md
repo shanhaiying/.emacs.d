@@ -31,9 +31,21 @@ Pull requests
   and description in grammatically correct, complete sentences.
 
 
+Library files
+-------------
+
+The following guidelines apply for all library files under `lib/`:
+
+* Add [autoload cookies][7] to all functions that belong to the public interface
+  of the library.
+* Update the autoload file as part of your pull request (`M-x
+  stante-update-autoload-file`).
+
+
 [1]: https://github.com/lunaryorn/stante-pede/issues
 [2]: http://gun.io/blog/how-to-github-fork-branch-and-pull-request
 [3]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [4]: http://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html
 [5]: http://www.gnu.org/software/emacs/manual/html_node/elisp/Library-Headers.html
 [6]: https://help.github.com/articles/using-pull-requests
+[7]: http://www.gnu.org/software/emacs/manual/html_node/elisp/Autoload.html
