@@ -25,7 +25,7 @@ Pull requests
 * Obey the conventions for [library headers][5].  Add your name and email
   address to the ``Author`` field.  Add ``URL`` field pointing to
   https://gihub.com/lunaryorn/stantepede.git, and ``Keywords`` as appropriate.
-* Add a `;;; Commentary section` that explains all features and key bindings.
+* Add a `;;; Commentary` section that explains all features and key bindings.
 * Verify your Emacs Lisp code with `checkdoc` (`C-c d`).
 * Open a [pull request][6] that relates to but one subject with a clear title
   and description in grammatically correct, complete sentences.
