@@ -72,6 +72,12 @@
 ;; neet to configure Skim as default PDF viewer, this module will automatically
 ;; find Skim if it is installed.
 
+;; latexmk
+;; -------
+;;
+;; Provide support for compilation with the popular "latexmk" utility via C-c
+;; C-c latexmk.
+
 
 ;;; Code:
 
@@ -143,6 +149,12 @@
 (eval-after-load 'ebib
   ;; Automatically generate keys
   #'(setq ebib-autogenerate-keys t))
+
+
+;; Provide latexmk support.
+(eval-after-load 'tex-buf
+  #'(unless (boundp 'TeX-command-latexmk)
+      (require 'stante-lib-TeX-latexmk)))
 
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
