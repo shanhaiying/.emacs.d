@@ -29,6 +29,21 @@
 ;;; Commentary:
 
 ;; Provide support for editing and previewing markdown.
+;;
+;; Markdown editing is provided by `markdown-mode' from
+;; https://github.com/milkypostman/markdown-mode.
+
+;; Markdown processor
+;; ------------------
+;;
+;; Search for the following markdown processors in `exec-path':
+;;
+;; - kramdown (http://kramdown.rubyforge.org/)
+;; - markdown2 (https://github.com/trentm/python-markdown2)
+;; - pandoc (http://johnmacfarlane.net/pandoc/index.html)
+;;
+;; If none of the above is found, emit a warning message and fall back to the
+;; default "markdown" utility.
 
 
 ;;; Code:
@@ -40,6 +55,19 @@
 
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+
+(defun stante-find-markdown-processor ()
+  "Find a suitable markdown processor."
+  (let ((processor (some 'executable-find
+                         '("kramdown"
+                           "markdown2"
+                           "pandoc"))))
+    (if processor
+        (setq markdown-command "kramdown")
+      (message "No markdown processor found, falling back to default %s"
+               markdown-command))))
+
+(eval-after-load 'markdown-mode #'(stante-find-markdown-processor))
 
 (provide 'stante-markdown)
 
