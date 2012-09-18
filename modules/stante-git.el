@@ -65,6 +65,11 @@
 
 (package-install-if-needed 'magit)
 (package-install-if-needed 'magithub)
+
+(eval-after-load 'magit
+  ;; Do not ask before saving buffers on `magit-status'
+  #'(setq magit-save-some-buffers 'dontask))
+
 (package-install-if-needed 'gist)
 
 ;; Open newly created Gists in browser.
