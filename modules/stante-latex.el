@@ -98,7 +98,11 @@
             ;; Use SyncTeX for source correlation
             TeX-source-correlate-method 'synctex
             ;; Enable source correlation mode
-            TeX-source-correlate-mode t)
+            TeX-source-correlate-mode t
+            ;; Do not ask for permission before saving files
+            TeX-save-query nil
+            ;; Do not ask before deleting files
+            TeX-clean-confirm nil)
       (setq-default TeX-master nil    ; Ask for master document
                     ;; Use a modern LaTeX engine to build PDFs
                     TeX-engine 'xetex
