@@ -109,8 +109,10 @@
                     TeX-PDF-mode t)
 
       ;; Enable on-the-fly checking for latex documents
-      (add-hook 'LaTeX-mode-hook 'flymake-mode-on)
-      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)))
+      (dolist (hook '(flymake-mode-on
+                      turn-on-reftex
+                      LaTeX-math-mode))
+        (add-hook 'LaTeX-mode-hook hook))))
 
 ;; Select best viewing programs
 (eval-after-load 'tex #'(stante-TeX-select-view-programs))
