@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (stante-TeX-select-view-programs) "stante-lib-TeX-viewers"
-;;;;;;  "stante-lib-TeX-viewers.el" (20562 3419))
+;;;;;;  "stante-lib-TeX-viewers.el" (20568 48541))
 ;;; Generated autoloads from stante-lib-TeX-viewers.el
 
 (autoload 'stante-TeX-select-view-programs "stante-lib-TeX-viewers" "\
@@ -16,7 +16,7 @@ Select the best view programs for the current platform.
 
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
-;;;;;;  (20561 61737))
+;;;;;;  (20568 48547))
 ;;; Generated autoloads from stante-lib-io.el
 
 (autoload 'stante-get-file-contents "stante-lib-io" "\
@@ -40,7 +40,7 @@ Return a list of lines of file FILENAME.
 ;;;***
 
 ;;;### (autoloads (stante-merge-alists) "stante-lib-lists" "stante-lib-lists.el"
-;;;;;;  (20561 61737))
+;;;;;;  (20568 48553))
 ;;; Generated autoloads from stante-lib-lists.el
 
 (autoload 'stante-merge-alists "stante-lib-lists" "\
@@ -53,8 +53,8 @@ Items in B replace items in A with matching `car'.
 ;;;***
 
 ;;;### (autoloads (stante-byte-recompile stante-update-autoload-file)
-;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20562
-;;;;;;  3195))
+;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20568
+;;;;;;  48557))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el") "\
@@ -73,7 +73,7 @@ Byte-compile all modules of Stante pede.
 ;;;***
 
 ;;;### (autoloads (stante-find-os-x-coreutils) "stante-lib-os-x"
-;;;;;;  "stante-lib-os-x.el" (20562 3934))
+;;;;;;  "stante-lib-os-x.el" (20568 48561))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
@@ -89,7 +89,7 @@ homebrew.  In future, more sophisticated logic might be added.
 ;;;***
 
 ;;;### (autoloads (package-install-if-needed) "stante-lib-package"
-;;;;;;  "stante-lib-package.el" (20561 61737))
+;;;;;;  "stante-lib-package.el" (20568 48565))
 ;;; Generated autoloads from stante-lib-package.el
 
 (autoload 'package-install-if-needed "stante-lib-package" "\
@@ -101,7 +101,7 @@ Install the package named NAME, unless it is already installed.
 
 ;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
 ;;;;;;  stante-is-os-x) "stante-lib-platform" "stante-lib-platform.el"
-;;;;;;  (20562 3673))
+;;;;;;  (20568 48569))
 ;;; Generated autoloads from stante-lib-platform.el
 
 (autoload 'stante-is-os-x "stante-lib-platform" "\
@@ -129,7 +129,7 @@ Return nil if running in cygwin or under MS-DOS.
 ;;;***
 
 ;;;### (autoloads (stante-string-trim) "stante-lib-strings" "stante-lib-strings.el"
-;;;;;;  (20561 61737))
+;;;;;;  (20568 48589))
 ;;; Generated autoloads from stante-lib-strings.el
 
 (autoload 'stante-string-trim "stante-lib-strings" "\
@@ -139,8 +139,8 @@ Remove leading and trailing whitespace from STR.
 
 ;;;***
 
-;;;### (autoloads nil nil ("stante-lib-TeX-biber.el") (20562 12294
-;;;;;;  17790))
+;;;### (autoloads nil nil ("stante-lib-TeX-biber.el" "stante-lib-TeX-latexmk.el")
+;;;;;;  (20568 48661 214895))
 
 ;;;***
 
