@@ -55,8 +55,8 @@
 ;; `prog-mode' you need to manually enable `flyspell-prog-mode' in the mode's
 ;; hook:
 ;;
-;;     (eval-after-load 'stante-spelling
-;;        #'(add-hook 'foo-mode-hook 'flyspell-prog-mode))
+;;     (after 'stante-spelling
+;;        (add-hook 'foo-mode-hook 'flyspell-prog-mode))
 ;;
 
 

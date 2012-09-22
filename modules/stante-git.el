@@ -65,15 +65,15 @@
 (package-install-if-needed 'magit)
 (package-install-if-needed 'magithub)
 
-(eval-after-load 'magit
+(after 'magit
   ;; Do not ask before saving buffers on `magit-status'
-  #'(setq magit-save-some-buffers 'dontask))
+  (setq magit-save-some-buffers 'dontask))
 
 (package-install-if-needed 'gist)
 
 ;; Open newly created Gists in browser.
-(eval-after-load 'gist
-  #'(setq gist-view-gist t))
+(after 'gist
+  (setq gist-view-gist t))
 
 ;; Keybindings
 (global-set-key (kbd "C-x g") 'magit-status)

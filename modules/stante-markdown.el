@@ -66,7 +66,8 @@
       (message "No markdown processor found, falling back to default %s"
                markdown-command))))
 
-(eval-after-load 'markdown-mode #'(stante-find-markdown-processor))
+(after 'markdown-mode
+  (stante-find-markdown-processor))
 
 (provide 'stante-markdown)
 

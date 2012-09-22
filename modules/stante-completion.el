@@ -52,19 +52,18 @@
 
 (package-install-if-needed 'auto-complete)
 (require 'auto-complete-config)
-(eval-after-load 'auto-complete-config
-  #'(progn
-      ;; Configure default sources
-      (setq-default ac-sources '(ac-source-yasnippet
-                                 ac-source-abbrev
-                                 ac-source-words-in-same-mode-buffers
-                                 ac-source-dictionary)
-                    ;; Set a default trigger key
-                    ac-trigger-key "TAB"
-                    ;; Move history file to property directory
-                    ac-comphist-file (concat stante-var-dir "ac-comphist"))
-      (global-auto-complete-mode 1)
-      ))
+(after 'auto-complete-config
+  ;; Configure default sources
+  (setq-default ac-sources '(ac-source-yasnippet
+                             ac-source-abbrev
+                             ac-source-words-in-same-mode-buffers
+                             ac-source-dictionary)
+                ;; Set a default trigger key
+                ac-trigger-key "TAB"
+                ;; Move history file to property directory
+                ac-comphist-file (concat stante-var-dir "ac-comphist"))
+  (global-auto-complete-mode 1)
+  )
 
 (provide 'stante-completion)
 

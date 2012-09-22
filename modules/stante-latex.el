@@ -89,102 +89,92 @@
 ;; Handle .latex files with AUCTeX, too.
 (add-to-list 'auto-mode-alist '("\\.[lL]a[tT]e[xX]\\'" . latex-mode))
 
-(eval-after-load 'tex-site
-  #'(progn
-      (setq TeX-auto-save t             ; Autosave documents
-            ;; Parse document structure
-            TeX-parse-self t
-            ;; Use SyncTeX for source correlation
-            TeX-source-correlate-method 'synctex
-            ;; Enable source correlation mode
-            TeX-source-correlate-mode t
-            ;; Do not ask for permission before saving files
-            TeX-save-query nil
-            ;; Do not ask before deleting files
-            TeX-clean-confirm nil)
-      (setq-default TeX-master nil    ; Ask for master document
-                    ;; Use a modern LaTeX engine to build PDFs
-                    TeX-engine 'xetex
-                    TeX-PDF-mode t)
+(after 'tex-site
+  (setq TeX-auto-save t        ; Autosave documents
+        TeX-parse-self t       ; Parse documents
+        TeX-save-query nil     ; Don't ask before saving
+        TeX-clean-confirm nil  ; Don't ask before cleaning
+        ;; Enable forward and inverse search with SyncTeX
+        TeX-source-correlate-mode t
+        TeX-source-correlate-method 'synctex)
+  (setq-default TeX-master nil ; Ask for master document
+                ;; Use a modern LaTeX engine to build PDFs
+                TeX-engine 'xetex
+                TeX-PDF-mode t)
 
-      ;; Enable on-the-fly checking for latex documents
-      (dolist (hook '(flymake-mode-on
-                      turn-on-reftex
-                      LaTeX-math-mode))
-        (add-hook 'LaTeX-mode-hook hook))))
+  ;; Setup sub modes
+  (dolist (hook '(flymake-mode-on  ; Automatic checking
+                  turn-on-reftex   ; Reference management
+                  LaTeX-math-mode  ; Math input
+                  ))
+    (add-hook 'LaTeX-mode-hook hook)))
 
 ;; Select best viewing programs
-(eval-after-load 'tex #'(stante-TeX-select-view-programs))
+(after 'tex (stante-TeX-select-view-programs))
 
 
 ;; Configure RefTeX
-(eval-after-load 'reftex
-  #'(progn
-      ;; Recommended optimizations
-      (setq reftex-enable-partial-scans t
-            reftex-save-parse-info t
-            reftex-use-multiple-selection-buffers t
-            ;; Plug RefTeX into AUCTeX
-            reftex-plug-into-AUCTeX t)
+(after 'reftex
+  (setq reftex-plug-into-AUCTeX t
+        ;; Recommended optimizations
+        reftex-enable-partial-scans t
+        reftex-save-parse-info t
+        reftex-use-multiple-selection-buffers t)
 
-      (unless (assq 'biblatex reftex-cite-format-builtin)
-        ;; Add biblatex support if not already builtin
-        (add-to-list 'reftex-cite-format-builtin
-                     '(biblatex "The biblatex package"
-                                ((?\C-m . "\\cite[]{%l}")
-                                 (?t . "\\textcite{%l}")
-                                 (?a . "\\autocite[]{%l}")
-                                 (?p . "\\parencite{%l}")
-                                 (?f . "\\footcite[][]{%l}")
-                                 (?F . "\\fullcite[]{%l}")
-                                 (?x . "[]{%l}")
-                                 (?X . "{%l}")))))
-      ;; Use biblatex as default citation style
-      (setq reftex-cite-format 'biblatex)
-      ;; Make RefTeX recognize biblatex bibliographies
-      (add-to-list 'reftex-bibliography-commands "addbibresource")))
+  (unless (assq 'biblatex reftex-cite-format-builtin)
+    ;; Add biblatex support if not already builtin
+    (add-to-list 'reftex-cite-format-builtin
+                 '(biblatex "The biblatex package"
+                            ((?\C-m . "\\cite[]{%l}")
+                             (?t . "\\textcite{%l}")
+                             (?a . "\\autocite[]{%l}")
+                             (?p . "\\parencite{%l}")
+                             (?f . "\\footcite[][]{%l}")
+                             (?F . "\\fullcite[]{%l}")
+                             (?x . "[]{%l}")
+                             (?X . "{%l}")))))
+  (setq reftex-cite-format 'biblatex) ; Use Biblatex as default citation style
+  ;; Make RefTeX recognize biblatex bibliographies
+  (add-to-list 'reftex-bibliography-commands "addbibresource"))
 
-;; Plug RefTeX into bib-cite
-(eval-after-load 'bib-cite #'(setq bib-cite-use-reftex-view-crossref t))
+(after 'bib-cite (setq bib-cite-use-reftex-view-crossref t))
 
 
 ;; BibTeX manager
 (package-install-if-needed 'ebib)
 
-(eval-after-load 'ebib
-  ;; Automatically generate keys
-  #'(setq ebib-autogenerate-keys t))
+(after 'ebib
+  (setq ebib-autogenerate-keys t))
 
 
 ;; Provide latexmk support.
-(eval-after-load 'tex-buf
-  #'(unless (boundp 'TeX-command-latexmk)
-      (require 'stante-lib-TeX-latexmk)))
+(after 'tex-buf
+  (unless (boundp 'TeX-command-latexmk) ; Just in case this ever gets upstreamed
+    (require 'stante-lib-TeX-latexmk)))
 
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
 ;; more advanced support is missing.  Look into using the patches provided by
 ;; the Biber author itself, and check how Auctex upstream works on this.
-(eval-after-load 'tex-buf
-  #'(if (boundp 'TeX-command-biber)
-        (message "Detected Biber support in AUCTeX.")
+(after 'tex-buf
+  (if (boundp 'TeX-command-biber)
+      (message "Detected Biber support in AUCTeX.")
 
-      (message "No Biber support in AUCTeX, enabling experimental support.")
-      (require 'stante-lib-TeX-biber)))
+    (message "No Biber support in AUCTeX, enabling experimental support.")
+    (require 'stante-lib-TeX-biber)))
 
 
 (defun flymake-get-tex-args-chktex (filename)
   "Get the command to check TeX documents on the fly."
   `("chktex" ("-v0" "-q" "-I",filename)))
 
-(eval-after-load 'flymake
-  #'(progn
-      ;; Override the default flymake syntax checking for LaTeX to use chktex
-      (fset 'flymake-get-tex-args 'flymake-get-tex-args-chktex)
+(after 'flymake
+  ;; Override the default flymake syntax checking for LaTeX to use chktex
+  (fset 'flymake-get-tex-args 'flymake-get-tex-args-chktex)
 
-      ;; Treat master/child documents like simple documents because chktex
-      ;; doesn't do a full compilation
-      (fset 'flymake-master-tex-init 'flymake-simple-tex-init)))
+  ;; Treat master/child documents like simple documents because chktex
+  ;; doesn't do a full compilation
+  (fset 'flymake-master-tex-init 'flymake-simple-tex-init))
 
 
 (provide 'stante-latex)

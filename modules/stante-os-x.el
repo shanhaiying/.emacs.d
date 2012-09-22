@@ -99,22 +99,21 @@
 with homebrew, or report an issue to %s." stante-issues-url))))
 
 ;; Make this module a no-op if not on OS X GUI.
-(eval-after-load 'ns-win
-  #'(progn
-      ;; Setup modifier maps for OS X
-      (setq mac-option-modifier 'meta
-            mac-command-modifier 'meta
-            mac-function-modifier 'control
-            mac-right-option-modifier 'none
-            mac-right-command-modifier 'super)
+(after 'ns-win
+  ;; Setup modifier maps for OS X
+  (setq mac-option-modifier 'meta
+        mac-command-modifier 'meta
+        mac-function-modifier 'control
+        mac-right-option-modifier 'none
+        mac-right-command-modifier 'super)
 
-      (unless (fboundp 'ns-toggle-fullscreen)
-        (defun ns-toggle-fullscreen ()
-          "Dummy for OS X fullscreen functionality."
-          (message "Your Emacs build does not provide fullscreen functionality.
+  (unless (fboundp 'ns-toggle-fullscreen)
+    (defun ns-toggle-fullscreen ()
+      "Dummy for OS X fullscreen functionality."
+      (message "Your Emacs build does not provide fullscreen functionality.
 Install Emacs from homebrew with \"brew install emacs --cocoa\".")))
 
-      (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen)))
+  (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen))
 
 (provide 'stante-os-x)
 

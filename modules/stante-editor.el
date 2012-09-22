@@ -131,9 +131,8 @@
 ;; Power up parenthesis
 (electric-pair-mode 1)
 (show-paren-mode 1)
-(eval-after-load 'paren
-  ;; Highlight only the parenthesis if it is visible, or the expression if not
-  '(setq show-paren-style 'mixed))
+;; Highlight only the parenthesis if it is visible, or the expression if not
+(after 'paren (setq show-paren-style 'mixed))
 
 ;; Highlights
 (global-hl-line-mode 1)
@@ -155,55 +154,52 @@
 
 ;; Remember various histories
 ;; Minibuffer history
-(eval-after-load 'savehist
-  #'(setq savehist-save-minibuffer-history t
-          ;; Save every three minutes (the default five minutes is a bit long)
-          savehist-autosave-interval 180
-          ;; Move save file into proper directory
-          savehist-file (concat stante-var-dir "savehist")))
+(after 'savehist
+  (setq savehist-save-minibuffer-history t
+        ;; Save every three minutes (the default five minutes is a bit long)
+        savehist-autosave-interval 180
+        ;; Move save file into proper directory
+        savehist-file (concat stante-var-dir "savehist")))
 (savehist-mode t)
 ;; Recent files
-(eval-after-load 'recentf
-  #'(setq recentf-max-saved-items 200
-          recentf-max-menu-items 15
-          ;; Move to property directory
-          recentf-save-file (concat stante-var-dir "recentf")))
+(after 'recentf
+  (setq recentf-max-saved-items 200
+        recentf-max-menu-items 15
+        ;; Move to property directory
+        recentf-save-file (concat stante-var-dir "recentf")))
 (recentf-mode t)
 ;; Locations in files
-(eval-after-load 'saveplace
-  #'(progn
-      (setq save-place-file (concat stante-var-dir "saveplace"))
-      (setq-default save-place t)))
+(after 'saveplace
+  (setq save-place-file (concat stante-var-dir "saveplace"))
+  (setq-default save-place t))
 (require 'saveplace)
 
 ;; Configure bookmarks
-(eval-after-load 'bookmark
-  #'(setq bookmark-default-file (concat stante-var-dir "bookmarks")
-          ;; Save on every modification
-          bookmark-save-flag 1))
+(after 'bookmark
+  (setq bookmark-default-file (concat stante-var-dir "bookmarks")
+        ;; Save on every modification
+        bookmark-save-flag 1))
 
 ;; Expansion functions
-(eval-after-load 'hippie-exp
-  #'(setq hippie-expand-try-functions-list
-          '(try-expand-dabbrev
-            try-expand-dabbrev-all-buffers
-            try-expand-dabbrev-from-kill
-            try-complete-file-name-partially
-            try-complete-file-name
-            try-expand-all-abbrevs
-            try-expand-list
-            try-expand-line
-            try-complete-lisp-symbol-partially
-            try-complete-lisp-symbol)))
+(after 'hippie-exp
+  (setq hippie-expand-try-functions-list
+        '(try-expand-dabbrev
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill
+          try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-all-abbrevs
+          try-expand-list
+          try-expand-line
+          try-complete-lisp-symbol-partially
+          try-complete-lisp-symbol)))
 
 ;; Bring up Emacs server
 (require 'server)
-(eval-after-load 'server
-  #'(unless (server-running-p) (server-start)))
+(after 'server (unless (server-running-p) (server-start)))
 
 ;; Show flymake errors in minibuffer when cursor is over the affected line.
-(eval-after-load 'flymake
-  #'(package-install-if-needed 'flymake-cursor))
+(after 'flymake (package-install-if-needed 'flymake-cursor))
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)

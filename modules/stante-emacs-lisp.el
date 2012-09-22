@@ -84,24 +84,23 @@ BUFFER defaults to the current buffer."
                              ac-source-symbols)
                            ac-sources)))
 
-(eval-after-load 'lisp-mode
-  #'(progn
-      (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-        (add-hook hook 'turn-on-eldoc-mode)
-        (add-hook hook 'paredit-mode))
+(after 'lisp-mode
+  (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+    (add-hook hook 'turn-on-eldoc-mode)
+    (add-hook hook 'paredit-mode))
 
-      (add-hook 'emacs-lisp-mode-hook
-                'stante-emacs-lisp-clean-byte-code-on-save)
+  (add-hook 'emacs-lisp-mode-hook
+            'stante-emacs-lisp-clean-byte-code-on-save)
 
-      ;; Check documentation in Emacs LISP
-      (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
+  ;; Check documentation in Emacs LISP
+  (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
-      (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
-      (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
+  (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
+  (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
 
-      (eval-after-load 'auto-complete
-        #'(add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-ac-setup))
-      ))
+  (after 'auto-complete
+    (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-ac-setup))
+  )
 
 (provide 'stante-emacs-lisp)
 

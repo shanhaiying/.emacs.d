@@ -151,8 +151,8 @@ and `stante-add-task-keywords' to HOOK."
                   stante-add-task-keywords))
     (add-hook hook func)))
 
-(eval-after-load 'simple ;; prog-mode is contained in simple.el
-  #'(stante-setup-programming-mode-hook 'prog-mode-hook))
+(after 'simple ; prog-mode is contained in simple.el
+  (stante-setup-programming-mode-hook 'prog-mode-hook))
 
 ;; Enable semantic
 (semantic-mode 1)
