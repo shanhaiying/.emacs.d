@@ -136,25 +136,23 @@
 
 ;; De-duplicate buffer names
 (require 'uniquify)
-(after 'uniquify
-  (setq uniquify-buffer-name-style 'forward
-        uniquify-separator "/"
-        uniquify-after-kill-buffer-p t       ; Re-uniquify after killing buffers
-        uniquify-ignore-buffers-re "^\\*")   ; Ignore special buffers
-  )
+(setq uniquify-buffer-name-style 'forward
+      uniquify-separator "/"
+      uniquify-after-kill-buffer-p t       ; Re-uniquify after killing buffers
+      uniquify-ignore-buffers-re "^\\*")   ; Ignore special buffers
+
 
 ;; Improve completion for file and buffer names
 (ido-mode t)
-(after 'ido
-  (setq ido-enable-flex-matching t    ; Match characters if string doesn't match
-        ido-create-new-buffer 'always ; Create a new buffer if nothing matches
-        ido-use-filename-at-point 'guess
-        ido-save-directory-list-file (concat stante-var-dir "ido.hist")
-        ido-default-file-method 'selected-window)
+(setq ido-enable-flex-matching t    ; Match characters if string doesn't match
+      ido-create-new-buffer 'always ; Create a new buffer if nothing matches
+      ido-use-filename-at-point 'guess
+      ido-save-directory-list-file (concat stante-var-dir "ido.hist")
+      ido-default-file-method 'selected-window)
 
-  ;; Move summary and "output" (i.e. from Auctex) to the end to keep these out
-  ;; of the way
-  (add-hook 'ido-make-buffer-list-hook 'ido-summary-buffers-to-end))
+;; Move summary and "output" (i.e. from Auctex) to the end to keep these out
+;; of the way
+(add-hook 'ido-make-buffer-list-hook 'ido-summary-buffers-to-end)
 
 
 ;; Improve minibuffer completion
@@ -162,7 +160,7 @@
 
 ;; Move between windows with Shift + Arrows
 (require 'windmove)
-(after 'windmove (windmove-default-keybindings))
+(windmove-default-keybindings)
 
 ;; Default font
 (cond

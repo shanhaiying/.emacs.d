@@ -196,7 +196,7 @@
 
 ;; Bring up Emacs server
 (require 'server)
-(after 'server (unless (server-running-p) (server-start)))
+(unless (server-running-p) (server-start))
 
 ;; Show flymake errors in minibuffer when cursor is over the affected line.
 (after 'flymake (package-install-if-needed 'flymake-cursor))
