@@ -49,6 +49,7 @@
 
 (require 'stante-lib-autoloads)
 (require 'stante-text)
+(require 'cl)
 
 (package-install-if-needed 'markdown-mode)
 
