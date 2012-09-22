@@ -177,7 +177,7 @@
   (set-face-attribute 'default nil :family "Menlo" :height 130))
  ((stante-is-windows)
   ;; Visual Studio defaults
-  (set-face-attribute 'default nil :family "Consolas" :height 10))
+  (set-face-attribute 'default nil :family "Consolas" :height 100))
  (t
   ;; A reasonable choice for all other systems
   (set-face-attribute 'default nil :family "Dejavu Sans Mono" :height 100))
