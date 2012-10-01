@@ -35,8 +35,6 @@
 
 ;;; Code:
 
-(require 'cl)
-
 ;;;###autoload
 (defun stante-find-os-x-coreutils ()
   "Return the directory containing the unprefixed GNU coreutils on OS X.
