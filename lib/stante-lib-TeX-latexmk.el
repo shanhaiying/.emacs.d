@@ -32,7 +32,7 @@
 
 ;;; Code:
 
-(require 'tex-buf)
+(require 'tex)
 (require 'latex)
 
 (defvar TeX-command-latexmk "latexmk"

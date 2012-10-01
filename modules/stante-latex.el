@@ -148,7 +148,7 @@
 
 
 ;; Provide latexmk support.
-(after 'tex-buf
+(after 'tex
   (unless (boundp 'TeX-command-latexmk) ; Just in case this ever gets upstreamed
     (require 'stante-lib-TeX-latexmk)))
 
