@@ -53,7 +53,7 @@
 ;; Package support
 ;; ---------------
 
-;; Enable support for packages and add the MELPA archive. See
+;; Enable support for packages and add the MELPA archive.  See
 ;; http://melpa.milkbox.net/packages.
 
 ;; Custom file
@@ -65,7 +65,7 @@
 (when (or (< emacs-major-version 24)
           (and (= emacs-major-version 24) (< emacs-minor-version 1)))
   (error "Stante Pede needs at least GNU Emacs 24.1, but this is Emacs %s.
-Please install GNU Emacs 24.1 to use Stante Pede."
+Please install GNU Emacs 24.1 to use Stante Pede"
          emacs-version))
 
 ;;; Code:
@@ -84,7 +84,7 @@ Please install GNU Emacs 24.1 to use Stante Pede."
 (defconst stante-modules-dir (concat stante-dir "modules/")
   "The directory containing all Stante Pede modules.")
 (defconst stante-lib-dir (concat stante-dir "lib/")
-  "The directory containing Stante Pede utility libraries. ")
+  "The directory containing Stante Pede utility libraries.")
 (defconst stante-var-dir (concat stante-dir "var/")
   "This folder stores automatically generated files.")
 
