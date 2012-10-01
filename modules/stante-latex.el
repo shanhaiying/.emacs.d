@@ -150,8 +150,11 @@
 ;; Provide latexmk support.
 (after 'tex
   (unless (boundp 'TeX-command-latexmk) ; Just in case this ever gets upstreamed
-    (require 'stante-lib-TeX-latexmk)))
+    (require 'stante-lib-TeX-latexmk))
 
+  ;; Replace lacheck with chktex for "Check" command
+  (setcar (cdr (assoc "Check" TeX-command-list))  "chktex -v0 -q -I %s")
+  )
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
 ;; more advanced support is missing.  Look into using the patches provided by
