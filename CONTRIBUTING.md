@@ -30,7 +30,6 @@ Pull requests
 * Open a [pull request][6] that relates to but one subject with a clear title
   and description in grammatically correct, complete sentences.
 
-
 Library files
 -------------
 
