@@ -188,8 +188,8 @@
 
 
 (defun flymake-get-tex-args-chktex (filename)
-  "Get the command to check TeX documents on the fly."
-  `("chktex" ("-v0" "-q" "-I",filename)))
+  "Get the command to check the TeX document FILENAME."
+  `("chktex" ("-v0" "-q" "-I" ,filename)))
 
 (after 'flymake
   ;; Override the default flymake syntax checking for LaTeX to use chktex
