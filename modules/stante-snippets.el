@@ -58,10 +58,6 @@
 (package-install-if-needed 'yasnippet)
 (require 'yasnippet)
 (after 'yasnippet
-  ;; Create the Stante Pede snippet directory if necessary.  This is to be
-  ;; removed as soon as we're shipping custom snippets in this directory.
-  (unless (file-directory-p stante-snippets-dir)
-    (make-directory stante-snippets-dir))
   (setq yas-snippet-dirs
         `(,stante-snippets-dir ; Our snippets first
           ,(concat (file-name-directory yas--load-file-name) "snippets")))
