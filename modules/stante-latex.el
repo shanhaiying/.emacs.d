@@ -153,7 +153,7 @@
     (require 'stante-lib-TeX-latexmk))
 
   ;; Replace lacheck with chktex for "Check" command
-  (setcar (cdr (assoc "Check" TeX-command-list))  "chktex -v0 -q -I %s")
+  (setcar (cdr (assoc "Check" TeX-command-list))  "chktex -v3 -q -I %s")
   )
 
 ;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
