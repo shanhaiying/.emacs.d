@@ -38,6 +38,13 @@
 ;; information and bookmark the cheatsheet at
 ;; http://daemianmack.com/magit-cheatsheet.html.
 
+;; Git commit messages
+;; -------------------
+;;
+;; Provide a mode to edit Git commit messages according to the guidelines
+;; established by Tim Pope at
+;; http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html.
+
 ;; Github support
 ;; --------------
 ;;
@@ -64,19 +71,25 @@
 
 (package-install-if-needed 'magit)
 (package-install-if-needed 'magithub)
+(package-install-if-needed 'git-commit)
 
-(defun stante-magit-log-edit-setup ()
-  "Setup commit message editing."
+(defun stante-set-fill-column-for-git-message ()
+  "Set the proper fill column for Git messages.
 
-  ;; As recommended by Tim Pope in his guidelines for commit messages at
-  ;; http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
-  (setq fill-column 72)
-  )
+Tim Pope recommends a fill column of 72 in his guidelines for
+commit messages at
+http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html."
+  (setq fill-column 72))
 
 (after 'magit
   ;; Do not ask before saving buffers on `magit-status'
   (setq magit-save-some-buffers 'dontask)
-  (add-hook 'magit-log-edit-mode-hook 'stante-magit-log-edit-setup))
+  (add-hook 'magit-log-edit-mode-hook 'stante-set-fill-column-for-git-message))
+
+(after 'git-commit
+  ;; Enable filling with correct settings for Git commit messages
+  (add-hook 'git-commit-mode-hook 'stante-set-fill-column-for-git-message)
+  (add-hook 'git-commit-mode-hook 'turn-on-auto-fill))
 
 (package-install-if-needed 'gist)
 
