@@ -50,7 +50,7 @@
 
 (require 'stante-lib-autoloads)
 
-(package-install-if-needed 'auto-complete)
+(package-need 'auto-complete)
 (require 'auto-complete-config)
 (after 'auto-complete-config
   ;; Configure default sources

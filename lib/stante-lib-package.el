@@ -29,7 +29,7 @@
 
 ;; Additional `package' functions.
 
-;; `package-install-if-needed' installs a package if it is not already
+;; `package-need' ensures that a package is installed.
 ;; installed.
 
 ;; Load `stante-lib-autoloads' to use the functions of this module.
@@ -40,8 +40,10 @@
 (require 'package)
 
 ;;;###autoload
-(defun package-install-if-needed (name)
-  "Install the package named NAME, unless it is already installed."
+(defun package-need (name)
+  "Ensure that the package NAME is available.
+
+If the package is not available, it is automatically installed."
   (unless (package-installed-p name) (package-install name)))
 
 (provide 'stante-lib-package)

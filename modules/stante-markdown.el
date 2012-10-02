@@ -51,7 +51,7 @@
 (require 'stante-text)
 (require 'cl)
 
-(package-install-if-needed 'markdown-mode)
+(package-need 'markdown-mode)
 
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))

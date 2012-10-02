@@ -55,7 +55,7 @@
 (defconst stante-snippets-dir (concat stante-dir "snippets/")
   "The directory where Stante Pede snippets are stored.")
 
-(package-install-if-needed 'yasnippet)
+(package-need 'yasnippet)
 (require 'yasnippet)
 (after 'yasnippet
   (setq yas-snippet-dirs

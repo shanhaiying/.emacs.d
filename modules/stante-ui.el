@@ -202,15 +202,17 @@ report color themes not contained in this list to
 https://github.com/lunaryorn/stante-pede/issues.")
 
 (defadvice load-theme (before load-theme-install-package)
-  "Install the theme package before loading the theme.
+  "Ensure that the package containing the theme is installed.
 
-See `stante-known-themes-alist' for a list of known theme names and
+If a package containing the theme is known, but not installed, it
+is automatically installed before the theme is loaded.  See
+`stante-known-themes-alist' for a list of known theme names and
 corresponding packages."
   (let* ((theme (ad-get-arg 0))
          (package (cdr (assoc theme stante-known-themes-alist))))
     (when package
       (message "Installing package %s for theme %s." package theme)
-      (package-install-if-needed package))))
+      (package-need package))))
 (ad-activate 'load-theme t)
 
 (defvar stante-save-frame-parameters-file

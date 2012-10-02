@@ -136,7 +136,7 @@
 
 ;; Highlights
 (global-hl-line-mode 1)
-(package-install-if-needed 'volatile-highlights)
+(package-need 'volatile-highlights)
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
 
@@ -144,7 +144,7 @@
 (require 'midnight)
 
 ;; Region expansion
-(package-install-if-needed 'expand-region)
+(package-need 'expand-region)
 (require 'expand-region)
 
 ;; Narrowing
@@ -199,7 +199,7 @@
 (unless (server-running-p) (server-start))
 
 ;; Show flymake errors in minibuffer when cursor is over the affected line.
-(after 'flymake (package-install-if-needed 'flymake-cursor))
+(after 'flymake (package-need 'flymake-cursor))
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)

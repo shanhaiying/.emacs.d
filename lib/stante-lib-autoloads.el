@@ -53,7 +53,7 @@ Items in B replace items in A with matching `car'.
 ;;;***
 
 ;;;### (autoloads (after) "stante-lib-load" "stante-lib-load.el"
-;;;;;;  (20573 33179))
+;;;;;;  (20573 34466))
 ;;; Generated autoloads from stante-lib-load.el
 
 (autoload 'after "stante-lib-load" "\
@@ -88,7 +88,7 @@ Byte-compile all modules of Stante pede.
 ;;;***
 
 ;;;### (autoloads (stante-find-os-x-coreutils) "stante-lib-os-x"
-;;;;;;  "stante-lib-os-x.el" (20568 48986))
+;;;;;;  "stante-lib-os-x.el" (20585 43162))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
@@ -103,12 +103,14 @@ homebrew.  In future, more sophisticated logic might be added.
 
 ;;;***
 
-;;;### (autoloads (package-install-if-needed) "stante-lib-package"
-;;;;;;  "stante-lib-package.el" (20568 48986))
+;;;### (autoloads (package-need) "stante-lib-package" "stante-lib-package.el"
+;;;;;;  (20587 17324))
 ;;; Generated autoloads from stante-lib-package.el
 
-(autoload 'package-install-if-needed "stante-lib-package" "\
-Install the package named NAME, unless it is already installed.
+(autoload 'package-need "stante-lib-package" "\
+Ensure that the package NAME is available.
+
+If the package is not available, it is automatically installed.
 
 \(fn NAME)" nil nil)
 
@@ -155,7 +157,7 @@ Remove leading and trailing whitespace from STR.
 ;;;***
 
 ;;;### (autoloads nil nil ("stante-lib-TeX-biber.el" "stante-lib-TeX-latexmk.el")
-;;;;;;  (20573 34273 401697))
+;;;;;;  (20587 17532 80674))
 
 ;;;***
 

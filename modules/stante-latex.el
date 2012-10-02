@@ -84,7 +84,7 @@
 (require 'stante-text)
 
 ;; Install and configure *the* LaTeX environment
-(package-install-if-needed 'auctex)
+(package-need 'auctex)
 
 ;; Handle .latex files with AUCTeX, too.
 (add-to-list 'auto-mode-alist '("\\.[lL]a[tT]e[xX]\\'" . latex-mode))
@@ -161,7 +161,7 @@
 
 
 ;; BibTeX manager
-(package-install-if-needed 'ebib)
+(package-need 'ebib)
 
 (after 'ebib
   (setq ebib-autogenerate-keys t))

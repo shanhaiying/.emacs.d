@@ -60,7 +60,7 @@
 (require 'stante-lib-autoloads)
 (require 'stante-programming)
 
-(package-install-if-needed 'paredit)
+(package-need 'paredit)
 
 
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)

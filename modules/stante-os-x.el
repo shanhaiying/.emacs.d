@@ -84,7 +84,7 @@
   (when (display-graphic-p)
     ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
     ;; the `$PATH'.
-    (package-install-if-needed 'exec-path-from-shell)
+    (package-need 'exec-path-from-shell)
     (exec-path-from-shell-initialize))
 
   ;; Find GNU Coreutils (mostly for "ls --dired").  Do this *after* fixing path

@@ -69,9 +69,9 @@
 
 (require 'stante-lib-autoloads)
 
-(package-install-if-needed 'magit)
-(package-install-if-needed 'magithub)
-(package-install-if-needed 'git-commit)
+(package-need 'magit)
+(package-need 'magithub)
+(package-need 'git-commit)
 
 (defun stante-set-fill-column-for-git-message ()
   "Set the proper fill column for Git messages.
@@ -91,7 +91,7 @@ http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html."
   (add-hook 'git-commit-mode-hook 'stante-set-fill-column-for-git-message)
   (add-hook 'git-commit-mode-hook 'turn-on-auto-fill))
 
-(package-install-if-needed 'gist)
+(package-need 'gist)
 
 ;; Open newly created Gists in browser.
 (after 'gist
