@@ -96,7 +96,7 @@
           ;; might break if the call out to GNU utilities!
           (add-to-list 'exec-path coreutils-dir nil 'string=)
         (message "GNU Coreutils not found.  Install coreutils \
-with homebrew, or report an issue to %s." stante-issues-url))))
+with homebrew, or report an issue with M-x stante-report-issue."))))
 
 ;; Make this module a no-op if not on OS X GUI.
 (after 'ns-win
