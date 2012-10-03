@@ -104,7 +104,7 @@ homebrew.  In future, more sophisticated logic might be added.
 ;;;***
 
 ;;;### (autoloads (package-need) "stante-lib-package" "stante-lib-package.el"
-;;;;;;  (20587 17324))
+;;;;;;  (20587 17588))
 ;;; Generated autoloads from stante-lib-package.el
 
 (autoload 'package-need "stante-lib-package" "\
@@ -145,6 +145,17 @@ Return nil if running in cygwin or under MS-DOS.
 
 ;;;***
 
+;;;### (autoloads (stante-ido-goto-symbol) "stante-lib-programming"
+;;;;;;  "stante-lib-programming.el" (20587 64902))
+;;; Generated autoloads from stante-lib-programming.el
+
+(autoload 'stante-ido-goto-symbol "stante-lib-programming" "\
+Refresh imenu and jump to a place in the buffer using Ido.
+
+\(fn &optional SYMBOL-LIST)" t nil)
+
+;;;***
+
 ;;;### (autoloads (stante-string-trim) "stante-lib-strings" "stante-lib-strings.el"
 ;;;;;;  (20568 48986))
 ;;; Generated autoloads from stante-lib-strings.el
@@ -157,7 +168,7 @@ Remove leading and trailing whitespace from STR.
 ;;;***
 
 ;;;### (autoloads nil nil ("stante-lib-TeX-biber.el" "stante-lib-TeX-latexmk.el")
-;;;;;;  (20587 17532 80674))
+;;;;;;  (20587 64929 410720))
 
 ;;;***
 
