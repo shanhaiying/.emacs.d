@@ -74,7 +74,7 @@
   "Create a new Stante Pede issue with given TITLE and BODY.
 
 The issue is submitted to the Github issue tracker of Stante
-Pede.  See `stante-issues-url'."
+Pede."
   (unless stante-report-issue-gh-api
     (setq stante-report-issue-gh-api (gh-issues-api "Stante Pede issues API")))
   (let ((issue (make-instance 'gh-issues-issue
