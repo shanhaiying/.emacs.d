@@ -28,6 +28,8 @@
 ;;; Commentary:
 
 ;; Perform initial Stante Pede setup.
+;;
+;; Use M-x stante-browse-url to visit the Stante Pede site.
 
 ;; Stante Pede paths
 ;; -----------------
@@ -73,6 +75,11 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 ;; Stante metadata
 (defconst stante-url "https://github.com/lunaryorn/stante-pede"
   "The URL of the Stante Pede project.")
+
+(defun stante-browse-url ()
+  "Browse the URL of the Stante Pede project."
+  (interactive)
+  (browse-url stante-url))
 
 ;; Stante directories
 (defconst stante-init-file
