@@ -46,6 +46,12 @@
 If the package is not available, it is automatically installed."
   (unless (package-installed-p name) (package-install name)))
 
+;;;###autoload
+(defun package-require (name)
+  "Ensure that package NAME is available and require the feature NAME."
+  (package-need name)
+  (require name))
+
 (provide 'stante-lib-package)
 
 ;;; stante-lib-package.el ends here
