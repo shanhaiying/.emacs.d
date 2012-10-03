@@ -53,7 +53,7 @@
 ;; Keybindings
 ;; -----------
 ;;
-;; C-c i switches to an interactive Emacs LISP shell (see
+;; C-c C-z switches to an interactive Emacs LISP shell (see
 ;; `stante-switch-to-ielm' and `ielm').
 
 ;;; Code:
@@ -105,7 +105,7 @@ Create a new ielm process if required."
   (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
   (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
-  (define-key emacs-lisp-mode-map (kbd "C-c i")
+  (define-key emacs-lisp-mode-map (kbd "C-c C-z")
     'stante-emacs-lisp-switch-to-ielm)
 
   (after 'auto-complete
