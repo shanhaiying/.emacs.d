@@ -53,7 +53,8 @@
 ;; Keybindings
 ;; -----------
 ;;
-;; C-c i starts an interactive Emacs LISP shell (see `ielm').
+;; C-c i switches to an interactive Emacs LISP shell (see
+;; `stante-switch-to-ielm' and `ielm').
 
 ;;; Code:
 
@@ -84,6 +85,14 @@ BUFFER defaults to the current buffer."
                              ac-source-symbols)
                            ac-sources)))
 
+(defun stante-emacs-lisp-switch-to-ielm ()
+  "Switch to an ielm window.
+
+Create a new ielm process if required."
+  (interactive)
+  (pop-to-buffer (get-buffer-create "*ielm*"))
+  (ielm))
+
 (after 'lisp-mode
   (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
     (add-hook hook 'turn-on-eldoc-mode)
@@ -96,7 +105,8 @@ BUFFER defaults to the current buffer."
   (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
   (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
-  (define-key emacs-lisp-mode-map (kbd "C-c i") 'ielm)
+  (define-key emacs-lisp-mode-map (kbd "C-c i")
+    'stante-emacs-lisp-switch-to-ielm)
 
   (after 'auto-complete
     (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-ac-setup))
