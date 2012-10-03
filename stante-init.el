@@ -75,9 +75,10 @@ Please install GNU Emacs 24.1 to use Stante Pede"
   "The URL of the Stante Pede project.")
 
 ;; Stante directories
-(defconst stante-init-file load-file-name
+(defconst stante-init-file
+  (or load-file-name (expand-file-name "~/.emacs.d/stante-init.el"))
   "The location of the `stante-init' file.")
-(defconst stante-dir (file-name-directory load-file-name)
+(defconst stante-dir (file-name-directory stante-init-file)
   "The root directory of Stante Pede.")
 (defconst stante-modules-dir (concat stante-dir "modules/")
   "The directory containing all Stante Pede modules.")
