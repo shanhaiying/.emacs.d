@@ -71,7 +71,7 @@
 
 (package-need 'magit)
 (package-need 'magithub)
-(package-need 'git-commit)
+(package-need 'git-commit-mode)
 
 (defun stante-set-fill-column-for-git-message ()
   "Set the proper fill column for Git messages.
@@ -86,10 +86,6 @@ http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html."
   (setq magit-save-some-buffers 'dontask)
   (add-hook 'magit-log-edit-mode-hook 'stante-set-fill-column-for-git-message))
 
-(after 'git-commit
-  ;; Enable filling with correct settings for Git commit messages
-  (add-hook 'git-commit-mode-hook 'stante-set-fill-column-for-git-message)
-  (add-hook 'git-commit-mode-hook 'turn-on-auto-fill))
 
 (package-need 'gist)
 

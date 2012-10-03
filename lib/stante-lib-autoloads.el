@@ -146,7 +146,7 @@ Return nil if running in cygwin or under MS-DOS.
 ;;;***
 
 ;;;### (autoloads (stante-ido-goto-symbol) "stante-lib-programming"
-;;;;;;  "stante-lib-programming.el" (20587 64902))
+;;;;;;  "stante-lib-programming.el" (20587 64999))
 ;;; Generated autoloads from stante-lib-programming.el
 
 (autoload 'stante-ido-goto-symbol "stante-lib-programming" "\
@@ -156,19 +156,8 @@ Refresh imenu and jump to a place in the buffer using Ido.
 
 ;;;***
 
-;;;### (autoloads (stante-string-trim) "stante-lib-strings" "stante-lib-strings.el"
-;;;;;;  (20568 48986))
-;;; Generated autoloads from stante-lib-strings.el
-
-(autoload 'stante-string-trim "stante-lib-strings" "\
-Remove leading and trailing whitespace from STR.
-
-\(fn STR)" nil nil)
-
-;;;***
-
 ;;;### (autoloads nil nil ("stante-lib-TeX-biber.el" "stante-lib-TeX-latexmk.el")
-;;;;;;  (20587 64929 410720))
+;;;;;;  (20588 11435 623680))
 
 ;;;***
 
