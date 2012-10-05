@@ -46,6 +46,7 @@
 (require 'stante-completion)
 
 ;; Tool support
+(require 'stante-tools)
 (require 'stante-git)
 
 ;; Programming languages
