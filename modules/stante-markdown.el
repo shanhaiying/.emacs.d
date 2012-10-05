@@ -67,8 +67,23 @@
       (message "No markdown processor found, falling back to default %s"
                markdown-command))))
 
+(defun stante-gfm-mode-whitespace-style ()
+  "Configure `whitespace-style' for `gfm-mode'.
+
+Disable visualization of overlong lines, because `gfm-mode' uses
+`visual-line-mode'."
+  ;; Disable whitespace mode and remove visualization of overlong lines.
+  (whitespace-mode 0)
+  (set (make-local-variable 'whitespace-style) whitespace-style)
+  (mapc (lambda (s) (setq whitespace-style (remq s whitespace-style)))
+        '(lines lines-tail))
+  ;; Eventually re-enable whitespace mode
+  (whitespace-mode 1))
+
 (after 'markdown-mode
-  (stante-find-markdown-processor))
+  (stante-find-markdown-processor)
+  (add-hook 'gfm-mode-hook 'turn-off-auto-fill)
+  (add-hook 'gfm-mode-hook 'stante-gfm-mode-whitespace-style))
 
 (provide 'stante-markdown)
 
