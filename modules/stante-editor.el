@@ -127,6 +127,7 @@
 
 ;; Configure filling
 (setq-default fill-column 80)
+(setq whitespace-line-column nil)
 
 ;; Power up parenthesis
 (electric-pair-mode 1)
