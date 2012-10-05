@@ -4,7 +4,7 @@
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
-;; URL: https://gihub.com/lunaryorn/stantepede.git
+;; URL: https://gihub.com/lunaryorn/stante-pede.git
 ;; Keywords: convenience languages
 
 ;; This file is not part of GNU Emacs.

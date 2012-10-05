@@ -4,7 +4,7 @@
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
-;; URL: https://github.com/lunaryorn/stantepede.git
+;; URL: https://github.com/lunaryorn/stante-pede.git
 ;; Keywords: convenience frames tools
 
 ;; This file is not part of GNU Emacs.
