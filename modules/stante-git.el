@@ -72,6 +72,7 @@
 (package-need 'magit)
 (package-need 'magithub)
 (package-need 'git-commit-mode)
+(package-need 'gitconfig-mode)
 
 (after 'magit
   ;; Do not ask before saving buffers on `magit-status'
