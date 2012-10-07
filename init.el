@@ -56,6 +56,7 @@
 ;; Markup languages
 (require 'stante-latex)
 (require 'stante-markdown)
+(require 'stante-org)
 
 ;; Localization support
 (require 'stante-german)
