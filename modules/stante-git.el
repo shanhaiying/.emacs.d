@@ -73,6 +73,7 @@
 (package-need 'magithub)
 (package-need 'git-commit-mode)
 (package-need 'gitconfig-mode)
+(package-need 'gitignore-mode)
 
 (after 'magit
   ;; Do not ask before saving buffers on `magit-status'
@@ -93,8 +94,6 @@
 (define-key gist-map (kbd "c") 'gist-region-or-buffer)
 (define-key gist-map (kbd "l") 'gist-list)
 (global-set-key (kbd "C-x G") 'gist-map)
-
-(add-to-list 'auto-mode-alist '("/\\.gitignore\\'" . conf-space-mode))
 
 (provide 'stante-git)
 
