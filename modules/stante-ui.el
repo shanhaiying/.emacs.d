@@ -201,7 +201,7 @@ This is is naturally incomplete.  Feel free to extend, and please
 report color themes not contained in this list to
 https://github.com/lunaryorn/stante-pede/issues.")
 
-(defadvice load-theme (before load-theme-install-package)
+(defadvice load-theme (before load-theme-install-package activate compile)
   "Ensure that the package containing the theme is installed.
 
 If a package containing the theme is known, but not installed, it
@@ -213,7 +213,6 @@ corresponding packages."
     (when package
       (message "Installing package %s for theme %s." package theme)
       (package-need package))))
-(ad-activate 'load-theme t)
 
 (defvar stante-save-frame-parameters-file
   (concat stante-var-dir "frame-parameters")
