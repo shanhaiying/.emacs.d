@@ -31,7 +31,7 @@
 
 ;;; Code:
 
-(provide 'stante-org)
+(require 'stante-text)
 
 ;; Make windmove work in org-mode
 (after 'org
@@ -39,5 +39,7 @@
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
   (add-hook 'org-shiftright-final-hook 'windmove-right))
+
+(provide 'stante-org)
 
 ;;; stante-org.el ends here
