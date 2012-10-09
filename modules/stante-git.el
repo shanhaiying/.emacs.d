@@ -77,8 +77,7 @@
 
 (after 'magit
   ;; Do not ask before saving buffers on `magit-status'
-  (setq magit-save-some-buffers 'dontask)
-  (add-hook 'magit-log-edit-mode-hook 'git-commit-mode-magit-setup))
+  (setq magit-save-some-buffers 'dontask))
 
 
 (package-need 'gist)
