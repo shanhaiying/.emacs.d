@@ -187,20 +187,6 @@
     (message "No Biber support in AUCTeX, enabling experimental support.")
     (require 'stante-lib-TeX-biber)))
 
-
-(defun flymake-get-tex-args-chktex (filename)
-  "Get the command to check the TeX document FILENAME."
-  `("chktex" ("-v0" "-q" "-I" ,filename)))
-
-(after 'flymake
-  ;; Override the default flymake syntax checking for LaTeX to use chktex
-  (fset 'flymake-get-tex-args 'flymake-get-tex-args-chktex)
-
-  ;; Treat master/child documents like simple documents because chktex
-  ;; doesn't do a full compilation
-  (fset 'flymake-master-tex-init 'flymake-simple-tex-init))
-
-
 (provide 'stante-latex)
 
 ;;; stante-latex.el ends here

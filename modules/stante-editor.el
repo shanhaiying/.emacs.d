@@ -199,8 +199,10 @@
 (require 'server)
 (unless (server-running-p) (server-start))
 
-;; Show flymake errors in minibuffer when cursor is over the affected line.
-(after 'flymake (package-need 'flymake-cursor))
+;; Additional flymake checkers and user interface
+(after 'flymake
+  (package-need 'flymake-checkers)
+  (package-need 'flymake-cursor))
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)
