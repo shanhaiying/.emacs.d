@@ -52,6 +52,7 @@
 ;; Programming languages
 (require 'stante-emacs-lisp)
 (require 'stante-python)
+(require 'stante-coffee)
 (require 'stante-sh)
 
 ;; Markup languages
