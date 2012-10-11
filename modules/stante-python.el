@@ -36,6 +36,11 @@
 
 (package-need 'python)
 
+(after 'python
+  (after 'flymake-checkers
+    ;; Bring flymake and manual checking in sync
+    (setq python-check-command (flymake-checkers-python-get-checker))))
+
 (provide 'stante-python)
 
 ;;; stante-python.el ends here
