@@ -28,6 +28,9 @@
 ;;; Commentary:
 
 ;; Provide support for Python.
+;;
+;; Python editing is provided by the python-mode from
+;; https://github.com/fgallina/python.el
 
 ;;; Code:
 
