@@ -72,10 +72,7 @@
            (sh-indent-for-then . 0))))
 
   ;; Key binding to choose the style
-  (define-key sh-mode-map (kbd "C-c s") 'sh-load-style)
-
-  ;; On-the-fly syntax checking
-  (add-hook 'sh-mode-hook 'flymake-mode-on))
+  (define-key sh-mode-map (kbd "C-c s") 'sh-load-style))
 
 ;; Also consider .zsh files as `sh-mode' files.
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))

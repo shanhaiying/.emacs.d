@@ -100,7 +100,6 @@ Create a new ielm process if required."
 
   (add-hook 'emacs-lisp-mode-hook
             'stante-emacs-lisp-clean-byte-code-on-save)
-  (add-hook 'emacs-lisp-mode-hook 'flymake-mode-on)
 
   ;; Check documentation in Emacs LISP
   (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)

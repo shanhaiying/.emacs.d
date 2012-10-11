@@ -40,8 +40,6 @@
 (package-need 'python)
 
 (after 'python
-  (add-hook 'python-mode-hook 'flymake-mode-on)
-
   (after 'flymake-checkers
     ;; Bring flymake and manual checking in sync
     (setq python-check-command (flymake-checkers-python-get-checker))))

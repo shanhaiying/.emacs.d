@@ -200,8 +200,13 @@
 (unless (server-running-p) (server-start))
 
 ;; On-the-fly syntax checking
-(package-need 'flymake-checkers)
-(package-need 'flymake-cursor)
+(package-need 'flymake-checkers)        ; Additional error checkers
+(package-need 'flymake-cursor)          ; Show message under cursor in echo area
+(after 'flymake
+  ;; Do not bug the user with GUI warnings
+  (setq flymake-gui-warnings-enabled nil))
+;; Enable flymake
+(add-hook 'find-file-hook 'flymake-find-file-hook)
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)

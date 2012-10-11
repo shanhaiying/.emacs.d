@@ -45,9 +45,7 @@
 
   ;; FIXME: CoffeeScript does not derive from prog-mode, see
   ;; https://github.com/defunkt/coffee-mode/issues/93
-  (stante-setup-programming-mode-hook 'coffee-mode-hook)
-
-  (add-hook 'coffee-mode-hook 'flymake-mode-on))
+  (stante-setup-programming-mode-hook 'coffee-mode-hook))
 
 (provide 'stante-coffee)
 
