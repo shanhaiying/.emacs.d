@@ -199,10 +199,9 @@
 (require 'server)
 (unless (server-running-p) (server-start))
 
-;; Additional flymake checkers and user interface
-(after 'flymake
-  (package-need 'flymake-checkers)
-  (package-need 'flymake-cursor))
+;; On-the-fly syntax checking
+(package-need 'flymake-checkers)
+(package-need 'flymake-cursor)
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)
