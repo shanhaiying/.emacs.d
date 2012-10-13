@@ -1,5 +1,4 @@
 ;;; stante-spelling.el --- Stante Pede Modules: Spell checking
-;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

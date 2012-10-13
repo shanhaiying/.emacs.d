@@ -1,5 +1,4 @@
 ;;; stante-lib-io.el --- Stante Pede Library: IO functions
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

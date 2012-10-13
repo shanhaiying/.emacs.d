@@ -1,5 +1,4 @@
 ;;; prelude-ui.el --- Stante Pede Modules: User interface configuration
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

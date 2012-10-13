@@ -1,5 +1,4 @@
 ;;; stante-lib-TeX-biber.el --- Stante Pede Library: AUCTeX biber support
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

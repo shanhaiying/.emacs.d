@@ -1,5 +1,4 @@
 ;;; stante-lib-programming.el --- Stante Pede Library: Programming functions
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

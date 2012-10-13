@@ -1,5 +1,4 @@
 ;;; stante-coffee.el --- Stante Pede Modules: CoffeeScript support
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

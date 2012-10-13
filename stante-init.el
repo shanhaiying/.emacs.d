@@ -1,5 +1,4 @@
 ;;; stante-init.el --- Stante Pede entry point
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

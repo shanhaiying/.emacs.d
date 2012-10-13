@@ -1,5 +1,4 @@
 ;;; init.el --- Stante Pede: Instantly awesome Emacs
-;;; -*- coding: utf-8 -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

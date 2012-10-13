@@ -1,5 +1,4 @@
 ;;; stante-lib-os-x.el --- Stante Pede Library: OS X support
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

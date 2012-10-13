@@ -1,5 +1,4 @@
 ;;; stante-lib-load.el --- Stante Pede Library: Loading functions
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

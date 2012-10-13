@@ -1,5 +1,4 @@
 ;;; stante-latex.el --- Stante Pede Modules: LaTeX support
-;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

@@ -1,5 +1,4 @@
 ;;; stante-python.el --- Stante Pede Modules: Python support
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

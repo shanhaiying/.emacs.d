@@ -1,5 +1,4 @@
 ;;; stante-lib-TeX-latexmk.el --- Stante Pede Library: AUCTeX latexmk support
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

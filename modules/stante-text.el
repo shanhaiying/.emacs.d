@@ -1,5 +1,4 @@
 ;;; stante-text.el --- Stante Pede Modules: Basic plain text editing
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

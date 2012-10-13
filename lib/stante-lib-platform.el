@@ -1,5 +1,4 @@
 ;;; stante-lib-platform.el --- Stante Pede Library: Platform identification
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

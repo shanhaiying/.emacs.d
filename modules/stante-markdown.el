@@ -1,5 +1,4 @@
 ;;; stante-markdown.el --- Stante Pede Modules: Markdown support
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

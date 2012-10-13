@@ -1,5 +1,4 @@
 ;;; stante-tools.el --- Stante Pede Modules: Various tools
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

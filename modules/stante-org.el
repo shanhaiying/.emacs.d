@@ -1,5 +1,4 @@
 ;;; stante-org.el --- Stante Pede Modules: Org mode configuration
-;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;

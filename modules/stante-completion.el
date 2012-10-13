@@ -1,5 +1,4 @@
 ;;; stante-completion.el --- Stante Pede Modules: Auto completion
-;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
