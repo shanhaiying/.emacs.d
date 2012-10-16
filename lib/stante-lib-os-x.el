@@ -59,6 +59,7 @@ hard-code the bundle ID in your code."
   (let ((script (format "id of app \"%s\"" bundle)))
     (car (process-lines "osascript" "-e" script))))
 
+;;;###autoload
 (defun stante-path-of-bundle (id)
   "Get the path of a bundle with ID.
 
