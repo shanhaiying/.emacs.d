@@ -102,8 +102,7 @@
                 TeX-PDF-mode t)
 
   ;; Setup sub modes
-  (dolist (hook '(flymake-mode-on  ; Automatic checking
-                  turn-on-reftex   ; Reference management
+  (dolist (hook '(turn-on-reftex   ; Reference management
                   LaTeX-math-mode  ; Math input
                   ))
     (add-hook 'LaTeX-mode-hook hook)))
