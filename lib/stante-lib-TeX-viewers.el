@@ -44,8 +44,7 @@
 
 Skim is an advanced PDF viewer for OS X with SyncTex support.
 See http://skim-app.sourceforge.net/ for more information."
-  (car (process-lines "mdfind" "kMDItemCFBundleIdentifier \
-== 'net.sourceforge.skim-app.skim'")))
+  (stante-path-of-bundle "net.sourceforge.skim-app.skim"))
 
 (defun stante-find-skim-displayline ()
   "Return the path of the displayline frontend of Skim.

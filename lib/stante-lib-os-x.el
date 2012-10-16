@@ -47,6 +47,26 @@ homebrew.  In future, more sophisticated logic might be added."
         (concat (directory-file-name prefix) "/libexec/gnubin"))
     (error nil)))
 
+(defun stante-id-of-bundle (bundle)
+  "Get the ID of a BUNDLE.
+
+BUNDLE is the user-visible name of the bundle as string.  Return
+the id of the bundle as string.
+
+Do not use this function in code.  IDs are constant, hence use it
+*during development* to determine the ID of the bundle, and then
+hard-code the bundle ID in your code."
+  (let ((script (format "id of app \"%s\"" bundle)))
+    (car (process-lines "osascript" "-e" script))))
+
+(defun stante-path-of-bundle (id)
+  "Get the path of a bundle with ID.
+
+ID is the bundle ID (see `stante-id-of-bundle' as string.  Return
+the directory path of the bundle as string."
+  (let ((query (format "kMDItemCFBundleIdentifier == '%s'" id)))
+    (car (process-lines "mdfind" query))))
+
 (provide 'stante-lib-os-x)
 
 ;;; stante-lib-os-x.el ends here
