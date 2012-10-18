@@ -43,6 +43,11 @@
     ;; Bring flymake and manual checking in sync
     (setq python-check-command (flymake-checkers-python-get-checker))))
 
+(after 'expand-region
+  ;; Tell expand-region about the Python mode we're using
+  (setq expand-region-guess-python-mode nil
+        expand-region-preferred-python-mode 'fgallina-python))
+
 (provide 'stante-python)
 
 ;;; stante-python.el ends here
