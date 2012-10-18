@@ -145,7 +145,6 @@
 
 ;; Region expansion
 (package-need 'expand-region)
-(require 'expand-region)
 
 ;; Narrowing
 (put 'narrow-to-region 'disabled nil)
