@@ -60,6 +60,9 @@
 (require 'stante-markdown)
 (require 'stante-org)
 
+;; Sciene
+(require 'stante-proofgeneral)
+
 ;; Localization support
 (require 'stante-german)
 

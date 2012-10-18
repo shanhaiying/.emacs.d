@@ -1,0 +1,3 @@
+[submodule "vendor/ProofGeneral"]
+	path = vendor/ProofGeneral
+	url = https://github.com/emacsmirror/proofgeneral.git
