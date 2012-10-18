@@ -45,6 +45,10 @@
 
 (load (concat stante-dir "vendor/ProofGeneral/generic/proof-site.el"))
 
+(after 'proof-useropts
+  ;; Do not spam the frame with windows when executing a buffer
+  (setq proof-three-window-enable nil))
+
 (provide 'stante-proofgeneral)
 
 ;;; stante-proofgeneral.el ends here
