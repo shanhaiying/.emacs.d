@@ -33,15 +33,20 @@
 
 (require 'stante-lib-autoloads)
 
-(defun stante-find-isabelle-os-x ()
+(defun stante-find-isabelle-binary-os-x (&optional binary)
   "Find the Isabelle process executable."
-  (let ((directory (stante-path-of-bundle "de.tum.in.isabelle")))
+  (let ((directory (stante-path-of-bundle "de.tum.in.isabelle"))
+        (binary (or binary "isabelle")))
     (when directory
-      (concat directory "/Contents/Resources/Isabelle/bin/isabelle-process"))))
+      (executable-find
+       (concat directory "/Contents/Resources/Isabelle/bin/" binary)))))
 
 (after 'isabelle-system
   (when (stante-is-os-x)
-    (setq isabelle-program-name-override (stante-find-isabelle-os-x))))
+    (setq
+     isabelle-program-name-override (stante-find-isabelle-binary-os-x
+                                     "isabelle-process")
+     isa-isabelle-command (stante-find-isabelle-binary-os-x))))
 
 (load (concat stante-dir "vendor/ProofGeneral/generic/proof-site.el"))
 
