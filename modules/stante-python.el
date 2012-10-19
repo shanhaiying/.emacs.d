@@ -36,12 +36,21 @@
 (require 'stante-lib-autoloads)
 (require 'stante-programming)
 
+(eval-when-compile
+  (require 'cl))
+
 (package-need 'python)
 
+(defconst stante-python-checkers '("flake8" "epylint" "pyflakes")
+  "Python checking tools.
+
+Candidates for `python-check-command'.")
+
+;; Find the best checker
 (after 'python
-  (after 'flymake-checkers
-    ;; Bring flymake and manual checking in sync
-    (setq python-check-command (flymake-checkers-python-get-checker))))
+  (setq python-check-command (dolist (checker stante-python-checkers)
+                               (when (executable-find checker)
+                                 (return checker)))))
 
 (after 'expand-region
   ;; Tell expand-region about the Python mode we're using
