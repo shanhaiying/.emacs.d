@@ -198,10 +198,10 @@
 (unless (server-running-p) (server-start))
 
 ;; On-the-fly syntax checking
-(package-need 'flymake-cursor)          ; Show message under cursor in echo area
-(package-need 'flymake-checkers)        ; Additional error checkers
-;; Enable flymake
-(add-hook 'find-file-hook 'flymake-checkers-mode-on)
+(package-need 'flymake-cursor)           ; Nicer flymake messages
+;; Flymake reloaded :)
+(package-need 'flycheck)
+(add-hook 'find-file-hook 'flycheck-mode-on)
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)
