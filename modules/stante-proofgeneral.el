@@ -41,12 +41,15 @@
       (executable-find
        (concat directory "/Contents/Resources/Isabelle/bin/" binary)))))
 
+;; PG prompts for Isabelle executable when loading, hence we need to set the
+;; command *before* loading PG.
+(setq isa-isabelle-command (stante-find-isabelle-binary-os-x))
+
 (after 'isabelle-system
   (when (stante-is-os-x)
     (setq
      isabelle-program-name-override (stante-find-isabelle-binary-os-x
-                                     "isabelle-process")
-     isa-isabelle-command (stante-find-isabelle-binary-os-x))))
+                                     "isabelle-process"))))
 
 (load (concat stante-dir "vendor/ProofGeneral/generic/proof-site.el"))
 
