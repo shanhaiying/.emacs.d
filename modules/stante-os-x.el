@@ -106,6 +106,9 @@ with homebrew, or report an issue with M-x stante-report-issue."))))
         mac-right-option-modifier 'none
         mac-right-command-modifier 'super)
 
+  ;; Do not popup new frames
+  (setq ns-pop-up-frames nil)
+
   (unless (fboundp 'ns-toggle-fullscreen)
     (defun ns-toggle-fullscreen ()
       "Dummy for OS X fullscreen functionality."
