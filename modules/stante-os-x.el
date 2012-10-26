@@ -109,8 +109,7 @@ with homebrew, or report an issue with M-x stante-report-issue."))))
   (unless (fboundp 'ns-toggle-fullscreen)
     (defun ns-toggle-fullscreen ()
       "Dummy for OS X fullscreen functionality."
-      (message "Your Emacs build does not provide fullscreen functionality.
-Install Emacs from homebrew with \"brew install emacs --cocoa\".")))
+      (message "Your Emacs build does not provide fullscreen functionality.")))
 
   (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen))
 
