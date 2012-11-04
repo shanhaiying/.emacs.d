@@ -114,7 +114,10 @@
 ;; Smoother scrolling
 (setq scroll-margin 0
       scroll-conservatively 100000
-      scroll-preserve-screen-position 1)
+      scroll-preserve-screen-position 1
+      mouse-wheel-scroll-amount '(1))
+
+(setq )
 
 ;; Improve mode line
 (line-number-mode t)
