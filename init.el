@@ -53,6 +53,7 @@
 (require 'stante-python)
 (require 'stante-coffee)
 (require 'stante-sh)
+(require 'stante-haskell)
 
 ;; Markup languages
 (require 'stante-latex)
