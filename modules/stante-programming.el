@@ -115,7 +115,8 @@
         global-semantic-stickyfunc-mode ;; Show current tag at top of buffer
         ))
 ;; Move semantic database to proper place
-(setq semanticdb-default-save-directory (concat stante-var-dir "semanticdb"))
+(setq semanticdb-default-save-directory
+      (expand-file-name "semanticdb" stante-var-dir))
 
 (defun stante-add-task-keywords ()
   "Highlight tasks in the current buffer.

@@ -149,7 +149,7 @@
 (setq ido-enable-flex-matching t    ; Match characters if string doesn't match
       ido-create-new-buffer 'always ; Create a new buffer if nothing matches
       ido-use-filename-at-point 'guess
-      ido-save-directory-list-file (concat stante-var-dir "ido.hist")
+      ido-save-directory-list-file (expand-file-name "ido.hist" stante-var-dir)
       ido-default-file-method 'selected-window)
 
 ;; Move summary and "output" (i.e. from Auctex) to the end to keep these out
@@ -217,7 +217,7 @@ corresponding packages."
       (package-need package))))
 
 (defvar stante-save-frame-parameters-file
-  (concat stante-var-dir "frame-parameters")
+  (expand-file-name "frame-parameters" stante-var-dir)
   "File in which to storce frame parameters on exit.")
 
 (defun stante-restore-frame-parameters ()

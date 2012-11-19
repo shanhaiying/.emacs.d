@@ -110,9 +110,9 @@
 
 ;; Move backup and autosave files to var directory.
 (setq backup-directory-alist
-      `((".*" . ,(concat stante-var-dir "backup")))
+      `((".*" . ,(expand-file-name "backup" stante-var-dir)))
       auto-save-file-name-transforms
-      `((".*" ,(concat stante-var-dir "auto-save") t)))
+      `((".*" ,(expand-file-name "auto-save" stante-var-dir) t)))
 
 ;; Sane coding system choice
 (prefer-coding-system 'utf-8)
@@ -158,24 +158,24 @@
         ;; Save every three minutes (the default five minutes is a bit long)
         savehist-autosave-interval 180
         ;; Move save file into proper directory
-        savehist-file (concat stante-var-dir "savehist")))
+        savehist-file (expand-file-name "savehist" stante-var-dir)))
 (savehist-mode t)
 ;; Recent files
 (after 'recentf
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15
         ;; Move to property directory
-        recentf-save-file (concat stante-var-dir "recentf")))
+        recentf-save-file (expand-file-name "recentf" stante-var-dir)))
 (recentf-mode t)
 ;; Locations in files
 (after 'saveplace
-  (setq save-place-file (concat stante-var-dir "saveplace"))
+  (setq save-place-file (expand-file-name "saveplace" stante-var-dir))
   (setq-default save-place t))
 (require 'saveplace)
 
 ;; Configure bookmarks
 (after 'bookmark
-  (setq bookmark-default-file (concat stante-var-dir "bookmarks")
+  (setq bookmark-default-file (expand-file-name "bookmarks" stante-var-dir)
         ;; Save on every modification
         bookmark-save-flag 1))
 

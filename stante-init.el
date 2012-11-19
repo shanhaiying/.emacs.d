@@ -86,15 +86,15 @@ Please install GNU Emacs 24.1 to use Stante Pede"
   "The location of the `stante-init' file.")
 (defconst stante-dir (file-name-directory stante-init-file)
   "The root directory of Stante Pede.")
-(defconst stante-modules-dir (concat stante-dir "modules/")
+(defconst stante-modules-dir (expand-file-name "modules/" stante-dir)
   "The directory containing all Stante Pede modules.")
-(defconst stante-lib-dir (concat stante-dir "lib/")
+(defconst stante-lib-dir (expand-file-name "lib/" stante-dir)
   "The directory containing Stante Pede utility libraries.")
-(defconst stante-var-dir (concat stante-dir "var/")
+(defconst stante-var-dir (expand-file-name "var/" stante-dir)
   "This folder stores automatically generated files.")
 
 ;; Stante files
-(defconst stante-custom-file (concat stante-dir "custom.el")
+(defconst stante-custom-file (expand-file-name "custom.el" stante-dir)
   "The location of the `custom-file' for Stante Pede.")
 
 (add-to-list 'load-path stante-modules-dir)

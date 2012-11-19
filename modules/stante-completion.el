@@ -60,7 +60,8 @@
                 ;; Set a default trigger key
                 ac-trigger-key "TAB"
                 ;; Move history file to property directory
-                ac-comphist-file (concat stante-var-dir "ac-comphist"))
+                ac-comphist-file (expand-file-name
+                                  "ac-comphist" stante-var-dir))
   (global-auto-complete-mode 1)
   )
 

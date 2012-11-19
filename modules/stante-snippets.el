@@ -51,7 +51,7 @@
 
 (require 'stante-lib-autoloads)
 
-(defconst stante-snippets-dir (concat stante-dir "snippets/")
+(defconst stante-snippets-dir (expand-file-name "snippets/" stante-dir)
   "The directory where Stante Pede snippets are stored.")
 
 (package-need 'yasnippet)
