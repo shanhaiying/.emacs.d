@@ -45,7 +45,8 @@
 
 ;; PG prompts for Isabelle executable when loading, hence we need to set the
 ;; command *before* loading PG.
-(setq isa-isabelle-command (stante-find-isabelle-binary-os-x))
+(when (stante-is-os-x)
+  (setq isa-isabelle-command (stante-find-isabelle-binary-os-x)))
 
 (after 'isabelle-system
   (when (stante-is-os-x)
