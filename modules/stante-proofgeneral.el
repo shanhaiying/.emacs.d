@@ -35,11 +35,13 @@
 
 (defun stante-find-isabelle-binary-os-x (&optional binary)
   "Find the Isabelle process executable."
-  (let ((directory (stante-path-of-bundle "de.tum.in.isabelle"))
+  (let ((bundle-directory (stante-path-of-bundle "de.tum.in.isabelle"))
         (binary (or binary "isabelle")))
-    (when directory
-      (executable-find
-       (concat directory "/Contents/Resources/Isabelle/bin/" binary)))))
+    (when bundle-directory
+      (let ((binary-directory
+             (expand-file-name "Contents/Resources/Isabelle/bin"
+                               bundle-directory)))
+        (executable-find (expand-file-name binary binary-directory))))))
 
 ;; PG prompts for Isabelle executable when loading, hence we need to set the
 ;; command *before* loading PG.
