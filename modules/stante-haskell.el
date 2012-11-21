@@ -39,12 +39,6 @@
 (package-need 'haskell-mode)
 
 (after 'haskell-mode
-  ;; FIXME: Haskell mode does not derive from prog-mode yet, see
-  ;; https://github.com/haskell/haskell-mode/pull/86
-  (stante-setup-programming-mode-hook 'haskell-mode-hook)
-  (after 'stante-spelling
-    (add-hook 'haskell-mode-hook 'flyspell-prog-mode))
-
   (dolist (hook '(turn-on-haskell-indentation
                   turn-on-haskell-doc-mode
                   turn-on-haskell-decl-scan))
