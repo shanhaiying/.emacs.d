@@ -72,6 +72,10 @@
                       :foreground nil :background nil
                       :inherit 'font-lock-string-face))
 
+(after 'isar
+  ;; Setup Proof modes as programming modes
+  (stante-setup-programming-mode-hook 'proof-mode-hook))
+
 (provide 'stante-proofgeneral)
 
 ;;; stante-proofgeneral.el ends here
