@@ -60,6 +60,14 @@
   ;; Do not spam the frame with windows when executing a buffer
   (setq proof-three-window-enable nil))
 
+(after 'isar-syntax
+  (set-face-attribute 'isabelle-string-face nil
+                      :foreground nil :background nil
+                      :inherit 'font-lock-string-face)
+  (set-face-attribute 'isabelle-quote-face nil
+                      :foreground nil :background nil
+                      :inherit 'font-lock-string-face))
+
 (provide 'stante-proofgeneral)
 
 ;;; stante-proofgeneral.el ends here
