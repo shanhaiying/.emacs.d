@@ -33,6 +33,10 @@
 
 (require 'stante-lib-autoloads)
 
+(defconst stante-proofgeneral-dir
+  (expand-file-name "vendor/ProofGeneral" stante-dir)
+  "The directory of Proof General.")
+
 (defun stante-find-isabelle-binary-os-x (&optional binary)
   "Find the Isabelle process executable."
   (let ((bundle-directory (stante-path-of-bundle "de.tum.in.isabelle"))
@@ -54,7 +58,7 @@
      isabelle-program-name-override (stante-find-isabelle-binary-os-x
                                      "isabelle-process"))))
 
-(load (concat stante-dir "vendor/ProofGeneral/generic/proof-site.el"))
+(load (expand-file-name "generic/proof-site.el" stante-proofgeneral-dir))
 
 (after 'proof-useropts
   ;; Do not spam the frame with windows when executing a buffer
