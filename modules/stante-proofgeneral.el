@@ -74,7 +74,8 @@
 
 (after 'proof-script
   ;; Setup Proof modes as programming modes
-  (stante-setup-programming-mode-hook 'proof-mode-hook))
+  (stante-setup-programming-mode-hook 'proof-mode-hook)
+  (add-hook 'proof-mode-hook 'stante-whitespace-mode-no-overlong-lines))
 
 (provide 'stante-proofgeneral)
 
