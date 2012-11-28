@@ -72,7 +72,7 @@
                       :foreground nil :background nil
                       :inherit 'font-lock-string-face))
 
-(after 'isar
+(after 'proof-script
   ;; Setup Proof modes as programming modes
   (stante-setup-programming-mode-hook 'proof-mode-hook))
 
