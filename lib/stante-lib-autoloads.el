@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (stante-TeX-select-view-programs) "stante-lib-TeX-viewers"
-;;;;;;  "stante-lib-TeX-viewers.el" (20605 27471))
+;;;;;;  "stante-lib-TeX-viewers.el" (20605 36483))
 ;;; Generated autoloads from stante-lib-TeX-viewers.el
 
 (autoload 'stante-TeX-select-view-programs "stante-lib-TeX-viewers" "\
@@ -16,7 +16,7 @@ Select the best view programs for the current platform.
 
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
-;;;;;;  (20605 27399))
+;;;;;;  (20605 36483))
 ;;; Generated autoloads from stante-lib-io.el
 
 (autoload 'stante-get-file-contents "stante-lib-io" "\
@@ -40,7 +40,7 @@ Return a list of lines of file FILENAME.
 ;;;***
 
 ;;;### (autoloads (stante-merge-alists) "stante-lib-lists" "stante-lib-lists.el"
-;;;;;;  (20605 27399))
+;;;;;;  (20605 36483))
 ;;; Generated autoloads from stante-lib-lists.el
 
 (autoload 'stante-merge-alists "stante-lib-lists" "\
@@ -53,7 +53,7 @@ Items in B replace items in A with matching `car'.
 ;;;***
 
 ;;;### (autoloads (after) "stante-lib-load" "stante-lib-load.el"
-;;;;;;  (20605 27399))
+;;;;;;  (20605 36483))
 ;;; Generated autoloads from stante-lib-load.el
 
 (autoload 'after "stante-lib-load" "\
@@ -69,7 +69,7 @@ FILE may be a named feature, see `eval-after-load'.
 
 ;;;### (autoloads (stante-report-issue stante-byte-recompile stante-update-autoload-file)
 ;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20605
-;;;;;;  27399))
+;;;;;;  36483))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el") "\
@@ -102,7 +102,7 @@ and C-c C-c k to cancel the process.
 ;;;***
 
 ;;;### (autoloads (stante-path-of-bundle stante-find-os-x-coreutils)
-;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20605 27485))
+;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20605 36483))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
@@ -126,7 +126,7 @@ the directory path of the bundle as string.
 ;;;***
 
 ;;;### (autoloads (package-require package-need) "stante-lib-package"
-;;;;;;  "stante-lib-package.el" (20605 27399))
+;;;;;;  "stante-lib-package.el" (20605 36483))
 ;;; Generated autoloads from stante-lib-package.el
 
 (autoload 'package-need "stante-lib-package" "\
@@ -145,7 +145,7 @@ Ensure that package NAME is available and require the feature NAME.
 
 ;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
 ;;;;;;  stante-is-os-x) "stante-lib-platform" "stante-lib-platform.el"
-;;;;;;  (20605 27399))
+;;;;;;  (20605 36483))
 ;;; Generated autoloads from stante-lib-platform.el
 
 (autoload 'stante-is-os-x "stante-lib-platform" "\
@@ -173,7 +173,7 @@ Return nil if running in cygwin or under MS-DOS.
 ;;;***
 
 ;;;### (autoloads (stante-ido-goto-symbol) "stante-lib-programming"
-;;;;;;  "stante-lib-programming.el" (20605 27399))
+;;;;;;  "stante-lib-programming.el" (20605 36483))
 ;;; Generated autoloads from stante-lib-programming.el
 
 (autoload 'stante-ido-goto-symbol "stante-lib-programming" "\
@@ -189,8 +189,21 @@ Refresh imenu and jump to a place in the buffer using Ido.
 
 ;;;***
 
+;;;### (autoloads (stante-whitespace-mode-no-overlong-lines) "stante-lib-text"
+;;;;;;  "stante-lib-text.el" (20661 60539))
+;;; Generated autoloads from stante-lib-text.el
+
+(autoload 'stante-whitespace-mode-no-overlong-lines "stante-lib-text" "\
+Disable highlighting of overlong lines in `whitespace-mode'.
+
+Affects the current buffer only.
+
+\(fn)" nil nil)
+
+;;;***
+
 ;;;### (autoloads nil nil ("stante-lib-TeX-biber.el" "stante-lib-TeX-latexmk.el")
-;;;;;;  (20605 27491 243404))
+;;;;;;  (20661 60544 797817))
 
 ;;;***
 

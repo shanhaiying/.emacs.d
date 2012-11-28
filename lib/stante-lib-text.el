@@ -1,10 +1,10 @@
-;;; stante-org.el --- Stante Pede Modules: Org mode configuration
+;;; stante-lib-text.el --- Stante Pede Library: Text functions
 ;;
 ;; Copyright (c) 2012 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
-;; URL: https://gihub.com/lunaryorn/stantepede.git
-;; Keywords: extensions tools
+;; URL: https://gihub.com/lunaryorn/stante-pede.git
+;; Keywords: extensions
 
 ;; This file is not part of GNU Emacs.
 
@@ -26,21 +26,29 @@
 
 ;;; Commentary:
 
-;; Provide configuration for `org-mode'.
+;; Loading functions
+
+;; `stante-whitespace-mode-no-overlong-lines' disables highlighting of overlong
+;; lines in `whitespace-mode'.
+
+
+;; Load `stante-lib-autoloads' to use functions of this library.
+
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
-(require 'stante-text)
+;;;###autoload
+(defun stante-whitespace-mode-no-overlong-lines ()
+  "Disable highlighting of overlong lines in `whitespace-mode'.
 
-(after 'org
-  (add-hook 'org-mode-hook 'stante-whitespace-mode-no-overlong-lines)
-  ;; Make windmove work in org-mode
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right))
+Affects the current buffer only."
+  (let ((prior whitespace-mode))
+    (whitespace-mode 0)
+    (set (make-local-variable 'whitespace-style) whitespace-style)
+    (mapc (lambda (s) (setq whitespace-style (remq s whitespace-style)))
+          '(lines lines-tail))
+    (whitespace-mode prior)))
 
-(provide 'stante-org)
+(provide 'stante-lib-text)
 
-;;; stante-org.el ends here
+;;; stante-lib-text.el ends here

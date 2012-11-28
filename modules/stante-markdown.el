@@ -73,7 +73,7 @@
   ;; Disable auto-filling and highlighting of overlong lines, because line
   ;; breaks are significant in `gfm-mode'.
   (add-hook 'gfm-mode-hook 'turn-off-auto-fill)
-  (add-hook 'gfm-mode-hook 'stante-text-whitespace-no-overlong-lines))
+  (add-hook 'gfm-mode-hook 'stante-whitespace-mode-no-overlong-lines))
 
 (provide 'stante-markdown)
 

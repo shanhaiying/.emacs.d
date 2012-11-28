@@ -56,19 +56,6 @@ Also arrange for trailing whitespace to be removed before saving."
   (whitespace-mode 1)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
-(defun stante-text-whitespace-no-overlong-lines ()
-  "Configure `whitespace-style' to disable highlighting overlong lines.
-
-Use this function in hooks of modes that should not bother with
-overlong lines."
-  ;; Disable whitespace mode and remove visualization of overlong lines.
-  (whitespace-mode 0)
-  (set (make-local-variable 'whitespace-style) whitespace-style)
-  (mapc (lambda (s) (setq whitespace-style (remq s whitespace-style)))
-        '(lines lines-tail))
-  ;; Eventually re-enable whitespace mode
-  (whitespace-mode 1))
-
 (after "text-mode"
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (add-hook 'text-mode-hook 'stante-text-whitespace))
