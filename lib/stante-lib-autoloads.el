@@ -190,7 +190,7 @@ Refresh imenu and jump to a place in the buffer using Ido.
 ;;;***
 
 ;;;### (autoloads (stante-whitespace-mode-no-overlong-lines) "stante-lib-text"
-;;;;;;  "stante-lib-text.el" (20661 60539))
+;;;;;;  "stante-lib-text.el" (20666 14278))
 ;;; Generated autoloads from stante-lib-text.el
 
 (autoload 'stante-whitespace-mode-no-overlong-lines "stante-lib-text" "\
@@ -202,8 +202,8 @@ Affects the current buffer only.
 
 ;;;***
 
-;;;### (autoloads nil nil ("stante-lib-TeX-biber.el" "stante-lib-TeX-latexmk.el")
-;;;;;;  (20661 60544 797817))
+;;;### (autoloads nil nil ("stante-lib-TeX-latexmk.el") (20670 5965
+;;;;;;  197724))
 
 ;;;***
 

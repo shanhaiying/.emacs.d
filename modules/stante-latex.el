@@ -174,17 +174,6 @@
   (setcar (cdr (assoc "Check" TeX-command-list))  "chktex -v3 -q -I %s")
   )
 
-
-;; HACK: Provide rough biblatex/biber support.  Should work for compiling, but
-;; more advanced support is missing.  Look into using the patches provided by
-;; the Biber author itself, and check how Auctex upstream works on this.
-(after 'tex-buf
-  (if (boundp 'TeX-command-biber)
-      (message "Detected Biber support in AUCTeX.")
-
-    (message "No Biber support in AUCTeX, enabling experimental support.")
-    (require 'stante-lib-TeX-biber)))
-
 (provide 'stante-latex)
 
 ;;; stante-latex.el ends here
