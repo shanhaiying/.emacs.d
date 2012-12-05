@@ -155,8 +155,12 @@
   ;; Make RefTeX recognize biblatex bibliographies
   (add-to-list 'reftex-bibliography-commands "addbibresource"))
 
-(after 'bib-cite (setq bib-cite-use-reftex-view-crossref t))
+(after 'bib-cite
+  (setq bib-cite-use-reftex-view-crossref t))
 
+;; Configure bibtex editing to use biblatex by default
+(after 'bibtex
+  (bibtex-set-dialect 'biblatex)
 
 ;; BibTeX manager
 (package-need 'ebib)
