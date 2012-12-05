@@ -161,6 +161,17 @@
 ;; Configure bibtex editing to use biblatex by default
 (after 'bibtex
   (bibtex-set-dialect 'biblatex)
+  ;; Configure exhaustive cleanup of bibtex entries
+  (setq bibtex-entry-format '(opts-or-alts
+                              required-fields
+                              numerical-fields
+                              whitespace
+                              realign
+                              last-comma
+                              delimiters
+                              unify-case
+                              strings
+                              sort-fields)))
 
 ;; BibTeX manager
 (package-need 'ebib)
