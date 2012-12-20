@@ -46,8 +46,15 @@
 
 Candidates for `python-check-command'.")
 
+(defun stante-python-filling ()
+  "Configure filling for Python."
+  ;; PEP 8 recommends a maximum of 79 characters
+  (setq fill-column 79))
+
 ;; Find the best checker
 (after 'python
+  (add-hook 'python-mode-hook 'stante-python-filling)
+
   (setq python-check-command (dolist (checker stante-python-checkers)
                                (when (executable-find checker)
                                  (return checker)))))
