@@ -64,7 +64,7 @@
                            "markdown2"
                            "pandoc"))))
     (if processor
-        (setq markdown-command "kramdown")
+        (setq markdown-command processor)
       (message "No markdown processor found, falling back to default %s"
                markdown-command))))
 
