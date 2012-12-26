@@ -197,8 +197,6 @@
 (require 'server)
 (unless (server-running-p) (server-start))
 
-;; On-the-fly syntax checking
-(package-need 'flymake-cursor)           ; Nicer flymake messages
 ;; Flymake reloaded :)
 (package-need 'flycheck)
 (add-hook 'find-file-hook 'flycheck-mode-on)
