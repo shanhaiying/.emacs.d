@@ -117,8 +117,6 @@
       scroll-preserve-screen-position 1
       mouse-wheel-scroll-amount '(1))
 
-(setq )
-
 ;; Improve mode line
 (line-number-mode t)
 (column-number-mode t)
