@@ -43,6 +43,15 @@
 ;; standard monospace font on many Linux distributions, hence seems a good
 ;; choice for Stante Pede, too.
 
+
+;; Paths
+;; -----
+;;
+;; Fix paths for graphical emacs.
+;;
+;; Take $PATH and other important variables from an interactive shell.
+
+
 ;; Noise reduction
 ;; ---------------
 ;;
@@ -93,6 +102,13 @@
 ;;; Code:
 
 (require 'stante-lib-autoloads)
+
+(when (display-graphic-p)
+  ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
+  ;; the `$PATH'.
+  (package-need 'exec-path-from-shell)
+  (exec-path-from-shell-initialize))
+
 
 ;; Disable toolbar and menu bar (except on OS X where the menubar is present
 ;; anyway)

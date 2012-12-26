@@ -60,14 +60,6 @@
 ;; homebrew: "brew install Emacs --cocoa".  Note that the patch included in
 ;; homebrew does not create a separate space for a full screen Emacs.
 
-;; Paths
-;; -----
-;;
-;; Fix paths on OS X.
-;;
-;; Add common directories with executables as well as files from /etc/paths.d to
-;; $PATH and `exec-path'.
-
 ;; Keybindings
 ;; -----------
 ;;
@@ -80,12 +72,6 @@
 (require 'stante-lib-autoloads)
 
 (when (stante-is-os-x)
-  (when (display-graphic-p)
-    ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
-    ;; the `$PATH'.
-    (package-need 'exec-path-from-shell)
-    (exec-path-from-shell-initialize))
-
   ;; Find GNU Coreutils (mostly for "ls --dired").  Do this *after* fixing path
   ;; in graphical Emacs to bring the necessary utilities in space.
   (let ((coreutils-dir (stante-find-os-x-coreutils)))
