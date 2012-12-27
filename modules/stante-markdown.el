@@ -59,6 +59,7 @@
 
 (defun stante-find-markdown-processor ()
   "Find a suitable markdown processor."
+  (interactive)
   (let ((processor (some 'executable-find
                          '("kramdown"
                            "markdown2"
