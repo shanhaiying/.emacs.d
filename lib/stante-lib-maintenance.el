@@ -60,7 +60,8 @@
   (interactive)
   (byte-recompile-directory stante-lib-dir 0)
   (byte-recompile-directory stante-modules-dir 0)
-  (byte-recompile-file stante-init-file nil 0))
+  (let ((init-file (file-name-sans-extension stante-init-file) ))
+    (byte-recompile-file (concat init-file ".el") nil 0)))
 
 (defvar stante-report-issue-title nil
   "The title of
