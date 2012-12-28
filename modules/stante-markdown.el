@@ -58,7 +58,7 @@
 
 (defvar stante-markdown-commands
   '(("kramdown")
-    ("markdown2" "-e" "fenced-code-blocks")
+    ("markdown2" "-x" "fenced-code-blocks")
     ("pandoc"))
   "Supported markdown commands.")
 
