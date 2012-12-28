@@ -57,17 +57,30 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 
+(defvar stante-markdown-commands
+  '(("kramdown")
+    ("markdown2" "-e" "fenced-code-blocks")
+    ("pandoc"))
+  "Supported markdown commands.")
+
 (defun stante-find-markdown-processor ()
-  "Find a suitable markdown processor."
+  "Find a suitable markdown processor.
+
+Search for a suitable markdown processor using
+`stante-markdown-commands' and set `markdown-command' properly.
+
+Return the new `markdown-command' or signal an error if no
+suitable processor was found."
   (interactive)
-  (let ((processor (some 'executable-find
-                         '("kramdown"
-                           "markdown2"
-                           "pandoc"))))
-    (if processor
-        (setq markdown-command processor)
-      (message "No markdown processor found, falling back to default %s"
-               markdown-command))))
+  ;; Clear previous command
+  (setq markdown-command nil)
+  (dolist (command stante-markdown-commands)
+    (when (executable-find (car command))
+      (setq markdown-command (mapconcat #'shell-quote-argument command " "))
+      (return)))
+  (unless markdown-command
+    (error "No markdown processor found"))
+  markdown-command)
 
 (after 'markdown-mode
   (stante-find-markdown-processor)
