@@ -199,7 +199,7 @@
 
 ;; Flymake reloaded :)
 (package-need 'flycheck)
-(add-hook 'find-file-hook 'flycheck-mode-on)
+(add-hook 'find-file-hook 'flycheck-mode)
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)
