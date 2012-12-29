@@ -42,12 +42,7 @@
   "Disable highlighting of overlong lines in `whitespace-mode'.
 
 Affects the current buffer only."
-  (let ((prior whitespace-mode))
-    (whitespace-mode 0)
-    (set (make-local-variable 'whitespace-style) whitespace-style)
-    (mapc (lambda (s) (setq whitespace-style (remq s whitespace-style)))
-          '(lines lines-tail))
-    (whitespace-mode prior)))
+  (whitespace-toggle-options '(lines lines-tail)))
 
 (provide 'stante-lib-text)
 
