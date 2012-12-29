@@ -138,10 +138,6 @@
 (column-number-mode t)
 (size-indication-mode t)
 
-;; Reduce fringes
-(if (fboundp 'fringe-mode)
-    (fringe-mode 4))
-
 ;; Unify Yes/No questions
 (fset 'yes-or-no-p 'y-or-n-p)
 
