@@ -139,6 +139,8 @@
 (package-need 'volatile-highlights)
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
+(after 'whitespace
+  (setq whitespace-style '(face tabs empty trailing lines-tail)))
 
 ;; Cleanup stale buffers
 (require 'midnight)
