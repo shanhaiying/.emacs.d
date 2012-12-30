@@ -97,6 +97,9 @@
 ;;
 ;; M-/ dynamically expands the word under point with `hippie-expand'.
 ;;
+;; M-Z zaps up to, but not including a specified character, similar to
+;; `zap-to-char` (see `zap-up-to-char`).
+;;
 ;; M-x w or C-= expands the current region with the closest surrounding semantic
 ;; unit (see `er/expand-region').
 ;;
@@ -206,10 +209,15 @@
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)
 
+;; Some missing autoloads
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR.")
+
 ;; Keybindings
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x j") 'join-line)
+(global-set-key (kbd "M-Z") 'zap-up-to-char)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-=") 'er/expand-region) ; As suggested by documentation
 (global-set-key (kbd "C-x w") 'er/expand-region)
