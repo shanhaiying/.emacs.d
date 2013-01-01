@@ -72,8 +72,8 @@
 ;; WARNING:  Loading themes can execute *arbitrary* code.  Do NEVER load themes
 ;; from untrusted sources!
 
-;;(load-theme 'inkpot t)
-;;(load-theme 'solarized-light t)
+;; An eye-friendly light theme
+(load-theme 'solarized-light t)
 ;;(load-theme 'solarized-dark t)
 ;;(load-theme 'zenburn t)
 
