@@ -1,6 +1,6 @@
 ;;; prelude-ui.el --- Stante Pede Modules: User interface configuration
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://github.com/lunaryorn/stante-pede.git
@@ -97,6 +97,8 @@
 ;;
 ;; C-h A searches for any Lisp symbol matching a regular expression (see
 ;; `apropos').
+;;
+;; C-c h runs Helm, for incremental completion and narrowing.
 
 
 ;;; Code:
@@ -162,10 +164,8 @@
       ido-save-directory-list-file (expand-file-name "ido.hist" stante-var-dir)
       ido-default-file-method 'selected-window)
 
-;; Move summary and "output" (i.e. from Auctex) to the end to keep these out
-;; of the way
-(add-hook 'ido-make-buffer-list-hook 'ido-summary-buffers-to-end)
-
+;; Enable HELM
+(package-need 'helm)
 
 ;; Improve minibuffer completion
 (icomplete-mode +1)
@@ -268,6 +268,8 @@ Save the top left position and the width and height to
 (global-set-key (kbd "C-x p") 'proced)
 ;; Complementary to C-h a
 (global-set-key (kbd "C-h A") 'apropos)
+;; Helm
+(global-set-key (kbd "C-c h") 'helm-mini)
 
 (provide 'stante-ui)
 
