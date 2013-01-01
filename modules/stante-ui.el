@@ -98,7 +98,12 @@
 ;; C-h A searches for any Lisp symbol matching a regular expression (see
 ;; `apropos').
 ;;
-;; C-c h runs Helm, for incremental completion and narrowing.
+;; C-c h runs Helm, for incremental completion and narrowing (see `helm-mini').
+;;
+;; M-x executes a command interactively (see `smex').
+;;
+;; M-X executes a command interactively, limiting completion to commands of the
+;; current major mode (see `smex-major-mode-commands').
 
 
 ;;; Code:
@@ -166,6 +171,9 @@
 
 ;; Enable HELM
 (package-need 'helm)
+
+;; Enhance M-x
+(package-need 'smex)
 
 ;; Improve minibuffer completion
 (icomplete-mode +1)
@@ -270,6 +278,9 @@ Save the top left position and the width and height to
 (global-set-key (kbd "C-h A") 'apropos)
 ;; Helm
 (global-set-key (kbd "C-c h") 'helm-mini)
+;; Smex
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 (provide 'stante-ui)
 
