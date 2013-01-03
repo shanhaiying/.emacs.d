@@ -62,6 +62,7 @@
 
 (package-need 'paredit)
 (package-need 'rainbow-delimiters)
+(package-need 'elisp-slime-nav)
 
 
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
@@ -105,7 +106,6 @@ Create a new ielm process if required."
   ;; Check documentation in Emacs LISP
   (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
-  (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
   (define-key emacs-lisp-mode-map (kbd "C-c z")
     'stante-emacs-lisp-switch-to-ielm)
 
