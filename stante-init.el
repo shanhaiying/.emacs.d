@@ -1,6 +1,6 @@
 ;;; stante-init.el --- Stante Pede entry point
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -117,5 +117,9 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
+
+;; Install some essential libraries
+(package-need 'dash)
+(package-need 's)
 
 ;;; stante-init.el ends here
