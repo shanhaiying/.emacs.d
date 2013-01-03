@@ -1,6 +1,6 @@
 ;;; stante-lib-TeX-viewers.el --- Stante Pede Library: LaTeX viewer selection
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -52,8 +52,7 @@ See http://skim-app.sourceforge.net/ for more information."
 Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
   (let ((skim-bundle (stante-find-skim-bundle)))
     (when skim-bundle
-      (concat (directory-file-name skim-bundle)
-              "/Contents/SharedSupport/displayline"))))
+      (expand-file-name "Contents/SharedSupport/displayline" skim-bundle))))
 
 (defun stante-TeX-find-view-programs-os-x ()
   "Find TeX view programs on OS X.
