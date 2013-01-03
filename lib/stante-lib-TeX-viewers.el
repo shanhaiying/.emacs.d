@@ -52,7 +52,8 @@ See http://skim-app.sourceforge.net/ for more information."
 Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
   (let ((skim-bundle (stante-find-skim-bundle)))
     (when skim-bundle
-      (expand-file-name "Contents/SharedSupport/displayline" skim-bundle))))
+      (executable-find (expand-file-name "Contents/SharedSupport/displayline"
+                                         skim-bundle)))))
 
 (defun stante-TeX-find-view-programs-os-x ()
   "Find TeX view programs on OS X.
