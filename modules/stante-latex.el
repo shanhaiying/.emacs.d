@@ -162,6 +162,18 @@
 ;; Provide latexmk support.
 (after 'tex
   (unless (boundp 'TeX-command-latexmk) ; Just in case this ever gets upstreamed
+    (defvar TeX-command-latexmk "latexmk"
+      "The name of the latexmk command.")
+
+    ;; Declare Biber command
+    (unless (assoc TeX-command-latexmk TeX-command-list)
+      (add-to-list 'TeX-command-list
+                   `(,TeX-command-latexmk "latexmk" TeX-run-command t t
+                                          :help "Run latexmk")))
+
+    ;; Clean Biber files
+    (dolist (ext '("\\.fdb_latexmk" "\\.fls"))
+      (add-to-list 'LaTeX-clean-intermediate-suffixes ext))
     (require 'stante-lib-TeX-latexmk))
 
   ;; Replace lacheck with chktex for "Check" command

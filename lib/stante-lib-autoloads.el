@@ -68,8 +68,8 @@ FILE may be a named feature, see `eval-after-load'.
 ;;;***
 
 ;;;### (autoloads (stante-report-issue stante-byte-recompile stante-update-autoload-file)
-;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20605
-;;;;;;  36483))
+;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20701
+;;;;;;  31066 0 0))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el") "\
@@ -102,7 +102,7 @@ and C-c C-c k to cancel the process.
 ;;;***
 
 ;;;### (autoloads (stante-path-of-bundle stante-find-os-x-coreutils)
-;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20605 36483))
+;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20709 60895 0 0))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
@@ -190,7 +190,7 @@ Refresh imenu and jump to a place in the buffer using Ido.
 ;;;***
 
 ;;;### (autoloads (stante-whitespace-mode-no-overlong-lines) "stante-lib-text"
-;;;;;;  "stante-lib-text.el" (20666 14278))
+;;;;;;  "stante-lib-text.el" (20703 14092 0 0))
 ;;; Generated autoloads from stante-lib-text.el
 
 (autoload 'stante-whitespace-mode-no-overlong-lines "stante-lib-text" "\
@@ -199,11 +199,6 @@ Disable highlighting of overlong lines in `whitespace-mode'.
 Affects the current buffer only.
 
 \(fn)" nil nil)
-
-;;;***
-
-;;;### (autoloads nil nil ("stante-lib-TeX-latexmk.el") (20670 5965
-;;;;;;  197724))
 
 ;;;***
 
