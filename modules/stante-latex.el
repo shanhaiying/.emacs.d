@@ -1,6 +1,6 @@
 ;;; stante-latex.el --- Stante Pede Modules: LaTeX support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -109,27 +109,6 @@
 
 ;; Select best viewing programs
 (after 'tex (stante-TeX-select-view-programs))
-
-;; Move LaTeX intermediates to end
-(defun stante-LaTeX-intermediate-p (filename)
-  "Determine whether FILENAME is an intermediate file."
-  (require 'latex) ; for LaTeX-clean-intermediate-suffixes
-  (let* ((suffixes LaTeX-clean-intermediate-suffixes)
-         (regexp (concat "\\("
-                         (mapconcat 'identity suffixes "\\|")
-                         "\\)\\'")))
-    (string-match-p regexp filename)))
-
-(defun ido-LaTeX-intermediates-to-end ()
-  "Move LaTeX intermediate files to end."
-  (let ((intermediates
-         (delq nil (mapcar (lambda (x)
-                             (when (stante-LaTeX-intermediate-p x) x))
-                           ido-temp-list))))
-    (ido-to-end intermediates)))
-
-(after 'ido
-  (add-hook 'ido-make-file-list-hook 'ido-LaTeX-intermediates-to-end))
 
 ;; Configure RefTeX
 (after 'reftex
