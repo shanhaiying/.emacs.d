@@ -1,6 +1,6 @@
 ;;; stante-emacs-lisp.el --- Stante Pede Modules: Emacs LISP support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -104,7 +104,7 @@ Create a new ielm process if required."
   (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
   (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
-  (define-key emacs-lisp-mode-map (kbd "C-c C-z")
+  (define-key emacs-lisp-mode-map (kbd "C-c z")
     'stante-emacs-lisp-switch-to-ielm)
 
   (after 'auto-complete
