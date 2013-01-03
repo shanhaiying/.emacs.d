@@ -61,6 +61,7 @@
 (require 'stante-programming)
 
 (package-need 'paredit)
+(package-need 'rainbow-delimiters)
 
 
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
@@ -95,7 +96,8 @@ Create a new ielm process if required."
 (after 'lisp-mode
   (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
     (add-hook hook 'turn-on-eldoc-mode)
-    (add-hook hook 'paredit-mode))
+    (add-hook hook 'paredit-mode)
+    (add-hook hook 'rainbow-delimiters-mode))
 
   (add-hook 'emacs-lisp-mode-hook
             'stante-emacs-lisp-clean-byte-code-on-save)
