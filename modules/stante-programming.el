@@ -1,6 +1,6 @@
 ;;; stante-programming.el --- Stante Pede Modules: Basic programming support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -106,6 +106,7 @@
 ;;; Code:
 
 (require 'stante-lib-autoloads)
+(package-require 'dash)
 
 ;; Default semantic submodes
 (setq semantic-default-submodes
@@ -150,11 +151,11 @@ Also arrange for a whitespace cleanup before saving."
 Currently this functions adds `stante-auto-fill-comments',
 `stante-programming-whitespace', `stante-programming-keybindings'
 and `stante-add-task-keywords' to HOOK."
-  (dolist (func '(stante-auto-fill-comments
-                  stante-programming-whitespace
-                  stante-programming-keybindings
-                  stante-add-task-keywords))
-    (add-hook hook func)))
+  (--each '(stante-auto-fill-comments
+            stante-programming-whitespace
+            stante-programming-keybindings
+            stante-add-task-keywords)
+    (add-hook hook it)))
 
 (after 'simple ; prog-mode is contained in simple.el
   (stante-setup-programming-mode-hook 'prog-mode-hook))

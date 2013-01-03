@@ -1,6 +1,6 @@
 ;;; stante-python.el --- Stante Pede Modules: Python support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -55,9 +55,7 @@ Candidates for `python-check-command'.")
 (after 'python
   (add-hook 'python-mode-hook 'stante-python-filling)
 
-  (setq python-check-command (dolist (checker stante-python-checkers)
-                               (when (executable-find checker)
-                                 (return checker)))))
+  (setq python-check-command (-first 'executable-find stante-python-checkers)))
 
 (after 'expand-region
   ;; Tell expand-region about the Python mode we're using

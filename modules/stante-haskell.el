@@ -1,6 +1,6 @@
 ;;; stante-haskell.el --- Stante Pede Modules: Haskell support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -35,14 +35,15 @@
 
 (require 'stante-lib-autoloads)
 (require 'stante-programming)
+(package-require 'dash)
 
 (package-need 'haskell-mode)
 
 (after 'haskell-mode
-  (dolist (hook '(turn-on-haskell-indentation
-                  turn-on-haskell-doc-mode
-                  turn-on-haskell-decl-scan))
-    (add-hook 'haskell-mode-hook hook)))
+  (--each '(turn-on-haskell-indentation
+            turn-on-haskell-doc-mode
+            turn-on-haskell-decl-scan)
+    (add-hook 'haskell-mode-hook it)))
 
 (provide 'stante-haskell)
 

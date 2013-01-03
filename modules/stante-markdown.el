@@ -1,6 +1,6 @@
 ;;; stante-markdown.el --- Stante Pede Modules: Markdown support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -50,6 +50,7 @@
   (require 'markdown-mode))
 (require 'stante-lib-autoloads)
 (require 'stante-text)
+(package-require 'dash)
 
 (package-need 'markdown-mode)
 
@@ -72,11 +73,10 @@ Return the new `markdown-command' or signal an error if no
 suitable processor was found."
   (interactive)
   ;; Clear previous command
-  (setq markdown-command nil)
-  (dolist (command stante-markdown-commands)
-    (when (executable-find (car command))
-      (setq markdown-command (mapconcat #'shell-quote-argument command " "))
-      (return)))
+  (setq markdown-command
+        (mapconcat #'shell-quote-argument
+                   (--first (executable-find (car it)) stante-markdown-commands)
+                   " "))
   (unless markdown-command
     (error "No markdown processor found"))
   markdown-command)

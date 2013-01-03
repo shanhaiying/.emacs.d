@@ -81,6 +81,7 @@
 
 (require 'stante-lib-autoloads)
 (require 'stante-text)
+(package-require 'dash)
 
 ;; Install and configure *the* LaTeX environment
 (package-need 'auctex)
@@ -102,10 +103,7 @@
                 TeX-PDF-mode t)
 
   ;; Setup sub modes
-  (dolist (hook '(turn-on-reftex   ; Reference management
-                  LaTeX-math-mode  ; Math input
-                  ))
-    (add-hook 'LaTeX-mode-hook hook)))
+  (--each '(turn-on-reftex LaTeX-math-mode) (add-hook 'LaTeX-mode-hook it)))
 
 ;; Select best viewing programs
 (after 'tex (stante-TeX-select-view-programs))
@@ -169,11 +167,12 @@
     (unless (assoc TeX-command-latexmk TeX-command-list)
       (add-to-list 'TeX-command-list
                    `(,TeX-command-latexmk "latexmk" TeX-run-command t t
-                                          :help "Run latexmk")))
+                                          :Help "Run latexmk")))
 
     ;; Clean Biber files
-    (dolist (ext '("\\.fdb_latexmk" "\\.fls"))
-      (add-to-list 'LaTeX-clean-intermediate-suffixes ext))
+    (--each '("\\.fdb_latexmk" "\\.fls")
+      (add-to-list 'LaTeX-clean-intermediate-suffixes it))
+
     (require 'stante-lib-TeX-latexmk))
 
   ;; Replace lacheck with chktex for "Check" command
