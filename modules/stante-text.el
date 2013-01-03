@@ -1,6 +1,6 @@
 ;;; stante-text.el --- Stante Pede Modules: Basic plain text editing
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -46,8 +46,16 @@
 ;; Highlight whitespace in text buffers (see `whitespace-mode') and remove
 ;; trailing whitespace after saving.
 
+;; Guru editing
+;; ------------
+;;
+;; Disable some common key bindings from other Editors, e.g. arrow keys, and
+;; suggest alternatives to use Emacs as its meant to be used.
 
 ;;; Code:
+
+;; Guru editing
+(package-need 'guru-mode)
 
 (defun stante-text-whitespace ()
   "Enable whitespace mode for current buffer.
@@ -58,7 +66,8 @@ Also arrange for trailing whitespace to be removed before saving."
 
 (after "text-mode"
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
-  (add-hook 'text-mode-hook 'stante-text-whitespace))
+  (add-hook 'text-mode-hook 'stante-text-whitespace)
+  (add-hook 'text-mode-hook 'guru-mode))
 
 (provide 'stante-text)
 

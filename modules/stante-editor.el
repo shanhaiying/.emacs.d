@@ -1,6 +1,6 @@
 ;;; stante-editor.el --- Stante Pede Modules: Basic editing
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -40,12 +40,6 @@
 ;; Enable `auto-fill-mode' in all text modes and increase the default fill
 ;; column to 80 characters, which is the maximum recommended by most programming
 ;; style guides.
-
-;; Guru editing
-;; ------------
-;;
-;; Disable some common key bindings from other Editors, e.g. arrow keys, and
-;; suggest alternatives to use Emacs as its meant to be used.
 
 ;; Parenthesis, brackets, etc.
 ;; --------------------------
@@ -150,10 +144,6 @@
 (volatile-highlights-mode t)
 (after 'whitespace
   (setq whitespace-style '(face tabs empty trailing lines-tail)))
-
-;; Guru editing
-(package-need 'guru-mode)
-(guru-global-mode 1)
 
 ;; Cleanup stale buffers
 (require 'midnight)

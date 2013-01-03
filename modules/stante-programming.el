@@ -46,6 +46,12 @@
 ;;
 ;; Automatically fill comments in each programming buffer.
 
+;; Guru editing
+;; ------------
+;;
+;; Disable some common key bindings from other Editors, e.g. arrow keys, and
+;; suggest alternatives to use Emacs as its meant to be used.
+
 ;; Task keywords
 ;; -------------
 ;;
@@ -108,6 +114,9 @@
 (require 'stante-lib-autoloads)
 (package-require 'dash)
 
+;; Guru editing
+(package-need 'guru-mode)
+
 ;; Default semantic submodes
 (setq semantic-default-submodes
       '(global-semanticdb-minor-mode ;; Cache database
@@ -154,7 +163,8 @@ and `stante-add-task-keywords' to HOOK."
   (--each '(stante-auto-fill-comments
             stante-programming-whitespace
             stante-programming-keybindings
-            stante-add-task-keywords)
+            stante-add-task-keywords
+            guru-mode)
     (add-hook hook it)))
 
 (after 'simple ; prog-mode is contained in simple.el
