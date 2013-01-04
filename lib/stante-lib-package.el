@@ -31,8 +31,6 @@
 ;; `package-need' ensures that a package is installed.
 ;; installed.
 
-;; Load `stante-lib-autoloads' to use the functions of this module.
-
 
 ;;; Code:
 

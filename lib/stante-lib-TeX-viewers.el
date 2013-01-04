@@ -31,8 +31,6 @@
 ;; `stante-TeX-select-view-programs' selects proper viewers for the current
 ;; platform.
 
-;; Load `stante-lib-autoloads' to use the functions of this library.
-
 
 ;;; Code:
 

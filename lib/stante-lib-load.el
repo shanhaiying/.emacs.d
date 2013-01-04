@@ -1,6 +1,6 @@
 ;;; stante-lib-load.el --- Stante Pede Library: Loading functions
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -29,8 +29,6 @@
 ;; Loading functions
 
 ;; `after' executes a block after a feature or library was loaded.
-
-;; Load `stante-lib-autoloads' to use functions of this library.
 
 
 ;;; Code:

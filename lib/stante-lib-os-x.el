@@ -1,6 +1,6 @@
 ;;; stante-lib-os-x.el --- Stante Pede Library: OS X support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -29,8 +29,6 @@
 ;; OS X support functions.
 
 ;; `stante-find-os-x-coreutils' searches for GNU Coreutils on OS X.
-
-;; Load `stante-lib-autoloads' to use the functions of this library.
 
 ;;; Code:
 

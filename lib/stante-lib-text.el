@@ -1,6 +1,6 @@
 ;;; stante-lib-text.el --- Stante Pede Library: Text functions
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -30,9 +30,6 @@
 
 ;; `stante-whitespace-mode-no-overlong-lines' disables highlighting of overlong
 ;; lines in `whitespace-mode'.
-
-
-;; Load `stante-lib-autoloads' to use functions of this library.
 
 
 ;;; Code:

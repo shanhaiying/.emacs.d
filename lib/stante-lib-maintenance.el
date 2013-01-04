@@ -35,8 +35,6 @@
 ;;
 ;; `stante-report-issue' reports an issue to the Stante Pede issue tracker.
 
-;; Load `stante-lib-autoloads' to use the functions of this library.
-
 ;;; Code:
 
 (require 'autoload)

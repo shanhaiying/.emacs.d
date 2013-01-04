@@ -1,6 +1,6 @@
 ;;; stante-lib-platform.el --- Stante Pede Library: Platform identification
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -35,8 +35,6 @@
 ;; `stante-is-gnome' determines whether Emacs is running in a Gnome session.
 ;;
 ;; `stante-is-windows' determines whether Emacs is running natively on Windows.
-
-;; Load `stante-lib-autoloads' to use the functions of this module.
 
 
 ;;; Code:

@@ -1,6 +1,6 @@
 ;;; stante-lib-io.el --- Stante Pede Library: IO functions
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -33,8 +33,6 @@
 ;; `stante-set-file-contents' sets the contents of a file.
 ;;
 ;; `stante-get-file-lines' gets the lines in a file as list.
-
-;; Load `stante-lib-autoloads' to use the functions of this library.
 
 ;;; Code:
 
