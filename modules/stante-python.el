@@ -53,6 +53,7 @@ Candidates for `python-check-command'.")
 ;; Find the best checker
 (after 'python
   (add-hook 'python-mode-hook 'stante-python-filling)
+  (add-hook 'python-mode-hook 'subword-mode)
 
   (setq python-check-command (-first 'executable-find stante-python-checkers)))
 

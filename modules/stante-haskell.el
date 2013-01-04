@@ -39,7 +39,8 @@
 (package-need 'haskell-mode)
 
 (after 'haskell-mode
-  (--each '(turn-on-haskell-indentation
+  (--each '(subword-mode
+            turn-on-haskell-indentation
             turn-on-haskell-doc-mode
             turn-on-haskell-decl-scan)
     (add-hook 'haskell-mode-hook it)))
