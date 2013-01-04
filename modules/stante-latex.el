@@ -166,9 +166,7 @@
     (unless (assoc TeX-command-latexmk TeX-command-list)
       (add-to-list 'TeX-command-list
                    `(,TeX-command-latexmk "latexmk" TeX-run-command t t
-                                          :Help "Run latexmk")))
-
-    (require 'stante-lib-TeX-latexmk))
+                                          :Help "Run latexmk"))))
 
   ;; Replace lacheck with chktex for "Check" command
   (setcar (cdr (assoc "Check" TeX-command-list))  "chktex -v3 -q -I %s"))

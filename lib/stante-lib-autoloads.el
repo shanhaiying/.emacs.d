@@ -89,7 +89,7 @@ and C-c C-c k to cancel the process.
 ;;;***
 
 ;;;### (autoloads (stante-path-of-bundle stante-find-os-x-coreutils)
-;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20709 60895 0 0))
+;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20663 41694))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
@@ -151,12 +151,6 @@ Return t if running natively on Windows, or nil otherwise.
 Return nil if running in cygwin or under MS-DOS.
 
 \(fn)" nil nil)
-
-;;;***
-
-
-;;;### (autoloads nil nil ("stante-lib-TeX-biber.el" "stante-lib-TeX-latexmk.el")
-;;;;;;  (20588 11435 623680))
 
 ;;;***
 
