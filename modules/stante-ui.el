@@ -244,7 +244,8 @@ corresponding packages."
         ;; Verify the read expression
         (when (and (listp params) (eq (length params) 4))
           (setq initial-frame-alist
-                (stante-merge-alists initial-frame-alist params))))
+                (append (--filter (assq (car it) params) initial-frame-alist)
+                        params nil))))
     (error nil)))
 
 (defun stante-save-frame-parameters ()

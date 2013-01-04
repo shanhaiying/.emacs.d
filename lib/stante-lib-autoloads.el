@@ -39,19 +39,6 @@ Return a list of lines of file FILENAME.
 
 ;;;***
 
-;;;### (autoloads (stante-merge-alists) "stante-lib-lists" "stante-lib-lists.el"
-;;;;;;  (20663 41694))
-;;; Generated autoloads from stante-lib-lists.el
-
-(autoload 'stante-merge-alists "stante-lib-lists" "\
-Update the alist A with B.
-
-Items in B replace items in A with matching `car'.
-
-\(fn A B)" nil nil)
-
-;;;***
-
 ;;;### (autoloads (after) "stante-lib-load" "stante-lib-load.el"
 ;;;;;;  (20663 41694))
 ;;; Generated autoloads from stante-lib-load.el
