@@ -36,7 +36,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
 (require 'tex-buf)
 
 (defun stante-find-skim-bundle ()

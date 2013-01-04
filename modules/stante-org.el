@@ -1,6 +1,6 @@
 ;;; stante-org.el --- Stante Pede Modules: Org mode configuration
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stantepede.git
@@ -30,7 +30,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
 (require 'stante-text)
 
 (after 'org

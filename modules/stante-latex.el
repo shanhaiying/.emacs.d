@@ -79,7 +79,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
 (require 'stante-text)
 (require 'dash)
 

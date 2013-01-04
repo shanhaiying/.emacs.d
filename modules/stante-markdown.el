@@ -48,7 +48,6 @@
 
 (eval-when-compile
   (require 'markdown-mode))
-(require 'stante-lib-autoloads)
 (require 'stante-text)
 (require 'dash)
 

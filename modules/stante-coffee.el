@@ -1,6 +1,6 @@
 ;;; stante-coffee.el --- Stante Pede Modules: CoffeeScript support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -33,7 +33,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
 (require 'stante-programming)
 
 (package-need 'coffee-mode)

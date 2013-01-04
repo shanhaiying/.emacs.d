@@ -33,7 +33,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
 (require 'stante-programming)
 (require 'dash)
 

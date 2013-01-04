@@ -57,7 +57,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
 (require 'stante-programming)
 
 (package-need 'paredit)

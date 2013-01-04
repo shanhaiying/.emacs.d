@@ -1,6 +1,6 @@
 ;;; stante-git.el --- Stante Pede Modules: Git support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -65,8 +65,6 @@
 ;; created Gist is opened in the default browser (see `gist-view-gist').
 
 ;;; Code:
-
-(require 'stante-lib-autoloads)
 
 (package-need 'magit)
 (package-need 'magithub)

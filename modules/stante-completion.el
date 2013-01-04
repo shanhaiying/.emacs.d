@@ -1,6 +1,6 @@
 ;;; stante-completion.el --- Stante Pede Modules: Auto completion
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -46,8 +46,6 @@
 
 
 ;;; Code:
-
-(require 'stante-lib-autoloads)
 
 (package-need 'auto-complete)
 (require 'auto-complete-config)

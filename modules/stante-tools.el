@@ -1,6 +1,6 @@
 ;;; stante-tools.el --- Stante Pede Modules: Various tools
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stantepede.git
@@ -37,8 +37,6 @@
 ;; Use M-x ack or M-x ack-same to search.
 
 ;;; Code:
-
-(require 'stante-lib-autoloads)
 
 (package-need 'ack-and-a-half)
 

@@ -111,7 +111,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
 (require 'dash)
 
 ;; Guru editing

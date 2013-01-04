@@ -108,8 +108,6 @@
 
 ;;; Code:
 
-(require 'stante-lib-autoloads)
-
 (when (display-graphic-p)
   ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
   ;; the `$PATH'.

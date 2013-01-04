@@ -100,6 +100,9 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 (add-to-list 'load-path stante-modules-dir)
 (add-to-list 'load-path stante-lib-dir)
 
+;; Load the library autoloads
+(load (expand-file-name "stante-lib-autoloads" stante-lib-dir) nil t)
+
 ;; Create cache directory
 (unless (file-exists-p stante-var-dir)
   (make-directory stante-var-dir))
@@ -119,7 +122,6 @@ Please install GNU Emacs 24.1 to use Stante Pede"
   (package-refresh-contents))
 
 ;; Pre-install some basic libraries
-(require 'stante-lib-package)
 (package-need 'dash)
 (package-need 's)
 

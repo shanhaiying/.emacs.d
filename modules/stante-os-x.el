@@ -1,6 +1,6 @@
 ;;; stante-os-x.el --- Stante Pede Modules: OS X support
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -68,8 +68,6 @@
 
 
 ;;; Code:
-
-(require 'stante-lib-autoloads)
 
 (when (stante-is-os-x)
   ;; Find GNU Coreutils (mostly for "ls --dired").  Do this *after* fixing path

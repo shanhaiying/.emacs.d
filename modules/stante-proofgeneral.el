@@ -1,7 +1,7 @@
 ;;; stante-proofgeneral.el --- Stante Pede Modules: Proof General support
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -30,8 +30,6 @@
 ;; Provide support for Proof General
 ;;
 ;;; Code:
-
-(require 'stante-lib-autoloads)
 
 (defconst stante-proofgeneral-dir
   (expand-file-name "vendor/ProofGeneral" stante-dir)
