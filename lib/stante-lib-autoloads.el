@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (stante-TeX-select-view-programs) "stante-lib-TeX-viewers"
-;;;;;;  "stante-lib-TeX-viewers.el" (20710 52411))
+;;;;;;  "stante-lib-TeX-viewers.el" (20710 57809))
 ;;; Generated autoloads from stante-lib-TeX-viewers.el
 
 (autoload 'stante-TeX-select-view-programs "stante-lib-TeX-viewers" "\
@@ -69,7 +69,7 @@ FILE may be a named feature, see `eval-after-load'.
 
 ;;;### (autoloads (stante-report-issue stante-byte-recompile stante-update-autoload-file)
 ;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20710
-;;;;;;  54588))
+;;;;;;  58142))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el") "\
@@ -164,17 +164,6 @@ Return t if running natively on Windows, or nil otherwise.
 Return nil if running in cygwin or under MS-DOS.
 
 \(fn)" nil nil)
-
-;;;***
-
-;;;### (autoloads (stante-ido-goto-symbol) "stante-lib-programming"
-;;;;;;  "stante-lib-programming.el" (20663 41694))
-;;; Generated autoloads from stante-lib-programming.el
-
-(autoload 'stante-ido-goto-symbol "stante-lib-programming" "\
-Refresh imenu and jump to a place in the buffer using Ido.
-
-\(fn &optional SYMBOL-LIST)" t nil)
 
 ;;;***
 

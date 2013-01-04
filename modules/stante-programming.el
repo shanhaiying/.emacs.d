@@ -105,8 +105,6 @@
 ;;
 ;; C-# toggles commenting for current region (see
 ;; `comment-or-uncomment-region').
-;;
-;; C-c i jumps to a symbol (see `stante-ido-goto-symbol').
 
 
 ;;; Code:
@@ -150,8 +148,7 @@ Also arrange for a whitespace cleanup before saving."
 
 (defun stante-programming-keybindings ()
   "Add the keybindings of this module to the `current-local-map'."
-  (local-set-key (kbd "C-#") 'comment-or-uncomment-region)
-  (local-set-key (kbd "C-c i") 'stante-ido-goto-symbol))
+  (local-set-key (kbd "C-#") 'comment-or-uncomment-region))
 
 (defun stante-setup-programming-mode-hook (hook)
   "Add all local programming setup functions to HOOK.
