@@ -71,9 +71,9 @@
                       :inherit 'font-lock-string-face))
 
 (after 'proof-script
+  (add-hook 'proof-mode-hook 'stante-whitespace-mode-no-overlong-lines)
   ;; Setup Proof modes as programming modes
-  (stante-setup-programming-mode-hook 'proof-mode-hook)
-  (add-hook 'proof-mode-hook 'stante-whitespace-mode-no-overlong-lines))
+  (add-hook 'proof-mode-hook 'stante-run-prog-mode-hook))
 
 (provide 'stante-proofgeneral)
 

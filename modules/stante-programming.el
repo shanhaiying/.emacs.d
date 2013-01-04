@@ -121,6 +121,7 @@
         global-semantic-idle-summary-mode ;; Show tab summary when idle
         global-semantic-stickyfunc-mode ;; Show current tag at top of buffer
         ))
+
 ;; Move semantic database to proper place
 (setq semanticdb-default-save-directory
       (expand-file-name "semanticdb" stante-var-dir))
@@ -150,21 +151,20 @@ Also arrange for a whitespace cleanup before saving."
   "Add the keybindings of this module to the `current-local-map'."
   (local-set-key (kbd "C-#") 'comment-or-uncomment-region))
 
-(defun stante-setup-programming-mode-hook (hook)
-  "Add all local programming setup functions to HOOK.
+(defun stante-run-prog-mode-hook ()
+  "Run `prog-mode-hook' manually.
 
-Currently this functions adds `stante-auto-fill-comments',
-`stante-programming-whitespace', `stante-programming-keybindings'
-and `stante-add-task-keywords' to HOOK."
+Use in programming modes that do not derive from `prog-mode'."
+  (require 'simple)
+  (run-hooks 'prog-mode-hook))
+
+(after 'simple ; prog-mode is contained in simple.el
   (--each '(stante-auto-fill-comments
             stante-programming-whitespace
             stante-programming-keybindings
             stante-add-task-keywords
             guru-mode)
-    (add-hook hook it)))
-
-(after 'simple ; prog-mode is contained in simple.el
-  (stante-setup-programming-mode-hook 'prog-mode-hook))
+    (add-hook 'prog-mode-hook it)))
 
 ;; Enable semantic
 (semantic-mode 1)
