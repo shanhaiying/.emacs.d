@@ -41,6 +41,8 @@
 
 (require 'autoload)
 (require 'stante-lib-package)
+(eval-when-compile
+  (require 'gh))
 
 ;;;###autoload
 (defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el")
@@ -74,6 +76,7 @@
 
 The issue is submitted to the Github issue tracker of Stante
 Pede."
+  ;; Load and install GH just in time
   (package-need 'gh)
   (require 'gh)
   (unless stante-report-issue-gh-api
