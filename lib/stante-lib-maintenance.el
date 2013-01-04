@@ -54,13 +54,13 @@
     (update-directory-autoloads stante-lib-dir)))
 
 ;;;###autoload
-(defun stante-byte-recompile ()
+(defun stante-byte-recompile (&optional force)
   "Byte-compile all modules of Stante pede."
-  (interactive)
-  (byte-recompile-directory stante-lib-dir 0)
-  (byte-recompile-directory stante-modules-dir 0)
+  (interactive "P")
+  (byte-recompile-directory stante-lib-dir 0 force)
+  (byte-recompile-directory stante-modules-dir 0 force)
   (let ((init-file (file-name-sans-extension stante-init-file) ))
-    (byte-recompile-file (concat init-file ".el") nil 0)))
+    (byte-recompile-file (concat init-file ".el") force 0)))
 
 (defvar stante-report-issue-title nil
   "The title of
