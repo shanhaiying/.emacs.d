@@ -1,6 +1,6 @@
 ;;; stante-lib-maintenance.el --- Stante Pede Library: Maintenance functions
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -41,7 +41,6 @@
 
 (require 'autoload)
 (require 'stante-lib-package)
-(package-require 'gh)
 
 ;;;###autoload
 (defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el")
@@ -75,6 +74,8 @@
 
 The issue is submitted to the Github issue tracker of Stante
 Pede."
+  (package-need 'gh)
+  (require 'gh)
   (unless stante-report-issue-gh-api
     (setq stante-report-issue-gh-api (gh-issues-api "Stante Pede issues API")))
   (let ((issue (make-instance 'gh-issues-issue

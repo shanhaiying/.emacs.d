@@ -1,6 +1,6 @@
 ;;; stante-lib-package.el --- Stante Pede Library: Package management functions
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -44,12 +44,6 @@
 
 If the package is not available, it is automatically installed."
   (unless (package-installed-p name) (package-install name)))
-
-;;;###autoload
-(defun package-require (name)
-  "Ensure that package NAME is available and require the feature NAME."
-  (package-need name)
-  (require name))
 
 (provide 'stante-lib-package)
 

@@ -35,7 +35,7 @@
 
 (require 'stante-lib-autoloads)
 (require 'stante-programming)
-(package-require 'dash)
+(require 'dash)
 
 (package-need 'haskell-mode)
 

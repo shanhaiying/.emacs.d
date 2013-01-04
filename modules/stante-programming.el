@@ -112,7 +112,7 @@
 ;;; Code:
 
 (require 'stante-lib-autoloads)
-(package-require 'dash)
+(require 'dash)
 
 ;; Guru editing
 (package-need 'guru-mode)

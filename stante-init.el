@@ -118,4 +118,9 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 (unless package-archive-contents
   (package-refresh-contents))
 
+;; Pre-install some basic libraries
+(require 'stante-lib-package)
+(package-need 'dash)
+(package-need 's)
+
 ;;; stante-init.el ends here

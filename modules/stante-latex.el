@@ -81,7 +81,7 @@
 
 (require 'stante-lib-autoloads)
 (require 'stante-text)
-(package-require 'dash)
+(require 'dash)
 
 ;; Install and configure *the* LaTeX environment
 (package-need 'auctex)

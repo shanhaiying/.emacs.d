@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (stante-TeX-select-view-programs) "stante-lib-TeX-viewers"
-;;;;;;  "stante-lib-TeX-viewers.el" (20605 36483))
+;;;;;;  "stante-lib-TeX-viewers.el" (20710 52411))
 ;;; Generated autoloads from stante-lib-TeX-viewers.el
 
 (autoload 'stante-TeX-select-view-programs "stante-lib-TeX-viewers" "\
@@ -16,7 +16,7 @@ Select the best view programs for the current platform.
 
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
-;;;;;;  (20605 36483))
+;;;;;;  (20663 41694))
 ;;; Generated autoloads from stante-lib-io.el
 
 (autoload 'stante-get-file-contents "stante-lib-io" "\
@@ -40,7 +40,7 @@ Return a list of lines of file FILENAME.
 ;;;***
 
 ;;;### (autoloads (stante-merge-alists) "stante-lib-lists" "stante-lib-lists.el"
-;;;;;;  (20605 36483))
+;;;;;;  (20663 41694))
 ;;; Generated autoloads from stante-lib-lists.el
 
 (autoload 'stante-merge-alists "stante-lib-lists" "\
@@ -53,7 +53,7 @@ Items in B replace items in A with matching `car'.
 ;;;***
 
 ;;;### (autoloads (after) "stante-lib-load" "stante-lib-load.el"
-;;;;;;  (20605 36483))
+;;;;;;  (20663 41694))
 ;;; Generated autoloads from stante-lib-load.el
 
 (autoload 'after "stante-lib-load" "\
@@ -68,8 +68,8 @@ FILE may be a named feature, see `eval-after-load'.
 ;;;***
 
 ;;;### (autoloads (stante-report-issue stante-byte-recompile stante-update-autoload-file)
-;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20701
-;;;;;;  31066 0 0))
+;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20710
+;;;;;;  54588))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el") "\
@@ -83,7 +83,7 @@ Update the autoload file of Stante Pede.
 (autoload 'stante-byte-recompile "stante-lib-maintenance" "\
 Byte-compile all modules of Stante pede.
 
-\(fn)" t nil)
+\(fn &optional FORCE)" t nil)
 
 (autoload 'stante-report-issue "stante-lib-maintenance" "\
 Report an issue with TITLE to Stante Pede.
@@ -125,8 +125,8 @@ the directory path of the bundle as string.
 
 ;;;***
 
-;;;### (autoloads (package-require package-need) "stante-lib-package"
-;;;;;;  "stante-lib-package.el" (20605 36483))
+;;;### (autoloads (package-need) "stante-lib-package" "stante-lib-package.el"
+;;;;;;  (20710 55243))
 ;;; Generated autoloads from stante-lib-package.el
 
 (autoload 'package-need "stante-lib-package" "\
@@ -136,16 +136,11 @@ If the package is not available, it is automatically installed.
 
 \(fn NAME)" nil nil)
 
-(autoload 'package-require "stante-lib-package" "\
-Ensure that package NAME is available and require the feature NAME.
-
-\(fn NAME)" nil nil)
-
 ;;;***
 
 ;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
 ;;;;;;  stante-is-os-x) "stante-lib-platform" "stante-lib-platform.el"
-;;;;;;  (20605 36483))
+;;;;;;  (20663 41694))
 ;;; Generated autoloads from stante-lib-platform.el
 
 (autoload 'stante-is-os-x "stante-lib-platform" "\
@@ -173,7 +168,7 @@ Return nil if running in cygwin or under MS-DOS.
 ;;;***
 
 ;;;### (autoloads (stante-ido-goto-symbol) "stante-lib-programming"
-;;;;;;  "stante-lib-programming.el" (20605 36483))
+;;;;;;  "stante-lib-programming.el" (20663 41694))
 ;;; Generated autoloads from stante-lib-programming.el
 
 (autoload 'stante-ido-goto-symbol "stante-lib-programming" "\
@@ -190,7 +185,7 @@ Refresh imenu and jump to a place in the buffer using Ido.
 ;;;***
 
 ;;;### (autoloads (stante-whitespace-mode-no-overlong-lines) "stante-lib-text"
-;;;;;;  "stante-lib-text.el" (20703 14092 0 0))
+;;;;;;  "stante-lib-text.el" (20708 16122))
 ;;; Generated autoloads from stante-lib-text.el
 
 (autoload 'stante-whitespace-mode-no-overlong-lines "stante-lib-text" "\

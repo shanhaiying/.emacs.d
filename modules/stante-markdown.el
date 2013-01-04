@@ -50,7 +50,7 @@
   (require 'markdown-mode))
 (require 'stante-lib-autoloads)
 (require 'stante-text)
-(package-require 'dash)
+(require 'dash)
 
 (package-need 'markdown-mode)
 
