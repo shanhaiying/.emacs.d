@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (stante-TeX-select-view-programs) "stante-lib-TeX-viewers"
-;;;;;;  "stante-lib-TeX-viewers.el" (20710 57809))
+;;;;;;  "stante-lib-TeX-viewers.el" (20710 59983))
 ;;; Generated autoloads from stante-lib-TeX-viewers.el
 
 (autoload 'stante-TeX-select-view-programs "stante-lib-TeX-viewers" "\
@@ -16,7 +16,7 @@ Select the best view programs for the current platform.
 
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
-;;;;;;  (20663 41694))
+;;;;;;  (20710 60037))
 ;;; Generated autoloads from stante-lib-io.el
 
 (autoload 'stante-get-file-contents "stante-lib-io" "\
@@ -40,7 +40,7 @@ Return a list of lines of file FILENAME.
 ;;;***
 
 ;;;### (autoloads (after) "stante-lib-load" "stante-lib-load.el"
-;;;;;;  (20663 41694))
+;;;;;;  (20710 60051))
 ;;; Generated autoloads from stante-lib-load.el
 
 (autoload 'after "stante-lib-load" "\
@@ -56,11 +56,8 @@ FILE may be a named feature, see `eval-after-load'.
 
 ;;;### (autoloads (stante-report-issue stante-byte-recompile stante-update-autoload-file)
 ;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20710
-;;;;;;  58142))
+;;;;;;  60209))
 ;;; Generated autoloads from stante-lib-maintenance.el
-
-(defconst stante-autoload-file (concat stante-lib-dir "stante-lib-autoloads.el") "\
-Location of the autoload file for the Stante Pede Library.")
 
 (autoload 'stante-update-autoload-file "stante-lib-maintenance" "\
 Update the autoload file of Stante Pede.
@@ -89,7 +86,7 @@ and C-c C-c k to cancel the process.
 ;;;***
 
 ;;;### (autoloads (stante-path-of-bundle stante-find-os-x-coreutils)
-;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20663 41694))
+;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20710 60033))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
@@ -113,7 +110,7 @@ the directory path of the bundle as string.
 ;;;***
 
 ;;;### (autoloads (package-need) "stante-lib-package" "stante-lib-package.el"
-;;;;;;  (20710 55243))
+;;;;;;  (20710 59976))
 ;;; Generated autoloads from stante-lib-package.el
 
 (autoload 'package-need "stante-lib-package" "\
@@ -127,7 +124,7 @@ If the package is not available, it is automatically installed.
 
 ;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
 ;;;;;;  stante-is-os-x) "stante-lib-platform" "stante-lib-platform.el"
-;;;;;;  (20663 41694))
+;;;;;;  (20710 60048))
 ;;; Generated autoloads from stante-lib-platform.el
 
 (autoload 'stante-is-os-x "stante-lib-platform" "\
@@ -155,7 +152,7 @@ Return nil if running in cygwin or under MS-DOS.
 ;;;***
 
 ;;;### (autoloads (stante-whitespace-mode-no-overlong-lines) "stante-lib-text"
-;;;;;;  "stante-lib-text.el" (20708 16122))
+;;;;;;  "stante-lib-text.el" (20710 59999))
 ;;; Generated autoloads from stante-lib-text.el
 
 (autoload 'stante-whitespace-mode-no-overlong-lines "stante-lib-text" "\

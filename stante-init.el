@@ -92,6 +92,9 @@ Please install GNU Emacs 24.1 to use Stante Pede"
   "The directory containing Stante Pede utility libraries.")
 (defconst stante-var-dir (expand-file-name "var/" stante-dir)
   "This folder stores automatically generated files.")
+(defconst stante-autoloads-file (expand-file-name "stante-lib-autoloads.el"
+                                                  stante-lib-dir)
+  "Location of the autoload file for the Stante Pede Library.")
 
 ;; Stante files
 (defconst stante-custom-file (expand-file-name "custom.el" stante-dir)
@@ -101,7 +104,7 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 (add-to-list 'load-path stante-lib-dir)
 
 ;; Load the library autoloads
-(load (expand-file-name "stante-lib-autoloads" stante-lib-dir) nil t)
+(load stante-autoloads-file nil t)
 
 ;; Create cache directory
 (unless (file-exists-p stante-var-dir)
