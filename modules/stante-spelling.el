@@ -1,6 +1,6 @@
 ;;; stante-spelling.el --- Stante Pede Modules: Spell checking
 ;;
-;; Copyright (c) 2012 Sebastian Wiesner
+;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; URL: https://gihub.com/lunaryorn/stante-pede.git
@@ -61,8 +61,10 @@
 
 ;;; Code:
 
-;; Just enable flyspell here.  ispell has reasonable defaults, so it doesn't
-;; need any configuration.
+;; Choose English as default languages, because programming is mostly done in
+;; this languages.
+(after 'ispell
+  (setq ispell-dictionary "en"))
 
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 (add-hook 'message-mode-hook 'turn-on-flyspell)
