@@ -56,7 +56,7 @@ FILE may be a named feature, see `eval-after-load'.
 
 ;;;### (autoloads (stante-report-issue stante-byte-recompile stante-update-autoload-file)
 ;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20710
-;;;;;;  60209))
+;;;;;;  60309))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (autoload 'stante-update-autoload-file "stante-lib-maintenance" "\

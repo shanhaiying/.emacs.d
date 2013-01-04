@@ -46,6 +46,8 @@
 (defun stante-update-autoload-file ()
   "Update the autoload file of Stante Pede."
   (interactive)
+  (ignore-errors
+    (delete-file stante-autoloads-file))
   (let ((generated-autoload-file stante-autoloads-file))
     (update-directory-autoloads stante-lib-dir)))
 
