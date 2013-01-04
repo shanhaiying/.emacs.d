@@ -162,21 +162,21 @@
     (defvar TeX-command-latexmk "latexmk"
       "The name of the latexmk command.")
 
-    ;; Declare Biber command
+    ;; Declare the latexmk command
     (unless (assoc TeX-command-latexmk TeX-command-list)
       (add-to-list 'TeX-command-list
                    `(,TeX-command-latexmk "latexmk" TeX-run-command t t
                                           :Help "Run latexmk")))
 
-    ;; Clean Biber files
-    (--each '("\\.fdb_latexmk" "\\.fls")
-      (add-to-list 'LaTeX-clean-intermediate-suffixes it))
-
     (require 'stante-lib-TeX-latexmk))
 
   ;; Replace lacheck with chktex for "Check" command
-  (setcar (cdr (assoc "Check" TeX-command-list))  "chktex -v3 -q -I %s")
-  )
+  (setcar (cdr (assoc "Check" TeX-command-list))  "chktex -v3 -q -I %s"))
+
+(after 'latex
+  ;; Clean latexmk files
+  (--each '("\\.fdb_latexmk" "\\.fls")
+    (add-to-list 'LaTeX-clean-intermediate-suffixes it)))
 
 (provide 'stante-latex)
 
