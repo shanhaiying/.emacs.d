@@ -93,12 +93,13 @@ with homebrew, or report an issue with M-x stante-report-issue."))))
   ;; Do not popup new frames
   (setq ns-pop-up-frames nil)
 
-  (unless (fboundp 'ns-toggle-fullscreen)
-    (defun ns-toggle-fullscreen ()
-      "Dummy for OS X fullscreen functionality."
-      (message "Your Emacs build does not provide fullscreen functionality.")))
-
-  (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen))
+  (cond
+   ((fboundp 'ns-toggle-fullscreen)
+    ;; Patched fullschreen support in Homebrew Emacs 24.x
+    (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen))
+   ((fboundp 'toggle-frame-fullscreen)
+    ;; Native fullscreen support in Emacs 24.3
+    (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen))))
 
 (provide 'stante-os-x)
 
