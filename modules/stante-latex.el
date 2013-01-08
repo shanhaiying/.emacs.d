@@ -83,7 +83,9 @@
 (require 'dash)
 
 ;; Install and configure *the* LaTeX environment
-(package-need 'auctex)
+;; FIXME: ELPA package is outdated
+;;(package-need 'auctex)
+(require 'tex-site)
 
 ;; Handle .latex files with AUCTeX, too.
 (add-to-list 'auto-mode-alist '("\\.[lL]a[tT]e[xX]\\'" . latex-mode))
