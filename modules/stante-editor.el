@@ -213,7 +213,6 @@
 
 ;; Keybindings
 (global-set-key (kbd "C-c o") 'occur)
-(global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x j") 'join-line)
 (global-set-key (kbd "M-Z") 'zap-up-to-char)
 (global-set-key (kbd "M-/") 'hippie-expand)
