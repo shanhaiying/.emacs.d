@@ -108,6 +108,8 @@
 
 ;;; Code:
 
+(require 'dash)
+
 (when (display-graphic-p)
   ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
   ;; the `$PATH'.
@@ -239,35 +241,38 @@ corresponding packages."
 (defun stante-restore-frame-parameters ()
   "Restore the frame parameters of the initial frame."
   (condition-case nil
-      (let* ((params (read (stante-get-file-contents
-                            stante-save-frame-parameters-file))))
+      (let ((params (--filter (memq (car it) stante-frame-parameters-to-save)
+                               (read (stante-get-file-contents
+                                      stante-save-frame-parameters-file)))))
         ;; Verify the read expression
-        (when (and (listp params) (eq (length params) 4))
+        (when (listp params)
           (setq initial-frame-alist
                 (append (--filter (assq (car it) params) initial-frame-alist)
                         params nil))))
     (error nil)))
 
+(defconst stante-frame-parameters-to-save
+  '(left top width height maximized fullscreen)
+  "Frame parameters to save and restore for the initial frame.")
+
 (defun stante-save-frame-parameters ()
   "Save frame parameters of the selected frame.
 
-Save the top left position and the width and height to
-`stante-save-frame-parameters-file'."
+Save selected parameters (see `stante-frame-parameters-to-save')
+to `stante-save-frame-parameters-file'."
   (condition-case nil
-      (let ((params (frame-parameters)))
+      (let ((params (--filter (memq (car it) stante-frame-parameters-to-save)
+                              (frame-parameters))))
         (when (and params (display-graphic-p)) ; GUI frames only!
-          (let ((extends (list (assq 'left params)
-                               (assq 'top params)
-                               (assq 'width params)
-                               (assq 'height params))))
-            (stante-set-file-contents
-             stante-save-frame-parameters-file
-             (with-output-to-string (prin1 extends) (terpri)))
-            t)))
+          (stante-set-file-contents
+           stante-save-frame-parameters-file
+           (with-output-to-string (prin1 params) (terpri)))
+          t))
     (file-error nil)))
+
 (unless noninteractive
-       (add-hook 'after-init-hook 'stante-restore-frame-parameters)
-       (add-hook 'kill-emacs-hook 'stante-save-frame-parameters))
+  (add-hook 'after-init-hook 'stante-restore-frame-parameters)
+  (add-hook 'kill-emacs-hook 'stante-save-frame-parameters))
 
 ;; Key bindings
 (global-set-key (kbd "C-x C-b") 'ibuffer)
