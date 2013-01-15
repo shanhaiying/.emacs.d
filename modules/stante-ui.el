@@ -238,6 +238,10 @@ corresponding packages."
   (expand-file-name "frame-parameters" stante-var-dir)
   "File in which to storce frame parameters on exit.")
 
+(defconst stante-frame-parameters-to-save
+  '(left top width height maximized fullscreen)
+  "Frame parameters to save and restore for the initial frame.")
+
 (defun stante-restore-frame-parameters ()
   "Restore the frame parameters of the initial frame."
   (condition-case nil
@@ -250,10 +254,6 @@ corresponding packages."
                 (append (--filter (assq (car it) params) initial-frame-alist)
                         params nil))))
     (error nil)))
-
-(defconst stante-frame-parameters-to-save
-  '(left top width height maximized fullscreen)
-  "Frame parameters to save and restore for the initial frame.")
 
 (defun stante-save-frame-parameters ()
   "Save frame parameters of the selected frame.
