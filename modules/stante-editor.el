@@ -102,9 +102,6 @@
 ;;
 ;; C-= expands the current region with the closest surrounding semantic unit
 ;; (see `er/expand-region').
-;;
-;; Return inserts a new line and indents according to mode (see
-;; `newline-and-indent').
 
 
 ;;; Code:
