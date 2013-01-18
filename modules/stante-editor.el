@@ -102,6 +102,9 @@
 ;;
 ;; C-= expands the current region with the closest surrounding semantic unit
 ;; (see `er/expand-region').
+;;
+;; C-c SPC starts Ace Jump mode to quickly navigate in the buffer.  C-x SPC
+;; jumps back.
 
 
 ;;; Code:
@@ -145,6 +148,9 @@
 
 ;; Region expansion
 (package-need 'expand-region)
+
+;; Word jumping
+(package-need 'ace-jump-mode)
 
 ;; Narrowing
 (put 'narrow-to-region 'disabled nil)
@@ -214,6 +220,8 @@
 (global-set-key (kbd "M-Z") 'zap-up-to-char)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-=") 'er/expand-region) ; As suggested by documentation
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
 (provide 'stante-editor)
 
