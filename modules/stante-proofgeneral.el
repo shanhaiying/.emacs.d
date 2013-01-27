@@ -70,11 +70,6 @@
                       :foreground nil :background nil
                       :inherit 'font-lock-string-face))
 
-(after 'proof-script
-  (add-hook 'proof-mode-hook 'stante-whitespace-mode-no-overlong-lines)
-  ;; Setup Proof modes as programming modes
-  (add-hook 'proof-mode-hook 'stante-run-prog-mode-hook))
-
 (provide 'stante-proofgeneral)
 
 ;;; stante-proofgeneral.el ends here
