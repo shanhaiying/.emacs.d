@@ -134,6 +134,9 @@
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
 
+;; Do not needlessly signal errors
+(setq scroll-error-top-bottom t)
+
 ;; Smoother scrolling
 (setq scroll-margin 0
       scroll-conservatively 100000
