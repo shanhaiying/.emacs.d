@@ -66,6 +66,8 @@
 (after 'ispell
   (setq ispell-dictionary "en"))
 
+(setq flyspell-use-meta-tab nil)        ; Keep M-Tab available for completion
+
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 (add-hook 'message-mode-hook 'turn-on-flyspell)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
