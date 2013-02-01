@@ -48,9 +48,6 @@
 ;; --------------
 ;;
 ;; Provide Github support in Magit and add support for creating Gists.
-;;
-;; Github support for Magit is provided by magithub from
-;; https://github.com/nex3/magithub).
 
 ;; Keybindings
 ;; -----------
@@ -67,7 +64,6 @@
 ;;; Code:
 
 (package-need 'magit)
-(package-need 'magithub)
 (package-need 'git-commit-mode)
 (package-need 'gitconfig-mode)
 (package-need 'gitignore-mode)
