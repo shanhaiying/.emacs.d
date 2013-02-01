@@ -124,6 +124,9 @@
 ;; No tabs for indentation
 (setq-default indent-tabs-mode nil
               tab-width 8)
+;; Automatic indentation
+(electric-indent-mode 1)
+(electric-layout-mode 1)
 
 ;; Configure filling
 (setq-default fill-column 80)
