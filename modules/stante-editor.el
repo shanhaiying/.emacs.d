@@ -188,6 +188,9 @@
         ;; Save on every modification
         bookmark-save-flag 1))
 
+;; Completion
+(setq completion-cycle-threshold 5)     ; Cycle with less than 5 candidates
+
 ;; Expansion functions
 (after 'hippie-exp
   (setq hippie-expand-try-functions-list
