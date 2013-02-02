@@ -123,8 +123,6 @@
 
 ;; Nice page breaks
 (package-need 'page-break-lines)
-(after 'page-break-lines
-  (add-to-list 'page-break-lines-modes 'outline-mode))
 (global-page-break-lines-mode)
 
 ;; No tabs for indentation
