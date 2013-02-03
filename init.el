@@ -58,7 +58,6 @@
 (require 'stante-latex)
 (require 'stante-markdown)
 (require 'stante-org)
-(require 'stante-misc-markup)
 
 ;; Sciene
 (require 'stante-proofgeneral)
@@ -66,11 +65,7 @@
 ;; Localization support
 (require 'stante-german)
 
-;; Choose a nice color theme.  See `customize-theme' for a list of themes that
-;; are already installed, and `stante-known-themes-alist' for a list of themes
-;; that can be installed from the Emacs package archives.  The following themes
-;; are recommendable, and definitely a good start.  Try these, and possibly
-;; others from the aforementioned lists to find one that you like.
+;; Choose a nice color theme.
 ;;
 ;; WARNING:  Loading themes can execute *arbitrary* code.  Do NEVER load themes
 ;; from untrusted sources!

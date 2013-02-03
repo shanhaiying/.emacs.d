@@ -63,17 +63,9 @@
 
 ;;; Code:
 
-(package-need 'magit)
-(package-need 'git-commit-mode)
-(package-need 'gitconfig-mode)
-(package-need 'gitignore-mode)
-
 (after 'magit
   ;; Do not ask before saving buffers on `magit-status'
   (setq magit-save-some-buffers 'dontask))
-
-
-(package-need 'gist)
 
 ;; Open newly created Gists in browser.
 (after 'gist

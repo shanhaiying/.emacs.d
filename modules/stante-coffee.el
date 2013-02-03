@@ -35,8 +35,6 @@
 
 (require 'stante-programming)
 
-(package-need 'coffee-mode)
-
 (after 'coffee-mode
   ;; CoffeeScript should use two spaces for indentation
   (setq coffee-tab-width 2)

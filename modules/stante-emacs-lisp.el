@@ -59,11 +59,6 @@
 
 (require 'stante-programming)
 
-(package-need 'paredit)
-(package-need 'rainbow-delimiters)
-(package-need 'elisp-slime-nav)
-
-
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
   "Remove byte code file corresponding to the Emacs Lisp BUFFER.
 

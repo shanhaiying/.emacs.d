@@ -36,8 +36,6 @@
 (require 'stante-programming)
 (require 'dash)
 
-(package-need 'haskell-mode)
-
 (after 'haskell-mode
   (--each '(subword-mode
             turn-on-haskell-indentation

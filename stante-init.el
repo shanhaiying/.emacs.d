@@ -118,14 +118,6 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 
 ;; Enable packages
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Pre-install some basic libraries
-(package-need 'dash)
-(package-need 's)
 
 ;;; stante-init.el ends here

@@ -1,0 +1,61 @@
+(source "melpa" "http://melpa.milkbox.net/packages/")
+
+;; Essential package management
+(depends-on "carton")
+
+;; Basic libraries
+(depends-on "dash")
+(depends-on "s")
+
+;; Color themes
+(depends-on "solarized-theme")
+(depends-on "zenburn-theme")
+
+;; Module: ui
+(depends-on "exec-path-from-shell")
+(depends-on "helm")
+(depends-on "smex")
+
+;; Module: editor
+(depends-on "page-break-lines")
+(depends-on "volatile-highlights")
+(depends-on "expand-region")
+(depends-on "ace-jump-mode")
+(depends-on "flycheck")
+
+;; Module: snippets
+(depends-on "yasnippet")
+
+;; Module: tools
+(depends-on "ack-and-a-half")
+
+;; Module: git
+(depends-on "magit")
+(depends-on "git-commit-mode")
+(depends-on "gitconfig-mode")
+(depends-on "gitignore-mode")
+(depends-on "gist")
+
+;; Module: programming
+(depends-on "guru-mode")
+
+;; Module: emacs-lisp
+(depends-on "paredit")
+(depends-on "rainbow-delimiters")
+(depends-on "elisp-slime-nav")
+
+;; Module: coffee
+(depends-on "coffee-mode")
+
+;; Module: haskell
+(depends-on "haskell-mode")
+
+;; Module: latex
+;; (depends-on "auctex")
+(depends-on "ebib")
+
+;; Module: markdown
+(depends-on "markdown-mode")
+
+;; Misc markup modes
+(depends-on "yaml-mode")

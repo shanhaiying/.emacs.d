@@ -35,17 +35,6 @@
 
 (require 'stante-programming)
 
-(eval-when-compile
-  (require 'cl))
-
-(if (or (< emacs-major-version 24)
-        (and (= emacs-major-version 24) (< emacs-minor-version 3)))
-    ;; Gallina's Python mode is included in Emacs 24.3 and newer
-    (package-need 'python)
-  (when (package-installed-p 'python)
-    ;; Force users to uninstall the superfluous python.el
-    (error "Python.el is now built-in. Delete it")))
-
 (defconst stante-python-checkers '("flake8" "epylint" "pyflakes")
   "Python checking tools.
 

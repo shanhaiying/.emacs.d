@@ -113,7 +113,6 @@
 (when (display-graphic-p)
   ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
   ;; the `$PATH'.
-  (package-need 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
 
@@ -172,12 +171,6 @@
       ido-save-directory-list-file (expand-file-name "ido.hist" stante-var-dir)
       ido-default-file-method 'selected-window)
 
-;; Enable HELM
-(package-need 'helm)
-
-;; Enhance M-x
-(package-need 'smex)
-
 ;; Improve minibuffer completion
 (icomplete-mode +1)
 
@@ -202,41 +195,7 @@
 (after 'ediff-wind
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
-;; Theme support
-(defvar stante-known-themes-alist
-  '((birds-of-paradise-plus . birds-of-paradise-plus-theme)
-    (inkpot . inkpot-theme)
-    (ir-black . ir-black-theme)
-    (molokai . molokai-theme)
-    (pastels-on-dark . pastels-on-dark-theme)
-    (solarized-light . solarized-theme)
-    (solarized-dark . solarized-theme)
-    (tango-2 . tango-2-theme)
-    (twilight-anti-bright . twilight-anti-bright-theme)
-    (twilight-bright . twilight-bright-theme)
-    (twilight . twilight-theme)
-    (zen-and-art . zen-and-art-theme)
-    (zenburn . zenburn-theme))
-  "Color themes know to stante.
-
-Maps the theme name to the package that contains this theme.
-This is is naturally incomplete.  Feel free to extend, and please
-report color themes not contained in this list to
-https://github.com/lunaryorn/stante-pede/issues.")
-
-(defadvice load-theme (before load-theme-install-package activate compile)
-  "Ensure that the package containing the theme is installed.
-
-If a package containing the theme is known, but not installed, it
-is automatically installed before the theme is loaded.  See
-`stante-known-themes-alist' for a list of known theme names and
-corresponding packages."
-  (let* ((theme (ad-get-arg 0))
-         (package (cdr (assoc theme stante-known-themes-alist))))
-    (when package
-      (message "Installing package %s for theme %s." package theme)
-      (package-need package))))
-
+;; Save and restore the frame size and parameters
 (defvar stante-save-frame-parameters-file
   (expand-file-name "frame-parameters" stante-var-dir)
   "File in which to storce frame parameters on exit.")

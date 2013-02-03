@@ -122,7 +122,6 @@
 (global-auto-revert-mode 1)
 
 ;; Nice page breaks
-(package-need 'page-break-lines)
 (global-page-break-lines-mode)
 
 ;; No tabs for indentation
@@ -144,7 +143,6 @@
 
 ;; Highlights
 (global-hl-line-mode 1)
-(package-need 'volatile-highlights)
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
 (after 'whitespace
@@ -152,12 +150,6 @@
 
 ;; Cleanup stale buffers
 (require 'midnight)
-
-;; Region expansion
-(package-need 'expand-region)
-
-;; Word jumping
-(package-need 'ace-jump-mode)
 
 ;; Narrowing
 (put 'narrow-to-region 'disabled nil)
@@ -214,7 +206,6 @@
 (unless (server-running-p) (server-start))
 
 ;; Flymake reloaded :)
-(package-need 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
 (add-hook 'text-mode-hook 'flycheck-mode)
 

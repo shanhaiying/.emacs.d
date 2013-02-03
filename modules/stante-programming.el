@@ -111,9 +111,6 @@
 
 (require 'dash)
 
-;; Guru editing
-(package-need 'guru-mode)
-
 ;; Default semantic submodes
 (setq semantic-default-submodes
       '(global-semanticdb-minor-mode ;; Cache database

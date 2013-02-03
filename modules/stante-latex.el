@@ -82,9 +82,7 @@
 (require 'stante-text)
 (require 'dash)
 
-;; Install and configure *the* LaTeX environment
-;; FIXME: ELPA package is outdated
-;;(package-need 'auctex)
+;; FIXME: ELPA package is outdated, loading from system
 (require 'tex-site)
 
 ;; Handle .latex files with AUCTeX, too.
@@ -152,8 +150,6 @@
                               sort-fields)))
 
 ;; BibTeX manager
-(package-need 'ebib)
-
 (after 'ebib
   (setq ebib-autogenerate-keys t))
 

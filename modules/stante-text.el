@@ -54,9 +54,6 @@
 
 ;;; Code:
 
-;; Guru editing
-(package-need 'guru-mode)
-
 (defun stante-text-whitespace ()
   "Enable whitespace mode for current buffer.
 

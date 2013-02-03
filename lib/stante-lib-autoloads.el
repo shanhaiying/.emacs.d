@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (stante-TeX-select-view-programs) "stante-lib-TeX-viewers"
-;;;;;;  "stante-lib-TeX-viewers.el" (20710 59983))
+;;;;;;  "stante-lib-TeX-viewers.el" (20710 61385 0 0))
 ;;; Generated autoloads from stante-lib-TeX-viewers.el
 
 (autoload 'stante-TeX-select-view-programs "stante-lib-TeX-viewers" "\
@@ -16,7 +16,7 @@ Select the best view programs for the current platform.
 
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
-;;;;;;  (20710 60037))
+;;;;;;  (20710 61385 0 0))
 ;;; Generated autoloads from stante-lib-io.el
 
 (autoload 'stante-get-file-contents "stante-lib-io" "\
@@ -40,7 +40,7 @@ Return a list of lines of file FILENAME.
 ;;;***
 
 ;;;### (autoloads (after) "stante-lib-load" "stante-lib-load.el"
-;;;;;;  (20710 60051))
+;;;;;;  (20710 61385 0 0))
 ;;; Generated autoloads from stante-lib-load.el
 
 (autoload 'after "stante-lib-load" "\
@@ -48,15 +48,15 @@ Evaluate FORMS after FILE is loaded.
 
 FILE may be a named feature, see `eval-after-load'.
 
-\(fn FILE &rest FORMS)" nil (quote macro))
+\(fn FILE &rest FORMS)" nil t)
 
 (put 'after 'lisp-indent-function '1)
 
 ;;;***
 
-;;;### (autoloads (stante-report-issue stante-byte-recompile stante-update-autoload-file)
-;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20710
-;;;;;;  60309))
+;;;### (autoloads (stante-byte-recompile stante-update-autoload-file)
+;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20750
+;;;;;;  12484 0 0))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (autoload 'stante-update-autoload-file "stante-lib-maintenance" "\
@@ -69,24 +69,10 @@ Byte-compile all modules of Stante pede.
 
 \(fn &optional FORCE)" t nil)
 
-(autoload 'stante-report-issue "stante-lib-maintenance" "\
-Report an issue with TITLE to Stante Pede.
-
-If called interactively, prompt for TITLE.
-
-Pop up a buffer to edit the issue comment.  If `gfm-mode' is
-available, use it in this buffer, otherwise fall back to
-`text-mode'.
-
-In this buffer, use C-c C-c s to submit the issue,
-and C-c C-c k to cancel the process.
-
-\(fn TITLE)" t nil)
-
 ;;;***
 
 ;;;### (autoloads (stante-path-of-bundle stante-find-os-x-coreutils)
-;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20710 60033))
+;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20710 61385 0 0))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
@@ -109,22 +95,9 @@ the directory path of the bundle as string.
 
 ;;;***
 
-;;;### (autoloads (package-need) "stante-lib-package" "stante-lib-package.el"
-;;;;;;  (20710 59976))
-;;; Generated autoloads from stante-lib-package.el
-
-(autoload 'package-need "stante-lib-package" "\
-Ensure that the package NAME is available.
-
-If the package is not available, it is automatically installed.
-
-\(fn NAME)" nil nil)
-
-;;;***
-
 ;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
 ;;;;;;  stante-is-os-x) "stante-lib-platform" "stante-lib-platform.el"
-;;;;;;  (20710 60048))
+;;;;;;  (20710 61385 0 0))
 ;;; Generated autoloads from stante-lib-platform.el
 
 (autoload 'stante-is-os-x "stante-lib-platform" "\
@@ -152,7 +125,7 @@ Return nil if running in cygwin or under MS-DOS.
 ;;;***
 
 ;;;### (autoloads (stante-whitespace-mode-no-overlong-lines) "stante-lib-text"
-;;;;;;  "stante-lib-text.el" (20710 59999))
+;;;;;;  "stante-lib-text.el" (20710 61385 0 0))
 ;;; Generated autoloads from stante-lib-text.el
 
 (autoload 'stante-whitespace-mode-no-overlong-lines "stante-lib-text" "\
