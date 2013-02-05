@@ -82,7 +82,7 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 
 ;; Stante directories
 (defconst stante-init-file
-  (or load-file-name (expand-file-name "~/.emacs.d/stante-init.el"))
+  (or load-file-name (locate-user-emacs-file "stante-init.el"))
   "The location of the `stante-init' file.")
 (defconst stante-dir (file-name-directory stante-init-file)
   "The root directory of Stante Pede.")
