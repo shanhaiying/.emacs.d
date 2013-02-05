@@ -119,5 +119,7 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 ;; Enable packages
 (require 'package)
 (package-initialize)
+(require 'carton)
+(load (expand-file-name "Carton" stante-dir))
 
 ;;; stante-init.el ends here
