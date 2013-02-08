@@ -1,4 +1,4 @@
-;;; stante-latex.el --- Stante Pede Modules: LaTeX support
+;;; stante-tex.el --- Stante Pede Modules: LaTeX support
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -181,6 +181,6 @@
   (--each '("\\.fdb_latexmk" "\\.fls")
     (add-to-list 'LaTeX-clean-intermediate-suffixes it)))
 
-(provide 'stante-latex)
+(provide 'stante-tex)
 
-;;; stante-latex.el ends here
+;;; stante-tex.el ends here

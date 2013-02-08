@@ -55,7 +55,7 @@
 (require 'stante-haskell)
 
 ;; Markup languages
-(require 'stante-latex)
+(require 'stante-tex)
 (require 'stante-markdown)
 (require 'stante-org)
 
