@@ -72,14 +72,6 @@ BUFFER defaults to the current buffer."
     "Arrange for byte code to be cleaned on save."
     (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil t))
 
-(defun stante-emacs-lisp-ac-setup ()
-  "Configure auto-complete for Emacs lisp."
-  (setq ac-sources (append '(ac-source-features
-                             ac-source-functions
-                             ac-source-variables
-                             ac-source-symbols)
-                           ac-sources)))
-
 (defun stante-emacs-lisp-switch-to-ielm ()
   "Switch to an ielm window.
 
