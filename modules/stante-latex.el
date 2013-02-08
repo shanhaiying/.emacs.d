@@ -102,7 +102,14 @@
                 TeX-PDF-mode t)
 
   ;; Setup sub modes
-  (--each '(turn-on-reftex LaTeX-math-mode) (add-hook 'LaTeX-mode-hook it)))
+  (--each '(reftex-mode LaTeX-math-mode) (add-hook 'LaTeX-mode-hook it)))
+
+;; Configure Texinfo editing with AUCTeX
+(after 'tex-info
+  (add-hook 'Texinfo-mode-hook 'reftex-mode)  ; Enable RefTeX
+
+  ;; Bind some convenient commands from the built-in Texinfo mode.
+  (define-key Texinfo-mode-map (kbd "C-c c") 'makeinfo-buffer))
 
 ;; Select best viewing programs
 (after 'tex (stante-TeX-select-view-programs))
