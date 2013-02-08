@@ -36,7 +36,6 @@
 ;;; Code:
 
 (require 'autoload)
-(require 'stante-lib-package)
 (eval-when-compile
   (require 'gh))
 
