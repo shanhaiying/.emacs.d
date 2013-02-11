@@ -71,9 +71,9 @@
 ;; from untrusted sources!
 
 ;; An eye-friendly light theme
-(load-theme 'solarized-light t)
+;;(load-theme 'solarized-light t)
 ;;(load-theme 'solarized-dark t)
-;;(load-theme 'zenburn t)
+(load-theme 'zenburn t)
 
 ;; Customize as you like here.  Please try to put your configuration into Stante
 ;; modules, or even write new Stante modules, and contribute these changes back
