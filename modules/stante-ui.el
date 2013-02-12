@@ -183,7 +183,6 @@
 (icomplete-mode +1)
 
 ;; Move between windows with Shift + Arrows
-(require 'windmove)
 (windmove-default-keybindings)
 
 ;; Window management reloaded
