@@ -79,6 +79,14 @@
 ;; Enable completion via ido – interactive do – for buffer switching and file
 ;; visiting.  Enable icomplete mode to improve minibuffer completion.
 
+;; Window switching
+;; ----------------
+;;
+;; Enable easy window switching with windmove, using its default keybindings
+;; (see `windmove-default-keybindings').
+;;
+;; Easily undo and redo window configuration changes using `winner-mode'.
+
 ;; Initial frame position and size
 ;; -------------------------------
 ;;
@@ -177,6 +185,9 @@
 ;; Move between windows with Shift + Arrows
 (require 'windmove)
 (windmove-default-keybindings)
+
+;; Window management reloaded
+(winner-mode)
 
 ;; Default font
 (cond
