@@ -63,6 +63,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'magit)
+  (require 'gist))
+
 (after 'magit
   ;; Do not ask before saving buffers on `magit-status'
   (setq magit-save-some-buffers 'dontask))
