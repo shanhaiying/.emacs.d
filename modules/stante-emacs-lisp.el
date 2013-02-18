@@ -57,6 +57,7 @@
 
 ;;; Code:
 
+(require 'dash)
 (require 'stante-programming)
 
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
@@ -72,6 +73,14 @@ BUFFER defaults to the current buffer."
     "Arrange for byte code to be cleaned on save."
     (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil t))
 
+(defun stante-font-lock-add-ert-keywords ()
+  "Add font lock keywords supporting ERT tests."
+  (font-lock-add-keywords
+   nil
+   '(("(\\(\\<ert-deftest\\)\\>\\s *\\(\\sw+\\)?"
+      (1 font-lock-keyword-face nil t)
+      (2 font-lock-function-name-face nil t)))))
+
 (defun stante-emacs-lisp-switch-to-ielm ()
   "Switch to an ielm window.
 
@@ -81,19 +90,21 @@ Create a new ielm process if required."
   (ielm))
 
 (after 'lisp-mode
-  (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-    (add-hook hook 'turn-on-eldoc-mode)
-    (add-hook hook 'paredit-mode)
-    (add-hook hook 'rainbow-delimiters-mode))
+  (--each '(emacs-lisp-mode-hook ielm-mode-hook)
+    (add-hook it 'turn-on-eldoc-mode)
+    (add-hook it 'paredit-mode)
+    (add-hook it 'rainbow-delimiters-mode))
 
-  (add-hook 'emacs-lisp-mode-hook
-            'stante-emacs-lisp-clean-byte-code-on-save)
-
-  ;; Check documentation in Emacs LISP
-  (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
+  (--each '(checkdoc-minor-mode
+            stante-emacs-lisp-clean-byte-code-on-save
+            stante-font-lock-add-ert-keywords)
+    (add-hook 'emacs-lisp-mode-hook it))
 
   (define-key emacs-lisp-mode-map (kbd "C-c z")
     'stante-emacs-lisp-switch-to-ielm))
+
+;; Indent ERT tests like functions
+(put 'ert-deftest 'lisp-indent-function 'defun)
 
 (provide 'stante-emacs-lisp)
 
