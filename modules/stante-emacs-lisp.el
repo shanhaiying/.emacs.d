@@ -106,6 +106,9 @@ Create a new ielm process if required."
 ;; Indent ERT tests like functions
 (put 'ert-deftest 'lisp-indent-function 'defun)
 
+;; Recognize Emacs scripts
+(add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
+
 (provide 'stante-emacs-lisp)
 
 ;;; stante-emacs-lisp.el ends here
