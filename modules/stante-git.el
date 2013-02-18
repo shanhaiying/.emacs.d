@@ -68,8 +68,12 @@
   (require 'gist))
 
 (after 'magit
-  ;; Do not ask before saving buffers on `magit-status'
-  (setq magit-save-some-buffers 'dontask))
+  ;; Do not ask before saving buffers on `magit-status', but ask whether to set
+  ;; upstream branch when pushing a branch without upstream.  Also exclude
+  ;; remote name from names of tracking branches
+  (setq magit-save-some-buffers 'dontask
+        magit-set-upstream-on-push t
+        magit-default-tracking-name-function 'magit-default-tracking-name-branch-only))
 
 ;; Open newly created Gists in browser.
 (after 'gist
