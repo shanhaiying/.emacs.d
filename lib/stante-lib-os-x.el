@@ -32,19 +32,6 @@
 
 ;;; Code:
 
-;;;###autoload
-(defun stante-find-os-x-coreutils ()
-  "Return the directory containing the unprefixed GNU coreutils on OS X.
-
-If the directory cannot be determined, return nil.
-
-Currently this function only checks for coreutils installed with
-homebrew.  In future, more sophisticated logic might be added."
-  (condition-case nil
-      (let ((prefix (car (process-lines "brew" "--prefix" "coreutils"))))
-        (concat (directory-file-name prefix) "/libexec/gnubin"))
-    (error nil)))
-
 (defun stante-id-of-bundle (bundle)
   "Get the ID of a BUNDLE.
 

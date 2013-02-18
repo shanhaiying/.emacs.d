@@ -70,15 +70,11 @@
 ;;; Code:
 
 (when (stante-is-os-x)
-  ;; Find GNU Coreutils (mostly for "ls --dired").  Do this *after* fixing path
-  ;; in graphical Emacs to bring the necessary utilities in space.
-  (let ((coreutils-dir (stante-find-os-x-coreutils)))
-      (if coreutils-dir
-          ;; Do *not* add the GNU coreutils directory to $PATH because it
-          ;; must not be exported to Emacs subprocesses.  On OS X programs
-          ;; might break if the call out to GNU utilities!
-          (add-to-list 'exec-path coreutils-dir nil 'string=)
-        (message "GNU Coreutils not found.  Install coreutils \
+  ;; Find GNU Coreutils (mostly for "ls --dired").
+  (let ((gls (executable-find "gls")))
+    (if gls
+        (setq insert-directory-program gls)
+      (message "GNU Coreutils not found.  Install coreutils \
 with homebrew, or report an issue with M-x stante-report-issue."))))
 
 ;; Make this module a no-op if not on OS X GUI.

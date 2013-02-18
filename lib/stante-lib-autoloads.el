@@ -55,8 +55,8 @@ FILE may be a named feature, see `eval-after-load'.
 ;;;***
 
 ;;;### (autoloads (stante-byte-recompile stante-update-autoload-file)
-;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20750
-;;;;;;  12484 0 0))
+;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20756
+;;;;;;  61067 0 0))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (autoload 'stante-update-autoload-file "stante-lib-maintenance" "\
@@ -71,19 +71,9 @@ Byte-compile all modules of Stante pede.
 
 ;;;***
 
-;;;### (autoloads (stante-path-of-bundle stante-find-os-x-coreutils)
-;;;;;;  "stante-lib-os-x" "stante-lib-os-x.el" (20710 61385 0 0))
+;;;### (autoloads (stante-path-of-bundle) "stante-lib-os-x" "stante-lib-os-x.el"
+;;;;;;  (20770 9030 0 0))
 ;;; Generated autoloads from stante-lib-os-x.el
-
-(autoload 'stante-find-os-x-coreutils "stante-lib-os-x" "\
-Return the directory containing the unprefixed GNU coreutils on OS X.
-
-If the directory cannot be determined, return nil.
-
-Currently this function only checks for coreutils installed with
-homebrew.  In future, more sophisticated logic might be added.
-
-\(fn)" nil nil)
 
 (autoload 'stante-path-of-bundle "stante-lib-os-x" "\
 Get the path of a bundle with ID.
