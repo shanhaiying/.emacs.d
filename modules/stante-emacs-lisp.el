@@ -109,6 +109,9 @@ Create a new ielm process if required."
 ;; Recognize Emacs scripts
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
 
+;; Consider Carton files as Emacs Lisp files
+(add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode))
+
 (provide 'stante-emacs-lisp)
 
 ;;; stante-emacs-lisp.el ends here
