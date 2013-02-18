@@ -93,11 +93,7 @@ Create a new ielm process if required."
   (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
   (define-key emacs-lisp-mode-map (kbd "C-c z")
-    'stante-emacs-lisp-switch-to-ielm)
-
-  (after 'auto-complete
-    (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-ac-setup))
-  )
+    'stante-emacs-lisp-switch-to-ielm))
 
 (provide 'stante-emacs-lisp)
 
