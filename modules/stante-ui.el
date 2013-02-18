@@ -117,6 +117,9 @@
 ;;; Code:
 
 (require 'dash)
+(eval-when-compile
+  (require 'ido)
+  (require 'ediff-wind))
 
 (when (display-graphic-p)
   ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
