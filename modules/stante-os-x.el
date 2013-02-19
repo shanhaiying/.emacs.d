@@ -54,11 +54,13 @@
 ;; Full screen support
 ;; -------------------
 ;;
-;; Officially GNU Emacs does not support the full screen feature of OS X 10.7
-;; and later.  Various patches exist to add this functionality.  Either build
-;; Emacs manually with any of these patches applied, or install Emacs via
-;; homebrew: "brew install Emacs --cocoa".  Note that the patch included in
-;; homebrew does not create a separate space for a full screen Emacs.
+;; Emacs 24.3 provides native full screen support for OS X Lion and newer.  It
+;; is recommended to use an Emacs 24.3 pretest from http://emacsformacosx.com/.
+;;
+;; For earlier releases various patches exist to add this functionality.
+;; The Homebrew Formula for Emacs adds such a patch, install Emacs with "brew
+;; install Emacs --cocoa".  Note that the patch included in homebrew does not
+;; create a separate space for a full screen Emacs.
 
 ;; Keybindings
 ;; -----------
