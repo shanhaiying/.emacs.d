@@ -62,3 +62,4 @@
 
 ;; Misc markup modes
 (depends-on "yaml-mode")
+(depends-on "bbcode-mode")

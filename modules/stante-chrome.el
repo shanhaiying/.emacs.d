@@ -43,7 +43,8 @@
 
 (setq edit-server-url-major-mode-alist
       '(("stackoverflow\\.com/.*$" . markdown-mode)
-        ("github\\.com/.*$" . gfm-mode)))
+        ("github\\.com/.*$" . gfm-mode)
+        ("\\(?:www\\.\\)python-forum.de/.*$" . bbcode-mode)))
 
 (edit-server-start)
 
