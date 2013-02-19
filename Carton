@@ -29,6 +29,9 @@
 ;; Module: tools
 (depends-on "ack-and-a-half")
 
+;; Module: chrome
+(depends-on "edit-server")
+
 ;; Module: git
 (depends-on "magit")
 (depends-on "git-commit-mode")
