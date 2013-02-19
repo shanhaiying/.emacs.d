@@ -119,7 +119,8 @@
 (require 'dash)
 (eval-when-compile
   (require 'ido)
-  (require 'ediff-wind))
+  (require 'ediff-wind)
+  (require 'smex))
 
 (when (display-graphic-p)
   ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
@@ -184,6 +185,10 @@
 
 ;; Improve minibuffer completion
 (icomplete-mode +1)
+
+;; Improved M-x
+(after 'smex
+  (setq smex-save-file (expand-file-name "smex" stante-var-dir)))
 
 ;; Move between windows with Shift + Arrows
 (windmove-default-keybindings)
