@@ -71,8 +71,9 @@ Byte-compile all modules of Stante pede.
 
 ;;;***
 
-;;;### (autoloads (stante-path-of-bundle) "stante-lib-os-x" "stante-lib-os-x.el"
-;;;;;;  (20770 9030 0 0))
+;;;### (autoloads (stante-homebrew-installed-p stante-homebrew-prefix
+;;;;;;  stante-path-of-bundle) "stante-lib-os-x" "stante-lib-os-x.el"
+;;;;;;  (20771 26341 0 0))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-path-of-bundle "stante-lib-os-x" "\
@@ -82,6 +83,23 @@ ID is the bundle ID (see `stante-id-of-bundle' as string.  Return
 the directory path of the bundle as string.
 
 \(fn ID)" nil nil)
+
+(autoload 'stante-homebrew-prefix "stante-lib-os-x" "\
+Get the homebrew prefix for FORMULA.
+
+Without FORMULA, get the homebrew prefix itself.
+
+Return nil, if homebrew is not available, or if the prefix
+directory does not exist.
+
+\(fn &optional FORMULA)" nil nil)
+
+(autoload 'stante-homebrew-installed-p "stante-lib-os-x" "\
+Determine whether a homebrew FORMULA is installed.
+
+Without FORMULA determine whether Homebrew itself is available.
+
+\(fn &optional FORMULA)" nil nil)
 
 ;;;***
 

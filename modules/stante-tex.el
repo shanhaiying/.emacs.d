@@ -82,6 +82,10 @@
 (require 'stante-text)
 (require 'dash)
 
+(when (and (stante-is-os-x) (stante-homebrew-installed-p "auctex"))
+  (let ((homebrew-prefix (stante-homebrew-prefix)))
+    (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
+                                              homebrew-prefix))))
 ;; FIXME: ELPA package is outdated, loading from system
 (require 'tex-site)
 

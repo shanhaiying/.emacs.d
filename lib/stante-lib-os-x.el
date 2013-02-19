@@ -27,8 +27,17 @@
 ;;; Commentary:
 
 ;; OS X support functions.
-
-;; `stante-find-os-x-coreutils' searches for GNU Coreutils on OS X.
+;; -----------------------
+;;
+;; `stante-id-of-bundle' gets the internal ID of an installed bundle.
+;;
+;; `stante-path-of-bundle' gets the installation path of an application bundle.
+;;
+;; `stante-homebrew-prefix' gets the prefix of Homebrew or an installed Homebrew
+;; formula.
+;;
+;; `stante-homebrew-installed-p' determines whether Homebrew or a Homebrew
+;; formula is installed.
 
 ;;; Code:
 
@@ -52,6 +61,30 @@ ID is the bundle ID (see `stante-id-of-bundle' as string.  Return
 the directory path of the bundle as string."
   (let ((query (format "kMDItemCFBundleIdentifier == '%s'" id)))
     (car (process-lines "mdfind" query))))
+
+;;;###autoload
+(defun stante-homebrew-prefix (&optional formula)
+  "Get the homebrew prefix for FORMULA.
+
+Without FORMULA, get the homebrew prefix itself.
+
+Return nil, if homebrew is not available, or if the prefix
+directory does not exist."
+  (let ((prefix (condition-case nil
+                    (car (apply #'process-lines "brew" "--prefix"
+                                (when formula (list formula))))
+                  (error nil))))
+    (when (and prefix (file-directory-p prefix))
+      prefix)))
+
+;;;###autoload
+(defun stante-homebrew-installed-p (&optional formula)
+  "Determine whether a homebrew FORMULA is installed.
+
+Without FORMULA determine whether Homebrew itself is available."
+  (if formula
+      (when (stante-homebrew-prefix formula) t)
+    (when (executable-find "brew") t)))
 
 (provide 'stante-lib-os-x)
 
