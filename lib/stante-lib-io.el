@@ -1,4 +1,4 @@
-;;; stante-lib-io.el --- Stante Pede Library: IO functions
+;;; stante-lib-io.el --- Stante Pede Library: IO functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

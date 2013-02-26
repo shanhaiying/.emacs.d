@@ -1,4 +1,4 @@
-;;; stante-snippets.el --- Stante Pede Modules: Text snippets
+;;; stante-snippets.el --- Stante Pede Modules: Text snippets -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

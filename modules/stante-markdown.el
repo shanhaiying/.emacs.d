@@ -1,4 +1,4 @@
-;;; stante-markdown.el --- Stante Pede Modules: Markdown support
+;;; stante-markdown.el --- Stante Pede Modules: Markdown support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

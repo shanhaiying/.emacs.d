@@ -1,4 +1,4 @@
-;;; stante-tex.el --- Stante Pede Modules: LaTeX support
+;;; stante-tex.el --- Stante Pede Modules: LaTeX support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

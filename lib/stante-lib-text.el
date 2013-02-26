@@ -1,4 +1,4 @@
-;;; stante-lib-text.el --- Stante Pede Library: Text functions
+;;; stante-lib-text.el --- Stante Pede Library: Text functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

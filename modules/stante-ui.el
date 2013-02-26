@@ -1,4 +1,4 @@
-;;; prelude-ui.el --- Stante Pede Modules: User interface configuration
+;;; prelude-ui.el --- Stante Pede Modules: User interface configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

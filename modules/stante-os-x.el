@@ -1,4 +1,4 @@
-;;; stante-os-x.el --- Stante Pede Modules: OS X support
+;;; stante-os-x.el --- Stante Pede Modules: OS X support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

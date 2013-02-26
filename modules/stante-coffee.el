@@ -1,4 +1,4 @@
-;;; stante-coffee.el --- Stante Pede Modules: CoffeeScript support
+;;; stante-coffee.el --- Stante Pede Modules: CoffeeScript support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

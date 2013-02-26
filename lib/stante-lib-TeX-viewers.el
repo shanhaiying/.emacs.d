@@ -1,4 +1,4 @@
-;;; stante-lib-TeX-viewers.el --- Stante Pede Library: LaTeX viewer selection
+;;; stante-lib-TeX-viewers.el --- Stante Pede Library: LaTeX viewer selection -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

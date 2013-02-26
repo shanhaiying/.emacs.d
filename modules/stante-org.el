@@ -1,4 +1,4 @@
-;;; stante-org.el --- Stante Pede Modules: Org mode configuration
+;;; stante-org.el --- Stante Pede Modules: Org mode configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

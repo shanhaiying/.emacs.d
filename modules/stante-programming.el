@@ -1,4 +1,4 @@
-;;; stante-programming.el --- Stante Pede Modules: Basic programming support
+;;; stante-programming.el --- Stante Pede Modules: Basic programming support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

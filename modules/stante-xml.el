@@ -1,4 +1,4 @@
-;;; stante-xml.el --- Stante Pede Modules: XML support
+;;; stante-xml.el --- Stante Pede Modules: XML support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2013 Sebastian Wiesner
 ;;

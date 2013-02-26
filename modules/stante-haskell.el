@@ -1,4 +1,4 @@
-;;; stante-haskell.el --- Stante Pede Modules: Haskell support
+;;; stante-haskell.el --- Stante Pede Modules: Haskell support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

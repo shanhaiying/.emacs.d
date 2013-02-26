@@ -1,4 +1,4 @@
-;;; stante-chrome.el --- Stante Pede Modules: Google Chrome support
+;;; stante-chrome.el --- Stante Pede Modules: Google Chrome support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

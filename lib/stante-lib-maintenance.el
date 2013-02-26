@@ -1,4 +1,4 @@
-;;; stante-lib-maintenance.el --- Stante Pede Library: Maintenance functions
+;;; stante-lib-maintenance.el --- Stante Pede Library: Maintenance functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

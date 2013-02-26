@@ -1,4 +1,4 @@
-;;; stante-editor.el --- Stante Pede Modules: Basic editing
+;;; stante-editor.el --- Stante Pede Modules: Basic editing -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

@@ -1,4 +1,4 @@
-;;; stante-lib-os-x.el --- Stante Pede Library: OS X support
+;;; stante-lib-os-x.el --- Stante Pede Library: OS X support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

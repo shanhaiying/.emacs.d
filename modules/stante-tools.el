@@ -1,4 +1,4 @@
-;;; stante-tools.el --- Stante Pede Modules: Various tools
+;;; stante-tools.el --- Stante Pede Modules: Various tools -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

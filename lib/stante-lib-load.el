@@ -1,4 +1,4 @@
-;;; stante-lib-load.el --- Stante Pede Library: Loading functions
+;;; stante-lib-load.el --- Stante Pede Library: Loading functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

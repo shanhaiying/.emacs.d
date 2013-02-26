@@ -1,4 +1,4 @@
-;;; stante-proofgeneral.el --- Stante Pede Modules: Proof General support
+;;; stante-proofgeneral.el --- Stante Pede Modules: Proof General support -*- lexical-binding: t; -*-
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner

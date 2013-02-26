@@ -1,4 +1,4 @@
-;;; stante-emacs-lisp.el --- Stante Pede Modules: Emacs LISP support
+;;; stante-emacs-lisp.el --- Stante Pede Modules: Emacs LISP support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;

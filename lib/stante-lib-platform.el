@@ -1,4 +1,4 @@
-;;; stante-lib-platform.el --- Stante Pede Library: Platform identification
+;;; stante-lib-platform.el --- Stante Pede Library: Platform identification -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
