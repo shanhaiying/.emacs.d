@@ -62,13 +62,20 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'ispell))
+  (require 'ispell)
+  (require 'flyspell))
 
 ;; Choose English as default languages, because programming is mostly done in
 ;; this languages, and don't ask to save the private dictionary.
 (after 'ispell
   (setq ispell-dictionary "en"
         ispell-silently-savep t))
+
+(after 'flyspell
+  ;; Get M-Tab and C-M-i back for `completion-at-point'
+  (define-key flyspell-mode-map "\M-\t" nil)
+  ;; and prevent it from ever taking it again
+  (setq flyspell-use-meta-tab nil))
 
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 (add-hook 'message-mode-hook 'turn-on-flyspell)
