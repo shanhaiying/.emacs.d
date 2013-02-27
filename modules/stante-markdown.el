@@ -87,4 +87,8 @@ suitable processor was found."
 
 (provide 'stante-markdown)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-markdown.el ends here

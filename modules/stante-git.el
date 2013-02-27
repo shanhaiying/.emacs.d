@@ -89,4 +89,8 @@
 
 (provide 'stante-git)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-git.el ends here

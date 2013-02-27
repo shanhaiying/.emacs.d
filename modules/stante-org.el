@@ -42,4 +42,8 @@
 
 (provide 'stante-org)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-org.el ends here

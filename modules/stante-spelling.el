@@ -83,4 +83,8 @@
 
 (provide 'stante-spelling)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-spelling.el ends here

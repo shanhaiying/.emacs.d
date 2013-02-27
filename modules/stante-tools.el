@@ -45,4 +45,8 @@
 
 (provide 'stante-tools)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-tools.el ends here

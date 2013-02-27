@@ -87,4 +87,8 @@ Choose Skim if available, or fall back to the default application."
 
 (provide 'stante-lib-TeX-viewers)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-lib-TeX-viewers.el ends here

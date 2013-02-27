@@ -122,4 +122,8 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 (require 'carton)
 (load (expand-file-name "Carton" stante-dir))
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-init.el ends here

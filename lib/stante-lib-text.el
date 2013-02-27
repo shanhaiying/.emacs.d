@@ -43,4 +43,8 @@ Affects the current buffer only."
 
 (provide 'stante-lib-text)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-lib-text.el ends here

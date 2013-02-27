@@ -187,4 +187,8 @@
 
 (provide 'stante-tex)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-tex.el ends here

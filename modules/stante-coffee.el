@@ -48,4 +48,8 @@
 
 (provide 'stante-coffee)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-coffee.el ends here

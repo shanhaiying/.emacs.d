@@ -68,4 +68,8 @@ Also arrange for trailing whitespace to be removed before saving."
 
 (provide 'stante-text)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-text.el ends here

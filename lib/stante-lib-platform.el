@@ -63,4 +63,8 @@ Return nil if running in cygwin or under MS-DOS."
 
 (provide 'stante-lib-platform)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-lib-platform.el ends here

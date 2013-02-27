@@ -39,4 +39,8 @@
 
 (provide 'stante-xml)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-xml.el ends here

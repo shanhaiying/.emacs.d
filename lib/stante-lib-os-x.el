@@ -88,4 +88,8 @@ Without FORMULA determine whether Homebrew itself is available."
 
 (provide 'stante-lib-os-x)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-lib-os-x.el ends here

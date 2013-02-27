@@ -240,4 +240,8 @@
 
 (provide 'stante-editor)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-editor.el ends here

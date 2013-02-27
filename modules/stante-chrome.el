@@ -50,4 +50,8 @@
 
 (provide 'stante-chrome)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-chrome.el ends here

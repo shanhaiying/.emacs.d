@@ -44,4 +44,8 @@ FILE may be a named feature, see `eval-after-load'."
 
 (provide 'stante-lib-load)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-lib-load.el ends here

@@ -108,4 +108,8 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 
 (provide 'stante-os-x)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-os-x.el ends here

@@ -168,4 +168,8 @@ Use in programming modes that do not derive from `prog-mode'."
 
 (provide 'stante-programming)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-programming.el ends here

@@ -45,4 +45,8 @@
 
 (provide 'stante-german)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-german.el ends here

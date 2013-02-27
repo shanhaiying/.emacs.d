@@ -151,5 +151,9 @@ Affects the current buffer only.
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
 ;; coding: utf-8
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;; End:
 ;;; stante-lib-autoloads.el ends here

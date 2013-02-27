@@ -45,4 +45,8 @@
 
 (provide 'stante-haskell)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-haskell.el ends here

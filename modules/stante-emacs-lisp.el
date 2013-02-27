@@ -114,4 +114,8 @@ Create a new ielm process if required."
 
 (provide 'stante-emacs-lisp)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-emacs-lisp.el ends here

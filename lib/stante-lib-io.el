@@ -60,4 +60,8 @@ overwrite it if it does."
 
 (provide 'stante-lib-io)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-lib-io.el ends here

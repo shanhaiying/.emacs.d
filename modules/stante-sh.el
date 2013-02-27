@@ -78,4 +78,8 @@
 
 (provide 'stante-sh)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-sh.el ends here

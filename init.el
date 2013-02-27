@@ -81,4 +81,8 @@
 ;; modules, or even write new Stante modules, and contribute these changes back
 ;; via Github Pull Requests for the profit of other users.
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; init.el ends here

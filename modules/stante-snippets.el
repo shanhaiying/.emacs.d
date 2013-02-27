@@ -62,4 +62,8 @@
 
 (provide 'stante-snippets)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-snippets.el ends here

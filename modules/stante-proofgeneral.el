@@ -72,4 +72,8 @@
 
 (provide 'stante-proofgeneral)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-proofgeneral.el ends here

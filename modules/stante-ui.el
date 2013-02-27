@@ -268,4 +268,8 @@ to `stante-save-frame-parameters-file'."
 
 (provide 'stante-ui)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-ui.el ends here

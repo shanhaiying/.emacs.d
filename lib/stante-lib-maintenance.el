@@ -59,4 +59,8 @@
 
 (provide 'stante-lib-maintenance)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-lib-maintenance.el ends here

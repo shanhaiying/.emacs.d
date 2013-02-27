@@ -59,4 +59,8 @@ Candidates for `python-check-command'.")
 
 (provide 'stante-python)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
 ;;; stante-python.el ends here
