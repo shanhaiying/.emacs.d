@@ -71,15 +71,22 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'ido))
+
 (when (stante-is-os-x)
   ;; Find GNU Coreutils (mostly for "ls --dired").
   (let ((gls (executable-find "gls")))
     (if gls
         (setq insert-directory-program gls)
       (message "GNU Coreutils not found.  Install coreutils \
-with homebrew, or report an issue with M-x stante-report-issue."))))
+with homebrew, or report an issue with M-x stante-report-issue.")))
 
-;; Make this module a no-op if not on OS X GUI.
+  ;; Ignore OS X metadata files in IDO
+  (after 'ido
+    (add-to-list 'ido-ignore-files "\\`\\.DS_Store\\'")))
+
+;; make this module a no-op if not on OS X GUI.
 (after 'ns-win
   ;; Setup modifier maps for OS X
   (setq mac-option-modifier 'meta
