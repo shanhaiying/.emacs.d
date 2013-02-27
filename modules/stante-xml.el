@@ -33,8 +33,9 @@
 (require 'stante-programming)
 
 (after 'nxml-mode
-  ;; Automatically complete closing tag
-  (setq nxml-slash-auto-complete-flag t))
+  (setq nxml-slash-auto-complete-flag t  ; Complete closing tag automatically
+        ;; Auto-insert XML declaration in new files
+        nxml-auto-insert-xml-declaration-flag t))
 
 (provide 'stante-xml)
 
