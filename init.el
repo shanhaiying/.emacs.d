@@ -33,7 +33,7 @@
 ;;; Code:
 
 ;; Load Stante Pede
-(load (concat (file-name-directory load-file-name) "stante-init"))
+(load (locate-user-emacs-file "stante-init"))
 
 ;; Load Stante modules as you like
 ;; Basic modules
