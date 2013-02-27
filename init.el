@@ -59,6 +59,7 @@
 (require 'stante-tex)
 (require 'stante-markdown)
 (require 'stante-org)
+(require 'stante-xml)
 
 ;; Sciene
 (require 'stante-proofgeneral)
