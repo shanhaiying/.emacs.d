@@ -109,6 +109,14 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'whitespace)
+  (require 'paren)
+  (require 'savehist)
+  (require 'recentf)
+  (require 'saveplace)
+  (require 'bookmark))
+
 ;; Move backup and autosave files to var directory.
 (setq backup-directory-alist
       `((".*" . ,(expand-file-name "backup" stante-var-dir)))
