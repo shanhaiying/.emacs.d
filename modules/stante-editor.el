@@ -53,6 +53,8 @@
 ;; Highlight the current line (see `global-hl-line-mode') and the results of
 ;; some text operations like yanking, killing and deleting (see
 ;; `volatile-highlights-mode').
+;;
+;; Indicate empty lines at the end of the file.
 
 ;; Region
 ;; ------
@@ -152,10 +154,12 @@
 
 ;; Highlights
 (global-hl-line-mode 1)
-(require 'volatile-highlights)
+(require 'volatile-highlights)          ; Volatile Highlights doesn't autoload
 (volatile-highlights-mode t)
 (after 'whitespace
   (setq whitespace-style '(face tabs empty trailing lines-tail)))
+
+(setq indicate-empty-lines t)
 
 ;; Cleanup stale buffers
 (require 'midnight)
