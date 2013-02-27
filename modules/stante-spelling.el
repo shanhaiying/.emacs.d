@@ -65,9 +65,10 @@
   (require 'ispell))
 
 ;; Choose English as default languages, because programming is mostly done in
-;; this languages.
+;; this languages, and don't ask to save the private dictionary.
 (after 'ispell
-  (setq ispell-dictionary "en"))
+  (setq ispell-dictionary "en"
+        ispell-silently-savep t))
 
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 (add-hook 'message-mode-hook 'turn-on-flyspell)
