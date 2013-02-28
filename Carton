@@ -17,6 +17,7 @@
 (depends-on "smex")
 
 ;; Module: editor
+(depends-on "adaptive-wrap")
 (depends-on "page-break-lines")
 (depends-on "volatile-highlights")
 (depends-on "expand-region")

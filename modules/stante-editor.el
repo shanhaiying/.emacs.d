@@ -146,6 +146,9 @@
 (after 'whitespace
   (setq whitespace-line-column nil))
 
+;; Configure wrapping
+(add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
+
 ;; Power up parenthesis
 (electric-pair-mode 1)
 (show-paren-mode 1)
