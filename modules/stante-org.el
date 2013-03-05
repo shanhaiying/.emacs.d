@@ -28,6 +28,13 @@
 
 ;; Provide configuration for `org-mode'.
 
+;; Keybindings
+;; -----------
+;;
+;; C-c a shows the Org agenda with `org-agenda'.
+;;
+;; C-c c captures something in Org using `org-capture'.
+
 ;;; Code:
 
 (require 'stante-text)
@@ -39,6 +46,9 @@
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
   (add-hook 'org-shiftright-final-hook 'windmove-right))
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
 
 (provide 'stante-org)
 
