@@ -45,7 +45,19 @@
   (add-hook 'org-shiftup-final-hook 'windmove-up)
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right))
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
+
+  ;; Use IDO for switching between org buffers
+  (setq org-completion-use-ido t
+        org-outline-path-complete-in-steps nil)
+
+  ;; Put the Org directory into the Dropbox
+  (setq org-directory (expand-file-name "~/Dropbox/Org")
+        org-agenda-files (list org-directory))
+
+  ;; Create the directory for Org files
+  (unless (file-directory-p org-directory)
+    (make-directory org-directory)))
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
