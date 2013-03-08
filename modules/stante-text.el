@@ -43,8 +43,7 @@
 ;; Whitespace
 ;; ----------
 ;;
-;; Highlight whitespace in text buffers (see `whitespace-mode') and remove
-;; trailing whitespace after saving.
+;; Remove trailing whitespace before saving text files
 
 ;; Guru editing
 ;; ------------
@@ -55,10 +54,7 @@
 ;;; Code:
 
 (defun stante-text-whitespace ()
-  "Enable whitespace mode for current buffer.
-
-Also arrange for trailing whitespace to be removed before saving."
-  (whitespace-mode 1)
+  "Arrange for trailing whitespace to be removed before saving."
   (add-hook 'before-save-hook 'delete-trailing-whitespace nil t))
 
 (after "text-mode"

@@ -40,7 +40,6 @@
 (require 'stante-text)
 
 (after 'org
-  (add-hook 'org-mode-hook 'stante-whitespace-mode-no-overlong-lines)
   ;; Make windmove work in org-mode
   (add-hook 'org-shiftup-final-hook 'windmove-up)
   (add-hook 'org-shiftleft-final-hook 'windmove-left)

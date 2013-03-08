@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (stante-TeX-select-view-programs) "stante-lib-TeX-viewers"
-;;;;;;  "stante-lib-TeX-viewers.el" (20780 51222 0 0))
+;;;;;;  "stante-lib-TeX-viewers.el" (20781 60312 0 0))
 ;;; Generated autoloads from stante-lib-TeX-viewers.el
 
 (autoload 'stante-TeX-select-view-programs "stante-lib-TeX-viewers" "\
@@ -16,7 +16,7 @@ Select the best view programs for the current platform.
 
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
-;;;;;;  (20780 51220 0 0))
+;;;;;;  (20781 60308 0 0))
 ;;; Generated autoloads from stante-lib-io.el
 
 (autoload 'stante-get-file-contents "stante-lib-io" "\
@@ -40,7 +40,7 @@ Return a list of lines of file FILENAME.
 ;;;***
 
 ;;;### (autoloads (after) "stante-lib-load" "stante-lib-load.el"
-;;;;;;  (20780 51220 0 0))
+;;;;;;  (20781 60309 0 0))
 ;;; Generated autoloads from stante-lib-load.el
 
 (autoload 'after "stante-lib-load" "\
@@ -55,8 +55,8 @@ FILE may be a named feature, see `eval-after-load'.
 ;;;***
 
 ;;;### (autoloads (stante-byte-recompile stante-update-autoload-file)
-;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20780
-;;;;;;  51221 0 0))
+;;;;;;  "stante-lib-maintenance" "stante-lib-maintenance.el" (20781
+;;;;;;  60310 0 0))
 ;;; Generated autoloads from stante-lib-maintenance.el
 
 (autoload 'stante-update-autoload-file "stante-lib-maintenance" "\
@@ -73,7 +73,7 @@ Byte-compile all modules of Stante pede.
 
 ;;;### (autoloads (stante-homebrew-installed-p stante-homebrew-prefix
 ;;;;;;  stante-path-of-bundle) "stante-lib-os-x" "stante-lib-os-x.el"
-;;;;;;  (20780 51222 0 0))
+;;;;;;  (20781 60311 0 0))
 ;;; Generated autoloads from stante-lib-os-x.el
 
 (autoload 'stante-path-of-bundle "stante-lib-os-x" "\
@@ -105,7 +105,7 @@ Without FORMULA determine whether Homebrew itself is available.
 
 ;;;### (autoloads (stante-is-windows stante-is-gnome stante-is-kde
 ;;;;;;  stante-is-os-x) "stante-lib-platform" "stante-lib-platform.el"
-;;;;;;  (20780 51222 0 0))
+;;;;;;  (20781 60311 0 0))
 ;;; Generated autoloads from stante-lib-platform.el
 
 (autoload 'stante-is-os-x "stante-lib-platform" "\
@@ -132,28 +132,11 @@ Return nil if running in cygwin or under MS-DOS.
 
 ;;;***
 
-;;;### (autoloads (stante-whitespace-mode-no-overlong-lines) "stante-lib-text"
-;;;;;;  "stante-lib-text.el" (20780 51223 0 0))
-;;; Generated autoloads from stante-lib-text.el
-
-(autoload 'stante-whitespace-mode-no-overlong-lines "stante-lib-text" "\
-Disable highlighting of overlong lines in `whitespace-mode'.
-
-Affects the current buffer only.
-
-\(fn)" nil nil)
-
-;;;***
-
 (provide 'stante-lib-autoloads)
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
 ;; coding: utf-8
-
-;; Local Variables:
-;; coding: utf-8
-;; End:
 ;; End:
 ;;; stante-lib-autoloads.el ends here
