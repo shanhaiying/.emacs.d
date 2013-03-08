@@ -59,7 +59,7 @@
 
 Also arrange for trailing whitespace to be removed before saving."
   (whitespace-mode 1)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t))
 
 (after "text-mode"
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
