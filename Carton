@@ -1,4 +1,5 @@
 (source "melpa" "http://melpa.milkbox.net/packages/")
+(source "org" "http://orgmode.org/elpa/")
 
 ;; Essential package management
 (depends-on "carton")
@@ -54,12 +55,15 @@
 ;; Module: haskell
 (depends-on "haskell-mode")
 
-;; Module: latex
+;; Module: tex
 ;; (depends-on "auctex")
 (depends-on "ebib")
 
 ;; Module: markdown
 (depends-on "markdown-mode")
+
+;; Module: org
+(depends-on "org")
 
 ;; Misc markup modes
 (depends-on "yaml-mode")
