@@ -41,7 +41,8 @@
 
 (require 'edit-server)
 
-(setq edit-server-url-major-mode-alist
+(setq edit-server-new-frame nil         ; Do not create new frames
+      edit-server-url-major-mode-alist
       '(("stackoverflow\\.com/.*$" . markdown-mode)
         ("github\\.com/.*$" . gfm-mode)
         ("\\(?:www\\.\\)python-forum.de/.*$" . bbcode-mode)))
