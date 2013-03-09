@@ -47,6 +47,9 @@
         ("github\\.com/.*$" . gfm-mode)
         ("\\(?:www\\.\\)python-forum.de/.*$" . bbcode-mode)))
 
+(after 'bbcode-mode
+  (add-hook 'bbcode-mode-hook 'turn-off-auto-fill))
+
 (edit-server-start)
 
 (provide 'stante-chrome)
