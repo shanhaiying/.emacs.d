@@ -50,7 +50,12 @@ Candidates for `python-check-command'.")
   (add-hook 'python-mode-hook 'stante-python-filling)
   (add-hook 'python-mode-hook 'subword-mode)
 
-  (setq python-check-command (-first 'executable-find stante-python-checkers)))
+  (setq python-check-command (-first 'executable-find stante-python-checkers))
+
+  ;; Default to Python 3 if available
+  (let ((python3 (executable-find "python3")))
+    (when python3
+      (setq python-shell-interpreter python3))))
 
 (after 'expand-region
   ;; Tell expand-region about the Python mode we're using
