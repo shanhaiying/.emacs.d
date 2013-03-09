@@ -87,7 +87,8 @@
     (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
                                               homebrew-prefix))))
 ;; FIXME: ELPA package is outdated, loading from system
-(require 'tex-site)
+(unless (require 'tex-site nil t)
+  (message "AUCTeX not installed.  LaTeX/Texinfo editing is limited!"))
 
 ;; Handle .latex files with AUCTeX, too.
 (add-to-list 'auto-mode-alist '("\\.[lL]a[tT]e[xX]\\'" . latex-mode))
