@@ -65,6 +65,9 @@
   (require 'ispell)
   (require 'flyspell))
 
+(unless (executable-find "aspell")
+  (message "Aspell not found.  Spell checking may not be available!"))
+
 ;; Choose English as default languages, because programming is mostly done in
 ;; this languages, and don't ask to save the private dictionary.
 (after 'ispell
