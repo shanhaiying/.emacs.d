@@ -82,13 +82,14 @@
 (require 'stante-text)
 (require 'dash)
 
+;; FIXME: ELPA package is outdated, loading from system
 (when (and (stante-is-os-x) (stante-homebrew-installed-p "auctex"))
   (let ((homebrew-prefix (stante-homebrew-prefix)))
     (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
                                               homebrew-prefix))))
-;; FIXME: ELPA package is outdated, loading from system
 (unless (require 'tex-site nil t)
   (message "AUCTeX not installed.  LaTeX/Texinfo editing is limited!"))
+(unless (require 'preview-latex nil t))
 
 ;; Handle .latex files with AUCTeX, too.
 (add-to-list 'auto-mode-alist '("\\.[lL]a[tT]e[xX]\\'" . latex-mode))
