@@ -114,6 +114,7 @@
 (eval-when-compile
   (require 'whitespace)
   (require 'paren)
+  (require 'electric)
   (require 'savehist)
   (require 'recentf)
   (require 'saveplace)
@@ -140,6 +141,11 @@
 ;; Automatic indentation
 (electric-indent-mode 1)
 (electric-layout-mode 1)
+
+(defun stante-editor-disable-electric-indentation ()
+  "Disable electric indentation."
+  (set (make-local-variable 'electric-indent-functions)
+       (list (lambda (_arg) 'no-indent))))
 
 ;; Configure filling
 (setq-default fill-column 80)

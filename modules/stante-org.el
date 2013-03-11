@@ -46,6 +46,9 @@
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
   (add-hook 'org-shiftright-final-hook 'windmove-right)
 
+  ;; Electric indentation in Org breaks headlines
+  (add-hook 'org-mode-hook #'stante-editor-disable-electric-indentation)
+
   ;; Use IDO for switching between org buffers
   (setq org-completion-use-ido t
         org-outline-path-complete-in-steps nil)
