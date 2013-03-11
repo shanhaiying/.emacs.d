@@ -166,6 +166,9 @@ Use in programming modes that do not derive from `prog-mode'."
 ;; Enable semantic
 (semantic-mode 1)
 
+;; De-clutter mode line
+(after 'guru-mode (diminish 'guru-mode))
+
 (provide 'stante-programming)
 
 ;; Local Variables:

@@ -134,6 +134,7 @@
 
 ;; Nice page breaks
 (global-page-break-lines-mode)
+(after 'page-break-lines (diminish 'page-break-lines-mode))
 
 ;; No tabs for indentation
 (setq-default indent-tabs-mode nil
@@ -165,6 +166,8 @@
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Volatile Highlights doesn't autoload
 (volatile-highlights-mode t)
+(after 'volatile-highlights (diminish 'volatile-highlights-mode))
+
 (after 'whitespace
   (setq whitespace-style '(face tabs empty trailing lines-tail)))
 

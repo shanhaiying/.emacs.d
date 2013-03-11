@@ -112,6 +112,12 @@ Create a new ielm process if required."
 ;; Consider Carton files as Emacs Lisp files
 (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode))
 
+;; De-clutter mode line
+(after 'rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+(after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode))
+(after 'eldoc (diminish 'eldoc-mode))
+(after 'checkdoc (diminish 'checkdoc-minor-mode))
+
 (provide 'stante-emacs-lisp)
 
 ;; Local Variables:

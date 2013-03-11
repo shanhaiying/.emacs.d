@@ -60,6 +60,8 @@
   ;; Enable yasnippet in all modes.
   (yas-global-mode 1))
 
+(after 'yasnippet (diminish 'yas-minor-mode))
+
 (provide 'stante-snippets)
 
 ;; Local Variables:

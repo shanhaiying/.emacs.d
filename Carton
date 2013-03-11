@@ -16,6 +16,7 @@
 (depends-on "exec-path-from-shell")
 (depends-on "helm")
 (depends-on "smex")
+(depends-on "diminish")
 
 ;; Module: editor
 (depends-on "adaptive-wrap")
