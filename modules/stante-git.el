@@ -52,12 +52,12 @@
 ;; Keybindings
 ;; -----------
 ;;
-;; C-x g brings up the Magit status window.
+;; C-c g brings up the Magit status window.
 ;;
-;; C-x G l lists your Gists.  Navigate with arrow keys and press return to open
+;; C-c G l lists your Gists.  Navigate with arrow keys and press return to open
 ;; a Gist in a new buffer.
 ;;
-;; C-x G c creates a new Gist from the current region, or from the whole buffer
+;; C-c G c creates a new Gist from the current region, or from the whole buffer
 ;; if no mark is set.  With prefix argument, create a private Gist.  The newly
 ;; created Gist is opened in the default browser (see `gist-view-gist').
 
@@ -80,12 +80,12 @@
   (setq gist-view-gist t))
 
 ;; Keybindings
-(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-c g") 'magit-status)
 
 (define-prefix-command 'gist-map)
 (define-key gist-map (kbd "c") 'gist-region-or-buffer)
 (define-key gist-map (kbd "l") 'gist-list)
-(global-set-key (kbd "C-x G") 'gist-map)
+(global-set-key (kbd "C-c G") 'gist-map)
 
 (provide 'stante-git)
 
