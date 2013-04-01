@@ -41,6 +41,7 @@
 (require 'stante-os-x)
 (require 'stante-editor)
 (require 'stante-spelling)
+(require 'stante-completion)
 (require 'stante-snippets)
 
 ;; Tool support

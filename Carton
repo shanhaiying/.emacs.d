@@ -26,6 +26,9 @@
 (depends-on "ace-jump-mode")
 (depends-on "flycheck")
 
+;; Module: completion
+(depends-on "company")
+
 ;; Module: snippets
 (depends-on "yasnippet")
 
