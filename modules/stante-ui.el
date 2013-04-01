@@ -184,7 +184,7 @@
       ido-default-file-method 'selected-window)
 
 ;; Improve minibuffer completion
-(icomplete-mode +1)
+(icomplete-mode)
 
 ;; Improved M-x
 (after 'smex
