@@ -34,7 +34,13 @@
 ;; Integrate ack via `ack-and-a-half' from
 ;; https://github.com/jhelwig/ack-and-a-half.
 ;;
-;; Use M-x ack or M-x ack-same to search.
+
+;; Key bindings
+;; ------------
+;;
+;; C-c a a searches for all files.
+;;
+;; C-c a s searches for all files of the same type as the current buffer.
 
 ;;; Code:
 
@@ -42,6 +48,11 @@
 (defalias 'ack-same 'ack-and-a-half-same)
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+
+(define-prefix-command 'ack-and-a-half-map)
+(define-key ack-and-a-half-map (kbd "a") 'ack-and-a-half)
+(define-key ack-and-a-half-map (kbd "s") 'ack-and-a-half-same)
+(global-set-key (kbd "C-c a") 'ack-and-a-half-map)
 
 (provide 'stante-tools)
 

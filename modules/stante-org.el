@@ -61,8 +61,8 @@
   (unless (file-directory-p org-directory)
     (make-directory org-directory)))
 
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c A") 'org-agenda)
+(global-set-key (kbd "C-c C") 'org-capture)
 
 (provide 'stante-org)
 
