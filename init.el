@@ -44,8 +44,9 @@
 (require 'stante-completion)
 (require 'stante-snippets)
 
-;; Tool support
+;; Tools and utilities
 (require 'stante-tools)
+(require 'stante-utilities)
 (require 'stante-chrome)
 (require 'stante-git)
 

@@ -35,6 +35,9 @@
 ;; Module: tools
 (depends-on "ack-and-a-half")
 
+;; Module: utilities
+(depends-on "google-this")
+
 ;; Module: chrome
 (depends-on "edit-server")
 

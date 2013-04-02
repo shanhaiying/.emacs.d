@@ -1,4 +1,4 @@
-;;; stante-tools.el --- Stante Pede Modules: Various tools -*- lexical-binding: t; -*-
+;;; stante-utilities.el --- Stante Pede Modules: Various utilities -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -26,27 +26,22 @@
 
 ;;; Commentary:
 
-;; Provide support for various external tools.
+;; Provide various utility libraries.
 
-;; Ack
-;; ---
+;; Google This
+;; -----------
 ;;
-;; Integrate ack via `ack-and-a-half' from
-;; https://github.com/jhelwig/ack-and-a-half.
-;;
-;; Use M-x ack or M-x ack-same to search.
+;; Add the Google This library from
+;; https://github.com/Bruce-Connor/emacs-google-this.
 
 ;;; Code:
 
-(defalias 'ack 'ack-and-a-half)
-(defalias 'ack-same 'ack-and-a-half-same)
-(defalias 'ack-find-file 'ack-and-a-half-find-file)
-(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+(google-this-mode)
 
-(provide 'stante-tools)
+(provide 'stante-utilities)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-tools.el ends here
+;;; stante-utilities.el ends here
