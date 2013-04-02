@@ -38,6 +38,8 @@
 ;; Key bindings
 ;; ------------
 ;;
+;; C-c c compiles the current buffer with `compile'.
+;;
 ;; C-c a a searches for all files.
 ;;
 ;; C-c a s searches for all files of the same type as the current buffer.
@@ -50,9 +52,11 @@
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
 (define-prefix-command 'ack-and-a-half-map)
-(define-key ack-and-a-half-map (kbd "a") 'ack-and-a-half)
-(define-key ack-and-a-half-map (kbd "s") 'ack-and-a-half-same)
+(define-key ack-and-a-half-map (kbd "a") #'ack-and-a-half)
+(define-key ack-and-a-half-map (kbd "s") #'ack-and-a-half-same)
 (global-set-key (kbd "C-c a") 'ack-and-a-half-map)
+
+(global-set-key (kbd "C-c c") #'compile)
 
 (provide 'stante-tools)
 
