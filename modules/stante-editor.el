@@ -132,6 +132,9 @@
 ;; Automatically revert buffers from changed files
 (global-auto-revert-mode 1)
 
+;; View readonly files
+(setq view-read-only t)
+
 ;; Nice page breaks
 (global-page-break-lines-mode)
 (after 'page-break-lines (diminish 'page-break-lines-mode))
