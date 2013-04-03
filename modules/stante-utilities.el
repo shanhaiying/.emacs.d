@@ -38,6 +38,8 @@
 
 (google-this-mode)
 
+(after 'google-this (diminish 'google-this-mode))
+
 (provide 'stante-utilities)
 
 ;; Local Variables:

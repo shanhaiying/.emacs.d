@@ -35,6 +35,8 @@
 
 (global-company-mode)
 
+(after 'company (diminish 'company-mode))
+
 (provide 'stante-completion)
 
 ;; Local Variables:
