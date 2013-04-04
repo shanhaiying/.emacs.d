@@ -234,8 +234,7 @@
 (unless (server-running-p) (server-start))
 
 ;; Flymake reloaded :)
-(add-hook 'prog-mode-hook 'flycheck-mode)
-(add-hook 'text-mode-hook 'flycheck-mode)
+(global-flycheck-mode)
 
 ;; Update copyright lines automatically
 (add-hook 'find-file-hook 'copyright-update)
