@@ -70,7 +70,7 @@
 (depends-on "markdown-mode")
 
 ;; Module: org
-(depends-on "org")
+(depends-on "org-plus-contrib")
 
 ;; Misc markup modes
 (depends-on "yaml-mode")
