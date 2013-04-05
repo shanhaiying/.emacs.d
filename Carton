@@ -72,6 +72,9 @@
 ;; Module: org
 (depends-on "org-plus-contrib")
 
+;; Module: sass
+(depends-on "scss-mode")
+
 ;; Misc markup modes
 (depends-on "yaml-mode")
 (depends-on "bbcode-mode")
