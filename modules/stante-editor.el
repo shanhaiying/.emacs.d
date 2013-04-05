@@ -184,8 +184,7 @@
 (put 'narrow-to-page 'disabled nil)
 (put 'narrow-to-defun 'disabled nil)
 
-;; Remember various histories
-;; Minibuffer history
+;; Remember minibuffer history
 (after 'savehist
   (setq savehist-save-minibuffer-history t
         ;; Save every three minutes (the default five minutes is a bit long)
@@ -193,6 +192,7 @@
         ;; Move save file into proper directory
         savehist-file (expand-file-name "savehist" stante-var-dir)))
 (savehist-mode t)
+
 ;; Recent files
 (after 'recentf
   (setq recentf-max-saved-items 200
@@ -200,7 +200,17 @@
         ;; Move to property directory
         recentf-save-file (expand-file-name "recentf" stante-var-dir)))
 (recentf-mode t)
-;; Locations in files
+
+;; Shamelessly stolen from
+;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
+(defun recentf-ido-find-file ()
+  "Find a recent file with Ido."
+  (interactive)
+  (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+
+;; Remember locations in files
 (after 'saveplace
   (setq save-place-file (expand-file-name "saveplace" stante-var-dir))
   (setq-default save-place t))
@@ -251,6 +261,7 @@
 (global-set-key (kbd "C-=") 'er/expand-region) ; As suggested by documentation
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+(global-set-key (kbd "C-c f") 'recentf-ido-find-file)
 
 (provide 'stante-editor)
 
