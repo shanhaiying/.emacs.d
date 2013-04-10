@@ -55,6 +55,13 @@ Kill the whole line with function `kill-whole-line' and then move
   (kill-whole-line arg)
   (back-to-indentation))
 
+;;;###autoload
+(defun stante-smart-open-line ()
+  "Insert empty line after the current line."
+  (interactive)
+  (move-end-of-line nil)
+  (newline-and-indent))
+
 (provide 'stante-lib-editor)
 
 ;; Local Variables:

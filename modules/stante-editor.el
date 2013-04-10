@@ -96,6 +96,8 @@
 ;;
 ;; C-S-<backspace> kills a whole line and moves back to indentation.
 ;;
+;; S-return or C-S-j insert a new empty line below the current one.
+;;
 ;; C-c o shows matching lines in a new window via `occur'.
 ;;
 ;; M-/ dynamically expands the word under point with `hippie-expand'.
@@ -263,6 +265,8 @@
 ;; Keybindings
 (global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line)
 (global-set-key [remap kill-whole-line] 'stante-smart-kill-whole-line)
+(global-set-key (kbd "C-S-j") 'stante-smart-open-line)
+(global-set-key [(shift return)] 'stante-smart-open-line)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "M-Z") 'zap-up-to-char)
 (global-set-key (kbd "M-/") 'hippie-expand)

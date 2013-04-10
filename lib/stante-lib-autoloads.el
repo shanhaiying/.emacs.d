@@ -14,9 +14,9 @@ Select the best view programs for the current platform.
 
 ;;;***
 
-;;;### (autoloads (stante-smart-kill-whole-line stante-smart-backward-kill-line)
-;;;;;;  "stante-lib-editor" "stante-lib-editor.el" (20837 25505 0
-;;;;;;  0))
+;;;### (autoloads (stante-smart-open-line stante-smart-kill-whole-line
+;;;;;;  stante-smart-backward-kill-line) "stante-lib-editor" "stante-lib-editor.el"
+;;;;;;  (20837 25595 0 0))
 ;;; Generated autoloads from stante-lib-editor.el
 
 (autoload 'stante-smart-backward-kill-line "stante-lib-editor" "\
@@ -31,6 +31,11 @@ Kill the whole line with function `kill-whole-line' and then move
 `back-to-indentation'.
 
 \(fn &optional ARG)" t nil)
+
+(autoload 'stante-smart-open-line "stante-lib-editor" "\
+Insert empty line after the current line.
+
+\(fn)" t nil)
 
 ;;;***
 
