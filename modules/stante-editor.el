@@ -94,9 +94,6 @@
 ;;
 ;; C-c o shows matching lines in a new window via `occur'.
 ;;
-;; C-x j joins this line with the preceding line and cleans up whitespace via
-;; `join-line'.
-;;
 ;; M-/ dynamically expands the word under point with `hippie-expand'.
 ;;
 ;; M-Z zaps up to, but not including a specified character, similar to
@@ -255,7 +252,6 @@
 
 ;; Keybindings
 (global-set-key (kbd "C-c o") 'occur)
-(global-set-key (kbd "C-x j") 'join-line)
 (global-set-key (kbd "M-Z") 'zap-up-to-char)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-=") 'er/expand-region) ; As suggested by documentation
