@@ -19,6 +19,7 @@
 (depends-on "diminish")
 
 ;; Module: editor
+(depends-on "drag-stuff")
 (depends-on "adaptive-wrap")
 (depends-on "page-break-lines")
 (depends-on "volatile-highlights")

@@ -113,6 +113,7 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'drag-stuff)
   (require 'whitespace)
   (require 'paren)
   (require 'electric)
@@ -146,6 +147,11 @@
 ;; Automatic indentation
 (electric-indent-mode 1)
 (electric-layout-mode 1)
+
+;; Drag stuff around
+(drag-stuff-global-mode)
+(after 'drag-stuff
+  (setq drag-stuff-modifier '(meta shift)))
 
 (defun stante-editor-disable-electric-indentation ()
   "Disable electric indentation."
