@@ -260,24 +260,6 @@
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
-;; The following functions are inspired by
-;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/ and
-;; http://emacsredux.com/blog/2013/04/09/kill-whole-line/
-(defun stante-smart-backward-kill-line ()
-  "Kill line backwards and re-indent."
-  (interactive)
-  (kill-line 0)
-  (indent-according-to-mode))
-
-(defun stante-smart-kill-whole-line (&optional arg)
-  "Kill whole line and move back to indentation.
-
-Kill the whole line with function `kill-whole-line' and then move
-`back-to-indentation'."
-  (interactive "p")
-  (kill-whole-line arg)
-  (back-to-indentation))
-
 ;; Keybindings
 (global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line)
 (global-set-key [remap kill-whole-line] 'stante-smart-kill-whole-line)

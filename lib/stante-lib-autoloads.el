@@ -14,6 +14,26 @@ Select the best view programs for the current platform.
 
 ;;;***
 
+;;;### (autoloads (stante-smart-kill-whole-line stante-smart-backward-kill-line)
+;;;;;;  "stante-lib-editor" "stante-lib-editor.el" (20837 25505 0
+;;;;;;  0))
+;;; Generated autoloads from stante-lib-editor.el
+
+(autoload 'stante-smart-backward-kill-line "stante-lib-editor" "\
+Kill line backwards and re-indent.
+
+\(fn)" t nil)
+
+(autoload 'stante-smart-kill-whole-line "stante-lib-editor" "\
+Kill whole line and move back to indentation.
+
+Kill the whole line with function `kill-whole-line' and then move
+`back-to-indentation'.
+
+\(fn &optional ARG)" t nil)
+
+;;;***
+
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
 ;;;;;;  (20781 60308 0 0))
