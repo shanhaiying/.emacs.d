@@ -92,6 +92,10 @@
 ;; Keybindings
 ;; -----------
 ;;
+;; C-<backspace> kills a line backwards and re-indents.
+;;
+;; C-S-<backspace> kills a whole line and moves back to indentation.
+;;
 ;; C-c o shows matching lines in a new window via `occur'.
 ;;
 ;; M-/ dynamically expands the word under point with `hippie-expand'.
@@ -250,7 +254,27 @@
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
+;; The following functions are inspired by
+;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/ and
+;; http://emacsredux.com/blog/2013/04/09/kill-whole-line/
+(defun stante-smart-backward-kill-line ()
+  "Kill line backwards and re-indent."
+  (interactive)
+  (kill-line 0)
+  (indent-according-to-mode))
+
+(defun stante-smart-kill-whole-line (&optional arg)
+  "Kill whole line and move back to indentation.
+
+Kill the whole line with function `kill-whole-line' and then move
+`back-to-indentation'."
+  (interactive "p")
+  (kill-whole-line arg)
+  (back-to-indentation))
+
 ;; Keybindings
+(global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line)
+(global-set-key [remap kill-whole-line] 'stante-smart-kill-whole-line)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "M-Z") 'zap-up-to-char)
 (global-set-key (kbd "M-/") 'hippie-expand)
