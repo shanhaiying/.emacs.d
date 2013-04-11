@@ -49,6 +49,11 @@
 ;;
 ;; Add support for creating and viewing Gists.
 
+;; Git Gutter
+;; ----------
+;;
+;; Indicate Git changes in the right fringe.
+
 ;; Keybindings
 ;; -----------
 ;;
@@ -65,7 +70,8 @@
 
 (eval-when-compile
   (require 'magit)
-  (require 'gist))
+  (require 'gist)
+  (require 'git-gutter-fringe))
 
 (after 'magit
   ;; Do not ask before saving buffers on `magit-status', but ask whether to set
@@ -78,6 +84,12 @@
 ;; Open newly created Gists in browser.
 (after 'gist
   (setq gist-view-gist t))
+
+;; Indicate Git changes
+(global-git-gutter-mode)
+(after 'git-gutter
+  (require 'git-gutter-fringe)
+  (setq git-gutter-fr:side 'right-fringe))
 
 ;; Keybindings
 (global-set-key (kbd "C-c g") 'magit-status)
