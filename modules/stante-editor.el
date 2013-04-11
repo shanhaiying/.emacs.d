@@ -153,7 +153,8 @@
 ;; Drag stuff around
 (drag-stuff-global-mode)
 (after 'drag-stuff
-  (setq drag-stuff-modifier '(meta shift)))
+  (setq drag-stuff-modifier '(meta shift))
+  (diminish 'drag-stuff-mode))
 
 (defun stante-editor-disable-electric-indentation ()
   "Disable electric indentation."
