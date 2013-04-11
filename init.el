@@ -47,7 +47,6 @@
 ;; Tools and utilities
 (require 'stante-tools)
 (require 'stante-utilities)
-(require 'stante-chrome)
 (require 'stante-git)
 
 ;; Programming languages
