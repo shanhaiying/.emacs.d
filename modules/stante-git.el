@@ -44,10 +44,10 @@
 ;; established by Tim Pope at
 ;; http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html.
 
-;; Github support
+;; Gists support
 ;; --------------
 ;;
-;; Provide Github support in Magit and add support for creating Gists.
+;; Add support for creating and viewing Gists.
 
 ;; Keybindings
 ;; -----------
