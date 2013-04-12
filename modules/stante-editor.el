@@ -136,6 +136,9 @@
 ;; Automatically revert buffers from changed files
 (global-auto-revert-mode 1)
 
+;; Delete selection when entering new text
+(delete-selection-mode)
+
 ;; View readonly files
 (setq view-read-only t)
 
