@@ -39,10 +39,6 @@
   ;; CoffeeScript should use two spaces for indentation
   (setq coffee-tab-width 2)
 
-  ;; FIXME: CoffeeScript does not derive from prog-mode, see
-  ;; https://github.com/defunkt/coffee-mode/issues/93
-  (add-hook 'coffee-mode-hook 'stante-run-prog-mode-hook)
-
   (after 'stante-spelling
     (add-hook 'coffee-mode-hook 'flyspell-prog-mode)))
 
