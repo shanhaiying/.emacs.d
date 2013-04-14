@@ -37,10 +37,7 @@
 
 (after 'coffee-mode
   ;; CoffeeScript should use two spaces for indentation
-  (setq coffee-tab-width 2)
-
-  (after 'stante-spelling
-    (add-hook 'coffee-mode-hook 'flyspell-prog-mode)))
+  (setq coffee-tab-width 2))
 
 (provide 'stante-coffee)
 
