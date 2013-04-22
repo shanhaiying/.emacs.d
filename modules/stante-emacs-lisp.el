@@ -44,6 +44,11 @@
 ;; Read the reference table at http://mumble.net/~campbell/emacs/paredit.html
 ;; for a list of available commands.
 
+;; Debugging Emacs Lisp
+;; --------------------
+;;
+;; Enable macrostep, to expand macros interactively and step-by-step.
+
 ;; Bytecode
 ;; --------
 ;;
@@ -101,7 +106,10 @@ Create a new ielm process if required."
     (add-hook 'emacs-lisp-mode-hook it))
 
   (define-key emacs-lisp-mode-map (kbd "C-c z")
-    'stante-emacs-lisp-switch-to-ielm))
+    #'stante-emacs-lisp-switch-to-ielm)
+
+  ;; Stepwise macro expansion
+  (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
 
 ;; Indent ERT tests like functions
 (put 'ert-deftest 'lisp-indent-function 'defun)
