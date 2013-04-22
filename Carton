@@ -24,6 +24,7 @@
 (depends-on "page-break-lines")
 (depends-on "volatile-highlights")
 (depends-on "expand-region")
+(depends-on "wrap-region")
 (depends-on "ace-jump-mode")
 (depends-on "flycheck")
 

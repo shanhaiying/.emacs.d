@@ -60,6 +60,8 @@
 ;; ------
 ;;
 ;; Expand the region by semantic units with `er/expand-region'.
+;;
+;; Wrap the region with Wrap Region Mode.
 
 ;; Narrowing and widening
 ;; ----------------------
@@ -138,6 +140,9 @@
 
 ;; Delete selection when entering new text
 (delete-selection-mode)
+
+;; Wrap the region
+(wrap-region-mode)
 
 ;; View readonly files
 (setq view-read-only t)
