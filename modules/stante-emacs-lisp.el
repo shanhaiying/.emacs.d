@@ -111,6 +111,9 @@ Create a new ielm process if required."
   ;; Stepwise macro expansion
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
 
+(after 'paredit
+  (diminish 'paredit-mode))
+
 ;; Indent ERT tests like functions
 (put 'ert-deftest 'lisp-indent-function 'defun)
 

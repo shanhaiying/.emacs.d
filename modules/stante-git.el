@@ -88,6 +88,9 @@
 ;; Indicate Git changes
 (global-git-gutter-mode)
 (after 'git-gutter
+  (diminish 'git-gutter-mode)
+
+  ;; Show Git Gutter on the right fringe, the left fringe is for Flycheck errors
   (require 'git-gutter-fringe)
   (setq git-gutter-fr:side 'right-fringe))
 

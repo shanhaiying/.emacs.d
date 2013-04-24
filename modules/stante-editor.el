@@ -195,7 +195,8 @@
 (after 'volatile-highlights (diminish 'volatile-highlights-mode))
 
 (after 'whitespace
-  (setq whitespace-style '(face tabs empty trailing lines-tail)))
+  (setq whitespace-style '(face tabs empty trailing lines-tail))
+  (diminish 'whitespace-mode))
 
 (setq indicate-empty-lines t)
 
