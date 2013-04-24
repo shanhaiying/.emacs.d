@@ -91,8 +91,7 @@
   (diminish 'git-gutter-mode)
 
   ;; Show Git Gutter on the right fringe, the left fringe is for Flycheck errors
-  (require 'git-gutter-fringe)
-  (setq git-gutter-fr:side 'right-fringe))
+  (require 'git-gutter-fringe))
 
 ;; Keybindings
 (global-set-key (kbd "C-c g") 'magit-status)
