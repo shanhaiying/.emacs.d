@@ -94,6 +94,8 @@
 ;; Keybindings
 ;; -----------
 ;;
+;; Swap isearch and isearch-regexp keybindings.
+;;
 ;; C-<backspace> kills a line backwards and re-indents.
 ;;
 ;; C-S-<backspace> kills a whole line and moves back to indentation.
@@ -272,6 +274,11 @@
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
 ;; Keybindings
+;; Swap isearch and isearch-regexp
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line)
 (global-set-key [remap kill-whole-line] 'stante-smart-kill-whole-line)
 (global-set-key (kbd "C-S-j") 'stante-smart-open-line)
