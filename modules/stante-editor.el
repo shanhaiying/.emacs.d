@@ -149,6 +149,9 @@
 ;; View readonly files
 (setq view-read-only t)
 
+;; Preserve clipboard text before killing
+(setq save-interprogram-paste-before-kill t)
+
 ;; Nice page breaks
 (global-page-break-lines-mode)
 (after 'page-break-lines (diminish 'page-break-lines-mode))
