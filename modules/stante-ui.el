@@ -207,18 +207,8 @@
 ;; Window management reloaded
 (winner-mode)
 
-;; Default font
-(cond
- ((stante-is-os-x)
-  ;; OS X default font, but larger font size
-  (set-face-attribute 'default nil :family "Menlo" :height 130))
- ((stante-is-windows)
-  ;; Visual Studio defaults
-  (set-face-attribute 'default nil :family "Consolas" :height 100))
- (t
-  ;; A reasonable choice for all other systems
-  (set-face-attribute 'default nil :family "Dejavu Sans Mono" :height 100))
- )
+;; Nice default font, download from http://www.google.com/fonts/
+(set-face-attribute 'default nil :family "Inconsolata" :height 150)
 
 ;; Reuse current frame for EDiff
 (after 'ediff-wind
