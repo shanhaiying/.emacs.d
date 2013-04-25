@@ -150,7 +150,11 @@
 (setq view-read-only t)
 
 ;; Preserve clipboard text before killing
-(setq save-interprogram-paste-before-kill t)
+;; This would be a really nice addition, but Emacs has the stupid habit
+;; of constantly signalling errors if the paste content is not supported or
+;; empty. Obviously this breaks killing completely.  Really great thanks to you,
+;; whoever crazy mind got that silly idea…
+;; (setq save-interprogram-paste-before-kill t)
 
 ;; Nice page breaks
 (global-page-break-lines-mode)
