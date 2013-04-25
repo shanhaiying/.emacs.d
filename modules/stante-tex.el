@@ -104,7 +104,7 @@
         TeX-source-correlate-method 'synctex)
   (setq-default TeX-master nil ; Ask for master document
                 ;; Use a modern LaTeX engine to build PDFs
-                TeX-engine 'xetex
+                TeX-engine 'luatex
                 TeX-PDF-mode t)
 
   ;; Setup sub modes
