@@ -13,6 +13,7 @@
 (depends-on "zenburn-theme")
 
 ;; Module: ui
+(depends-on "page-break-lines")
 (depends-on "exec-path-from-shell")
 (depends-on "helm")
 (depends-on "smex")
@@ -21,7 +22,6 @@
 ;; Module: editor
 (depends-on "drag-stuff")
 (depends-on "adaptive-wrap")
-(depends-on "page-break-lines")
 (depends-on "volatile-highlights")
 (depends-on "expand-region")
 (depends-on "wrap-region")

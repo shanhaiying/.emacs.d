@@ -139,6 +139,10 @@
 ;; Disable blinking cursor
 (blink-cursor-mode -1)
 
+;; Nice page breaks
+(global-page-break-lines-mode)
+(after 'page-break-lines (diminish 'page-break-lines-mode))
+
 ;; Disable alarm beeps
 (setq ring-bell-function 'ignore)
 

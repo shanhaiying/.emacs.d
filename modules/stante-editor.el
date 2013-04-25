@@ -156,10 +156,6 @@
 ;; whoever crazy mind got that silly idea…
 ;; (setq save-interprogram-paste-before-kill t)
 
-;; Nice page breaks
-(global-page-break-lines-mode)
-(after 'page-break-lines (diminish 'page-break-lines-mode))
-
 ;; No tabs for indentation
 (setq-default indent-tabs-mode nil
               tab-width 8)
