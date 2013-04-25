@@ -120,7 +120,8 @@
 (eval-when-compile
   (require 'ido)
   (require 'ediff-wind)
-  (require 'smex))
+  (require 'smex)
+  (require 'page-break-lines))
 
 (when (display-graphic-p)
   ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
@@ -141,7 +142,13 @@
 
 ;; Nice page breaks
 (global-page-break-lines-mode)
-(after 'page-break-lines (diminish 'page-break-lines-mode))
+(after 'page-break-lines
+  (diminish 'page-break-lines-mode)
+
+    ;; Fix the font of lines
+  (set-fontset-font "fontset-default"
+                    (cons page-break-lines-char page-break-lines-char)
+                    (face-attribute 'default :family)))
 
 ;; Disable alarm beeps
 (setq ring-bell-function 'ignore)
