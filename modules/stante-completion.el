@@ -28,6 +28,11 @@
 
 ;; Add advanced completion via Company Mode.
 
+;; Keybindings
+;; -----------
+;;
+;; M-Tab starts completion with Company.
+
 ;;; Code:
 
 (eval-when-compile
@@ -35,7 +40,16 @@
 
 (global-company-mode)
 
-(after 'company (diminish 'company-mode))
+(after 'company
+  (diminish 'company-mode)
+
+  ;; Make completion a little less aggressive
+  (setq company-idle-delay 1.0
+        company-begin-commands '(self-insert-command)
+        ;; Make completion a bit more fancy
+        company-show-numbers t))
+
+(global-set-key (kbd "M-<tab>") 'company-complete)
 
 (provide 'stante-completion)
 
