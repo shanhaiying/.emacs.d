@@ -48,6 +48,7 @@
 (require 'stante-tools)
 (require 'stante-utilities)
 (require 'stante-git)
+(require 'stante-project)
 
 ;; Programming languages
 (require 'stante-emacs-lisp)

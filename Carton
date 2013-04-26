@@ -48,6 +48,9 @@
 (depends-on "gist")
 (depends-on "git-gutter-fringe")
 
+;; Module: project
+(depends-on "projectile")
+
 ;; Module: programming
 (depends-on "guru-mode")
 
