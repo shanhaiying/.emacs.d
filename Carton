@@ -20,11 +20,11 @@
 (depends-on "diminish")
 
 ;; Module: editor
+(depends-on "smartparens")
 (depends-on "drag-stuff")
 (depends-on "adaptive-wrap")
 (depends-on "volatile-highlights")
 (depends-on "expand-region")
-(depends-on "wrap-region")
 (depends-on "ace-jump-mode")
 (depends-on "flycheck")
 
@@ -54,9 +54,10 @@
 ;; Module: programming
 (depends-on "guru-mode")
 
-;; Module: emacs-lisp
-(depends-on "paredit")
+;; Module: lisp
 (depends-on "rainbow-delimiters")
+
+;; Module: emacs-lisp
 (depends-on "elisp-slime-nav")
 (depends-on "macrostep")
 

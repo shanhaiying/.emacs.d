@@ -108,7 +108,11 @@
                 TeX-PDF-mode t)
 
   ;; Setup sub modes
-  (--each '(reftex-mode LaTeX-math-mode) (add-hook 'LaTeX-mode-hook it)))
+  (--each '(reftex-mode LaTeX-math-mode) (add-hook 'LaTeX-mode-hook it))
+
+  ;; Enable Smartparens support
+  (after 'smartparens
+    (require 'smartparens-latex)))
 
 ;; Configure Texinfo editing with AUCTeX
 (after 'tex-info

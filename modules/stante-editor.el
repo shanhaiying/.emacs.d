@@ -143,9 +143,6 @@
 ;; Delete selection when entering new text
 (delete-selection-mode)
 
-;; Wrap the region
-(wrap-region-mode)
-
 ;; View readonly files
 (setq view-read-only t)
 
@@ -183,10 +180,15 @@
 (add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
 
 ;; Power up parenthesis
-(electric-pair-mode 1)
-(show-paren-mode 1)
-;; Highlight only the parenthesis if it is visible, or the expression if not
-(after 'paren (setq show-paren-style 'mixed))
+(smartparens-global-mode)
+(show-smartparens-global-mode)
+(after 'smartparens
+  (require 'smartparens-config)
+
+  ;; Use Paredit-like keybindings.  The Smartparens bindings are too obtrusive,
+  ;; shadow otherwise useful bindings (e.g. M-<backspace>), and use the arrow
+  ;; keys too much
+  (sp-use-paredit-bindings))
 
 ;; Highlights
 (global-hl-line-mode 1)

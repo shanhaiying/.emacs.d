@@ -36,14 +36,6 @@
 ;;
 ;; Check documentation style automatically with `checkdoc-minor-mode'.
 
-;; Balanced parenthesis
-;; --------------------
-;;
-;; Keep parenthesis balanced while editing with `paredit-mode'.
-;;
-;; Read the reference table at http://mumble.net/~campbell/emacs/paredit.html
-;; for a list of available commands.
-
 ;; Debugging Emacs Lisp
 ;; --------------------
 ;;
@@ -62,8 +54,8 @@
 
 ;;; Code:
 
+(require 'stante-lisp)
 (require 'dash)
-(require 'stante-programming)
 
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
   "Remove byte code file corresponding to the Emacs Lisp BUFFER.
@@ -97,8 +89,7 @@ Create a new ielm process if required."
 (after 'lisp-mode
   (--each '(emacs-lisp-mode-hook ielm-mode-hook)
     (add-hook it 'turn-on-eldoc-mode)
-    (add-hook it 'paredit-mode)
-    (add-hook it 'rainbow-delimiters-mode))
+    (stante-setup-lispy-mode-hook it))
 
   (--each '(checkdoc-minor-mode
             stante-emacs-lisp-clean-byte-code-on-save
@@ -111,9 +102,6 @@ Create a new ielm process if required."
   ;; Stepwise macro expansion
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
 
-(after 'paredit
-  (diminish 'paredit-mode))
-
 ;; Indent ERT tests like functions
 (put 'ert-deftest 'lisp-indent-function 'defun)
 
@@ -124,7 +112,6 @@ Create a new ielm process if required."
 (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode))
 
 ;; De-clutter mode line
-(after 'rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 (after 'eldoc (diminish 'eldoc-mode))
 (after 'checkdoc (diminish 'checkdoc-minor-mode))
