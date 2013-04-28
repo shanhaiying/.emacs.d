@@ -100,6 +100,8 @@
 ;;
 ;; C-x C-b shows IBuffer (see  `ibuffer').  Replaces the standard `buffer-menu'.
 ;;
+;; C-c b toggles between the two most recently used buffers.
+;;
 ;; C-x p shows a list of running processes similar to the Unix command line
 ;; utility "top".
 ;;
@@ -255,8 +257,17 @@ to `stante-save-frame-parameters-file'."
   (add-hook 'after-init-hook 'stante-restore-frame-parameters)
   (add-hook 'kill-emacs-hook 'stante-save-frame-parameters))
 
+(defun stante-switch-to-previous-buffer ()
+  "Switch to the previous buffer.
+
+Repeated invocations toggle between the two most recently used
+buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) :visible-ok)))
+
 ;; Key bindings
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c b") 'stante-switch-to-previous-buffer)
 ;; Similar to C-x d
 (global-set-key (kbd "C-x p") 'proced)
 ;; Complementary to C-h a
