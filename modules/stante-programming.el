@@ -29,17 +29,14 @@
 ;; Setup programming modes based on `prog-mode'.
 
 ;; This module is automatically loaded by Stante Pede modules that configure
-;; specific programming modes so you should normally not need to enable it
-;; explicitly.  However, if you are using a programming mode that has no
-;; specific Stante Pede module, you might want to load this module to enable
-;; some basic tweaks.  In this case, please consider writing a proper Stante
-;; Pede module for this mode and contribute it to the Stante Pede project.
+;; specific programming modes.  You do not need to enable it explicitly.
 
 ;; A programming mode in terms of this module is a mode that is derived from
 ;; `prog-mode'.  In Emacs 24, most programming modes should do so, but 3rd party
 ;; packages might not.  In such cases, most functionality of this module will
 ;; not be enabled.  If Stante Pede provides a module for such a mode, enable
-;; this module to get the functionality of this module.
+;; this module to get the functionality of this module.  You'll also need to run
+;; `prog-mode-hook' manually in the mode hook.
 
 ;; Filling
 ;; -------
@@ -96,9 +93,6 @@
 ;;
 ;; `stante-programming-keybindings' configures the keybindings of this module
 ;; for the current local mode map.
-;;
-;; `stante-configure-programming-mode-hook' sets up a given hook with all of the
-;; above functions, simply for convenience.
 
 ;; Keybindings
 ;; -----------
@@ -147,13 +141,6 @@ Also arrange for a whitespace cleanup before saving."
 (defun stante-programming-keybindings ()
   "Add the keybindings of this module to the `current-local-map'."
   (local-set-key (kbd "C-#") 'comment-or-uncomment-region))
-
-(defun stante-run-prog-mode-hook ()
-  "Run `prog-mode-hook' manually.
-
-Use in programming modes that do not derive from `prog-mode'."
-  (require 'simple)
-  (run-hooks 'prog-mode-hook))
 
 (after 'simple ; prog-mode is contained in simple.el
   (--each '(stante-auto-fill-comments
