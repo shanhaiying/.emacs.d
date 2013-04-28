@@ -40,6 +40,8 @@
 ;; Enable `auto-fill-mode' in all text modes and increase the default fill
 ;; column to 80 characters, which is the maximum recommended by most programming
 ;; style guides.
+;;
+;; Show a fill column indicator in programming and text modes.
 
 ;; Parenthesis, brackets, etc.
 ;; --------------------------
@@ -175,6 +177,8 @@
 (setq-default fill-column 80)
 (after 'whitespace
   (setq whitespace-line-column nil))
+(--each '(prog-mode-hook text-mode-hook)
+  (add-hook it 'fci-mode))
 
 ;; Configure wrapping
 (add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)

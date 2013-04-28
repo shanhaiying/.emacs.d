@@ -26,6 +26,7 @@
 (depends-on "volatile-highlights")
 (depends-on "expand-region")
 (depends-on "ace-jump-mode")
+(depends-on "fill-column-indicator")
 (depends-on "flycheck")
 
 ;; Module: completion
