@@ -91,7 +91,7 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
   ;; Setup modifier maps for OS X
   (setq mac-option-modifier 'meta
         mac-command-modifier 'meta
-        mac-function-modifier 'control
+        mac-function-modifier 'hyper
         mac-right-option-modifier 'none
         mac-right-command-modifier 'super)
 
