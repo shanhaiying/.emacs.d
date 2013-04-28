@@ -82,7 +82,12 @@ suitable processor was found."
   (stante-find-markdown-processor)
   ;; Disable auto-filling and highlighting of overlong lines, because line
   ;; breaks are significant in `gfm-mode'.
-  (add-hook 'gfm-mode-hook 'turn-off-auto-fill))
+  (add-hook 'gfm-mode-hook 'turn-off-auto-fill)
+
+  (after 'smartparens
+    (sp-with-modes '(markdown-mode gfm-mode)
+      (sp-local-pair "*" "*")
+      (sp-local-tag "c" "```scheme" "```"))))
 
 (provide 'stante-markdown)
 
