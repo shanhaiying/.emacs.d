@@ -28,6 +28,7 @@
 (depends-on "ace-jump-mode")
 (depends-on "fill-column-indicator")
 (depends-on "flycheck")
+(depends-on "multiple-cursors")
 
 ;; Module: completion
 (depends-on "company")

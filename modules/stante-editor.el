@@ -116,6 +116,8 @@
 ;;
 ;; C-c SPC starts Ace Jump mode to quickly navigate in the buffer.  C-x SPC
 ;; jumps back.
+;;
+;; M-S-up and M-S-down move the current line or region up and down respectively.
 
 
 ;;; Code:
