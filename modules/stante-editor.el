@@ -65,6 +65,13 @@
 ;;
 ;; Wrap the region with Wrap Region Mode.
 
+;; Multiple cursors
+;; ----------------
+;;
+;; Edit text with multiple cursors.
+;;
+;; See https://github.com/magnars/multiple-cursors.el
+
 ;; Narrowing and widening
 ;; ----------------------
 ;;
@@ -118,6 +125,18 @@
 ;; jumps back.
 ;;
 ;; M-S-up and M-S-down move the current line or region up and down respectively.
+;;
+;; C-c m e edits the selected lines with multiple cursors.
+;;
+;; C-c m C-a and C-c m C-e adds a cursor to the beginning and end of all
+;; selected lines.
+;;
+;; C-c m C-s prompts for a text to edit with multiple cursors.
+;;
+;; C-c m > and C-c m < add a cursor to the next and previous matching thing.
+;;
+;; C-c m h adds a cursor to all matching things, in a do-what-I-mean kind of
+;; way.  Repeat to add cursors to more things.
 
 
 ;;; Code:
@@ -287,6 +306,18 @@
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
 ;; Keybindings
+(defvar stante-multiple-cursors-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "e" #'mc/edit-lines)
+    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
+    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
+    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
+    (define-key map ">" #'mc/mark-next-like-this)
+    (define-key map "<" #'mc/mark-previous-like-this)
+    (define-key map "h" #'mc/mark-all-like-this-dwim)
+    map)
+  "Key map for multiple cursors.")
+
 ;; Swap isearch and isearch-regexp
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
@@ -303,6 +334,7 @@
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 (global-set-key (kbd "C-c f") 'recentf-ido-find-file)
+(global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 
 (provide 'stante-editor)
 
