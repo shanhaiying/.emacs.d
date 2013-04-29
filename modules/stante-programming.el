@@ -69,6 +69,11 @@
 ;; Show summary for tags when idle, and keep the current function name sticky on
 ;; top of the buffer.
 
+;; Symbol highlighting
+;; -------------------
+;;
+;; Highlight the symbol under point.
+
 ;; Reusability
 ;; -----------
 ;;
@@ -103,6 +108,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'highlight-symbol))
 (require 'dash)
 
 ;; Default semantic submodes
@@ -147,8 +154,15 @@ Also arrange for a whitespace cleanup before saving."
             stante-programming-whitespace
             stante-programming-keybindings
             stante-add-task-keywords
-            guru-mode)
+            guru-mode
+            highlight-symbol-mode)
     (add-hook 'prog-mode-hook it)))
+
+(after 'highlight-symbol
+  ;; Highlight the symbol under point after short delay, and highlight the
+  ;; symbol immediately after symbol navigation
+  (setq highlight-symbol-idle-delay 0.4
+        highlight-symbol-on-navigation-p t))
 
 ;; Enable semantic
 (semantic-mode 1)

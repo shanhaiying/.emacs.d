@@ -54,6 +54,7 @@
 
 ;; Module: programming
 (depends-on "guru-mode")
+(depends-on "highlight-symbol")
 
 ;; Module: lisp
 (depends-on "rainbow-delimiters")
