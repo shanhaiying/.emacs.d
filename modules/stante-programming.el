@@ -102,9 +102,6 @@
 ;; Keybindings
 ;; -----------
 ;;
-;; C-# toggles commenting for current region (see
-;; `comment-or-uncomment-region').
-;;
 ;; C-c s % replaces the symbol under point with the given text.
 ;;
 ;; C-c s n and C-c s p move to the next and previous occurrence of the symbol
@@ -165,8 +162,7 @@ Also arrange for a whitespace cleanup before saving."
 
 (defun stante-programming-keybindings ()
   "Add the keybindings of this module to the `current-local-map'."
-  (local-set-key (kbd "C-c s") stante-symbol-map)
-  (local-set-key (kbd "C-#") 'comment-or-uncomment-region))
+  (local-set-key (kbd "C-c s") stante-symbol-map))
 
 (after 'simple ; prog-mode is contained in simple.el
   (--each '(stante-auto-fill-comments
