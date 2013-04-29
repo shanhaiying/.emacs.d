@@ -184,6 +184,10 @@
 (electric-indent-mode 1)
 (electric-layout-mode 1)
 
+;; Multiple cursors
+(after 'multiple-cursors-core
+  (setq mc/list-file (expand-file-name "mc-lists.el" stante-var-dir)))
+
 ;; Drag stuff around
 (drag-stuff-global-mode)
 (after 'drag-stuff
