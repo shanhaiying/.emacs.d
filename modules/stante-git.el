@@ -96,10 +96,14 @@
 ;; Keybindings
 (global-set-key (kbd "C-c g") 'magit-status)
 
-(define-prefix-command 'gist-map)
-(define-key gist-map (kbd "c") 'gist-region-or-buffer)
-(define-key gist-map (kbd "l") 'gist-list)
-(global-set-key (kbd "C-c G") 'gist-map)
+(defvar stante-gist-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "c" #'gist-region-or-buffer)
+    (define-key map "l" #'gist-list)
+    map)
+  "Key map for Gists")
+
+(global-set-key (kbd "C-c G") stante-gist-map)
 
 (provide 'stante-git)
 
