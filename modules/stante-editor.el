@@ -129,6 +129,7 @@
   (require 'recentf)
   (require 'saveplace)
   (require 'bookmark))
+(require 'dash)
 
 ;; Move backup and autosave files to var directory.
 (setq backup-directory-alist
