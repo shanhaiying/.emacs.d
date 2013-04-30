@@ -218,7 +218,9 @@
   ;; Use Paredit-like keybindings.  The Smartparens bindings are too obtrusive,
   ;; shadow otherwise useful bindings (e.g. M-<backspace>), and use the arrow
   ;; keys too much
-  (sp-use-paredit-bindings))
+  (sp-use-paredit-bindings)
+
+  (diminish 'smartparens-mode))
 
 ;; Highlights
 (global-hl-line-mode 1)

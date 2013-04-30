@@ -177,7 +177,9 @@ Also arrange for a whitespace cleanup before saving."
   ;; Highlight the symbol under point after short delay, and highlight the
   ;; symbol immediately after symbol navigation
   (setq highlight-symbol-idle-delay 0.4
-        highlight-symbol-on-navigation-p t))
+        highlight-symbol-on-navigation-p t)
+
+  (diminish 'highlight-symbol-mode))
 
 ;; Enable semantic
 (semantic-mode 1)
