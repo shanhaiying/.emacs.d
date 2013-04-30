@@ -155,8 +155,8 @@ Also arrange for a whitespace cleanup before saving."
     (define-key map "%" #'highlight-symbol-query-replace)
     (define-key map "n" #'highlight-symbol-next-in-defun)
     (define-key map "p" #'highlight-symbol-prev-in-defun)
-    (define-key map "M-n" #'highlight-symbol-next)
-    (define-key map "M-p" #'highlight-symbol-prev)
+    (define-key map (kbd "M-n") #'highlight-symbol-next)
+    (define-key map (kbd "M-p") #'highlight-symbol-prev)
     map)
   "Local key map to work on symbols.")
 
