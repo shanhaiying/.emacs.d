@@ -91,10 +91,16 @@ Create a new ielm process if required."
     (add-hook it 'turn-on-eldoc-mode)
     (stante-setup-lispy-mode-hook it))
 
+  ;; Hooks specific to Emacs Lisp editing
   (--each '(checkdoc-minor-mode
             stante-emacs-lisp-clean-byte-code-on-save
             stante-font-lock-add-ert-keywords)
     (add-hook 'emacs-lisp-mode-hook it))
+
+  ;; Explicitly enable Smartparens in IELM.  The global mode won't do it,
+  ;; because IELM is a special mode, in which Global Smartparens Mode refuses to
+  ;; enable Smartparens mode
+  (add-hook 'ielm-mode-hook #'smartparens-mode)
 
   (define-key emacs-lisp-mode-map (kbd "C-c z")
     #'stante-emacs-lisp-switch-to-ielm)
