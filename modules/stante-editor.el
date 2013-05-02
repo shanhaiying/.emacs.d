@@ -126,7 +126,7 @@
 ;;
 ;; M-S-up and M-S-down move the current line or region up and down respectively.
 ;;
-;; C-c m e edits the selected lines with multiple cursors.
+;; C-c m l edits the selected lines with multiple cursors.
 ;;
 ;; C-c m C-a and C-c m C-e adds a cursor to the beginning and end of all
 ;; selected lines.
@@ -134,6 +134,9 @@
 ;; C-c m C-s prompts for a text to edit with multiple cursors.
 ;;
 ;; C-c m > and C-c m < add a cursor to the next and previous matching thing.
+;;
+;; C-c m e lets you selectively add cursors to the next or previous matching
+;; thing.
 ;;
 ;; C-c m h adds a cursor to all matching things, in a do-what-I-mean kind of
 ;; way.  Repeat to add cursors to more things.
@@ -314,12 +317,13 @@
 ;; Keybindings
 (defvar stante-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "e" #'mc/edit-lines)
+    (define-key map "l" #'mc/edit-lines)
     (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
     (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
     (define-key map (kbd "C-s") #'mc/mark-all-in-region)
     (define-key map ">" #'mc/mark-next-like-this)
     (define-key map "<" #'mc/mark-previous-like-this)
+    (define-key map "e" #'mc/mark-more-like-this-extended)
     (define-key map "h" #'mc/mark-all-like-this-dwim)
     map)
   "Key map for multiple cursors.")
