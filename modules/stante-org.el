@@ -39,6 +39,18 @@
 
 (require 'stante-text)
 
+(defun stante-org-disable-incompatible-modes ()
+  "Disable minor modes incompatible with Org mode.
+
+This includes:
+
+- Guru Mode
+- Drag Stuff Mode
+- Electric Indentation"
+  (guru-mode -1)
+  (drag-stuff-mode -1)
+  (stante-editor-disable-electric-indentation))
+
 (after 'org
   ;; Make windmove work in org-mode
   (add-hook 'org-shiftup-final-hook 'windmove-up)
@@ -46,8 +58,7 @@
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
   (add-hook 'org-shiftright-final-hook 'windmove-right)
 
-  ;; Electric indentation in Org breaks headlines
-  (add-hook 'org-mode-hook #'stante-editor-disable-electric-indentation)
+  (add-hook 'org-mode-hook #'stante-org-disable-incompatible-modes)
 
   ;; Use IDO for switching between org buffers
   (setq org-completion-use-ido t
