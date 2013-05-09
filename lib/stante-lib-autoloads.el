@@ -39,6 +39,42 @@ Insert empty line after the current line.
 
 ;;;***
 
+;;;### (autoloads (stante-delete-file-and-buffer stante-rename-file-and-buffer
+;;;;;;  stante-copy-filename-as-kill stante-ido-find-recentf stante-open-with)
+;;;;;;  "stante-lib-file-commands" "stante-lib-file-commands.el"
+;;;;;;  (20875 51455 0 0))
+;;; Generated autoloads from stante-lib-file-commands.el
+
+(autoload 'stante-open-with "stante-lib-file-commands" "\
+Open the file visited by the current buffer externally.
+
+Use the standard program to open the file.  With prefix ARG,
+prompt for the command to use.
+
+\(fn ARG)" t nil)
+
+(autoload 'stante-ido-find-recentf "stante-lib-file-commands" "\
+Find a recent file with ID.
+
+\(fn)" t nil)
+
+(autoload 'stante-copy-filename-as-kill "stante-lib-file-commands" "\
+Copy the name of the currently visited file to kill ring.
+
+\(fn)" t nil)
+
+(autoload 'stante-rename-file-and-buffer "stante-lib-file-commands" "\
+Rename the current file and buffer.
+
+\(fn)" t nil)
+
+(autoload 'stante-delete-file-and-buffer "stante-lib-file-commands" "\
+Delete the current file and kill the buffer.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (stante-get-file-lines stante-set-file-contents
 ;;;;;;  stante-get-file-contents) "stante-lib-io" "stante-lib-io.el"
 ;;;;;;  (20781 60308 0 0))

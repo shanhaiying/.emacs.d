@@ -125,22 +125,40 @@
 ;; jumps back.
 ;;
 ;; M-S-up and M-S-down move the current line or region up and down respectively.
-;;
-;; C-c m l edits the selected lines with multiple cursors.
-;;
-;; C-c m C-a and C-c m C-e adds a cursor to the beginning and end of all
-;; selected lines.
-;;
-;; C-c m C-s prompts for a text to edit with multiple cursors.
-;;
-;; C-c m > and C-c m < add a cursor to the next and previous matching thing.
-;;
-;; C-c m e lets you selectively add cursors to the next or previous matching
-;; thing.
-;;
-;; C-c m h adds a cursor to all matching things, in a do-what-I-mean kind of
-;; way.  Repeat to add cursors to more things.
 
+;; Multiple cursor keybindings
+;; +++++++++++++++++++++++++++
+;;
+;; The C-c m keymap provides commands to work with multiple cursors
+;;
+;; l edits the selected lines with multiple cursors.
+;;
+;; C-a and C-e add a cursor to the beginning and end of all selected lines
+;; respectively.
+;;
+;; C-s prompts for a text to edit with multiple cursors.
+;;
+;; > and < add a cursor to the next and previous matching thing.
+;;
+;; e lets you selectively add cursors to the next or previous matching thing.
+;;
+;; h adds a cursor to all matching things, in a do-what-I-mean kind of way.
+;; Repeat to add cursors to more things.
+
+;; File keybindings
+;; ++++++++++++++++
+;;
+;; The C-c f keymap provides commands to work with files:
+;;
+;; o opens the currently visited file externally.
+;;
+;; r finds a recently used file with IDO.
+;;
+;; R renames the current file and buffer.
+;;
+;; D deletes the current file and buffer.
+;;
+;; w copies the name of currently visited file into the kill ring.
 
 ;;; Code:
 
@@ -263,15 +281,6 @@
         recentf-save-file (expand-file-name "recentf" stante-var-dir)))
 (recentf-mode t)
 
-;; Shamelessly stolen from
-;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
-(defun recentf-ido-find-file ()
-  "Find a recent file with Ido."
-  (interactive)
-  (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
-    (when file
-      (find-file file))))
-
 ;; Remember locations in files
 (after 'saveplace
   (setq save-place-file (expand-file-name "saveplace" stante-var-dir))
@@ -329,6 +338,16 @@
     map)
   "Key map for multiple cursors.")
 
+(defvar stante-file-commands-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "r" #'stante-ido-find-recentf)
+    (define-key map "o" #'stante-open-with)
+    (define-key map "R" #'stante-rename-file-and-buffer)
+    (define-key map "D" #'stante-delete-file-and-buffer)
+    (define-key map "w" #'stante-copy-filename-as-kill)
+    map)
+  "Key map for file functions.")
+
 ;; Swap isearch and isearch-regexp
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
@@ -344,7 +363,9 @@
 (global-set-key (kbd "C-=") 'er/expand-region) ; As suggested by documentation
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
-(global-set-key (kbd "C-c f") 'recentf-ido-find-file)
+
+;; Some standard user maps
+(global-set-key (kbd "C-c f") stante-file-commands-map)
 (global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 
 (provide 'stante-editor)
