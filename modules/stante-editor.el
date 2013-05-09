@@ -147,6 +147,7 @@
 (eval-when-compile
   (require 'drag-stuff)
   (require 'whitespace)
+  (require 'multiple-cursors)
   (require 'paren)
   (require 'electric)
   (require 'savehist)
