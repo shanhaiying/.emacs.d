@@ -42,7 +42,7 @@ Insert empty line after the current line.
 ;;;### (autoloads (stante-delete-file-and-buffer stante-rename-file-and-buffer
 ;;;;;;  stante-copy-filename-as-kill stante-ido-find-recentf stante-open-with)
 ;;;;;;  "stante-lib-file-commands" "stante-lib-file-commands.el"
-;;;;;;  (20875 51455 0 0))
+;;;;;;  (20875 57657 0 0))
 ;;; Generated autoloads from stante-lib-file-commands.el
 
 (autoload 'stante-open-with "stante-lib-file-commands" "\
@@ -54,7 +54,7 @@ prompt for the command to use.
 \(fn ARG)" t nil)
 
 (autoload 'stante-ido-find-recentf "stante-lib-file-commands" "\
-Find a recent file with ID.
+Find a recent file with IDO.
 
 \(fn)" t nil)
 
@@ -97,6 +97,46 @@ overwrite it if it does.
 Return a list of lines of file FILENAME.
 
 \(fn FILENAME)" nil nil)
+
+;;;***
+
+;;;### (autoloads (stante-symbol-mode stante-multiple-cursors-mode
+;;;;;;  stante-file-commands-mode) "stante-lib-keybindings" "stante-lib-keybindings.el"
+;;;;;;  (20875 57916 0 0))
+;;; Generated autoloads from stante-lib-keybindings.el
+
+(defvar stante-file-commands-mode nil "\
+Non-nil if Stante-File-Commands mode is enabled.
+See the command `stante-file-commands-mode' for a description of this minor mode.")
+
+(custom-autoload 'stante-file-commands-mode "stante-lib-keybindings" nil)
+
+(autoload 'stante-file-commands-mode "stante-lib-keybindings" "\
+A global minor mode to provide file commands.
+
+\\{stante-file-commands-mode-map}
+
+\(fn &optional ARG)" t nil)
+
+(defvar stante-multiple-cursors-mode nil "\
+Non-nil if Stante-Multiple-Cursors mode is enabled.
+See the command `stante-multiple-cursors-mode' for a description of this minor mode.")
+
+(custom-autoload 'stante-multiple-cursors-mode "stante-lib-keybindings" nil)
+
+(autoload 'stante-multiple-cursors-mode "stante-lib-keybindings" "\
+A global minor mode for Multiple Cursor keybindings.
+
+\\{stante-multiple-cursors-mode-map}
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'stante-symbol-mode "stante-lib-keybindings" "\
+A minor mode for keybindings working on symbols.
+
+\\{stante-symbol-mode-map}
+
+\(fn &optional ARG)" t nil)
 
 ;;;***
 

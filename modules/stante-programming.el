@@ -102,13 +102,7 @@
 ;; Keybindings
 ;; -----------
 ;;
-;; C-c s % replaces the symbol under point with the given text.
-;;
-;; C-c s n and C-c s p move to the next and previous occurrence of the symbol
-;; under point within the current function.  C-c s M-n and C-c s M-p move to the
-;; next and previous occurrence within the whole buffer.
-;;
-;; C-c s o searches for the symbol under point with `occur'.
+;; `stante-symbol-mode' provides keybindings to work on symbols.
 
 ;;; Code:
 
@@ -149,28 +143,13 @@ Also arrange for a whitespace cleanup before saving."
   (whitespace-mode 1)
   (add-hook 'before-save-hook 'whitespace-cleanup nil t))
 
-(defvar stante-symbol-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "o" #'highlight-symbol-occur)
-    (define-key map "%" #'highlight-symbol-query-replace)
-    (define-key map "n" #'highlight-symbol-next-in-defun)
-    (define-key map "p" #'highlight-symbol-prev-in-defun)
-    (define-key map (kbd "M-n") #'highlight-symbol-next)
-    (define-key map (kbd "M-p") #'highlight-symbol-prev)
-    map)
-  "Local key map to work on symbols.")
-
-(defun stante-programming-keybindings ()
-  "Add the keybindings of this module to the `current-local-map'."
-  (local-set-key (kbd "C-c s") stante-symbol-map))
-
 (after 'simple ; prog-mode is contained in simple.el
   (--each '(stante-auto-fill-comments
             stante-programming-whitespace
-            stante-programming-keybindings
             stante-add-task-keywords
             guru-mode
-            highlight-symbol-mode)
+            highlight-symbol-mode
+            stante-symbol-mode)
     (add-hook 'prog-mode-hook it)))
 
 (after 'highlight-symbol

@@ -103,6 +103,11 @@
 ;; Keybindings
 ;; -----------
 ;;
+;; `stante-multiple-cursors-mode' provides global key bindings to work with
+;; multiple cursors
+;;
+;; `stante-file-commands-mode' provides global key bindings to work with files.
+;;
 ;; Swap isearch and isearch-regexp keybindings.
 ;;
 ;; C-<backspace> kills a line backwards and re-indents.
@@ -125,40 +130,6 @@
 ;; jumps back.
 ;;
 ;; M-S-up and M-S-down move the current line or region up and down respectively.
-
-;; Multiple cursor keybindings
-;; +++++++++++++++++++++++++++
-;;
-;; The C-c m keymap provides commands to work with multiple cursors
-;;
-;; l edits the selected lines with multiple cursors.
-;;
-;; C-a and C-e add a cursor to the beginning and end of all selected lines
-;; respectively.
-;;
-;; C-s prompts for a text to edit with multiple cursors.
-;;
-;; > and < add a cursor to the next and previous matching thing.
-;;
-;; e lets you selectively add cursors to the next or previous matching thing.
-;;
-;; h adds a cursor to all matching things, in a do-what-I-mean kind of way.
-;; Repeat to add cursors to more things.
-
-;; File keybindings
-;; ++++++++++++++++
-;;
-;; The C-c f keymap provides commands to work with files:
-;;
-;; o opens the currently visited file externally.
-;;
-;; r finds a recently used file with IDO.
-;;
-;; R renames the current file and buffer.
-;;
-;; D deletes the current file and buffer.
-;;
-;; w copies the name of currently visited file into the kill ring.
 
 ;;; Code:
 
@@ -317,28 +288,9 @@
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
 ;; Keybindings
-(defvar stante-multiple-cursors-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "l" #'mc/edit-lines)
-    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
-    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
-    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
-    (define-key map ">" #'mc/mark-next-like-this)
-    (define-key map "<" #'mc/mark-previous-like-this)
-    (define-key map "e" #'mc/mark-more-like-this-extended)
-    (define-key map "h" #'mc/mark-all-like-this-dwim)
-    map)
-  "Key map for multiple cursors.")
 
-(defvar stante-file-commands-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "r" #'stante-ido-find-recentf)
-    (define-key map "o" #'stante-open-with)
-    (define-key map "R" #'stante-rename-file-and-buffer)
-    (define-key map "D" #'stante-delete-file-and-buffer)
-    (define-key map "w" #'stante-copy-filename-as-kill)
-    map)
-  "Key map for file functions.")
+(stante-file-commands-mode)
+(stante-multiple-cursors-mode)
 
 ;; Swap isearch and isearch-regexp
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -355,10 +307,6 @@
 (global-set-key (kbd "C-=") 'er/expand-region) ; As suggested by documentation
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
-
-;; Some standard user maps
-(global-set-key (kbd "C-c f") stante-file-commands-map)
-(global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 
 (provide 'stante-editor)
 
