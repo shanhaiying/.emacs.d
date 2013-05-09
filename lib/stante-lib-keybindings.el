@@ -31,7 +31,7 @@
 
 ;;; Code:
 
-(defvar stante-keybindings-mode-map
+(defvar stante-multiple-cursors-mode-map
   (let ((map (make-sparse-keymap))
         (pmap (make-sparse-keymap)))
     (define-key pmap "l" #'mc/edit-lines)
