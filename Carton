@@ -29,6 +29,7 @@
 (depends-on "fill-column-indicator")
 (depends-on "flycheck")
 (depends-on "multiple-cursors")
+(depends-on "undo-tree")
 
 ;; Module: completion
 (depends-on "company")

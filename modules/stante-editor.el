@@ -154,6 +154,11 @@
 ;; Sane coding system choice
 (prefer-coding-system 'utf-8)
 
+;; Advanced undo system
+(global-undo-tree-mode)
+(after 'undo-tree
+  (diminish 'undo-tree-mode))
+
 ;; Automatically revert buffers from changed files
 (global-auto-revert-mode 1)
 
