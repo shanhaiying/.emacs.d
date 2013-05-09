@@ -202,9 +202,6 @@
 ;; No tabs for indentation
 (setq-default indent-tabs-mode nil
               tab-width 8)
-;; Automatic indentation
-(electric-indent-mode 1)
-(electric-layout-mode 1)
 
 ;; Multiple cursors
 (after 'multiple-cursors-core
@@ -215,11 +212,6 @@
 (after 'drag-stuff
   (setq drag-stuff-modifier '(meta shift))
   (diminish 'drag-stuff-mode))
-
-(defun stante-editor-disable-electric-indentation ()
-  "Disable electric indentation."
-  (set (make-local-variable 'electric-indent-functions)
-       (list (lambda (_arg) 'no-indent))))
 
 ;; Configure filling
 (setq-default fill-column 80)

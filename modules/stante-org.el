@@ -37,19 +37,15 @@
 
 ;;; Code:
 
-(require 'stante-text)
-
 (defun stante-org-disable-incompatible-modes ()
   "Disable minor modes incompatible with Org mode.
 
 This includes:
 
 - Guru Mode
-- Drag Stuff Mode
-- Electric Indentation"
+- Drag Stuff Mode"
   (guru-mode -1)
-  (drag-stuff-mode -1)
-  (stante-editor-disable-electric-indentation))
+  (drag-stuff-mode -1))
 
 (after 'org
   ;; Make windmove work in org-mode

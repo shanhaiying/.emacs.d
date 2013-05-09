@@ -80,6 +80,7 @@ suitable processor was found."
 
 (after 'markdown-mode
   (stante-find-markdown-processor)
+
   ;; Disable filling in Gfm mode, because line breaks have a meaning in Gfm
   (--each '(turn-off-auto-fill turn-off-fci-mode)
     (add-hook 'gfm-mode-hook it))

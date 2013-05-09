@@ -33,6 +33,7 @@
 
 ;;; Code:
 
+(require 'dash)
 (require 'stante-programming)
 
 (defconst stante-python-checkers '("flake8" "epylint" "pyflakes")
@@ -47,9 +48,8 @@ Candidates for `python-check-command'.")
 
 ;; Find the best checker
 (after 'python
-  (add-hook 'python-mode-hook #'stante-python-filling)
-  (add-hook 'python-mode-hook #'subword-mode)
-  (add-hook 'python-mode-hook #'stante-editor-disable-electric-indentation)
+  (--each '(stante-python-filling subword-mode)
+    (add-hook 'python-mode-hook it))
 
   (setq python-check-command (-first 'executable-find stante-python-checkers))
 
