@@ -69,7 +69,7 @@ prompt for the command to use."
 
 ;;;###autoload
 (defun stante-ido-find-recentf ()
-  "Find a recent file with ID."
+  "Find a recent file with IDO."
   (interactive)
   (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
     (when file
