@@ -131,21 +131,33 @@ with `font-lock-warning-face'."
    nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\):"
           1 font-lock-warning-face t))))
 
-(defun stante-auto-fill-comments ()
-  "Enable auto-filling for comments in the current buffer."
-  (set (make-local-variable 'comment-auto-fill-only-comments) t)
-  (auto-fill-mode 1))
+(define-minor-mode stante-auto-fill-comments-mode
+  "Minor mode to auto-fill comments only."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-auto-fill-comments-mode
+    (set (make-local-variable 'comment-auto-fill-only-comments) t)
+    (auto-fill-mode 1))
+   (:else
+    (kill-local-variable 'comment-auto-fill-only-comments)
+    (auto-fill-mode -1))))
 
-(defun stante-programming-whitespace ()
-  "Enable whitespace mode for the current buffer.
-
-Also arrange for a whitespace cleanup before saving."
-  (whitespace-mode 1)
-  (add-hook 'before-save-hook 'whitespace-cleanup nil t))
+(define-minor-mode stante-prog-whitespace-mode
+  "Minor mode to highlight and cleanup whitespace."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-prog-whitespace-mode
+    (whitespace-mode 1)
+    (add-hook 'before-save-hook 'whitespace-cleanup nil :local))
+   (:else
+    (whitespace-mode -1)
+    (remove-hook 'before-save-hook 'whitespace-cleanup :local))))
 
 (after 'simple ; prog-mode is contained in simple.el
-  (--each '(stante-auto-fill-comments
-            stante-programming-whitespace
+  (--each '(stante-auto-fill-comments-mode
+            stante-prog-whitespace-mode
             stante-add-task-keywords
             guru-mode
             highlight-symbol-mode
