@@ -68,6 +68,13 @@ This includes:
   (unless (file-directory-p org-directory)
     (make-directory org-directory)))
 
+;; Org mobile synchronization
+(after 'org-mobile
+  (setq org-mobile-directory "~/Dropbox/Org/Mobile")
+
+  (unless (file-directory-p org-mobile-directory)
+    (make-directory org-mobile-directory)))
+
 (global-set-key (kbd "C-c A") 'org-agenda)
 (global-set-key (kbd "C-c C") 'org-capture)
 
