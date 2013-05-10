@@ -805,6 +805,12 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
                       :inherit 'font-lock-string-face))
 
 
+;;;; Calendar settings
+(after 'calendar
+  ;; Weeks start on Monday here
+  (setq calendar-week-start-day 1))
+
+
 ;;;; Org mode
 (defun stante-org-disable-incompatible-modes ()
   "Disable minor modes incompatible with Org mode.
