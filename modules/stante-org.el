@@ -74,7 +74,9 @@ This includes:
 
 ;; Org mobile synchronization
 (after 'org-mobile
-  (setq org-mobile-directory "~/Dropbox/Org/Mobile")
+  (setq org-mobile-directory "~/Dropbox/Org/Mobile"
+        org-mobile-inbox-for-pull
+        (expand-file-name "from-mobile.org" org-directory))
 
   (unless (file-directory-p org-mobile-directory)
     (make-directory org-mobile-directory)))
