@@ -39,7 +39,8 @@
 
 (eval-when-compile
   (require 'org)
-  (require 'org-mobile))
+  (require 'org-mobile)
+  (require 'org-id))
 
 (defun stante-org-disable-incompatible-modes ()
   "Disable minor modes incompatible with Org mode.
@@ -80,6 +81,10 @@ This includes:
 
   (unless (file-directory-p org-mobile-directory)
     (make-directory org-mobile-directory)))
+
+;; Move Org files out of the way
+(after 'org-id
+  (setq org-id-locations-file (expand-file-name "org-id-locations" stante-var-dir)))
 
 (global-set-key (kbd "C-c A") 'org-agenda)
 (global-set-key (kbd "C-c C") 'org-capture)
