@@ -1,4 +1,4 @@
-;;; stante-lib-maintenance.el --- Stante Pede Library: Maintenance functions -*- lexical-binding: t; -*-
+;;; stante-editor.el --- Stante Pede: Editor functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -26,41 +26,46 @@
 
 ;;; Commentary:
 
-;; Stante Pede maintenance.
+;; Basic text editing commands.
 
-;; `stante-update-autoload-file' updates the autoload definitions of Stante
-;; Pede.
+
+;; The functions in this module are heavily inspired by the Emacs Redux.  See:
 ;;
-;; `stante-byte-recompile' byte-compiles all Stante Pede modules.
+;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
+;; http://emacsredux.com/blog/2013/04/09/kill-whole-line/
+;; http://emacsredux.com/blog/2013/03/26/smarter-open-line/
+
 
 ;;; Code:
 
-(require 'autoload)
-(eval-when-compile
-  (require 'gh))
-
 ;;;###autoload
-(defun stante-update-autoload-file ()
-  "Update the autoload file of Stante Pede."
+(defun stante-smart-backward-kill-line ()
+  "Kill line backwards and re-indent."
   (interactive)
-  (ignore-errors
-    (delete-file stante-autoloads-file))
-  (let ((generated-autoload-file stante-autoloads-file))
-    (update-directory-autoloads stante-lib-dir)))
+  (kill-line 0)
+  (indent-according-to-mode))
 
 ;;;###autoload
-(defun stante-byte-recompile (&optional force)
-  "Byte-compile all modules of Stante pede."
-  (interactive "P")
-  (byte-recompile-directory stante-lib-dir 0 force)
-  (byte-recompile-directory stante-modules-dir 0 force)
-  (let ((init-file (file-name-sans-extension stante-init-file) ))
-    (byte-recompile-file (concat init-file ".el") force 0)))
+(defun stante-smart-kill-whole-line (&optional arg)
+  "Kill whole line and move back to indentation.
 
-(provide 'stante-lib-maintenance)
+Kill the whole line with function `kill-whole-line' and then move
+`back-to-indentation'."
+  (interactive "p")
+  (kill-whole-line arg)
+  (back-to-indentation))
+
+;;;###autoload
+(defun stante-smart-open-line ()
+  "Insert empty line after the current line."
+  (interactive)
+  (move-end-of-line nil)
+  (newline-and-indent))
+
+(provide 'stante-editor)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-lib-maintenance.el ends here
+;;; stante-editor.el ends here

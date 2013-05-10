@@ -1,4 +1,4 @@
-;;; stante-lib-TeX-viewers.el --- Stante Pede Library: LaTeX viewer selection -*- lexical-binding: t; -*-
+;;; stante-TeX-viewers.el --- Stante Pede: LaTeX viewer selection -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -34,7 +34,8 @@
 
 ;;; Code:
 
-(require 'tex-buf)
+(require 'dash)
+(require 'stante-os-x)
 
 (defun stante-find-skim-bundle ()
   "Return the location of the Skim bundle, or nil if Skim is not installed.
@@ -47,10 +48,9 @@ See http://skim-app.sourceforge.net/ for more information."
   "Return the path of the displayline frontend of Skim.
 
 Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
-  (let ((skim-bundle (stante-find-skim-bundle)))
-    (when skim-bundle
-      (executable-find (expand-file-name "Contents/SharedSupport/displayline"
-                                         skim-bundle)))))
+  (-when-let (skim-bundle (stante-find-skim-bundle))
+    (executable-find (expand-file-name "Contents/SharedSupport/displayline"
+                                       skim-bundle))))
 
 (defun stante-TeX-find-view-programs-os-x ()
   "Find TeX view programs on OS X.
@@ -60,10 +60,9 @@ Populate `TeX-view-program-list' with installed viewers."
   (add-to-list 'TeX-view-program-list
                '("Default application" "open %o"))
   ;; Skim if installed
-  (let ((skim-displayline (stante-find-skim-displayline)))
-    (when skim-displayline
-      (add-to-list 'TeX-view-program-list
-                   `("Skim" (,skim-displayline " -b -r %n %o %b"))))))
+  (-when-let (skim-displayline (stante-find-skim-displayline))
+    (add-to-list 'TeX-view-program-list
+                 `("Skim" (,skim-displayline " -b -r %n %o %b")))))
 
 (defun stante-TeX-select-view-programs-os-x ()
   "Select the best view programs on OS X.
@@ -81,14 +80,13 @@ Choose Skim if available, or fall back to the default application."
 ;;;###autoload
 (defun stante-TeX-select-view-programs ()
   "Select the best view programs for the current platform."
-  (when (stante-is-os-x)
-    (stante-TeX-select-view-programs-os-x))
-  )
+  (when (eq system-type 'darwin)
+    (stante-TeX-select-view-programs-os-x)))
 
-(provide 'stante-lib-TeX-viewers)
+(provide 'stante-TeX-viewers)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-lib-TeX-viewers.el ends here
+;;; stante-TeX-viewers.el ends here

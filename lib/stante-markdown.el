@@ -1,4 +1,4 @@
-;;; stante-lib-editor.el --- Stante Pede Library: Editor functions -*- lexical-binding: t; -*-
+;;; stante-markdown.el --- Stante Peed: Markdown functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -23,49 +23,44 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-
 ;;; Commentary:
 
-;; Editor functions, mostly for the `stante-editor' module.
-
-
-;; The functions in this module are heavily inspired by the Emacs Redux.  See:
-;;
-;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
-;; http://emacsredux.com/blog/2013/04/09/kill-whole-line/
-;; http://emacsredux.com/blog/2013/03/26/smarter-open-line/
-
+;; Support modes for text-editing modes.
 
 ;;; Code:
 
+(require 'dash)
+(require 'markdown-mode)
+
+(defconst stante-markdown-commands
+  '(("kramdown")
+    ("markdown2" "-x" "fenced-code-blocks")
+    ("pandoc"))
+  "Markdown processors we try to use.")
+
 ;;;###autoload
-(defun stante-smart-backward-kill-line ()
-  "Kill line backwards and re-indent."
+(defun stante-find-markdown-processor ()
+  "Find a suitable markdown processor.
+
+Search for a suitable markdown processor using
+`stante-markdown-commands' and set `markdown-command' properly.
+
+Return the new `markdown-command' or signal an error if no
+suitable processor was found."
   (interactive)
-  (kill-line 0)
-  (indent-according-to-mode))
+  ;; Clear previous command
+  (setq markdown-command
+        (mapconcat #'shell-quote-argument
+                   (--first (executable-find (car it)) stante-markdown-commands)
+                   " "))
+  (unless markdown-command
+    (error "No markdown processor found"))
+  markdown-command)
 
-;;;###autoload
-(defun stante-smart-kill-whole-line (&optional arg)
-  "Kill whole line and move back to indentation.
-
-Kill the whole line with function `kill-whole-line' and then move
-`back-to-indentation'."
-  (interactive "p")
-  (kill-whole-line arg)
-  (back-to-indentation))
-
-;;;###autoload
-(defun stante-smart-open-line ()
-  "Insert empty line after the current line."
-  (interactive)
-  (move-end-of-line nil)
-  (newline-and-indent))
-
-(provide 'stante-lib-editor)
+(provide 'stante-markdown)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-lib-editor.el ends here
+;;; stante-markdown.el ends here

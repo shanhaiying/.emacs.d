@@ -1,4 +1,4 @@
-;;; stante-lib-file-commands.el --- Stante Pede Library: File commands -*- lexical-binding: t; -*-
+;;; stante-files.el --- Stante Pede: File commands -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2013 Sebastian Wiesner
 ;; Copyright (c) 2011-2013 Bozhidar Batsov
@@ -112,10 +112,10 @@ prompt for the command to use."
       (delete-file filename)
       (kill-buffer)))))
 
-(provide 'stante-lib-file-commands)
+(provide 'stante-files)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-lib-file-commands.el ends here
+;;; stante-files.el ends here

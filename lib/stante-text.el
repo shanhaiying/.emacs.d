@@ -1,4 +1,4 @@
-;;; stante-lib-io.el --- Stante Pede Library: IO functions -*- lexical-binding: t; -*-
+;;; stante-text.el --- Stante Peed: Text editing functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -23,45 +23,28 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-
 ;;; Commentary:
 
-;; IO functions.
-
-;; `stante-get-file-contents' gets the contents of a file as string.
-;;
-;; `stante-set-file-contents' sets the contents of a file.
-;;
-;; `stante-get-file-lines' gets the lines in a file as list.
+;; Support modes for text-editing modes.
 
 ;;; Code:
 
 ;;;###autoload
-(defun stante-get-file-contents (filename)
-  "Return the contents of the file FILENAME."
-  (with-temp-buffer
-    (insert-file-contents-literally filename)
-    (buffer-substring-no-properties (point-min) (point-max))))
+(define-minor-mode stante-prog-whitespace-mode
+  "Minor mode to highlight and cleanup whitespace."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-prog-whitespace-mode
+    (add-hook 'before-save-hook 'delete-trailing-whitespace nil :local))
+   (:else
+    (whitespace-mode -1)
+    (remove-hook 'before-save-hook 'delete-trailing-whitespace :local))))
 
-;;;###autoload
-(defun stante-set-file-contents (filename contents)
-  "Set the contents of the file FILENAME.
-
-Create the file FILENAME if it does not exist, or completely
-overwrite it if it does."
-  (with-temp-buffer
-    (insert contents)
-    (write-region (point-min) (point-max) filename nil 0)))
-
-;;;###autoload
-(defun stante-get-file-lines (filename)
-  "Return a list of lines of file FILENAME."
-  (split-string (stante-get-file-contents filename) "\n" t))
-
-(provide 'stante-lib-io)
+(provide 'stante-text)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-lib-io.el ends here
+;;; stante-text.el ends here

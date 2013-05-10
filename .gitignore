@@ -1,11 +1,24 @@
-# Variable files directory
-var/
+# Elisp byte code
+*.elc
+
+# Autoload file
+lib/stante-autoloads.el*
+
 # Installed packages
 elpa/
-# Recovery directory from Emacs
+
+# Recovery directory
 auto-save-list/
+# Backup directory
+.backup/
 # Tutorial states
 tutorial/
 
-# Elisp byte code
-*.elc
+# Various caches
+.frame-parameters
+history
+places
+recentf
+ido.last
+semanticdb/
+.smex-items

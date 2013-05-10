@@ -1,4 +1,4 @@
-;;; stante-lib-os-x.el --- Stante Pede Library: OS X support -*- lexical-binding: t; -*-
+;;; stante-os-x.el --- Stante Pede: OS X support -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -53,7 +53,6 @@ hard-code the bundle ID in your code."
   (let ((script (format "id of app \"%s\"" bundle)))
     (car (process-lines "osascript" "-e" script))))
 
-;;;###autoload
 (defun stante-path-of-bundle (id)
   "Get the path of a bundle with ID.
 
@@ -62,7 +61,6 @@ the directory path of the bundle as string."
   (let ((query (format "kMDItemCFBundleIdentifier == '%s'" id)))
     (car (process-lines "mdfind" query))))
 
-;;;###autoload
 (defun stante-homebrew-prefix (&optional formula)
   "Get the homebrew prefix for FORMULA.
 
@@ -77,7 +75,6 @@ directory does not exist."
     (when (and prefix (file-directory-p prefix))
       prefix)))
 
-;;;###autoload
 (defun stante-homebrew-installed-p (&optional formula)
   "Determine whether a homebrew FORMULA is installed.
 
@@ -86,10 +83,10 @@ Without FORMULA determine whether Homebrew itself is available."
       (when (stante-homebrew-prefix formula) t)
     (when (executable-find "brew") t)))
 
-(provide 'stante-lib-os-x)
+(provide 'stante-os-x)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-lib-os-x.el ends here
+;;; stante-os-x.el ends here

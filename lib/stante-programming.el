@@ -1,4 +1,4 @@
-;;; stante-haskell.el --- Stante Pede Modules: Haskell support -*- lexical-binding: t; -*-
+;;; stante-programming.el --- Stante Pede: Programming functions -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012, 2013 Sebastian Wiesner
 ;;
@@ -23,30 +23,42 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-
 ;;; Commentary:
 
-;; Provide support for Haskell.
-;;
-;; Haskell editing is provided by haskell-mode from
-;; https://github.com/haskell/haskell-mode.
+;; Support modes for programming modes.
 
 ;;; Code:
 
-(require 'stante-programming)
-(require 'dash)
+;;;###autoload
+(define-minor-mode stante-auto-fill-comments-mode
+  "Minor mode to auto-fill comments only."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-auto-fill-comments-mode
+    (set (make-local-variable 'comment-auto-fill-only-comments) t)
+    (auto-fill-mode 1))
+   (:else
+    (kill-local-variable 'comment-auto-fill-only-comments)
+    (auto-fill-mode -1))))
 
-(after 'haskell-mode
-  (--each '(subword-mode
-            turn-on-haskell-indentation
-            turn-on-haskell-doc-mode
-            turn-on-haskell-decl-scan)
-    (add-hook 'haskell-mode-hook it)))
+;;;###autoload
+(define-minor-mode stante-prog-whitespace-mode
+  "Minor mode to highlight and cleanup whitespace."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-prog-whitespace-mode
+    (whitespace-mode 1)
+    (add-hook 'before-save-hook 'whitespace-cleanup nil :local))
+   (:else
+    (whitespace-mode -1)
+    (remove-hook 'before-save-hook 'whitespace-cleanup :local))))
 
-(provide 'stante-haskell)
+(provide 'stante-programming)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; End:
 
-;;; stante-haskell.el ends here
+;;; stante-programming.el ends here
