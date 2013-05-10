@@ -91,8 +91,10 @@ prompt for the command to use."
   "Rename the current file and buffer."
   (interactive)
   (let* ((filename (buffer-file-name))
-         (new-name (read-file-name "New name: " nil nil nil
-                                   (or filename (buffer-name)))))
+         (old-name (if filename
+                       (file-name-nondirectory filename)
+                     (buffer-name)))
+         (new-name (read-file-name "New name: " nil nil nil old-name)))
     (cond
      ((not (and filename (file-exists-p filename))) (rename-buffer new-name))
      ((vc-backend filename) (vc-rename-file filename new-name))
