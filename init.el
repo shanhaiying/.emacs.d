@@ -67,9 +67,6 @@
 ;; Sciene
 (require 'stante-proofgeneral)
 
-;; Localization support
-(require 'stante-german)
-
 ;; Choose a nice color theme.
 ;;
 ;; WARNING:  Loading themes can execute *arbitrary* code.  Do NEVER load themes
