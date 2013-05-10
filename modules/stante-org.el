@@ -37,6 +37,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'org)
+  (require 'org-mobile))
+
 (defun stante-org-disable-incompatible-modes ()
   "Disable minor modes incompatible with Org mode.
 
