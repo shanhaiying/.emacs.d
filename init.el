@@ -51,13 +51,6 @@ FILE may be a named feature, see `eval-after-load'."
      '(progn ,@forms)))
 
 
-;;;; Stante Pede libraries and autoloads
-(defconst stante-lib-dir (locate-user-emacs-file "lib")
-  "Directory of Stante Pede libraries.")
-(add-to-list 'load-path stante-lib-dir)
-(load (expand-file-name "stante-autoloads" stante-lib-dir) nil)
-
-
 ;;;; Custom file
 (defconst stante-custom-file (locate-user-emacs-file "custom.el")
   "Location of the Customize file.")
@@ -265,6 +258,48 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
   ;; Do not popup new frames
   (setq ns-pop-up-frames nil))
 
+(defun stante-id-of-bundle (bundle)
+  "Get the ID of a BUNDLE.
+
+BUNDLE is the user-visible name of the bundle as string.  Return
+the id of the bundle as string.
+
+Do not use this function in code.  IDs are constant, hence use it
+*during development* to determine the ID of the bundle, and then
+hard-code the bundle ID in your code."
+  (let ((script (format "id of app \"%s\"" bundle)))
+    (car (process-lines "osascript" "-e" script))))
+
+(defun stante-path-of-bundle (id)
+  "Get the path of a bundle with ID.
+
+ID is the bundle ID (see `stante-id-of-bundle' as string.  Return
+the directory path of the bundle as string."
+  (let ((query (format "kMDItemCFBundleIdentifier == '%s'" id)))
+    (car (process-lines "mdfind" query))))
+
+(defun stante-homebrew-prefix (&optional formula)
+  "Get the homebrew prefix for FORMULA.
+
+Without FORMULA, get the homebrew prefix itself.
+
+Return nil, if homebrew is not available, or if the prefix
+directory does not exist."
+  (let ((prefix (condition-case nil
+                    (car (apply #'process-lines "brew" "--prefix"
+                                (when formula (list formula))))
+                  (error nil))))
+    (when (and prefix (file-directory-p prefix))
+      prefix)))
+
+(defun stante-homebrew-installed-p (&optional formula)
+  "Determine whether a homebrew FORMULA is installed.
+
+Without FORMULA determine whether Homebrew itself is available."
+  (if formula
+      (when (stante-homebrew-prefix formula) t)
+    (when (executable-find "brew") t)))
+
 
 ;;;; Basic editor settings
 ;; Move backup files out of the way
@@ -418,6 +453,33 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
+;; Some custom commands which are heavily inspired by the Emacs Redux.  See:
+;;
+;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
+;; http://emacsredux.com/blog/2013/04/09/kill-whole-line/
+;; http://emacsredux.com/blog/2013/03/26/smarter-open-line/
+
+(defun stante-smart-backward-kill-line ()
+  "Kill line backwards and re-indent."
+  (interactive)
+  (kill-line 0)
+  (indent-according-to-mode))
+
+(defun stante-smart-kill-whole-line (&optional arg)
+  "Kill whole line and move back to indentation.
+
+Kill the whole line with function `kill-whole-line' and then move
+`back-to-indentation'."
+  (interactive "p")
+  (kill-whole-line arg)
+  (back-to-indentation))
+
+(defun stante-smart-open-line ()
+  "Insert empty line after the current line."
+  (interactive)
+  (move-end-of-line nil)
+  (newline-and-indent))
+
 
 ;;;; Spell checking
 (unless (executable-find "aspell")
@@ -459,6 +521,84 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 (after 'projectile
   (diminish 'projectile-mode))
 
+;; Commands for working with files.
+
+;; The functions in this module are heavily inspired by the Emacs Redux and by
+;; Emacs Prelude.  See:
+;;
+;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
+;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
+;; http://emacsredux.com/blog/2013/03/27/open-file-in-external-program/
+;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
+;; https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
+
+(defun stante-get-standard-open-command ()
+  "Get the standard command to open a file.
+
+Return the command as shell command, or nil if there is no standard command
+for the current platform."
+  (cond
+   ((eq system-type 'darwin) "open")
+   ((memq system-type '(gnu gnu/linux gnu/kfreebsd)) "xdg-open")))
+
+(defun stante-open-with (arg)
+  "Open the file visited by the current buffer externally.
+
+Use the standard program to open the file.  With prefix ARG,
+prompt for the command to use."
+  (interactive "P")
+  (unless (buffer-file-name)
+    (user-error "This buffer is not visiting a file"))
+  (let ((command (unless arg (stante-get-standard-open-command))))
+    (unless command
+      (setq command (read-shell-command "Open current file with: ")))
+    (shell-command (concat command " "
+                           (shell-quote-argument (buffer-file-name))))))
+
+(defun stante-ido-find-recentf ()
+  "Find a recent file with IDO."
+  (interactive)
+  (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+
+(defun stante-copy-filename-as-kill ()
+  "Copy the name of the currently visited file to kill ring."
+  (interactive)
+  (let ((filename (if (eq major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (unless filename
+      (user-error "This buffer is not visiting a file"))
+    (kill-new filename)))
+
+(defun stante-rename-file-and-buffer ()
+  "Rename the current file and buffer."
+  (interactive)
+  (let* ((filename (buffer-file-name))
+         (old-name (if filename
+                       (file-name-nondirectory filename)
+                     (buffer-name)))
+         (new-name (read-file-name "New name: " nil nil nil old-name)))
+    (cond
+     ((not (and filename (file-exists-p filename))) (rename-buffer new-name))
+     ((vc-backend filename) (vc-rename-file filename new-name))
+     (:else
+      (rename-file filename new-name :force-overwrite)
+      (set-visited-file-name new-name :no-query :along-with-file)))))
+
+(defun stante-delete-file-and-buffer ()
+  "Delete the current file and kill the buffer."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (cond
+     ((not filename) (kill-buffer))
+     ((vc-backend filename) (vc-delete-file filename))
+     (:else
+      (delete-file filename)
+      (kill-buffer)))))
+
 
 ;;;; Git support
 (after 'magit
@@ -483,6 +623,14 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 
 
 ;;;; Plain text editing
+(define-minor-mode stante-text-whitespace-mode
+  "Minor mode to highlight and cleanup whitespace."
+  :lighter nil
+  :keymap nil
+  (if stante-text-whitespace-mode
+      (add-hook 'before-save-hook 'delete-trailing-whitespace nil :local)
+    (remove-hook 'before-save-hook 'delete-trailing-whitespace :local)))
+
 (after "text-mode"
   (--each '(turn-on-auto-fill guru-mode stante-text-whitespace-mode)
     (add-hook 'text-mode-hook it)))
@@ -491,6 +639,30 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 ;;;; Markdown editing
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+
+(defconst stante-markdown-commands
+  '(("kramdown")
+    ("markdown2" "-x" "fenced-code-blocks")
+    ("pandoc"))
+  "Markdown processors we try to use.")
+
+(defun stante-find-markdown-processor ()
+  "Find a suitable markdown processor.
+
+Search for a suitable markdown processor using
+`stante-markdown-commands' and set `markdown-command' properly.
+
+Return the new `markdown-command' or signal an error if no
+suitable processor was found."
+  (interactive)
+  ;; Clear previous command
+  (setq markdown-command
+        (mapconcat #'shell-quote-argument
+                   (--first (executable-find (car it)) stante-markdown-commands)
+                   " "))
+  (unless markdown-command
+    (error "No markdown processor found"))
+  markdown-command)
 
 (after 'markdown-mode
   (stante-find-markdown-processor)
@@ -507,12 +679,55 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 
 ;;;; TeX/LaTeX/Texinfo editing
 (when (eq system-type 'darwin)
-
-  (require 'stante-os-x)
   (when (stante-homebrew-installed-p "auctex")
     (let ((homebrew-prefix (stante-homebrew-prefix)))
       (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
                                                 homebrew-prefix)))))
+
+(defun stante-find-skim-bundle ()
+  "Return the location of the Skim bundle, or nil if Skim is not installed.
+
+Skim is an advanced PDF viewer for OS X with SyncTex support.
+See http://skim-app.sourceforge.net/ for more information."
+  (stante-path-of-bundle "net.sourceforge.skim-app.skim"))
+
+(defun stante-find-skim-displayline ()
+  "Return the path of the displayline frontend of Skim.
+
+Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
+  (-when-let (skim-bundle (stante-find-skim-bundle))
+    (executable-find (expand-file-name "Contents/SharedSupport/displayline"
+                                       skim-bundle))))
+
+(defun stante-TeX-find-view-programs-os-x ()
+  "Find TeX view programs on OS X.
+
+Populate `TeX-view-program-list' with installed viewers."
+  ;; The default application, usually Preview
+  (add-to-list 'TeX-view-program-list
+               '("Default application" "open %o"))
+  ;; Skim if installed
+  (-when-let (skim-displayline (stante-find-skim-displayline))
+    (add-to-list 'TeX-view-program-list
+                 `("Skim" (,skim-displayline " -b -r %n %o %b")))))
+
+(defun stante-TeX-select-view-programs-os-x ()
+  "Select the best view programs on OS X.
+
+Choose Skim if available, or fall back to the default application."
+  ;; Find view programs
+  (stante-TeX-find-view-programs-os-x)
+  (setq TeX-view-program-selection
+        `((output-dvi "Default application")
+          (output-html "Default application")
+          ;; Use Skim if installed for SyncTex support.
+          (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
+                           "Skim" "Default application")))))
+
+(defun stante-TeX-select-view-programs ()
+  "Select the best view programs for the current platform."
+  (when (eq system-type 'darwin)
+    (stante-TeX-select-view-programs-os-x)))
 
 (unless (require 'tex-site nil t)
   (message "AUCTeX not installed.  LaTeX/Texinfo editing is limited!"))
@@ -639,6 +854,30 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 
   (diminish 'highlight-symbol-mode))
 
+(define-minor-mode stante-auto-fill-comments-mode
+  "Minor mode to auto-fill comments only."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-auto-fill-comments-mode
+    (set (make-local-variable 'comment-auto-fill-only-comments) t)
+    (auto-fill-mode 1))
+   (:else
+    (kill-local-variable 'comment-auto-fill-only-comments)
+    (auto-fill-mode -1))))
+
+(define-minor-mode stante-prog-whitespace-mode
+  "Minor mode to highlight and cleanup whitespace."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-prog-whitespace-mode
+    (whitespace-mode 1)
+    (add-hook 'before-save-hook 'whitespace-cleanup nil :local))
+   (:else
+    (whitespace-mode -1)
+    (remove-hook 'before-save-hook 'whitespace-cleanup :local))))
+
 (after 'simple ; prog-mode is contained in simple.el
   ;; A set of reasonable programmming modes
   (--each '(stante-auto-fill-comments-mode ; Fill in comments
@@ -654,6 +893,31 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
   ;; Wrap with parenthesis on M-( for compatibility with paredit
   (sp-with-modes sp--lisp-modes
     (sp-local-pair "(" nil :bind "M-(")))
+
+(defun stante-emacs-lisp-clean-byte-code (&optional buffer)
+  "Remove byte code file corresponding to the Emacs Lisp BUFFER.
+
+BUFFER defaults to the current buffer."
+  (when (eq major-mode 'emacs-lisp-mode)
+    (let ((bytecode (concat  (buffer-file-name buffer) "c")))
+      (when (file-exists-p bytecode)
+        (delete-file bytecode)))))
+
+(define-minor-mode stante-emacs-lisp-clean-byte-code-mode
+  "Minor mode to automatically clean stale Emacs Lisp bytecode."
+  :lighter nil
+  :keymap nil
+  (if stante-emacs-lisp-clean-byte-code-mode
+      (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil :local)
+    (remove-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code :local)))
+
+(defun stante-emacs-lisp-switch-to-ielm ()
+  "Switch to an ielm window.
+
+Create a new ielm process if required."
+  (interactive)
+  (pop-to-buffer (get-buffer-create "*ielm*"))
+  (ielm))
 
 (defun stante-font-lock-add-ert-keywords ()
   "Add font lock keywords supporting ERT tests."
@@ -777,8 +1041,6 @@ with homebrew, or report an issue with M-x stante-report-issue.")))
 
 ;;;; Proof General
 (when (eq system-type 'darwin)
-  (require 'stante-os-x)
-
   (defconst stante-isabelle-bin-dir
     (-when-let (bundle-directory (stante-path-of-bundle "de.tum.in.isabelle"))
       (expand-file-name "Contents/Resources/Isabelle/bin" bundle-directory)))
