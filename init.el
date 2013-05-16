@@ -169,7 +169,7 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; No blinking and beeping, no startup screen and short Yes/No questions
 (blink-cursor-mode -1)
 (setq ring-bell-function 'ignore
-      inhibit-startup-screen) t
+      inhibit-startup-screen t)
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Choose Font and color theme.  Download Inconsolata from the Google Webfonts
