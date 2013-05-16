@@ -84,7 +84,6 @@ FEATURE may be a named feature, see `eval-after-load'."
 
 (load stante-custom-file :no-error :no-message)
 
-
 
 ;; OS X support
 
