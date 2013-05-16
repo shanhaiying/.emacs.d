@@ -26,14 +26,12 @@
 
 ;;; Commentary:
 
-;; Your personal Emacs configuration.  Load Stante Pede, and choose your modules
-;; wisely.
-
+;; My personal Emacs configuration.
 
 ;;; Code:
 
 
-;;;; Guard against evil Emacs 2
+;; Guard against Emacs 24
 (when (or (< emacs-major-version 24)
           (and (= emacs-major-version 24) (< emacs-minor-version 1)))
   (error "Stante Pede needs at least GNU Emacs 24.1, but this is Emacs %s.
@@ -41,232 +39,90 @@ Please install GNU Emacs 24.1 to use Stante Pede"
          emacs-version))
 
 
-;;;; Basic definitions
-(defmacro after (file &rest forms)
-  "Evaluate FORMS after FILE is loaded.
+;; Package management
 
-FILE may be a named feature, see `eval-after-load'."
+(package-initialize)
+
+;; Load the Carton file to add our package sources
+(require 'carton)
+(carton-setup user-emacs-directory)
+
+(defconst stante-vendor-dir (locate-user-emacs-file "vendor")
+  "Directory for embedded 3rd party extensions.")
+
+;; A macro to move initialization code until after a package is loaded
+(defmacro stante-after (feature &rest forms)
+  "Evaluate FORMS after FEATURE is loaded.
+
+FEATURE may be a named feature, see `eval-after-load'."
   (declare (indent 1))
-  `(eval-after-load ,file
-     '(progn ,@forms)))
+  `(progn
+     (eval-after-load ,feature
+       '(progn ,@forms))))
 
 
-;;;; Custom file
+;;;; Requires
+
+(require 'dash)
+(require 's)
+
+(eval-when-compile
+  (require 'drag-stuff))
+
+
+;;;; Environment fixup
+(when (display-graphic-p)
+  (exec-path-from-shell-initialize))
+
+
+;; the custom file
 (defconst stante-custom-file (locate-user-emacs-file "custom.el")
-  "Location of the Customize file.")
+  "File used to store settings from Customization UI.")
 
 (eval-after-load 'cus-edit
   '(setq custom-file stante-custom-file))
 
-(load stante-custom-file t t)
+(load stante-custom-file :no-error :no-message)
+
 
 
-;;;; Load and initialize packages
-(require 'package)
-(package-initialize)
-(require 'carton)
-(carton-setup user-emacs-directory)
+;; OS X support
 
-;; Custom vendor extensions
-(defconst stante-vendor-dir (locate-user-emacs-file "vendor")
-  "Directory for embedded 3rd party extensions.")
-
-
-;;;; Requires
-(require 'dash)
-
-(eval-when-compile
-  (require 'ido)
-  (require 'ediff-wind)
-  (require 'smex)
-  (require 'page-break-lines))
-
-
-;;;; User interface settings
-
-;; Color theme!
-(load-theme 'solarized-light t)
-;; (load-theme 'solarized-dark t)
-;; (load-theme 'zenburn t)
-
-(when (display-graphic-p)
-  ;; Fix `exec-path' and $PATH for graphical Emacs by letting a shell output
-  ;; the `$PATH'.
-  (exec-path-from-shell-initialize))
-
-;; Disable toolbar and menu bar (except on OS X where the menubar is present
-;; anyway)
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
-(unless (eq system-type 'darwin)
-  (when (fboundp 'menu-bar-mode)
-    (menu-bar-mode -1)))
-
-;; Disable blinking cursor
-(blink-cursor-mode -1)
-
-;; Nice page breaks
-(global-page-break-lines-mode)
-(after 'page-break-lines
-  (diminish 'page-break-lines-mode)
-
-    ;; Fix the font of lines
-  (set-fontset-font "fontset-default"
-                    (cons page-break-lines-char page-break-lines-char)
-                    (face-attribute 'default :family)))
-
-;; Disable alarm beeps
-(setq ring-bell-function 'ignore)
-
-;; Disable startup screen
-(setq inhibit-startup-screen t)
-
-;; Do not needlessly signal errors
-(setq scroll-error-top-bottom t)
-
-;; Smoother scrolling
-(setq scroll-margin 0
-      scroll-conservatively 100000
-      mouse-wheel-progressive-speed nil
-      mouse-wheel-scroll-amount '(1))
-
-;; Improve mode line
-(line-number-mode t)
-(column-number-mode t)
-(size-indication-mode t)
-
-;; Unify Yes/No questions
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; Show file name or buffer name in frame title
-(setq frame-title-format
-      '(:eval (if (buffer-file-name)
-                  (abbreviate-file-name (buffer-file-name)) "%b")))
-
-;; De-duplicate buffer names
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward
-      uniquify-separator "/"
-      uniquify-after-kill-buffer-p t       ; Re-uniquify after killing buffers
-      uniquify-ignore-buffers-re "^\\*")   ; Ignore special buffers
-
-
-;; Improve completion for file and buffer names
-(ido-mode t)
-(setq ido-enable-flex-matching t    ; Match characters if string doesn't match
-      ido-create-new-buffer 'always ; Create a new buffer if nothing matches
-      ido-use-filename-at-point 'guess
-      ido-default-file-method 'selected-window)
-
-;; Improve minibuffer completion
-(icomplete-mode)
-
-;; Improved M-x
-(after 'smex
-  (setq smex-save-file (locate-user-emacs-file ".smex-items")))
-
-;; Move between windows with Shift + Arrows
-(windmove-default-keybindings)
-
-;; Window management reloaded
-(winner-mode)
-
-;; Nice default font, download from http://www.google.com/fonts/
-(set-face-attribute 'default nil :family "Inconsolata" :height 150)
-
-;; Reuse current frame for EDiff
-(after 'ediff-wind
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-
-;; Save and restore the frame size and parameters
-(defvar stante-save-frame-parameters-file
-  (locate-user-emacs-file ".frame-parameters" )
-  "File in which to storce frame parameters on exit.")
-
-(defconst stante-frame-parameters-to-save
-  '(left top width height maximized fullscreen)
-  "Frame parameters to save and restore for the initial frame.")
-
-(defun stante-restore-frame-parameters ()
-  "Restore the frame parameters of the initial frame."
-  (condition-case nil
-      (-when-let* ((read-params
-                    (with-temp-buffer
-                      (insert-file-contents stante-save-frame-parameters-file)
-                      (goto-char (point-min))
-                      (read (current-buffer))))
-                   (allowed-params
-                    (--filter (memq (car it) stante-frame-parameters-to-save)
-                              read-params)))
-        (setq initial-frame-alist
-              (append (--filter (assq (car it) allowed-params) initial-frame-alist)
-                      allowed-params nil)))
-    (error nil)))
-
-(defun stante-save-frame-parameters ()
-  "Save frame parameters of the selected frame.
-
-Save selected parameters (see `stante-frame-parameters-to-save')
-to `stante-save-frame-parameters-file'."
-  (condition-case nil
-      (let ((params (--filter (memq (car it) stante-frame-parameters-to-save)
-                              (frame-parameters))))
-        (when (and params (display-graphic-p)) ; GUI frames only!
-          (with-temp-buffer
-            (prin1 params (current-buffer))
-            (terpri (current-buffer))
-            (write-region (point-min) (point-max)
-                          stante-save-frame-parameters-file
-                          nil 0))       ; 0 inhibits the "write file" message
-          t))
-    (file-error nil)))
-
-(unless noninteractive
-  (add-hook 'after-init-hook 'stante-restore-frame-parameters)
-  (add-hook 'kill-emacs-hook 'stante-save-frame-parameters))
-
-(defun stante-switch-to-previous-buffer ()
-  "Switch to the previous buffer.
-
-Repeated invocations toggle between the two most recently used
-buffers."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) :visible-ok)))
-
-
-;;;; OS X support
-(when (eq system-type 'darwin)
-  ;; Find GNU Coreutils (mostly for "ls --dired").
-  (let ((gls (executable-find "gls")))
-    (if gls
-        (setq insert-directory-program gls)
-      (message "GNU Coreutils not found.  Install coreutils \
-with homebrew, or report an issue with M-x stante-report-issue.")))
-
-  ;; Ignore OS X metadata files in IDO
-  (after 'ido
-    (add-to-list 'ido-ignore-files "\\`\\.DS_Store\\'")))
-
-(after 'ns-win
-  ;; Setup modifier maps for OS X
-  (setq mac-option-modifier 'meta
-        mac-command-modifier 'meta
+;; Map OS X modifiers to Emacs modifiers
+(stante-after 'ns-win
+  (setq mac-option-modifier 'meta       ; Option is simply the natural Meta
+        mac-command-modifier 'meta      ; But command is a lot easier to hit
+        mac-right-option-modifier 'none ; Keep right option for accented input
+        ;; Just in case we ever need these keys
         mac-function-modifier 'hyper
-        mac-right-option-modifier 'none
-        mac-right-command-modifier 'super)
+        mac-right-command-modifier 'super))
 
-  ;; Do not popup new frames
+;; Don't pop up new frames at request from the workspace (e.g. drag & drop), but
+;; keep everything within a single frame
+(stante-after 'ns-win
   (setq ns-pop-up-frames nil))
 
+;; Prefer GNU utilities over the inferior BSD variants.  Also improves
+;; integration with Emacs (for instance, GNU ls has a special --dired flag to
+;; support dired)
+(when (eq system-type 'darwin)
+  ;; GNU ls
+  (-if-let (gls (executable-find "gls")) (setq insert-directory-program gls)
+           (message "GNU Coreutils not found.  Install coreutils with homebrew."))
+  ;; GNU find
+  (-when-let (gfind (executable-find "gfind"))
+    (setq find-program gfind)))
+
+;; Utility functions for OS X
 (defun stante-id-of-bundle (bundle)
   "Get the ID of a BUNDLE.
 
 BUNDLE is the user-visible name of the bundle as string.  Return
 the id of the bundle as string.
 
-Do not use this function in code.  IDs are constant, hence use it
-*during development* to determine the ID of the bundle, and then
-hard-code the bundle ID in your code."
+These bundle IDs are normally constant.  Thus you may use this
+function to determine the ID once, and then hard-code it in your
+code."
   (let ((script (format "id of app \"%s\"" bundle)))
     (car (process-lines "osascript" "-e" script))))
 
@@ -301,238 +157,201 @@ Without FORMULA determine whether Homebrew itself is available."
     (when (executable-find "brew") t)))
 
 
-;;;; Basic editor settings
-;; Move backup files out of the way
-(setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup"))))
+;;;; User interface
 
-;; Sane coding system choice
-(prefer-coding-system 'utf-8)
+;; Get rid of tool bar and menu bar, except on OS X, where the menu bar is
+;; present anyway, so disabling it is pointless
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(unless (eq system-type 'darwin)
+  (when (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1)))
 
-;; Advanced undo system
-(global-undo-tree-mode)
-(after 'undo-tree
-  (diminish 'undo-tree-mode))
+;; No blinking and beeping, no startup screen and short Yes/No questions
+(blink-cursor-mode -1)
+(setq ring-bell-function 'ignore
+      inhibit-startup-screen) t
+(fset 'yes-or-no-p 'y-or-n-p)
 
-;; Automatically revert buffers from changed files
-(global-auto-revert-mode 1)
+;; Choose Font and color theme.  Download Inconsolata from the Google Webfonts
+;; directory at http://www.google.com/fonts/
+(load-theme 'solarized-light :no-confirm)
+;; (load-theme 'solarized-dark :no-confirm)
+;; (load-theme 'solarized-zenburn :no-confirm)
+(set-face-attribute 'default nil :family "Inconsolata" :height 150)
 
-;; Delete selection when entering new text
-(delete-selection-mode)
+
+;;;; The mode line
 
-;; View readonly files
-(setq view-read-only t)
+(line-number-mode t)
+(column-number-mode t)
+(size-indication-mode t)
 
-;; Preserve clipboard text before killing
-;; This would be a really nice addition, but Emacs has the stupid habit
-;; of constantly signalling errors if the paste content is not supported or
-;; empty. Obviously this breaks killing completely.  Really great thanks to you,
-;; whoever crazy mind got that silly idea…
-;; (setq save-interprogram-paste-before-kill t)
+
+;;;; The minibuffer
 
-;; No tabs for indentation
-(setq-default indent-tabs-mode nil
-              tab-width 8)
-
-;; Drag stuff around
-(drag-stuff-global-mode)
-(after 'drag-stuff
-  (setq drag-stuff-modifier '(meta shift))
-  (diminish 'drag-stuff-mode))
-
-;; Configure filling
-(setq-default fill-column 80)
-(after 'whitespace
-  (setq whitespace-line-column nil))
-(--each '(prog-mode-hook text-mode-hook)
-  (add-hook it 'fci-mode))
-
-;; Configure wrapping
-(add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
-
-;; Power up parenthesis
-(smartparens-global-mode)
-(show-smartparens-global-mode)
-(after 'smartparens
-  (require 'smartparens-config)
-
-  ;; Use Paredit-like keybindings.  The Smartparens bindings are too obtrusive,
-  ;; shadow otherwise useful bindings (e.g. M-<backspace>), and use the arrow
-  ;; keys too much
-  (sp-use-paredit-bindings)
-
-  (diminish 'smartparens-mode))
-
-;; Highlights
-(global-hl-line-mode 1)
-(require 'volatile-highlights)          ; Volatile Highlights doesn't autoload
-(volatile-highlights-mode t)
-(after 'volatile-highlights (diminish 'volatile-highlights-mode))
-
-(after 'whitespace
-  (setq whitespace-style '(face tabs empty trailing lines-tail))
-  (diminish 'whitespace-mode))
-
-(setq indicate-empty-lines t)
-
-;; Cleanup stale buffers
-(require 'midnight)
-
-;; Narrowing
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'narrow-to-defun 'disabled nil)
-
-;; Remember minibuffer history
-(after 'savehist
+;; Save a minibuffer input history
+(stante-after 'savehist
   (setq savehist-save-minibuffer-history t
-        ;; Save every three minutes (the default five minutes is a bit long)
         savehist-autosave-interval 180))
 (savehist-mode t)
 
-;; Recent files
-(after 'recentf
+;; Get rid of the *Completion* buffers and show completions directly inside the
+;; minibuffer
+(icomplete-mode)
+
+;; Boost file and buffer operations by flexible matching and the ability to
+;; perform operations like deleting files or killing buffers directly from the
+;; minibuffer
+(stante-after 'ido
+  (setq ido-enable-flex-matching t      ; Match characters if string doesn't
+                                        ; match
+        ido-create-new-buffer 'always   ; Create a new buffer if nothing matches
+        ido-use-filename-at-point 'guess
+        ido-default-file-method 'selected-window))
+(ido-mode t)
+
+;; Replace standard M-x with more powerful Smex
+(global-set-key [remap execute-extended-command] 'smex)
+(stante-after 'smex
+  (setq smex-save-file (locate-user-emacs-file ".smex-items")))
+
+
+;;;; Buffer management
+
+;; Replace dumb defaultbuffer menu
+(global-set-key [remap list-buffers] 'ibuffer)
+
+;; De-duplicate buffer names by prepending parts of the directory until the name
+;; is unique, instead of just appending numbers.
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward
+      uniquify-after-kill-buffer-p t
+      uniquify-ignore-buffers-re "^\\*") ; Do not rename special buffers!
+
+;; Clean stale buffers
+(require 'midnight)
+
+
+;; Window management
+
+;; Move between windows with Shift + Arrow keys
+(windmove-default-keybindings)
+
+;; Undo and redo window configurations with C-c Left and C-c Right respectively
+(winner-mode)
+
+;; Prevent Ediff from spamming the frame
+(stante-after 'ediff-wind
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+
+;; A utility command to quickly switch buffers, see
+;; http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/
+(defun stante-switch-to-previous-buffer ()
+  "Switch to the previous buffer.
+
+Repeated invocations toggle between the two most recently used
+buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) :visible-ok)))
+
+
+;;;; Frames
+
+;; A reasonable frame title
+(setq frame-title-format
+      '(:eval (if (buffer-file-name)
+                  (abbreviate-file-name (buffer-file-name)) "%b")))
+
+;; Save and restore frame parameters
+(defvar stante-save-frame-parameters-file
+  (locate-user-emacs-file ".frame-parameters" )
+  "File in which to storce frame parameters on exit.")
+
+(defconst stante-frame-parameters-to-save
+  '(left top width height maximized fullscreen)
+  "Frame parameters to save and restore for the initial frame.")
+
+(defun stante-save-frame-parameters ()
+  "Save frame parameters of the selected frame.
+
+Save selected parameters (see `stante-frame-parameters-to-save')
+to `stante-save-frame-parameters-file'."
+  (condition-case nil
+      (let ((params (--filter (memq (car it) stante-frame-parameters-to-save)
+                              (frame-parameters))))
+        (when (and params (display-graphic-p)) ; GUI frames only!
+          (with-temp-buffer
+            (prin1 params (current-buffer))
+            (terpri (current-buffer))
+            (write-region (point-min) (point-max)
+                          stante-save-frame-parameters-file
+                          nil 0))       ; 0 inhibits the "write file" message
+          t))
+    (file-error nil)))
+
+(defun stante-restore-frame-parameters ()
+  "Restore the frame parameters of the initial frame."
+  (condition-case nil
+      (-when-let* ((read-params
+                    (with-temp-buffer
+                      (insert-file-contents stante-save-frame-parameters-file)
+                      (goto-char (point-min))
+                      (read (current-buffer))))
+                   (allowed-params
+                    (--filter (memq (car it) stante-frame-parameters-to-save)
+                              read-params)))
+        (setq initial-frame-alist
+              (append (--filter (assq (car it) allowed-params) initial-frame-alist)
+                      allowed-params nil)))
+    (error nil)))
+
+(unless noninteractive
+  (add-hook 'kill-emacs-hook 'stante-save-frame-parameters)
+  (add-hook 'after-init-hook 'stante-restore-frame-parameters))
+
+
+;;;; File handling
+
+;; Keep backup and auto save files out of the way
+(setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
+      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+;; Update copyright when visiting files
+(add-hook 'find-file-hook 'copyright-update)
+
+;; Track recent files
+(stante-after 'recentf
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15))
 (recentf-mode t)
 
-;; Remember locations in files
-(after 'saveplace
-  (setq-default save-place t))
+;; Open recent files with IDO, see
+;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
+(stante-after 'recentf
+  (defun stante-ido-find-recentf ()
+    "Find a recent file with IDO."
+    (interactive)
+    (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
+      (when file
+        (find-file file)))))
+
+;; Save position in files
 (require 'saveplace)
+(setq-default save-place t)
 
-;; Configure bookmarks
-(after 'bookmark
-  ;; Save on every modification
-  (setq bookmark-save-flag 1))
+;; View files read-only
+(setq view-read-only t)
 
-;; Completion
-(setq completion-cycle-threshold 5)     ; Cycle with less than 5 candidates
+;; Automatically revert files on external changes (e.g. git checkout)
+(global-auto-revert-mode 1)
 
-;; Expansion functions
-(after 'hippie-exp
-  (setq hippie-expand-try-functions-list
-        '(try-expand-dabbrev
-          try-expand-dabbrev-all-buffers
-          try-expand-dabbrev-from-kill
-          try-complete-file-name-partially
-          try-complete-file-name
-          try-expand-all-abbrevs
-          try-expand-list
-          try-expand-line
-          try-complete-lisp-symbol-partially
-          try-complete-lisp-symbol)))
-
-;; Completion with Company
-(global-company-mode)
-
-(after 'company
-  (diminish 'company-mode)
-
-  ;; Make completion a little less aggressive
-  (setq company-idle-delay 1.0
-        company-begin-commands '(self-insert-command)
-        ;; Make completion a bit more fancy
-        company-show-numbers t))
-
-;; Snippets with Yasnippet
-(yas-global-mode 1)
-(after 'yasnippet
-  (diminish 'yas-minor-mode))
-
-;; Bring up Emacs server
-(require 'server)
-(unless (server-running-p) (server-start))
-
-;; Flymake reloaded :)
-(global-flycheck-mode)
-
-;; Update copyright lines automatically
-(add-hook 'find-file-hook 'copyright-update)
-
-;; Some missing autoloads
-(autoload 'zap-up-to-char "misc"
-  "Kill up to, but not including ARGth occurrence of CHAR.")
-
-;; Some custom commands which are heavily inspired by the Emacs Redux.  See:
-;;
-;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
-;; http://emacsredux.com/blog/2013/04/09/kill-whole-line/
-;; http://emacsredux.com/blog/2013/03/26/smarter-open-line/
-
-(defun stante-smart-backward-kill-line ()
-  "Kill line backwards and re-indent."
-  (interactive)
-  (kill-line 0)
-  (indent-according-to-mode))
-
-(defun stante-smart-kill-whole-line (&optional arg)
-  "Kill whole line and move back to indentation.
-
-Kill the whole line with function `kill-whole-line' and then move
-`back-to-indentation'."
-  (interactive "p")
-  (kill-whole-line arg)
-  (back-to-indentation))
-
-(defun stante-smart-open-line ()
-  "Insert empty line after the current line."
-  (interactive)
-  (move-end-of-line nil)
-  (newline-and-indent))
-
-
-;;;; Spell checking
-(unless (executable-find "aspell")
-  (message "Aspell not found.  Spell checking may not be available!"))
-
-;; Choose English as default languages, because programming is mostly done in
-;; this languages, and don't ask to save the private dictionary.
-(after 'ispell
-  (setq ispell-dictionary "en"
-        ispell-silently-savep t))
-
-(after 'flyspell
-  ;; Get M-Tab and C-M-i back for `completion-at-point'
-  (define-key flyspell-mode-map "\M-\t" nil)
-  ;; and prevent it from ever taking it again
-  (setq flyspell-use-meta-tab nil))
-
-(add-hook 'text-mode-hook 'turn-on-flyspell)
-(add-hook 'message-mode-hook 'turn-on-flyspell)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-
-(after 'guru-mode (diminish 'guru-mode))
-
-
-;;;; Tools and utilities
-;; Convenience aliases for Ack
-(defalias 'ack 'ack-and-a-half)
-(defalias 'ack-same 'ack-and-a-half-same)
-(defalias 'ack-find-file 'ack-and-a-half-find-file)
-(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-
-;; Search with Google
-(google-this-mode)
-(after 'google-this
-  (diminish 'google-this-mode))
-
-;; Project management
-(projectile-global-mode)
-(after 'projectile
-  (diminish 'projectile-mode))
-
-;; Commands for working with files.
-
-;; The functions in this module are heavily inspired by the Emacs Redux and by
-;; Emacs Prelude.  See:
-;;
+;; Utility commands for working with files, see:
+;; http://emacsredux.com/blog/2013/03/27/open-file-in-external-program/
 ;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 ;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
 ;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
-;; http://emacsredux.com/blog/2013/03/27/open-file-in-external-program/
-;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
 ;; https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
-
 (defun stante-get-standard-open-command ()
   "Get the standard command to open a file.
 
@@ -555,13 +374,6 @@ prompt for the command to use."
       (setq command (read-shell-command "Open current file with: ")))
     (shell-command (concat command " "
                            (shell-quote-argument (buffer-file-name))))))
-
-(defun stante-ido-find-recentf ()
-  "Find a recent file with IDO."
-  (interactive)
-  (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
-    (when file
-      (find-file file))))
 
 (defun stante-copy-filename-as-kill ()
   "Copy the name of the currently visited file to kill ring."
@@ -599,273 +411,72 @@ prompt for the command to use."
       (delete-file filename)
       (kill-buffer)))))
 
-
-;;;; Git support
-(after 'magit
-  ;; Do not ask before saving buffers on `magit-status', but ask whether to set
-  ;; upstream branch when pushing a branch without upstream.  Also exclude
-  ;; remote name from names of tracking branches
-  (setq magit-save-some-buffers 'dontask
-        magit-set-upstream-on-push t
-        magit-default-tracking-name-function 'magit-default-tracking-name-branch-only))
-
-;; Open newly created Gists in browser.
-(after 'gist
-  (setq gist-view-gist t))
-
-;; Indicate Git changes
-(global-git-gutter-mode)
-(after 'git-gutter
-  (diminish 'git-gutter-mode)
-
-  ;; Show Git Gutter on the right fringe, the left fringe is for Flycheck errors
-  (require 'git-gutter-fringe))
+(defvar stante-file-commands-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "r" #'stante-ido-find-recentf)
+    (define-key map "o" #'stante-open-with)
+    (define-key map "R" #'stante-rename-file-and-buffer)
+    (define-key map "D" #'stante-delete-file-and-buffer)
+    (define-key map "w" #'stante-copy-filename-as-kill)
+    map)
+  "Keymap for file functions.")
 
 
-;;;; Plain text editing
-(define-minor-mode stante-text-whitespace-mode
-  "Minor mode to highlight and cleanup whitespace."
-  :lighter nil
-  :keymap nil
-  (if stante-text-whitespace-mode
-      (add-hook 'before-save-hook 'delete-trailing-whitespace nil :local)
-    (remove-hook 'before-save-hook 'delete-trailing-whitespace :local)))
+;;;; Basic editing
 
-(after "text-mode"
-  (--each '(turn-on-auto-fill guru-mode stante-text-whitespace-mode)
-    (add-hook 'text-mode-hook it)))
+;; Decent coding system
+(prefer-coding-system 'utf-8)
 
-
-;;;; Markdown editing
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+;; Drag stuff around with M-S-Arrows
+(setq drag-stuff-modifier '(meta shift)) ; Need to set this before loading to
+                                        ; prevent Drag Stuff mode from ever
+                                        ; claiming M-Arrows!
+(stante-after 'drag-stuff (diminish 'drag-stuff-mode))
+(drag-stuff-global-mode)
 
-(defconst stante-markdown-commands
-  '(("kramdown")
-    ("markdown2" "-x" "fenced-code-blocks")
-    ("pandoc"))
-  "Markdown processors we try to use.")
+;; Make `kill-whole-line' indentation aware
+(defun stante-smart-kill-whole-line (&optional arg)
+  "Kill whole line and move back to indentation.
 
-(defun stante-find-markdown-processor ()
-  "Find a suitable markdown processor.
+Kill the whole line with function `kill-whole-line' and then move
+`back-to-indentation'."
+  (interactive "p")
+  (kill-whole-line arg)
+  (back-to-indentation))
+(global-set-key [remap kill-whole-line] 'stante-smart-kill-whole-line)
 
-Search for a suitable markdown processor using
-`stante-markdown-commands' and set `markdown-command' properly.
-
-Return the new `markdown-command' or signal an error if no
-suitable processor was found."
+;; Some other utilities
+(defun stante-smart-backward-kill-line ()
+  "Kill line backwards and re-indent."
   (interactive)
-  ;; Clear previous command
-  (setq markdown-command
-        (mapconcat #'shell-quote-argument
-                   (--first (executable-find (car it)) stante-markdown-commands)
-                   " "))
-  (unless markdown-command
-    (error "No markdown processor found"))
-  markdown-command)
+  (kill-line 0)
+  (indent-according-to-mode))
 
-(after 'markdown-mode
-  (stante-find-markdown-processor)
+(defun stante-smart-open-line ()
+  "Insert empty line after the current line."
+  (interactive)
+  (move-end-of-line nil)
+  (newline-and-indent))
 
-  ;; Disable filling in Gfm mode, because line breaks have a meaning in Gfm
-  (--each '(turn-off-auto-fill turn-off-fci-mode)
-    (add-hook 'gfm-mode-hook it))
+;; A missing autoload
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR.")
 
-  (after 'smartparens
-    (sp-with-modes '(markdown-mode gfm-mode)
-      (sp-local-pair "*" "*")
-      (sp-local-tag "c" "```scheme" "```"))))
+;; Disable tabs, but given them proper width
+(setq-default indent-tabs-mode nil
+              tab-width 8)
 
-
-;;;; TeX/LaTeX/Texinfo editing
-(when (eq system-type 'darwin)
-  (when (stante-homebrew-installed-p "auctex")
-    (let ((homebrew-prefix (stante-homebrew-prefix)))
-      (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
-                                                homebrew-prefix)))))
+;; Highlight bad whitespace
+(stante-after 'whitespace
+  (diminish 'whitespace-mode)
+  ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
+  ;; portions of lines via faces.  Also indicate tabs via characters
+  (setq whitespace-style '(face tabs tab-mark empty trailing lines-tail)
+        whitespace-line-column nil))    ; Use `fill-column' for overlong lines
+;; Indicate empty lines at the end of a buffer in the fringe
+(setq indicate-empty-lines t)
 
-(defun stante-find-skim-bundle ()
-  "Return the location of the Skim bundle, or nil if Skim is not installed.
-
-Skim is an advanced PDF viewer for OS X with SyncTex support.
-See http://skim-app.sourceforge.net/ for more information."
-  (stante-path-of-bundle "net.sourceforge.skim-app.skim"))
-
-(defun stante-find-skim-displayline ()
-  "Return the path of the displayline frontend of Skim.
-
-Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
-  (-when-let (skim-bundle (stante-find-skim-bundle))
-    (executable-find (expand-file-name "Contents/SharedSupport/displayline"
-                                       skim-bundle))))
-
-(defun stante-TeX-find-view-programs-os-x ()
-  "Find TeX view programs on OS X.
-
-Populate `TeX-view-program-list' with installed viewers."
-  ;; The default application, usually Preview
-  (add-to-list 'TeX-view-program-list
-               '("Default application" "open %o"))
-  ;; Skim if installed
-  (-when-let (skim-displayline (stante-find-skim-displayline))
-    (add-to-list 'TeX-view-program-list
-                 `("Skim" (,skim-displayline " -b -r %n %o %b")))))
-
-(defun stante-TeX-select-view-programs-os-x ()
-  "Select the best view programs on OS X.
-
-Choose Skim if available, or fall back to the default application."
-  ;; Find view programs
-  (stante-TeX-find-view-programs-os-x)
-  (setq TeX-view-program-selection
-        `((output-dvi "Default application")
-          (output-html "Default application")
-          ;; Use Skim if installed for SyncTex support.
-          (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
-                           "Skim" "Default application")))))
-
-(defun stante-TeX-select-view-programs ()
-  "Select the best view programs for the current platform."
-  (when (eq system-type 'darwin)
-    (stante-TeX-select-view-programs-os-x)))
-
-(unless (require 'tex-site nil t)
-  (message "AUCTeX not installed.  LaTeX/Texinfo editing is limited!"))
-(unless (require 'preview-latex nil t))
-
-;; Handle .latex files with AUCTeX, too.
-(add-to-list 'auto-mode-alist '("\\.[lL]a[tT]e[xX]\\'" . latex-mode))
-
-(after 'tex-site
-  (setq TeX-auto-save t        ; Autosave documents
-        TeX-parse-self t       ; Parse documents
-        TeX-save-query nil     ; Don't ask before saving
-        TeX-clean-confirm nil  ; Don't ask before cleaning
-        ;; Enable forward and inverse search with SyncTeX
-        TeX-source-correlate-mode t
-        TeX-source-correlate-method 'synctex)
-  (setq-default TeX-master nil ; Ask for master document
-                ;; Use a modern LaTeX engine to build PDFs
-                TeX-engine 'luatex
-                TeX-PDF-mode t)
-
-  ;; Setup sub modes
-  (--each '(reftex-mode LaTeX-math-mode) (add-hook 'LaTeX-mode-hook it))
-
-  ;; Enable Smartparens support
-  (after 'smartparens
-    (require 'smartparens-latex)))
-
-;; Provide latexmk support.
-(after 'tex
-  (unless (boundp 'TeX-command-latexmk) ; Just in case this ever gets upstreamed
-    (defvar TeX-command-latexmk "latexmk"
-      "The name of the latexmk command.")
-
-    ;; Declare the latexmk command
-    (unless (assoc TeX-command-latexmk TeX-command-list)
-      (add-to-list 'TeX-command-list
-                   `(,TeX-command-latexmk "latexmk" TeX-run-command t t
-                                          :Help "Run latexmk"))))
-
-  ;; Replace lacheck with chktex for "Check" command
-  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
-
-(after 'latex
-  ;; Clean latexmk files
-  (--each '("\\.fdb_latexmk" "\\.fls")
-    (add-to-list 'LaTeX-clean-intermediate-suffixes it)))
-
-;; Select best viewing programs
-(after 'tex (stante-TeX-select-view-programs))
-
-;; Configure Texinfo editing with AUCTeX
-(after 'tex-info
-  (add-hook 'Texinfo-mode-hook 'reftex-mode)  ; Enable RefTeX
-
-  ;; Bind some convenient commands from the built-in Texinfo mode.
-  (define-key Texinfo-mode-map (kbd "C-c c") 'makeinfo-buffer))
-
-
-;;;; BibTeX editing and RefTeX setup
-(after 'bib-cite
-  (setq bib-cite-use-reftex-view-crossref t))
-
-;; Configure bibtex editing to use biblatex by default
-(after 'bibtex
-  (bibtex-set-dialect 'biblatex)
-  ;; Configure exhaustive cleanup of bibtex entries
-  (setq bibtex-entry-format '(opts-or-alts
-                              required-fields
-                              numerical-fields
-                              whitespace
-                              realign
-                              last-comma
-                              delimiters
-                              unify-case
-                              strings
-                              sort-fields)))
-
-;; BibTeX manager
-(after 'ebib
-  (setq ebib-autogenerate-keys t))
-
-;; Configure RefTeX
-(after 'reftex
-  (setq reftex-plug-into-AUCTeX t
-        ;; Recommended optimizations
-        reftex-enable-partial-scans t
-        reftex-save-parse-info t
-        reftex-use-multiple-selection-buffers t)
-
-  (unless (assq 'biblatex reftex-cite-format-builtin)
-    ;; Add biblatex support if not already builtin
-    (add-to-list 'reftex-cite-format-builtin
-                 '(biblatex "The biblatex package"
-                            ((?\C-m . "\\cite[]{%l}")
-                             (?t . "\\textcite{%l}")
-                             (?a . "\\autocite[]{%l}")
-                             (?p . "\\parencite{%l}")
-                             (?f . "\\footcite[][]{%l}")
-                             (?F . "\\fullcite[]{%l}")
-                             (?x . "[]{%l}")
-                             (?X . "{%l}")))))
-  (setq reftex-cite-format 'biblatex) ; Use Biblatex as default citation style
-  ;; Make RefTeX recognize biblatex bibliographies
-  (add-to-list 'reftex-bibliography-commands "addbibresource"))
-
-
-;;;; General programming settings
-;; Default semantic submodes
-(setq semantic-default-submodes
-      '(global-semanticdb-minor-mode ;; Cache database
-        global-semantic-idle-scheduler-mode ;; Re-parse when idle
-        global-semantic-idle-summary-mode ;; Show tab summary when idle
-        global-semantic-stickyfunc-mode ;; Show current tag at top of buffer
-        ))
-
-(semantic-mode 1)
-
-(after 'highlight-symbol
-  ;; Highlight the symbol under point after short delay, and highlight the
-  ;; symbol immediately after symbol navigation
-  (setq highlight-symbol-idle-delay 0.4
-        highlight-symbol-on-navigation-p t)
-
-  (diminish 'highlight-symbol-mode))
-
-(define-minor-mode stante-auto-fill-comments-mode
-  "Minor mode to auto-fill comments only."
-  :lighter nil
-  :keymap nil
-  (cond
-   (stante-auto-fill-comments-mode
-    (set (make-local-variable 'comment-auto-fill-only-comments) t)
-    (auto-fill-mode 1))
-   (:else
-    (kill-local-variable 'comment-auto-fill-only-comments)
-    (auto-fill-mode -1))))
-
+;; Rigidly cleanup whitespace in programming modes
 (define-minor-mode stante-prog-whitespace-mode
   "Minor mode to highlight and cleanup whitespace."
   :lighter nil
@@ -877,31 +488,476 @@ Choose Skim if available, or fall back to the default application."
    (:else
     (whitespace-mode -1)
     (remove-hook 'before-save-hook 'whitespace-cleanup :local))))
+(add-hook 'prog-mode-hook 'stante-prog-whitespace-mode)
 
-(after 'simple ; prog-mode is contained in simple.el
-  ;; A set of reasonable programmming modes
-  (--each '(stante-auto-fill-comments-mode ; Fill in comments
-            stante-prog-whitespace-mode    ; Highlight and cleanup whitespace
-            guru-mode                      ; Disable non-emacsy bindings
-            highlight-symbol-mode          ; Highlight symbol under point
-            )
-    (add-hook 'prog-mode-hook it)))
+;; In plain text, only cleanup trailing whitespace
+(define-minor-mode stante-text-whitespace-mode
+  "Minor mode to highlight and cleanup whitespace."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-text-whitespace-mode
+    (whitespace-mode 1)
+    (add-hook 'before-save-hook 'delete-trailing-whitespace nil :local))
+   (:else
+    (whitespace-mode -1)
+    (remove-hook 'before-save-hook 'delete-trailing-whitespace :local))))
+(add-hook 'text-mode-hook 'stante-text-whitespace-mode)
+
+;; Delete the selection instead of inserting
+(delete-selection-mode)
+
+;; Configure a reasonable fill column, indicate it in the buffer and enable
+;; automatic filling
+(setq-default fill-column 80)
+(--each '(prog-mode-hook text-mode-hook)
+  (add-hook it 'fci-mode))
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+(define-minor-mode stante-auto-fill-comments-mode
+  "Minor mode to auto-fill comments only."
+  :lighter nil
+  :keymap nil
+  (cond
+   (stante-auto-fill-comments-mode
+    (setq-local comment-auto-fill-only-comments t)
+    (auto-fill-mode 1))
+   (:else
+    (kill-local-variable 'comment-auto-fill-only-comments)
+    (auto-fill-mode -1))))
+(add-hook 'prog-mode-hook 'stante-auto-fill-comments-mode)
+
+;; Choose wrap prefix automatically
+(add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
+
+;; Configure scrolling
+(setq scroll-margin 0                   ; Drag the point along while scrolling
+      scroll-conservatively 1000        ; Never recenter the screen while scrolling
+      scroll-error-top-bottom t         ; Move to beg/end of buffer before
+                                        ; signalling an error
+      ;; These settings make trackpad scrolling on OS X much more predictable
+      ;; and smooth
+      mouse-wheel-progressive-speed nil
+      mouse-wheel-scroll-amount '(1))
+
+;; Give us narrowing back!
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-defun 'disabled nil)
+
+;; Highlight the current line and editing operations in the buffer
+(global-hl-line-mode 1)
+(require 'volatile-highlights)          ; Doesn't autoload :|
+(diminish 'volatile-highlights-mode)
+(volatile-highlights-mode t)
+
+;; Power up undo
+(stante-after 'undo-tree (diminish 'undo-tree-mode))
+(global-undo-tree-mode)
+
+;; Nicify page breaks
+(stante-after 'page-break-lines (diminish 'page-break-lines-mode))
+(global-page-break-lines-mode)
+
+;; On the fly syntax checking
+(global-flycheck-mode)
+
+;; An Emacs server for `emacsclient'
+(require 'server)
+(unless (server-running-p) (server-start))
 
 
-;;;; Emacs Lisp programming
-(after 'smartparens
-  ;; Wrap with parenthesis on M-( for compatibility with paredit
+;;;; Smart pairing of delimiters
+
+(stante-after 'smartparens
+  (require 'smartparens-config)
+  (diminish 'smartparens-mode))
+
+;; Use our own keymap which is a best blend between `sp-smartparens-bindings'
+;; (too convoluted and too many arrow keys) and `sp-paredit-bindings'
+;; (crippled).
+(stante-after 'smartparens
+  (defvar stante-smartparens-bindings
+    '(("C-M-f" . sp-forward-sexp)
+      ("C-M-b" . sp-backward-sexp)
+      ("C-M-d" . sp-down-sexp)
+      ("C-M-a" . sp-backward-down-sexp)
+      ("C-S-d" . sp-beginning-of-sexp)
+      ("C-S-a" . sp-end-of-sexp)
+      ("C-M-e" . sp-up-sexp)
+      ("C-M-u" . sp-backward-up-sexp)
+      ("C-M-n" . sp-next-sexp)
+      ("C-M-p" . sp-previous-sexp)
+      ("C-M-k" . sp-kill-sexp)
+      ("C-M-w" . sp-copy-sexp)
+      ("M-s" . sp-splice-sexp)
+      ("M-S" . sp-split-sexp)
+      ("M-<up>" . sp-splice-sexp-killing-backward)
+      ("M-<down>" . sp-splice-sexp-killing-forward)
+      ("M-r" . sp-splice-sexp-killing-around)
+      ("C-)" . sp-forward-slurp-sexp) ;; barf/slurp
+      ("C-<right>" . sp-forward-slurp-sexp)
+      ("C-}" . sp-forward-barf-sexp)
+      ("C-<left>" . sp-forward-barf-sexp)
+      ("C-(" . sp-backward-slurp-sexp)
+      ("C-M-<left>" . sp-backward-slurp-sexp)
+      ("C-{" . sp-backward-barf-sexp)
+      ("C-M-<right>" . sp-backward-barf-sexp))
+    "Smartparens keybindings by Stante Pede.")
+
+  (defun stante-set-smartparens-bindings ()
+    "Create `sp-keymap' with Stante Pede bindings.
+
+See `stante-smartparens-bindings' for a list of all bindings
+defined by this function."
+    (interactive)
+    (--each stante-smartparens-bindings
+      (define-key sp-keymap (kbd (car it)) (cdr it))))
+
+  (stante-set-smartparens-bindings))
+
+(smartparens-global-mode)
+(show-smartparens-global-mode)          ; Better than show-parens-mode
+
+
+;;;; Completion and expansion
+
+;; Replace the dumb default dabbrev expand with a reasonably configured
+;; hippie-expand
+(stante-after 'hippie-exp
+  (setq hippie-expand-try-functions-list
+        '(try-expand-dabbrev
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill
+          try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-all-abbrevs
+          try-expand-list
+          try-expand-line
+          try-complete-lisp-symbol-partially
+          try-complete-lisp-symbol)))
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
+
+;; Expandable text snippets
+(stante-after 'yasnippet (diminish 'yas-minor-mode))
+(yas-global-mode)
+
+;; In `completion-at-point', do not pop up silly completion buffers for less
+;; than five candidates.  Cycle instead.
+(setq completion-cycle-threshold 5)
+
+;; Enable auto-completion
+(stante-after 'company
+  (diminish 'company-mode)
+
+  ;; Make auto completion a little less aggressive.
+  (setq company-idle-delay 1.0
+        company-begin-commands '(self-insert-command)
+        company-show-numbers t))        ; Easy navigation to candidates with
+                                        ; M-<n>
+(global-company-mode)
+
+
+;;;; Multiple cursors
+
+;; Expose multiple cursor commands
+(defvar stante-multiple-cursors-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "l" #'mc/edit-lines)
+    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
+    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
+    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
+    (define-key map ">" #'mc/mark-next-like-this)
+    (define-key map "<" #'mc/mark-previous-like-this)
+    (define-key map "e" #'mc/mark-more-like-this-extended)
+    (define-key map "h" #'mc/mark-all-like-this-dwim)
+    map)
+  "Keymap for Multiple Cursors.")
+
+
+;;;; Spell checking
+
+;; Warn if the spell checker is missing
+(unless (executable-find "aspell")
+  (message "Aspell not found.  Spell checking may not be available!"))
+
+(stante-after 'ispell
+  (setq ispell-dictionary "en"          ; Default dictionary
+        ispell-silently-savep t))       ; Don't ask when saving the private dict
+
+;; Free M-Tab and C-M-i, and never take it again!
+(stante-after 'flyspell
+  (define-key flyspell-mode-map "\M-\t" nil)
+  (setq flyspell-use-meta-tab nil))
+
+(--each '(text-mode-hook message-mode-hook)
+  (add-hook it 'turn-on-flyspell))
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+
+;;;; AUCTeX
+
+;; Load AUCTeX from package manager, because the ELPA package is out-dated
+(when (eq system-type 'darwin)
+  (when (stante-homebrew-installed-p "auctex")
+    (let ((homebrew-prefix (stante-homebrew-prefix)))
+      (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
+                                                homebrew-prefix)))))
+
+(require 'tex-site nil :no-error)
+(require 'preview-latex nil :no-error)
+
+;; Some standard defaults
+(stante-after 'tex
+  (setq TeX-parse-self t                ; Parse documents to provide completion
+                                        ; for packages, etc.
+        TeX-auto-save t                 ; Automatically save
+        TeX-clean-confirm nil           ; Do not ask for confirmation when
+                                        ; cleaning
+        ;; Provide forward and inverse search with SyncTeX
+        TeX-source-correlate-mode t
+        TeX-source-correlate-method 'synctex)
+  (setq-default TeX-master nil          ; Ask for the master file
+                TeX-engine 'luatex      ; Use a modern engine
+                TeX-PDF-mode t))        ; Create PDFs by default
+
+;; Configure Smartparens for LaTeX
+(stante-after 'latex
+  (stante-after 'smartparens
+    (require 'smartparens-latex)))
+
+;; Easy Math input for LaTeX
+(stante-after 'latex
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode))
+
+;; Replace the rotten Lacheck with Chktex
+(stante-after 'tex
+  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
+
+;; Build with Latexmk
+(stante-after 'tex
+  (unless (boundp 'TeX-command-latexmk)
+    (defvar TeX-command-latexmk "latexmk"
+      "The name of the latexmk command.")
+
+    (unless (assoc TeX-command-latexmk TeX-command-list)
+      (add-to-list 'TeX-command-list
+                   `(,TeX-command-latexmk "latexmk" TeX-run-command t t
+                                          :Help "Run latexmk")))))
+
+;; Clean intermediate files from Latexmk
+(stante-after 'latex
+  (--each '("\\.fdb_latexmk" "\\.fls")
+    (add-to-list 'LaTeX-clean-intermediate-suffixes it)))
+
+;; Find Skim.app on OS X, for Sycntex support which Preview.app lacks.
+(defun stante-find-skim-bundle ()
+    "Return the location of the Skim bundle, or nil if Skim is not installed.
+
+Skim is an advanced PDF viewer for OS X with SyncTex support.
+See http://skim-app.sourceforge.net/ for more information."
+    (stante-path-of-bundle "net.sourceforge.skim-app.skim"))
+
+  (defun stante-find-skim-displayline ()
+    "Return the path of the displayline frontend of Skim.
+
+Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
+    (-when-let (skim-bundle (stante-find-skim-bundle))
+      (executable-find (expand-file-name "Contents/SharedSupport/displayline"
+                                         skim-bundle))))
+
+(stante-after 'tex
+  (defun stante-TeX-find-view-programs-os-x ()
+    "Find TeX view programs on OS X.
+
+Populate `TeX-view-program-list' with installed viewers."
+    ;; The default application, usually Preview
+    (add-to-list 'TeX-view-program-list
+                 '("Default application" "open %o"))
+    ;; Skim if installed
+    (-when-let (skim-displayline (stante-find-skim-displayline))
+      (add-to-list 'TeX-view-program-list
+                   `("Skim" (,skim-displayline " -b -r %n %o %b")))))
+
+  (defun stante-TeX-select-view-programs-os-x ()
+    "Select the best view programs on OS X.
+
+Choose Skim if available, or fall back to the default application."
+    ;; Find view programs
+    (stante-TeX-find-view-programs-os-x)
+    (setq TeX-view-program-selection
+          `((output-dvi "Default application")
+            (output-html "Default application")
+            ;; Use Skim if installed for SyncTex support.
+            (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
+                             "Skim" "Default application")))))
+
+  (defun stante-TeX-select-view-programs ()
+    "Select the best view programs for the current platform."
+    (when (eq system-type 'darwin)
+      (stante-TeX-select-view-programs-os-x)))
+
+  ;; Select best viewing programs
+  (stante-TeX-select-view-programs))
+
+;; Configure BibTeX
+(stante-after 'bibtex
+  (bibtex-set-dialect 'biblatex)        ; Use a modern dialect
+  ;; Exhaustive cleanup and reformatting of entries, to keep Bibtex files in
+  ;; good shape
+  (setq bibtex-entry-format '(opts-or-alts
+                              required-fields
+                              numerical-fields
+                              whitespace
+                              realign
+                              last-comma
+                              delimiters
+                              unify-case
+                              strings
+                              sort-fields)))
+
+;; Configure RefTeX
+(stante-after 'reftex
+  (setq reftex-plug-into-AUCTeX t       ; Plug into AUCTeX
+        ;; Recommended optimizations
+        reftex-enable-partial-scans t
+        reftex-save-parse-info t
+        reftex-use-multiple-selection-buffers t))
+(stante-after 'bib-cite
+  (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
+
+;; Provide basic RefTeX support for biblatex
+(stante-after 'reftex
+  (unless (assq 'biblatex reftex-cite-format-builtin)
+    (add-to-list 'reftex-cite-format-builtin
+                 '(biblatex "The biblatex package"
+                            ((?\C-m . "\\cite[]{%l}")
+                             (?t . "\\textcite{%l}")
+                             (?a . "\\autocite[]{%l}")
+                             (?p . "\\parencite{%l}")
+                             (?f . "\\footcite[][]{%l}")
+                             (?F . "\\fullcite[]{%l}")
+                             (?x . "[]{%l}")
+                             (?X . "{%l}")))))
+  (setq reftex-cite-format 'biblatex)
+  (add-to-list 'reftex-bibliography-commands "addbibresource"))
+
+
+;;;; Markdown editing
+
+;; Why doesn't Markdown Mode do this itself?!
+(--each '("\\.md\\'" "\\.markdown\\'")
+  (add-to-list 'auto-mode-alist (cons it 'markdown-mode)))
+
+;; Find a suitable processor
+(stante-after 'markdown-mode
+  (defconst stante-markdown-commands
+    '(("kramdown")
+      ("markdown2" "-x" "fenced-code-blocks")
+      ("pandoc"))
+    "Markdown processors we try to use.")
+
+  (defun stante-find-markdown-processor ()
+    "Find a suitable markdown processor.
+
+Search for a suitable markdown processor using
+`stante-markdown-commands' and set `markdown-command' properly.
+
+Return the new `markdown-command' or signal an error if no
+suitable processor was found."
+    (interactive)
+    ;; Clear previous command
+    (setq markdown-command
+          (mapconcat #'shell-quote-argument
+                     (--first (executable-find (car it)) stante-markdown-commands)
+                     " "))
+    (unless markdown-command
+      (error "No markdown processor found"))
+    markdown-command)
+
+  (stante-find-markdown-processor))
+
+;; Don't do filling in GFM mode, where line breaks are significant
+(stante-after 'markdown-mode
+  (--each '(turn-off-fci-mode turn-off-auto-fill)
+    (add-hook 'gfm-mode-hook it)))
+
+;; Teach Smartparens about Markdown
+(stante-after 'smartparens
+  (sp-with-modes '(markdown-mode gfm-mode)
+    (sp-local-pair "*" "*")
+    (sp-local-tag "c" "```scheme" "```")))
+
+
+;;;; Symbol “awareness”
+
+;; Highlight the symbol under point
+(stante-after 'highlight-symbol
+  (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
+        highlight-symbol-on-navigation-p t) ; Highlight immediately after navigation
+  (diminish 'highlight-symbol-mode))
+(add-hook 'prog-mode-hook 'highlight-symbol-mode)
+
+;; Add a keymap for symbol operations
+(defvar stante-symbols-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "o" #'highlight-symbol-occur)
+    (define-key map "%" #'highlight-symbol-query-replace)
+    (define-key map "n" #'highlight-symbol-next-in-defun)
+    (define-key map "p" #'highlight-symbol-prev-in-defun)
+    (define-key map (kbd "M-n") #'highlight-symbol-next)
+    (define-key map (kbd "M-p") #'highlight-symbol-prev)
+    map)
+  "Keymap to work on symbols.")
+
+
+;;;; Emacs Lisp
+
+;; Teach Emacs about Emacs scripts and Carton files
+(stante-after 'lisp-mode
+  (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
+  (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode)))
+
+;; Helpful minor modes:  Show function signatures in echo area, and color
+;; paenthesis according to their level
+(stante-after 'lisp-mode
+  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode)
+    (add-hook 'emacs-lisp-mode-hook it)))
+(stante-after 'ielm
+  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode)
+    (add-hook 'ielm-mode-hook it)))
+
+;; Check documentation conventions when evaluating expressions
+(stante-after 'lisp-mode
+  (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode))
+
+;; Now de-clutter the mode line
+(stante-after 'eldoc (diminish 'eldoc-mode))
+(stante-after 'checkdoc (diminish 'checkdoc-minor-mode))
+(stante-after 'rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+(stante-after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode))
+
+;; Explicitly enable Smartparens in IELM, because the global mode refuses to do
+;; so, as IELM is a special mode.
+(stante-after 'ielm
+  (add-hook 'ielm-mode-hook #'smartparens-mode))
+
+;; Add an explicit pair for wrapping in parenthesis, for convenience and
+;; compatibility with Paredit
+(stante-after 'smartparens
   (sp-with-modes sp--lisp-modes
     (sp-local-pair "(" nil :bind "M-(")))
 
+;; Remove compiled byte code on save, to avoid loading stale byte code files
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
   "Remove byte code file corresponding to the Emacs Lisp BUFFER.
 
 BUFFER defaults to the current buffer."
   (when (eq major-mode 'emacs-lisp-mode)
-    (let ((bytecode (concat  (buffer-file-name buffer) "c")))
-      (when (file-exists-p bytecode)
-        (delete-file bytecode)))))
+    (-when-let (filename (buffer-file-name buffer))
+      (let ((bytecode (concat filename "c")))
+        (when (file-exists-p bytecode)
+          (delete-file bytecode))))))
 
 (define-minor-mode stante-emacs-lisp-clean-byte-code-mode
   "Minor mode to automatically clean stale Emacs Lisp bytecode."
@@ -911,80 +967,37 @@ BUFFER defaults to the current buffer."
       (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil :local)
     (remove-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code :local)))
 
-(defun stante-emacs-lisp-switch-to-ielm ()
-  "Switch to an ielm window.
+(stante-after 'lisp-mode
+  (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-clean-byte-code-mode))
 
-Create a new ielm process if required."
-  (interactive)
-  (pop-to-buffer (get-buffer-create "*ielm*"))
-  (ielm))
-
-(defun stante-font-lock-add-ert-keywords ()
-  "Add font lock keywords supporting ERT tests."
-  (font-lock-add-keywords
-   nil
-   '(("(\\(\\<ert-deftest\\)\\>\\s *\\(\\sw+\\)?"
-      (1 font-lock-keyword-face nil t)
-      (2 font-lock-function-name-face nil t)))))
-
-(after 'lisp-mode
-  (--each '(emacs-lisp-mode-hook ielm-mode-hook)
-    (add-hook it 'turn-on-eldoc-mode)
-    (add-hook it 'rainbow-delimiters-mode))
-
-  (--each '(checkdoc-minor-mode
-            stante-emacs-lisp-clean-byte-code-mode
-            stante-font-lock-add-ert-keywords)
-    (add-hook 'emacs-lisp-mode-hook it))
-
-  ;; Explicitly enable Smartparens in IELM.  The global mode won't do it,
-  ;; because IELM is a special mode, in which Global Smartparens Mode refuses to
-  ;; enable Smartparens mode
-  (add-hook 'ielm-mode-hook #'smartparens-mode)
-
-  ;; Indent ERT tests like functions
-  (put 'ert-deftest 'lisp-indent-function 'defun)
-
-  ;; Recognize Emacs scripts
-  (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
-
-  ;; Consider Carton files as Emacs Lisp files
-  (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode)))
-
-;; De-clutter mode line
-(after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode))
-(after 'eldoc (diminish 'eldoc-mode))
-(after 'checkdoc (diminish 'checkdoc-minor-mode))
-(after 'rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+;; Load ERT to support unit test writing and running
+(stante-after 'lisp-mode
+  (require 'ert))
 
 
-;;;; Python programming
-(defun stante-python-filling ()
-  "Configure filling for Python."
-  ;; PEP 8 recommends a maximum of 79 characters
-  (setq fill-column 79))
+;;;; Python
 
-;; Find the best checker
-(after 'python
+(stante-after 'python
   (--each '(stante-python-filling subword-mode)
     (add-hook 'python-mode-hook it))
 
-  (setq python-check-command "flake8")
+  ;; Fill according to PEP 8
+  (defun stante-python-filling ()
+    "Configure filling for Python."
+    ;; PEP 8 recommends a maximum of 79 characters
+    (setq fill-column 79))
 
-  ;; Default to Python 3 if available
-  (let ((python3 (executable-find "python3")))
-    (when python3
-      (setq python-shell-interpreter python3))))
-
-(after 'expand-region
-  ;; Tell expand-region about the Python mode we're using
-  (setq expand-region-guess-python-mode nil
-        expand-region-preferred-python-mode 'fgallina-python))
+  ;; Use a decent syntax and style checker
+  (setq python-check-command "flake8"))
 
 
 ;;;; Shell scripting
-(after 'sh-script
-  ;; Standard indentation styles
+
+;; Teach Emacs about Zsh scripts
+(add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
+
+;; Shell script indentation styles
+(stante-after 'sh-script
   (setq sh-styles-alist
         '(("zsh"
            (sh-basic-offset . 2)
@@ -1006,59 +1019,46 @@ Create a new ielm process if required."
            (sh-indent-for-fi . 0)
            (sh-indent-for-then . 0))))
 
-  (defun stante-sh-set-default-style ()
-    "Set a standard indentation style."
-    (sh-load-style "zsh"))
-
-  (add-hook 'sh-mode-hook #'stante-sh-set-default-style))
-
-;; Also consider .zsh files as `sh-mode' files.
-(add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
+  (add-hook 'sh-mode-hook (apply-partially #'sh-load-style "zsh")))
 
 
-;;;; Various other programming languages
-(after 'coffee-mode
-  ;; CoffeeScript should use two spaces for indentation
+;;;; Misc programming languages
+
+;; Coffeescript: Indentation
+(stante-after 'coffee-mode
   (setq coffee-tab-width 2))
 
-(after 'haskell-mode
-  ;; Some standard Haskell settings
+;; Haskell: Indentation, and some helpful modes
+(stante-after 'haskell-mode
   (--each '(subword-mode
             turn-on-haskell-indentation
             turn-on-haskell-doc-mode
             turn-on-haskell-decl-scan)
     (add-hook 'haskell-mode-hook it)))
 
-(after 'scss-mode
-  ;; Do not compile SCSS after saving
+;; SCSS: Don't compile when saving (aka please don't spam my directories!)
+(stante-after 'scss-mode
   (setq scss-compile-at-save nil))
 
-(after 'nxml-mode
-  ;; Complete closing XML tags and insert XML declarations in new XML files
+;; XML: Complete closing tags, and insert XML declarations into empty files
+(stante-after 'nxml-mode
   (setq nxml-slash-auto-complete-flag t
         nxml-auto-insert-xml-declaration-flag t))
 
 
 ;;;; Proof General
-(when (eq system-type 'darwin)
-  (defconst stante-isabelle-bin-dir
-    (-when-let (bundle-directory (stante-path-of-bundle "de.tum.in.isabelle"))
-      (expand-file-name "Contents/Resources/Isabelle/bin" bundle-directory)))
-
-  (setq isa-isabelle-command
-        (expand-file-name "isabelle" stante-isabelle-bin-dir))
-
-  (after 'isabelle-system
-    (setq isabelle-program-name-override
-          (expand-file-name "isabelle-process" stante-isabelle-bin-dir))))
 
 (load (expand-file-name "ProofGeneral/generic/proof-site.el" stante-vendor-dir))
 
-(after 'proof-useropts
-  ;; Do not spam the frame with windows when executing a buffer
-  (setq proof-three-window-enable nil))
+;; On OS X, add executables from the Isabelle application bundle to path
+(when (eq system-type 'darwin)
+  (-when-let* ((bundle-dir (stante-path-of-bundle "de.tum.in.isabelle"))
+               (bin-dir (expand-file-name "Contents/Resources/Isabelle/bin"
+                                          bundle-dir)))
+    (add-to-list 'exec-path bin-dir)))
 
-(after 'isar-syntax
+;; Fix Isabelle string faces
+(stante-after 'isar-syntax
   (set-face-attribute 'isabelle-string-face nil
                       :foreground nil :background nil
                       :inherit 'font-lock-string-face)
@@ -1067,90 +1067,23 @@ Create a new ielm process if required."
                       :inherit 'font-lock-string-face))
 
 
-;;;; Calendar settings
-(after 'calendar
-  ;; Weeks start on Monday here
-  (setq calendar-week-start-day 1))
+;;;; Git support
 
-
-;;;; Org mode
-(defun stante-org-disable-incompatible-modes ()
-  "Disable minor modes incompatible with Org mode.
+;; The one and only Git frontend
+(stante-after 'magit
+  (setq magit-save-some-buffers 'dontask ; Don't ask for saving
+        magit-set-upstream-on-push t))   ; Ask for setting upstream branch on push
 
-This includes:
+;; Show Git diff state in Fringe
+(stante-after 'git-gutter
+  (diminish 'git-gutter-mode)
+  (require 'git-gutter-fringe))
+(global-git-gutter-mode)
 
-- Guru Mode
-- Drag Stuff Mode"
-  (guru-mode -1)
-  (drag-stuff-mode -1))
+(stante-after 'gist
+  (setq gist-view-gist t))              ; View Gists in browser after creation
 
-(after 'org
-  ;; Make windmove work in org-mode
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right)
-
-  (add-hook 'org-mode-hook #'stante-org-disable-incompatible-modes)
-
-  ;; Use IDO for switching between org buffers
-  (setq org-completion-use-ido t
-        org-outline-path-complete-in-steps nil)
-
-  ;; Put the Org directory into the Dropbox
-  (setq org-directory (expand-file-name "~/Dropbox/Org")
-        org-agenda-files (list org-directory))
-
-  ;; Create the directory for Org files
-  (unless (file-directory-p org-directory)
-    (make-directory org-directory)))
-
-(after 'org-mobile
-  ;; Org mobile synchronization
-  (setq org-mobile-directory "~/Dropbox/Org/Mobile"
-        org-mobile-inbox-for-pull
-        (expand-file-name "from-mobile.org" org-directory))
-
-  (unless (file-directory-p org-mobile-directory)
-    (make-directory org-mobile-directory)))
-
-
-;;;; Global key bindings
-;; Do not bind into C-c here, such bindings belong to the next page.  This page
-;; is only concerned with global key bindings of Emacs standard keys
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-;; Similar to C-x d
-(global-set-key (kbd "C-x p") 'proced)
-;; Complementary to C-h a
-(global-set-key (kbd "C-h A") 'apropos)
-;; Smex
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; Swap isearch and isearch-regexp
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
-;; Smarter line killing and opening
-(global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line)
-(global-set-key [remap kill-whole-line] 'stante-smart-kill-whole-line)
-(global-set-key (kbd "C-S-j") 'stante-smart-open-line)
-(global-set-key [(shift return)] 'stante-smart-open-line)
-(global-set-key (kbd "M-Z") 'zap-up-to-char)
-(global-set-key (kbd "M-/") 'hippie-expand)
-(global-set-key (kbd "C-=") 'er/expand-region) ; As suggested by documentation
-(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-(global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
-(global-set-key (kbd "M-<tab>") 'company-complete)
-
-
-;;;; User keybindings
-(defvar stante-ack-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'ack-and-a-half)
-    (define-key map (kbd "s") #'ack-and-a-half-same))
-  "Keymap for Ack.")
-
+;; A key map for Gisting
 (defvar stante-gist-map
   (let ((map (make-sparse-keymap)))
     (define-key map "c" #'gist-region-or-buffer)
@@ -1158,41 +1091,114 @@ This includes:
     map)
   "Keymap for Gists.")
 
-(defvar stante-multiple-cursors-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "l" #'mc/edit-lines)
-    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
-    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
-    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
-    (define-key map ">" #'mc/mark-next-like-this)
-    (define-key map "<" #'mc/mark-previous-like-this)
-    (define-key map "e" #'mc/mark-more-like-this-extended)
-    (define-key map "h" #'mc/mark-all-like-this-dwim)
-    map)
-  "Keymap for Multiple Cursors.")
+
+;;;; Tools and utilities
 
-(defvar stante-file-commands-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "r" #'stante-ido-find-recentf)
-    (define-key map "o" #'stante-open-with)
-    (define-key map "R" #'stante-rename-file-and-buffer)
-    (define-key map "D" #'stante-delete-file-and-buffer)
-    (define-key map "w" #'stante-copy-filename-as-kill)
-    map)
-  "Keymap for file functions.")
+;; Project interaction
+(stante-after 'projectile (diminish 'projectile-mode))
+(projectile-global-mode)
 
-(defvar stante-symbols-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "o" #'highlight-symbol-occur)
-    (define-key map "%" #'highlight-symbol-query-replace)
-    (define-key map "n" #'highlight-symbol-next-in-defun)
-    (define-key map "p" #'highlight-symbol-prev-in-defun)
-    (define-key map (kbd "M-n") #'highlight-symbol-next)
-    (define-key map (kbd "M-p") #'highlight-symbol-prev)
-    map)
-  "Keymap to work on symbols.")
+;; Quickly switch to IELM
+(defun stante-switch-to-ielm ()
+  "Switch to an ielm window.
 
-;; Key bindings into the C-c user map.
+Create a new ielm process if required."
+  (interactive)
+  (pop-to-buffer (get-buffer-create "*ielm*"))
+  (ielm))
+
+;; Searching with Ack (the aliases are for fullack compatibility)
+(defalias 'ack 'ack-and-a-half)
+(defalias 'ack-same 'ack-and-a-half-same)
+(defalias 'ack-find-file 'ack-and-a-half-find-file)
+(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+
+(defvar stante-ack-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a") #'ack-and-a-half)
+    (define-key map (kbd "s") #'ack-and-a-half-same))
+  "Keymap for Ack.")
+
+;; Google from Emacs, under C-c /
+(google-this-mode)
+(stante-after 'google-this (diminish 'google-this-mode))
+
+
+;;;; Personal organization
+
+;; In Europe, the week starts on Monday
+(stante-after 'calendar
+  (setq calendar-week-start-day 1))
+
+
+;; Org mode
+
+;; Tell Org where our files are located.  We keep them in Dropbox for easy
+;; synchronization.
+(stante-after 'org
+  (setq org-directory (expand-file-name "~/Dropbox/Org")
+        org-agenda-files (list org-directory)
+        org-completion-use-ido t        ; Complete with IDO in Org
+        org-yank-adjusted-subtrees t)   ; Adjust level when yanking entire trees
+
+  (make-directory org-directory :with-parents))
+
+;; Plug windmove into Org
+(stante-after 'org
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftright-final-hook 'windmove-right))
+
+;; Drag Stuff is incompatible with Org, because it shadows many useful Org
+;; bindings.  This doesn't do much harm, because Org has its own structural
+;; movement commands
+(stante-after 'drag-stuff
+  (add-to-list 'drag-stuff-except-modes 'org-mode))
+
+;; Disable long lines highlighting in Org.  Org changes the visual appearance of
+;; buffer text (e.g. link collapsing), thus text may appear shorter than the
+;; fill column while it is not.  The whitespace mode highlighting is very
+;; irritating in such cases.
+(stante-after 'whitespace
+  (defun stante-org-whitespace-style ()
+    "Configure `whitespace-mode' for Org.
+
+Disable the highlighting of overlong lines."
+    (setq-local whitespace-style (-difference whitespace-style '(lines lines-tail)))
+    (when whitespace-mode
+      (whitespace-mode -1)
+      (whitespace-mode 1)))
+
+  (add-hook 'org-mode-hook #'stante-org-whitespace-style))
+
+;; Configure Org mobile target folder and inbox.  Again, we use Dropbox to get
+;; synchronization for free.
+(stante-after 'org-mobile
+  (setq org-mobile-directory "~/Dropbox/Org/Mobile"
+        org-mobile-inbox-for-pull
+        (expand-file-name "from-mobile.org" org-directory))
+
+  (make-directory org-mobile-directory :with-parents))
+
+
+;; Key bindings
+
+;; Complement standard bindings (the comments indicate the related bindings)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands) ; M-x
+(global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line) ; C-S-backspacen
+(global-set-key (kbd "C-S-j") 'stante-smart-open-line)                  ; C-j
+(global-set-key (kbd "M-Z") 'zap-up-to-char)                            ; M-z
+(global-set-key (kbd "C-h A") 'apropos)                                 ; C-h a
+(global-set-key (kbd "C-x p") 'proced)                                  ; C-x p
+
+;; Key bindings for extension packages
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "M-<tab>") 'company-complete)
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+;; User key bindings in the C-c space.  We bind all our custom key maps here!
 (let ((map mode-specific-map))
   (define-key map "a" stante-ack-map)
   (define-key map "A" 'org-agenda)
@@ -1201,16 +1207,13 @@ This includes:
   (define-key map "f" stante-file-commands-map)
   (define-key map "g" 'magit-status)
   (define-key map "G" stante-gist-map)
-  (define-key map "h" 'helm-mini)
   (define-key map "m" stante-multiple-cursors-map)
   (define-key map "o" 'occur)
-  (define-key map "s" stante-symbols-map))
+  (define-key map "s" stante-symbols-map)
+  (define-key map "z" 'stante-switch-to-ielm))
 
-;; Mode specific bindings
-(after 'lisp-mode
-  (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
-  (define-key emacs-lisp-mode-map (kbd "C-c z")
-    #'stante-emacs-lisp-switch-to-ielm))
+(stante-after 'lisp-mode
+  (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
 
 ;; Local Variables:
 ;; coding: utf-8

@@ -1,89 +1,59 @@
 (source "melpa" "http://melpa.milkbox.net/packages/")
 (source "org" "http://orgmode.org/elpa/")
 
-;; Essential package management
-(depends-on "carton")
+(depends-on "carton")                   ; Essential package management
 
 ;; Basic libraries
 (depends-on "dash")
 (depends-on "s")
 
-;; Color themes
+(depends-on "exec-path-from-shell")     ; Fix environment
+
+;; color themes
 (depends-on "solarized-theme")
 (depends-on "zenburn-theme")
 
-;; Module: ui
-(depends-on "page-break-lines")
-(depends-on "exec-path-from-shell")
-(depends-on "helm")
-(depends-on "smex")
-(depends-on "diminish")
+(depends-on "diminish")                 ; De-clutter mode line
+(depends-on "smex")                     ; Improved M-x
 
-;; Module: editor
-(depends-on "smartparens")
-(depends-on "drag-stuff")
-(depends-on "adaptive-wrap")
-(depends-on "volatile-highlights")
-(depends-on "expand-region")
-(depends-on "ace-jump-mode")
-(depends-on "fill-column-indicator")
-(depends-on "flycheck")
-(depends-on "multiple-cursors")
-(depends-on "undo-tree")
+(depends-on "fill-column-indicator")    ; Indicate fill column
+(depends-on "volatile-highlights")      ; Highlight editing operations
+(depends-on "adaptive-wrap")            ; Automatic wrap prefix
+(depends-on "page-break-lines")         ; Nice page breaks
+(depends-on "smartparens")              ; Smart delimiters
+(depends-on "expand-region")            ; Expand region by semantic units
+(depends-on "ace-jump-mode")            ; Jump through the buffer
+(depends-on "flycheck")                 ; On the fly syntax checkingx
+(depends-on "multiple-cursors")         ; Multiple cursors
+(depends-on "undo-tree")                ; Undo reloaded
 
-;; Module: completion
-(depends-on "company")
+(depends-on "yasnippet")                ; Expandable text snippets
+(depends-on "company")                  ; Auto completion
 
-;; Module: snippets
-(depends-on "yasnippet")
+(depends-on "markdown-mode")            ; Markdown major mode
+(depends-on "bbcode-mode")              ; BBCode major mode
 
-;; Module: tools
-(depends-on "ack-and-a-half")
+(depends-on "highlight-symbol")         ; Symbol awareness
 
-;; Module: utilities
-(depends-on "google-this")
+(depends-on "coffee-mode")              ; Coffeescript major mode
+(depends-on "haskell-mode")             ; Haskell major mode
+(depends-on "scss-mode")                ; SCSS major mode
+(depends-on "yaml-mode")                ; YAML major mode
 
-;; Module: git
-(depends-on "magit")
-(depends-on "git-commit-mode")
-(depends-on "gitconfig-mode")
-(depends-on "gitignore-mode")
-(depends-on "gist")
-(depends-on "git-gutter-fringe")
+;; Emacs Lisp helper modes
+(depends-on "rainbow-delimiters")       ; Color parenthesis by level
+(depends-on "elisp-slime-nav")          ; Navigate to symbol definitions
+(depends-on "macrostep")                ; Interactively expand macros
 
-;; Module: project
-(depends-on "projectile")
+(depends-on "magit")                    ; Git frontend
+(depends-on "git-commit-mode")          ; Git commit message mode
+(depends-on "gitconfig-mode")           ; Git configuration mode
+(depends-on "gitignore-mode")           ; .gitignore mode
+(depends-on "gist")                     ; Gist frontend
+(depends-on "git-gutter-fringe")        ; Show Diff state in buffer
 
-;; Module: programming
-(depends-on "guru-mode")
-(depends-on "highlight-symbol")
+(depends-on "projectile")               ; Project interaction
+(depends-on "ack-and-a-half")           ; Ack frontend
+(depends-on "google-this")              ; Google from Emacs
 
-;; Module: lisp
-(depends-on "rainbow-delimiters")
-
-;; Module: emacs-lisp
-(depends-on "elisp-slime-nav")
-(depends-on "macrostep")
-
-;; Module: coffee
-(depends-on "coffee-mode")
-
-;; Module: haskell
-(depends-on "haskell-mode")
-
-;; Module: tex
-;; (depends-on "auctex")
-(depends-on "ebib")
-
-;; Module: markdown
-(depends-on "markdown-mode")
-
-;; Module: org
-(depends-on "org-plus-contrib")
-
-;; Module: sass
-(depends-on "scss-mode")
-
-;; Misc markup modes
-(depends-on "yaml-mode")
-(depends-on "bbcode-mode")
+(depends-on "org-plus-contrib")         ; Latest org mode
