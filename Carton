@@ -16,6 +16,7 @@
 (depends-on "diminish")                 ; De-clutter mode line
 (depends-on "smex")                     ; Improved M-x
 
+(depends-on "drag-stuff")               ; Drag stuff around
 (depends-on "fill-column-indicator")    ; Indicate fill column
 (depends-on "volatile-highlights")      ; Highlight editing operations
 (depends-on "adaptive-wrap")            ; Automatic wrap prefix
