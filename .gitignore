@@ -22,3 +22,5 @@ recentf
 ido.last
 semanticdb/
 .smex-items
+.mc-lists.el
+.org-id-locations
