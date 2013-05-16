@@ -172,12 +172,16 @@ Without FORMULA determine whether Homebrew itself is available."
       inhibit-startup-screen t)
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Choose Font and color theme.  Download Inconsolata from the Google Webfonts
-;; directory at http://www.google.com/fonts/
+;; Choose Font and color theme
+;; Download Inconsolata from the Google Webfonts directory at
+;; http://www.google.com/fonts/
+;; (set-face-attribute 'default nil :family "Inconsolata" :height 150)
+;; Download Anonymous Pro from
+;; http://www.marksimonson.com/fonts/view/anonymous-pro
+(set-face-attribute 'default nil :family "Anonymous Pro" :height 150)
 (load-theme 'solarized-light :no-confirm)
 ;; (load-theme 'solarized-dark :no-confirm)
 ;; (load-theme 'zenburn :no-confirm)
-(set-face-attribute 'default nil :family "Inconsolata" :height 150)g
 
 
 ;;;; The mode line
