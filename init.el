@@ -176,8 +176,8 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; directory at http://www.google.com/fonts/
 (load-theme 'solarized-light :no-confirm)
 ;; (load-theme 'solarized-dark :no-confirm)
-;; (load-theme 'solarized-zenburn :no-confirm)
-(set-face-attribute 'default nil :family "Inconsolata" :height 150)
+;; (load-theme 'zenburn :no-confirm)
+(set-face-attribute 'default nil :family "Inconsolata" :height 150)g
 
 
 ;;;; The mode line
