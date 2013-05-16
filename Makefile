@@ -5,19 +5,26 @@ SRCS = init.el
 OBJECTS = $(SRCS:.el=.elc)
 
 .PHONY: all
-all: deps compile
+all: packages update-packages compile
 
-.PHONY: deps
-deps :
+.PHONY: packages
+packages : Carton
 	EMACS=$(EMACS) $(CARTON) install
+
+.PHONY: update-packages
+update-packages: Carton
 	EMACS=$(EMACS) $(CARTON) update
+
+.PHONY: clean-packages
+clean-packages:
+	rm -rf elpa
 
 .PHONY: compile
 compile : $(OBJECTS)
 
 .PHONY: clean
 clean :
-	rm -f $(OBJECTS) lib/stante-autoloads.el
+	rm -f $(OBJECTS)
 
 %.elc : %.el
 	$(EMACS) -f package-initialize \
