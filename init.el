@@ -959,7 +959,8 @@ suitable processor was found."
 ;; Explicitly enable Smartparens in IELM, because the global mode refuses to do
 ;; so, as IELM is a special mode.
 (stante-after 'ielm
-  (add-hook 'ielm-mode-hook #'smartparens-mode))
+  (--each '(smartparens-mode show-smartparens-mode)
+    (add-hook 'ielm-mode-hook it)))
 
 ;; Add an explicit pair for wrapping in parenthesis, for convenience and
 ;; compatibility with Paredit
