@@ -507,6 +507,18 @@ Kill the whole line with function `kill-whole-line' and then move
     (remove-hook 'before-save-hook 'delete-trailing-whitespace :local))))
 (add-hook 'text-mode-hook 'stante-text-whitespace-mode)
 
+;; A function to disable highlighting of long lines in modes
+(stante-after 'whitespace
+  (defun stante-whitespace-style-no-long-lines ()
+    "Configure `whitespace-mode' for Org.
+
+Disable the highlighting of overlong lines."
+    (setq-local whitespace-style (-difference whitespace-style
+                                              '(lines lines-tail)))
+    (when whitespace-mode
+      (whitespace-mode -1)
+      (whitespace-mode 1))))
+
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
 
@@ -1146,34 +1158,25 @@ Create a new ielm process if required."
 
   (make-directory org-directory :with-parents))
 
-;; Plug windmove into Org
 (stante-after 'org
+  ;; Plug windmove into Org
   (add-hook 'org-shiftup-final-hook 'windmove-up)
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right))
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
+
+  ;; Disable long lines highlighting in Org.  Org changes the visual appearance
+  ;; of buffer text (e.g. link collapsing), thus text may appear shorter than
+  ;; the fill column while it is not.  The whitespace mode highlighting is very
+  ;; irritating in such cases.
+  (stante-after 'whitespace
+    (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines)))
 
 ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
 ;; bindings.  This doesn't do much harm, because Org has its own structural
 ;; movement commands
 (stante-after 'drag-stuff
   (add-to-list 'drag-stuff-except-modes 'org-mode))
-
-;; Disable long lines highlighting in Org.  Org changes the visual appearance of
-;; buffer text (e.g. link collapsing), thus text may appear shorter than the
-;; fill column while it is not.  The whitespace mode highlighting is very
-;; irritating in such cases.
-(stante-after 'whitespace
-  (defun stante-org-whitespace-style ()
-    "Configure `whitespace-mode' for Org.
-
-Disable the highlighting of overlong lines."
-    (setq-local whitespace-style (-difference whitespace-style '(lines lines-tail)))
-    (when whitespace-mode
-      (whitespace-mode -1)
-      (whitespace-mode 1)))
-
-  (add-hook 'org-mode-hook #'stante-org-whitespace-style))
 
 ;; Configure Org mobile target folder and inbox.  Again, we use Dropbox to get
 ;; synchronization for free.
