@@ -1150,7 +1150,7 @@ Create a new ielm process if required."
   (setq calendar-week-start-day 1))
 
 
-;; Org mode
+;;;; Org mode
 
 ;; Tell Org where our files are located.  We keep them in Dropbox for easy
 ;; synchronization.
