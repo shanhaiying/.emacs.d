@@ -27,6 +27,4 @@ clean :
 	rm -f $(OBJECTS)
 
 %.elc : %.el
-	$(EMACS) -f package-initialize \
-		--no-site-file --no-site-lisp --batch $(EMACSFLAGS) \
-		-f batch-byte-compile $<
+	$(EMACS) -f package-initialize -Q --batch $(EMACSFLAGS) -f batch-byte-compile $<
