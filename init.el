@@ -892,10 +892,14 @@ suitable processor was found."
 
   (stante-find-markdown-processor))
 
-;; Don't do filling in GFM mode, where line breaks are significant
+;; Don't do filling in GFM mode, where line breaks are significant, and do not
+;; highlight overlong lines.  Instead enable visual lines.
 (stante-after 'markdown-mode
-  (--each '(turn-off-fci-mode turn-off-auto-fill)
-    (add-hook 'gfm-mode-hook it)))
+  (--each '(turn-off-fci-mode turn-off-auto-fill visual-line-mode)
+    (add-hook 'gfm-mode-hook it))
+
+  (stante-after 'whitespace
+    (add-hook 'gfm-mode-hook #'stante-whitespace-style-no-long-lines)))
 
 ;; Teach Smartparens about Markdown
 (stante-after 'smartparens
