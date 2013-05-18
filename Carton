@@ -9,7 +9,7 @@
 
 (depends-on "exec-path-from-shell")     ; Fix environment
 
-;; color themes
+;; Color themes
 (depends-on "solarized-theme")
 (depends-on "zenburn-theme")
 
