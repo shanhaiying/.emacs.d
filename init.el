@@ -593,24 +593,33 @@ Disable the highlighting of overlong lines."
 ;; (crippled).
 (stante-after 'smartparens
   (defvar stante-smartparens-bindings
-    '(("C-M-f" . sp-forward-sexp)
+    '(
+      ;; Movement commands
+      ("C-M-f" . sp-forward-sexp)
       ("C-M-b" . sp-backward-sexp)
-      ("C-M-d" . sp-down-sexp)
-      ("C-M-a" . sp-backward-down-sexp)
-      ("C-S-d" . sp-beginning-of-sexp)
-      ("C-S-a" . sp-end-of-sexp)
-      ("C-M-e" . sp-up-sexp)
       ("C-M-u" . sp-backward-up-sexp)
-      ("C-M-n" . sp-next-sexp)
-      ("C-M-p" . sp-previous-sexp)
+      ("C-M-d" . sp-down-sexp)
+      ("C-M-p" . sp-backward-down)
+      ("C-M-n" . sp-up-sexp)
+      ;; Copying and killing of sexps
       ("C-M-k" . sp-kill-sexp)
       ("C-M-w" . sp-copy-sexp)
+      ;; Sexp-aware deleting
+      ("C-d" . sp-delete-char)
+      ("<delete>" . sp-delete-char)
+      ("<deletechar>" . sp-delete-char)
+      ("DEL" . sp-backward-delete-char)
+      ;; Depth changing
       ("M-s" . sp-splice-sexp)
-      ("M-S" . sp-split-sexp)
+      ("M-r" . sp-splice-sexp-killing-around)
       ("M-<up>" . sp-splice-sexp-killing-backward)
       ("M-<down>" . sp-splice-sexp-killing-forward)
-      ("M-r" . sp-splice-sexp-killing-around)
-      ("C-)" . sp-forward-slurp-sexp) ;; barf/slurp
+      ("M-?" . sp-convolute-sexp)
+      ;; Splitting and joining
+      ("M-S" . sp-split-sexp)
+      ("M-J" . sp-join-sexp)
+      ;; Barfage & Slurpage
+      ("C-)" . sp-forward-slurp-sexp)
       ("C-<right>" . sp-forward-slurp-sexp)
       ("C-}" . sp-forward-barf-sexp)
       ("C-<left>" . sp-forward-barf-sexp)
