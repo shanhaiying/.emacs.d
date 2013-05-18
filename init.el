@@ -320,6 +320,9 @@ to `stante-save-frame-parameters-file'."
 (setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
+;; Power up dired
+(stante-after 'dired (require 'dired-x))
+
 ;; Update copyright when visiting files
 (add-hook 'find-file-hook 'copyright-update)
 
