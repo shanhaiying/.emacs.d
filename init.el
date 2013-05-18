@@ -1166,6 +1166,12 @@ Create a new ielm process if required."
   (pop-to-buffer (get-buffer-create "*ielm*"))
   (ielm))
 
+;; Quickly edit init.el
+(defun stante-find-user-init-file-other-window ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
 ;; Searching with Ack (the aliases are for fullack compatibility)
 (defalias 'ack 'ack-and-a-half)
 (defalias 'ack-same 'ack-and-a-half-same)
@@ -1257,6 +1263,7 @@ Create a new ielm process if required."
   (define-key map "f" stante-file-commands-map)
   (define-key map "g" 'magit-status)
   (define-key map "G" stante-gist-map)
+  (define-key map "i" 'stante-find-user-init-file-other-window)
   (define-key map "m" stante-multiple-cursors-map)
   (define-key map "o" 'occur)
   (define-key map "s" stante-symbols-map)
