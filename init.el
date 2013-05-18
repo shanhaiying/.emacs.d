@@ -320,11 +320,20 @@ to `stante-save-frame-parameters-file'."
 (setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
+;; Store Tramp auto save files locally
+(stante-after 'tramp
+  ;; Must be set for `ignoramus-setup' to avoid an endless recursion, see
+  ;; https://github.com/rolandwalker/ignoramus/issues/1
+  (setq tramp-auto-save-directory (make-temp-file "tramp-auto-save" :directory)))
+
 ;; Power up dired
 (stante-after 'dired (require 'dired-x))
 
 ;; Update copyright when visiting files
 (add-hook 'find-file-hook 'copyright-update)
+
+;; Ignore uninteresting files
+(ignoramus-setup)
 
 ;; Track recent files
 (stante-after 'recentf
