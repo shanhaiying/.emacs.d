@@ -378,15 +378,24 @@ prompt for the command to use."
     (shell-command (concat command " "
                            (shell-quote-argument (buffer-file-name))))))
 
-(defun stante-copy-filename-as-kill ()
-  "Copy the name of the currently visited file to kill ring."
-  (interactive)
-  (let ((filename (if (eq major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (unless filename
-      (user-error "This buffer is not visiting a file"))
-    (kill-new filename)))
+(defun stante-copy-filename-as-kill (&optional arg)
+  "Copy the name of the currently visited file to kill ring.
+
+With a zero prefix arg, copy the absolute file name.  With
+\\[universal-argument], copy the file name relative to the
+current buffer's `default-directory'.  Otherwise copy the
+non-directory part only."
+  (interactive "P")
+  (-if-let* ((filename (if (eq major-mode 'dired-mode)
+                           default-directory
+                         (buffer-file-name)))
+             (name-to-copy (cond ((zerop (prefix-numeric-value arg)) filename)
+                                 ((consp arg) (file-relative-name filename))
+                                 (:else (file-name-nondirectory filename)))))
+    (progn
+      (kill-new name-to-copy)
+      (message "%s" name-to-copy))
+    (user-error "This buffer is not visiting a file")))
 
 (defun stante-rename-file-and-buffer ()
   "Rename the current file and buffer."
