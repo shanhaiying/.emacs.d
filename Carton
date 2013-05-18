@@ -17,6 +17,7 @@
 (depends-on "smex")                     ; Improved M-x
 
 (depends-on "ignoramus")                ; Ignore uninteresting files
+(depends-on "hardhat")                  ; Protect user-writable files
 
 (depends-on "drag-stuff")               ; Drag stuff around
 (depends-on "fill-column-indicator")    ; Indicate fill column

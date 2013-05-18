@@ -335,6 +335,15 @@ to `stante-save-frame-parameters-file'."
 ;; Ignore uninteresting files
 (ignoramus-setup)
 
+;; Do not clobber user writeable files
+(stante-after 'hardhat
+  ;; Add local homebrew prefix to the list of protected directories.  Hardhat
+  ;; itself only handles /usr/local/
+  (when (eq system-type 'darwin)
+    (-when-let (prefix (stante-homebrew-prefix))
+      (add-to-list 'hardhat-fullpath-protected-regexps prefix))))
+(global-hardhat-mode)
+
 ;; Track recent files
 (stante-after 'recentf
   (setq recentf-max-saved-items 200
