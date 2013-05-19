@@ -15,6 +15,7 @@
 
 (depends-on "diminish")                 ; De-clutter mode line
 (depends-on "smex")                     ; Improved M-x
+(depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's
 
 (depends-on "ignoramus")                ; Ignore uninteresting files
 (depends-on "hardhat")                  ; Protect user-writable files

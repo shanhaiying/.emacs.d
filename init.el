@@ -199,10 +199,6 @@ Without FORMULA determine whether Homebrew itself is available."
         savehist-autosave-interval 180))
 (savehist-mode t)
 
-;; Get rid of the *Completion* buffers and show completions directly inside the
-;; minibuffer
-(icomplete-mode)
-
 ;; Boost file and buffer operations by flexible matching and the ability to
 ;; perform operations like deleting files or killing buffers directly from the
 ;; minibuffer
@@ -213,6 +209,9 @@ Without FORMULA determine whether Homebrew itself is available."
         ido-use-filename-at-point 'guess
         ido-default-file-method 'selected-window))
 (ido-mode t)
+
+;; Boost all `completing-read's with IDO
+(ido-ubiquitous-mode)
 
 ;; Replace standard M-x with more powerful Smex
 (global-set-key [remap execute-extended-command] 'smex)
