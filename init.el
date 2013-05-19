@@ -176,7 +176,7 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; http://www.marksimonson.com/fonts/view/anonymous-pro.  On OS X, we need to
 ;; give this font a larger size.
 (set-face-attribute 'default nil :family "Anonymous Pro"
-                    :height (if (eq system-type 'darwin) 150 120))
+                    :height (if (eq system-type 'darwin) 140 120))
 (load-theme 'solarized-light :no-confirm)
 ;; (load-theme 'solarized-dark :no-confirm)
 ;; (load-theme 'zenburn :no-confirm)
