@@ -324,7 +324,7 @@ to `stante-save-frame-parameters-file'."
 (stante-after 'tramp
   ;; Must be set for `ignoramus-setup' to avoid an endless recursion, see
   ;; https://github.com/rolandwalker/ignoramus/issues/1
-  (setq tramp-auto-save-directory (make-temp-file "tramp-auto-save" :directory)))
+  (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
 
 ;; Power up dired
 (stante-after 'dired (require 'dired-x))
