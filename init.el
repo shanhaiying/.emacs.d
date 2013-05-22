@@ -358,6 +358,10 @@ to `stante-save-frame-parameters-file'."
           "^;+ *Tramp connection history\\>")))
 (global-hardhat-mode)
 
+;; Save bookmarks immediately after a bookmark was added
+(stante-after 'bookmark
+  (setq bookmark-save-flag 1))
+
 ;; Track recent files
 (stante-after 'recentf
   (setq recentf-max-saved-items 200
