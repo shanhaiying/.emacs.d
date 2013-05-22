@@ -644,6 +644,10 @@ Disable the highlighting of overlong lines."
 (put 'narrow-to-page 'disabled nil)
 (put 'narrow-to-defun 'disabled nil)
 
+;; Same for region casing
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
 ;; Highlight the current line and editing operations in the buffer
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
