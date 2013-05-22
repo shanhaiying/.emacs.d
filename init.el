@@ -1149,6 +1149,10 @@ BUFFER defaults to the current buffer."
             turn-on-haskell-decl-scan)
     (add-hook 'haskell-mode-hook it)))
 
+;; Ruby:  Handle Rakefiles
+(stante-after 'ruby-mode
+  (add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode)))
+
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after 'scss-mode
   (setq scss-compile-at-save nil))
