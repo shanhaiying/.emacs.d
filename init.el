@@ -1276,7 +1276,13 @@ Create a new ielm process if required."
   ;; the fill column while it is not.  The whitespace mode highlighting is very
   ;; irritating in such cases.
   (stante-after 'whitespace
-    (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines)))
+    (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines))
+
+  ;; Teach Smartparens about Org mode pairs and tags
+  (stante-after 'smartparens
+
+    (--each '("*" "/" "=" "~")
+      (sp-local-pair 'org-mode it it))))
 
 ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
 ;; bindings.  This doesn't do much harm, because Org has its own structural
