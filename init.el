@@ -1034,13 +1034,13 @@ suitable processor was found."
   (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
   (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode)))
 
-;; Helpful minor modes:  Show function signatures in echo area, and color
-;; paenthesis according to their level
+;; Helpful minor modes: Show function signatures in echo area, color parenthesis
+;; according to their level, and quickly navigate to symbol definitions
 (stante-after 'lisp-mode
-  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode)
+  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode elisp-slime-nav-mode)
     (add-hook 'emacs-lisp-mode-hook it)))
 (stante-after 'ielm
-  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode)
+  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode elisp-slime-nav-mode)
     (add-hook 'ielm-mode-hook it)))
 
 ;; Check documentation conventions when evaluating expressions
