@@ -1313,6 +1313,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-=") 'er/expand-region)
 (global-set-key (kbd "M-<tab>") 'company-complete)
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
 ;; User key bindings in the C-c space.  We bind all our custom key maps here!
