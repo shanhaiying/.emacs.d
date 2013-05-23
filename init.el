@@ -951,8 +951,7 @@ Choose Skim if available, or fall back to the default application."
                              (?F . "\\fullcite[]{%l}")
                              (?x . "[]{%l}")
                              (?X . "{%l}")))))
-  (setq reftex-cite-format 'biblatex)
-  (add-to-list 'reftex-bibliography-commands "addbibresource"))
+  (setq reftex-cite-format 'biblatex))
 
 
 ;;;; Markdown editing
