@@ -1303,7 +1303,7 @@ Create a new ielm process if required."
 
 ;; Complement standard bindings (the comments indicate the related bindings)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands) ; M-x
-(global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line) ; C-S-backspacen
+(global-set-key (kbd "C-<backspace>") 'stante-smart-backward-kill-line) ; C-S-backspace
 (global-set-key (kbd "C-S-j") 'stante-smart-open-line)                  ; C-j
 (global-set-key (kbd "M-Z") 'zap-up-to-char)                            ; M-z
 (global-set-key (kbd "C-h A") 'apropos)                                 ; C-h a
