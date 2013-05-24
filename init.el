@@ -1284,7 +1284,8 @@ Create a new ielm process if required."
   (stante-after 'smartparens
 
     (--each '("*" "/" "=" "~")
-      (sp-local-pair 'org-mode it it))))
+      (sp-local-pair 'org-mode it it))
+    (sp-local-pair 'org-mode "\(" "\)")))
 
 ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
 ;; bindings.  This doesn't do much harm, because Org has its own structural
