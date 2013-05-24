@@ -654,6 +654,15 @@ Disable the highlighting of overlong lines."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
+;; Automatically pairs parenthesis, and provide a function to define local
+;; pairs.
+(electric-pair-mode)
+
+(stante-after 'electric
+  (defun stante-add-local-electric-pairs (pairs)
+    "Add buffer-local electric PAIRS."
+    (setq-local electric-pair-pairs (append pairs electric-pair-pairs nil))))
+
 ;; Highlight the current line and editing operations in the buffer
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
@@ -674,68 +683,6 @@ Disable the highlighting of overlong lines."
 ;; An Emacs server for `emacsclient'
 (require 'server)
 (unless (server-running-p) (server-start))
-
-
-;;;; Smart pairing of delimiters
-
-(stante-after 'smartparens
-  (require 'smartparens-config)
-  (diminish 'smartparens-mode))
-
-;; Use our own keymap which is a best blend between `sp-smartparens-bindings'
-;; (too convoluted and too many arrow keys) and `sp-paredit-bindings'
-;; (crippled).
-(stante-after 'smartparens
-  (defvar stante-smartparens-bindings
-    '(
-      ;; Movement commands
-      ("C-M-f" . sp-forward-sexp)
-      ("C-M-b" . sp-backward-sexp)
-      ("C-M-u" . sp-backward-up-sexp)
-      ("C-M-d" . sp-down-sexp)
-      ("C-M-p" . sp-backward-down)
-      ("C-M-n" . sp-up-sexp)
-      ;; Copying and killing of sexps
-      ("C-M-k" . sp-kill-sexp)
-      ("C-M-w" . sp-copy-sexp)
-      ;; Sexp-aware deleting
-      ("C-d" . sp-delete-char)
-      ("<delete>" . sp-delete-char)
-      ("<deletechar>" . sp-delete-char)
-      ("DEL" . sp-backward-delete-char)
-      ;; Depth changing
-      ("M-s" . sp-splice-sexp)
-      ("M-r" . sp-splice-sexp-killing-around)
-      ("M-<up>" . sp-splice-sexp-killing-backward)
-      ("M-<down>" . sp-splice-sexp-killing-forward)
-      ("M-?" . sp-convolute-sexp)
-      ;; Splitting and joining
-      ("M-S" . sp-split-sexp)
-      ("M-J" . sp-join-sexp)
-      ;; Barfage & Slurpage
-      ("C-)" . sp-forward-slurp-sexp)
-      ("C-<right>" . sp-forward-slurp-sexp)
-      ("C-}" . sp-forward-barf-sexp)
-      ("C-<left>" . sp-forward-barf-sexp)
-      ("C-(" . sp-backward-slurp-sexp)
-      ("C-M-<left>" . sp-backward-slurp-sexp)
-      ("C-{" . sp-backward-barf-sexp)
-      ("C-M-<right>" . sp-backward-barf-sexp))
-    "Smartparens keybindings by Stante Pede.")
-
-  (defun stante-set-smartparens-bindings ()
-    "Create `sp-keymap' with Stante Pede bindings.
-
-See `stante-smartparens-bindings' for a list of all bindings
-defined by this function."
-    (interactive)
-    (--each stante-smartparens-bindings
-      (define-key sp-keymap (kbd (car it)) (cdr it))))
-
-  (stante-set-smartparens-bindings))
-
-(smartparens-global-mode)
-(show-smartparens-global-mode)          ; Better than show-parens-mode
 
 
 ;;;; Completion and expansion
@@ -841,11 +788,6 @@ defined by this function."
   (setq-default TeX-master nil          ; Ask for the master file
                 TeX-engine 'luatex      ; Use a modern engine
                 TeX-PDF-mode t))        ; Create PDFs by default
-
-;; Configure Smartparens for LaTeX
-(stante-after 'latex
-  (stante-after 'smartparens
-    (require 'smartparens-latex)))
 
 ;; Easy Math input for LaTeX
 (stante-after 'latex
@@ -995,7 +937,17 @@ suitable processor was found."
       (error "No markdown processor found"))
     markdown-command)
 
-  (stante-find-markdown-processor))
+  (stante-find-markdown-processor)
+
+  ;; Teach electric-pair-mode about Markdown pairs
+  (stante-after 'electric
+    (defun stante-markdown-electric-pairs ()
+      "Add buffer-local electric PAIRS for Markdown."
+      (stante-add-local-electric-pairs '((?* . ?*)
+                                         (?` . ?`))))
+
+    (--each '(markdown-mode-hook gfm-mode-hook)
+      (add-hook it #'stante-markdown-electric-pairs))))
 
 ;; Don't do filling in GFM mode, where line breaks are significant, and do not
 ;; highlight overlong lines.  Instead enable visual lines.
@@ -1005,12 +957,6 @@ suitable processor was found."
 
   (stante-after 'whitespace
     (add-hook 'gfm-mode-hook #'stante-whitespace-style-no-long-lines)))
-
-;; Teach Smartparens about Markdown
-(stante-after 'smartparens
-  (sp-with-modes '(markdown-mode gfm-mode)
-    (sp-local-pair "*" "*")
-    (sp-local-tag "c" "```scheme" "```")))
 
 
 ;;;; Symbol “awareness”
@@ -1042,13 +988,19 @@ suitable processor was found."
   (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
   (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode)))
 
-;; Helpful minor modes: Show function signatures in echo area, color parenthesis
-;; according to their level, and quickly navigate to symbol definitions
+;; Enable some common Emacs Lisp helper modes
+(defvar stante-emacs-lisp-common-modes
+  '(paredit-mode                        ; Focus on Sexp editing
+    turn-on-eldoc-mode                  ; Show function signatures in echo area
+    rainbow-delimiters-mode             ; Color parenthesis according to nesting
+    elisp-slime-nav-mode)               ; Navigate to symbol definitions
+  "Common modes for Emacs Lisp editing.")
 (stante-after 'lisp-mode
-  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode elisp-slime-nav-mode)
-    (add-hook 'emacs-lisp-mode-hook it)))
+  (--each stante-emacs-lisp-common-modes
+    (add-hook 'emacs-lisp-mode-hook it)
+    (add-hook 'lisp-interaction-mode-hook it)))
 (stante-after 'ielm
-  (--each '(turn-on-eldoc-mode rainbow-delimiters-mode elisp-slime-nav-mode)
+  (--each stante-emacs-lisp-common-modes
     (add-hook 'ielm-mode-hook it)))
 
 ;; Check documentation conventions when evaluating expressions
@@ -1060,18 +1012,7 @@ suitable processor was found."
 (stante-after 'checkdoc (diminish 'checkdoc-minor-mode))
 (stante-after 'rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (stante-after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode))
-
-;; Explicitly enable Smartparens in IELM, because the global mode refuses to do
-;; so, as IELM is a special mode.
-(stante-after 'ielm
-  (--each '(smartparens-mode show-smartparens-mode)
-    (add-hook 'ielm-mode-hook it)))
-
-;; Add an explicit pair for wrapping in parenthesis, for convenience and
-;; compatibility with Paredit
-(stante-after 'smartparens
-  (sp-with-modes sp--lisp-modes
-    (sp-local-pair "(" nil :bind "M-(")))
+(stante-after 'paredit (diminish 'paredit-mode))
 
 ;; Remove compiled byte code on save, to avoid loading stale byte code files
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
@@ -1286,12 +1227,14 @@ Create a new ielm process if required."
   (stante-after 'whitespace
     (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines))
 
-  ;; Teach Smartparens about Org mode pairs and tags
-  (stante-after 'smartparens
-
-    (--each '("*" "/" "=" "~")
-      (sp-local-pair 'org-mode it it))
-    (sp-local-pair 'org-mode "\(" "\)")))
+  ;; Teach Electric about Org mode pairs
+  (stante-after 'electric
+    (defun stante-org-electric-pairs ()
+      (stante-add-local-electric-pairs '((?* . ?*)
+                                         (?/ . ?/)
+                                         (?= . ?=)
+                                         (?~ . ?~))))
+    (add-hook 'org-mode-hook #'stante-org-electric-pairs)))
 
 ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
 ;; bindings.  This doesn't do much harm, because Org has its own structural

@@ -25,7 +25,6 @@
 (depends-on "volatile-highlights")      ; Highlight editing operations
 (depends-on "adaptive-wrap")            ; Automatic wrap prefix
 (depends-on "page-break-lines")         ; Nice page breaks
-(depends-on "smartparens")              ; Smart delimiters
 (depends-on "expand-region")            ; Expand region by semantic units
 (depends-on "ace-jump-mode")            ; Jump through the buffer
 (depends-on "flycheck")                 ; On the fly syntax checkingx
@@ -46,6 +45,7 @@
 (depends-on "yaml-mode")                ; YAML major mode
 
 ;; Emacs Lisp helper modes
+(depends-on "paredit")
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level
 (depends-on "elisp-slime-nav")          ; Navigate to symbol definitions
 (depends-on "macrostep")                ; Interactively expand macros
