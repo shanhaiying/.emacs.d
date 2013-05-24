@@ -797,10 +797,13 @@ defined by this function."
   (setq ispell-dictionary "en"          ; Default dictionary
         ispell-silently-savep t))       ; Don't ask when saving the private dict
 
-;; Free M-Tab and C-M-i, and never take it again!
 (stante-after 'flyspell
+  ;; Free M-Tab and C-M-i, and never take it again!
   (define-key flyspell-mode-map "\M-\t" nil)
-  (setq flyspell-use-meta-tab nil))
+  (setq flyspell-use-meta-tab nil
+        ;; Make Flyspell less chatty
+        flyspell-issue-welcome-flag nil
+        flyspell-issue-message-flag nil))
 
 (--each '(text-mode-hook message-mode-hook)
   (add-hook it 'turn-on-flyspell))
