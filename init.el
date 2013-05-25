@@ -39,7 +39,7 @@ Please install GNU Emacs 24.1 to use Stante Pede"
          emacs-version))
 
 
-;; Package management
+;;;; Package management
 
 (package-initialize)
 
