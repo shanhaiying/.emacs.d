@@ -1005,7 +1005,14 @@ suitable processor was found."
 
 ;; Check documentation conventions when evaluating expressions
 (stante-after 'lisp-mode
-  (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode))
+  (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
+
+  (stante-after 'electric
+    (defun stante-emacs-lisp-electric-pairs ()
+      "Add electric pairs for Emacs Lisp."
+      (stante-add-local-electric-pairs '((?` . ?'))))
+
+    (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-electric-pairs)))
 
 ;; Now de-clutter the mode line
 (stante-after 'eldoc (diminish 'eldoc-mode))
