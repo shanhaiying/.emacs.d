@@ -606,6 +606,29 @@ Disable the highlighting of overlong lines."
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
 
+;; Wrap the region with delimiters
+(stante-after 'wrap-region
+
+  (defun stante-add-wrapper-for-pair (pair &optional mode)
+    "Add a Wrap Region wrapper for PAIR in MODE.
+
+PAIR is an electric pair, just like for `electric-pair-pairs'.
+MODE is the major mode to add the wrapper for, defaulting to the
+current major mode."
+    (wrap-region-add-wrapper (string (car pair)) (string (cdr pair))
+                             nil (or mode major-mode)))
+
+  (defun stante-add-region-wrappers-from-pairs ()
+    "Add Wrap Region wrappers from electric pairs.
+
+Add all explicit wrappers defined in `electric-pair-pairs' as
+Wrap Region wrappers for the current major mode."
+    (-each electric-pair-pairs #'stante-add-wrapper-for-pair))
+
+  (add-hook #'wrap-region-mode-hook #'stante-add-region-wrappers-from-pairs))
+
+(wrap-region-global-mode)
+
 ;; Save the contents of the clipboard to kill ring before killing, except on OS
 ;; X where this behaviour is broken because it causes errors to be signaled
 ;; whenever the clipboard is empty :|

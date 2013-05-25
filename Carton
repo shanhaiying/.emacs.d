@@ -27,6 +27,7 @@
 (depends-on "page-break-lines")         ; Nice page breaks
 (depends-on "expand-region")            ; Expand region by semantic units
 (depends-on "ace-jump-mode")            ; Jump through the buffer
+(depends-on "wrap-region")              ; Wrap region with delimiters
 (depends-on "flycheck")                 ; On the fly syntax checkingx
 (depends-on "multiple-cursors")         ; Multiple cursors
 (depends-on "undo-tree")                ; Undo reloaded
