@@ -623,7 +623,8 @@ current major mode."
 
 Add all explicit wrappers defined in `electric-pair-pairs' as
 Wrap Region wrappers for the current major mode."
-    (-each electric-pair-pairs #'stante-add-wrapper-for-pair))
+    (when (boundp 'electric-pair-pairs)
+      (-each electric-pair-pairs #'stante-add-wrapper-for-pair)))
 
   (add-hook #'wrap-region-mode-hook #'stante-add-region-wrappers-from-pairs))
 
