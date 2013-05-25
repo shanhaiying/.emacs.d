@@ -686,11 +686,13 @@ Wrap Region wrappers for the current major mode."
     "Add buffer-local electric PAIRS."
     (setq-local electric-pair-pairs (append pairs electric-pair-pairs nil))))
 
-;; Highlight the current line and editing operations in the buffer
+;; Highlight the current line, editing operations in the buffer, and matching
+;; parenthesis
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (diminish 'volatile-highlights-mode)
 (volatile-highlights-mode t)
+(show-paren-mode)
 
 ;; Power up undo
 (stante-after 'undo-tree (diminish 'undo-tree-mode))
