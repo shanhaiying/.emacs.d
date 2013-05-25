@@ -942,7 +942,7 @@ suitable processor was found."
   ;; Teach electric-pair-mode about Markdown pairs
   (stante-after 'electric
     (defun stante-markdown-electric-pairs ()
-      "Add buffer-local electric PAIRS for Markdown."
+      "Add buffer-local electric pairs for Markdown."
       (stante-add-local-electric-pairs '((?* . ?*)
                                          (?` . ?`))))
 
