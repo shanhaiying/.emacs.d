@@ -668,7 +668,7 @@ Wrap Region wrappers for the current major mode."
 (add-hook 'prog-mode-hook 'stante-auto-fill-comments-mode)
 
 ;; Choose wrap prefix automatically
-(add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
+(add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
 
 ;; Configure scrolling
 (setq scroll-margin 0                   ; Drag the point along while scrolling
