@@ -1009,14 +1009,13 @@ suitable processor was found."
   (stante-find-markdown-processor)
 
   ;; Teach electric-pair-mode about Markdown pairs
-  (stante-after electric
-    (defun stante-markdown-electric-pairs ()
-      "Add buffer-local electric pairs for Markdown."
-      (stante-add-local-electric-pairs '((?* . ?*)
-                                         (?` . ?`))))
+  (defun stante-markdown-electric-pairs ()
+    "Add buffer-local electric pairs for Markdown."
+    (stante-add-local-electric-pairs '((?* . ?*)
+                                       (?` . ?`))))
 
-    (--each '(markdown-mode-hook gfm-mode-hook)
-      (add-hook it #'stante-markdown-electric-pairs))))
+  (--each '(markdown-mode-hook gfm-mode-hook)
+    (add-hook it #'stante-markdown-electric-pairs)))
 
 ;; Don't do filling in GFM mode, where line breaks are significant, and do not
 ;; highlight overlong lines.  Instead enable visual lines.
@@ -1321,13 +1320,12 @@ Create a new ielm process if required."
     (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines))
 
   ;; Teach Electric about Org mode pairs
-  (stante-after electric
-    (defun stante-org-electric-pairs ()
-      (stante-add-local-electric-pairs '((?* . ?*)
-                                         (?/ . ?/)
-                                         (?= . ?=)
-                                         (?~ . ?~))))
-    (add-hook 'org-mode-hook #'stante-org-electric-pairs)))
+  (defun stante-org-electric-pairs ()
+    (stante-add-local-electric-pairs '((?* . ?*)
+                                       (?/ . ?/)
+                                       (?= . ?=)
+                                       (?~ . ?~))))
+  (add-hook 'org-mode-hook #'stante-org-electric-pairs))
 
 ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
 ;; bindings.  This doesn't do much harm, because Org has its own structural
