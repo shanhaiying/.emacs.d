@@ -130,7 +130,6 @@ mode symbol."
 
 ;; OS X support
 
-;; Map OS X modifiers to Emacs modifiers
 (stante-after ns-win
   (setq ns-pop-up-frames nil            ; Don't pop up new frames from the
                                         ; workspace
