@@ -50,7 +50,15 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 (defconst stante-vendor-dir (locate-user-emacs-file "vendor")
   "Directory for embedded 3rd party extensions.")
 
-;; A macro to move initialization code until after a package is loaded
+
+;;;; Requires
+
+(require 'dash)
+(require 's)
+
+
+;;;; Package configuration and initialization
+
 (defmacro stante-after (feature &rest forms)
   "After FEATURE is loaded, evaluate FORMS.
 
@@ -72,11 +80,17 @@ FEATURE may be a named feature or a file name, see
     (eval-after-load ',feature
       `(funcall ,(byte-compile (lambda () ,@forms))))))
 
-
-;;;; Requires
+(defconst stante-font-lock-keywords
+  '(("(\\<\\(stante-after\\)\\>" 1 font-lock-keyword-face))
+  "Our font lock keywords for Lisp modes.")
 
-(require 'dash)
-(require 's)
+(stante-after lisp-mode
+  (--each '(emacs-lisp-mode lisp-interaction-mode)
+    (font-lock-add-keywords it stante-font-lock-keywords :append)))
+
+(stante-after ielm
+  (font-lock-add-keywords 'inferior-emacs-lisp-mode
+                          stante-font-lock-keywords :append))
 
 
 ;;;; Environment fixup
