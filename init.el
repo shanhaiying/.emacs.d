@@ -1207,6 +1207,10 @@ BUFFER defaults to the current buffer."
 
 ;;;; Tools and utilities
 
+(require 'helm-config)
+(global-set-key (kbd helm-command-prefix-key) nil)
+(setq helm-command-prefix-key nil)
+
 ;; Project interaction
 (stante-after projectile (diminish 'projectile-mode))
 (projectile-global-mode)
@@ -1317,13 +1321,14 @@ Create a new ielm process if required."
 
 ;; User key bindings in the C-c space.  We bind all our custom key maps here!
 (let ((map mode-specific-map))
-  (define-key map "a" stante-ack-map)
   (define-key map "A" 'org-agenda)
+  (define-key map "a" stante-ack-map)
   (define-key map "b" 'stante-switch-to-previous-buffer)
   (define-key map "C" 'org-capture)
+  (define-key map "c" 'helm-command-prefix)
   (define-key map "f" stante-file-commands-map)
-  (define-key map "g" 'magit-status)
   (define-key map "G" stante-gist-map)
+  (define-key map "g" 'magit-status)
   (define-key map "m" stante-multiple-cursors-map)
   (define-key map "o" 'occur)
   (define-key map "s" stante-symbols-map)

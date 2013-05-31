@@ -60,6 +60,8 @@
 (depends-on "gist")                     ; Gist frontend
 (depends-on "git-gutter-fringe")        ; Show Diff state in buffer
 
+(depends-on "helm")                     ; Powerful search and narrowing
+
 (depends-on "projectile")               ; Project interaction
 (depends-on "ack-and-a-half")           ; Ack frontend
 (depends-on "google-this")              ; Google from Emacs
