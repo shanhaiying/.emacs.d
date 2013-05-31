@@ -240,6 +240,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; Boost all `completing-read's with IDO
 (ido-ubiquitous-mode)
 
+;; Show IDO completions vertically
+(ido-vertical-mode)
+
 ;; Replace standard M-x with more powerful Smex
 (global-set-key [remap execute-extended-command] 'smex)
 (stante-after smex
