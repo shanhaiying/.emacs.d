@@ -80,8 +80,14 @@ FEATURE may be a named feature or a file name, see
 
 
 ;;;; Environment fixup
+(stante-after exec-path-from-shell
+  (add-to-list 'exec-path-from-shell-variables "EMAIL"))
+
 (when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
+
+  (-when-let (email (getenv "EMAIL"))
+    (setq user-mail-address email)))
 
 
 ;; the custom file
