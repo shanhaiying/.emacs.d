@@ -45,6 +45,7 @@
 (depends-on "haskell-mode")             ; Haskell major mode
 (depends-on "scss-mode")                ; SCSS major mode
 (depends-on "yaml-mode")                ; YAML major mode
+(depends-on "feature-mode")             ; Cucumber major mode
 
 ;; Emacs Lisp helper modes
 (depends-on "paredit")
