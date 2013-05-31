@@ -78,7 +78,7 @@ FEATURE may be a named feature or a file name, see
        (message "stante-after: cannot find %s" feature)
        'with-no-warnings)
     (eval-after-load ',feature
-      `(funcall ,(byte-compile (lambda () ,@forms))))))
+      `(funcall (function ,(lambda () ,@forms))))))
 
 (defconst stante-font-lock-keywords
   '(("(\\<\\(stante-after\\)\\>" 1 font-lock-keyword-face))
