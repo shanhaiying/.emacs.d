@@ -47,6 +47,7 @@
 (depends-on "scss-mode")                ; SCSS major mode
 (depends-on "yaml-mode")                ; YAML major mode
 (depends-on "feature-mode")             ; Cucumber major mode
+(depends-on "pkgbuild-mode")            ; Arch PKGBUILD files
 
 ;; Emacs Lisp helper modes
 (depends-on "paredit")

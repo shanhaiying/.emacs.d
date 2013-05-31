@@ -1187,6 +1187,9 @@ BUFFER defaults to the current buffer."
   (setq nxml-slash-auto-complete-flag t
         nxml-auto-insert-xml-declaration-flag t))
 
+;; PKGBUILD: Recognize PKGBUILD's
+(stante-auto-modes 'pkgbuild-mode "/PKGBUILD\\'")
+
 
 ;;;; Proof General
 
