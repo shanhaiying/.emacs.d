@@ -78,9 +78,6 @@ FEATURE may be a named feature or a file name, see
 (require 'dash)
 (require 's)
 
-(eval-when-compile
-  (require 'drag-stuff))
-
 
 ;;;; Environment fixup
 (when (display-graphic-p)
@@ -498,11 +495,10 @@ non-directory part only."
 ;; Decent coding system
 (prefer-coding-system 'utf-8)
 
-;; Drag stuff around with M-S-Arrows
-(setq drag-stuff-modifier '(meta shift)) ; Need to set this before loading to
-                                        ; prevent Drag Stuff mode from ever
-                                        ; claiming M-Arrows!
-(stante-after drag-stuff (diminish 'drag-stuff-mode))
+;; Drag stuff around with Meta-Shift-Arrows
+(stante-after drag-stuff
+  (setq drag-stuff-modifier '(meta shift))
+  (diminish 'drag-stuff-mode))
 (drag-stuff-global-mode)
 
 ;; Make `kill-whole-line' indentation aware
