@@ -1207,9 +1207,21 @@ BUFFER defaults to the current buffer."
 
 ;;;; Tools and utilities
 
+;; Powerful search and narrowing framework
 (require 'helm-config)
 (global-set-key (kbd helm-command-prefix-key) nil)
 (setq helm-command-prefix-key nil)
+
+(let ((map helm-command-map))
+  ;; Improve the default Helm keymap by choosing some simpler bindings for
+  ;; frequent commands, and adding Ack and Projectile
+  (define-key map "o" 'helm-occur)
+  (define-key map "A" 'helm-apropos)
+  (define-key map "a" 'helm-ack)
+  (define-key map "g" 'helm-do-grep)
+  (define-key map "o" 'helm-occur)
+  (define-key map "P" 'helm-list-emacs-process)
+  (define-key map "p" 'helm-projectile))
 
 ;; Project interaction
 (stante-after projectile (diminish 'projectile-mode))
