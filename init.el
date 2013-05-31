@@ -66,8 +66,7 @@ FORMS is byte compiled.
 
 FEATURE may be a named feature or a file name, see
 `eval-after-load' for details."
-  (declare (indent 1)
-           (debug t))
+  (declare (indent 1) (debug t))
   ;; Byte compile the body.  If the feature is not available, ignore warnings.
   ;; Taken from
   ;; http://lists.gnu.org/archive/html/bug-gnu-emacs/2012-11/msg01262.html
@@ -125,8 +124,7 @@ FEATURE may be a named feature or a file name, see
         mac-right-option-modifier 'none ; Keep right option for accented input
         ;; Just in case we ever need these keys
         mac-function-modifier 'hyper
-        mac-right-command-modifier 'super
-        ))
+        mac-right-command-modifier 'super))
 
 ;; Prefer GNU utilities over the inferior BSD variants.  Also improves
 ;; integration with Emacs (for instance, GNU ls has a special --dired flag to
