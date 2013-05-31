@@ -635,7 +635,9 @@ Wrap Region wrappers for the current major mode."
     (when (boundp 'electric-pair-pairs)
       (-each electric-pair-pairs #'stante-add-wrapper-for-pair)))
 
-  (add-hook #'wrap-region-mode-hook #'stante-add-region-wrappers-from-pairs))
+  (add-hook #'wrap-region-mode-hook #'stante-add-region-wrappers-from-pairs)
+
+  (diminish 'wrap-region-mode))
 
 (wrap-region-global-mode)
 
