@@ -80,7 +80,7 @@ FEATURE may be a named feature or a file name, see
 
 
 ;;;; Environment fixup
-(when (display-graphic-p)
+(when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
   (exec-path-from-shell-initialize))
 
 
