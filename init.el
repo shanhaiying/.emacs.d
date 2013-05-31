@@ -101,17 +101,15 @@ FEATURE may be a named feature or a file name, see
 
 ;; Map OS X modifiers to Emacs modifiers
 (stante-after ns-win
-  (setq mac-option-modifier 'meta       ; Option is simply the natural Meta
+  (setq ns-pop-up-frames nil            ; Don't pop up new frames from the
+                                        ; workspace
+        mac-option-modifier 'meta       ; Option is simply the natural Meta
         mac-command-modifier 'meta      ; But command is a lot easier to hit
         mac-right-option-modifier 'none ; Keep right option for accented input
         ;; Just in case we ever need these keys
         mac-function-modifier 'hyper
-        mac-right-command-modifier 'super))
-
-;; Don't pop up new frames at request from the workspace (e.g. drag & drop), but
-;; keep everything within a single frame
-(stante-after ns-win
-  (setq ns-pop-up-frames nil))
+        mac-right-command-modifier 'super
+        ))
 
 ;; Prefer GNU utilities over the inferior BSD variants.  Also improves
 ;; integration with Emacs (for instance, GNU ls has a special --dired flag to
