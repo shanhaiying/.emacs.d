@@ -803,11 +803,10 @@ Wrap Region wrappers for the current major mode."
 ;;;; AUCTeX
 
 ;; Load AUCTeX from package manager, because the ELPA package is out-dated
-(when (eq system-type 'darwin)
-  (when (stante-homebrew-installed-p "auctex")
-    (let ((homebrew-prefix (stante-homebrew-prefix)))
-      (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
-                                                homebrew-prefix)))))
+(when (and (eq system-type 'darwin) (stante-homebrew-installed-p "auctex"))
+  (let ((homebrew-prefix (stante-homebrew-prefix)))
+    (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
+                                              homebrew-prefix))))
 
 (require 'tex-site nil :no-error)
 (require 'preview-latex nil :no-error)
