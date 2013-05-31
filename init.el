@@ -93,7 +93,8 @@ mode symbol."
 
 (defconst stante-font-lock-keywords
   `((,(eval-when-compile (concat "(" (regexp-opt '("stante-after"
-                                                   "stante-auto-modes"))))
+                                                   "stante-auto-modes")
+                                                 'symbols)))
      1 font-lock-keyword-face))
   "Our font lock keywords for Lisp modes.")
 
