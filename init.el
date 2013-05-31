@@ -1052,7 +1052,7 @@ suitable processor was found."
 
 ;; Teach Emacs about Emacs scripts and Carton files
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
-(stante-auto-modes 'emacs-lisp-mode "Carton\\'")
+(stante-auto-modes 'emacs-lisp-mode "/Carton\\'")
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
@@ -1176,7 +1176,7 @@ BUFFER defaults to the current buffer."
     (add-hook 'haskell-mode-hook it)))
 
 ;; Ruby:  Handle Rakefiles
-(stante-auto-modes 'ruby-mode "Rakefile\\'")
+(stante-auto-modes 'ruby-mode "/Rakefile\\'")
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
