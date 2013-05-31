@@ -79,8 +79,22 @@ FEATURE may be a named feature or a file name, see
     (eval-after-load ',feature
       `(funcall (function ,(lambda () ,@forms))))))
 
+(defun stante-auto-modes (&rest modes-and-patterns)
+  "Add MODES-AND-PATTERNS to `auto-mode-alist'.
+
+MODES-AND-PATTERNS is of the form `(mode1 pattern1 pattern2 …
+mode2 pattern3 pattern4)'.  For each major mode symbol, add auto
+mode entries for all subsequent patterns until the next major
+mode symbol."
+  (--each (-partition-by-header #'symbolp modes-and-patterns)
+    (pcase-let ((`(,mode . ,patterns) it))
+      (--each patterns
+        (add-to-list 'auto-mode-alist (cons it mode))))))
+
 (defconst stante-font-lock-keywords
-  '(("(\\<\\(stante-after\\)\\>" 1 font-lock-keyword-face))
+  `((,(eval-when-compile (concat "(" (regexp-opt '("stante-after"
+                                                   "stante-auto-modes"))))
+     1 font-lock-keyword-face))
   "Our font lock keywords for Lisp modes.")
 
 (stante-after lisp-mode
@@ -962,8 +976,7 @@ Choose Skim if available, or fall back to the default application."
 ;;;; Markdown editing
 
 ;; Why doesn't Markdown Mode do this itself?!
-(--each '("\\.md\\'" "\\.markdown\\'")
-  (add-to-list 'auto-mode-alist (cons it 'markdown-mode)))
+(stante-auto-modes 'markdown-mode "\\.md\\'" "\\.markdown\\'")
 
 ;; Find a suitable processor
 (stante-after markdown-mode
@@ -1038,9 +1051,8 @@ suitable processor was found."
 ;;;; Emacs Lisp
 
 ;; Teach Emacs about Emacs scripts and Carton files
-(stante-after lisp-mode
-  (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
-  (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode)))
+(add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
+(stante-auto-modes 'emacs-lisp-mode "Carton\\'")
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
@@ -1121,7 +1133,7 @@ BUFFER defaults to the current buffer."
 ;;;; Shell scripting
 
 ;; Teach Emacs about Zsh scripts
-(add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
+(stante-auto-modes 'sh-mode "\\.zsh\\'")
 
 ;; Shell script indentation styles
 (stante-after sh-script
@@ -1164,8 +1176,7 @@ BUFFER defaults to the current buffer."
     (add-hook 'haskell-mode-hook it)))
 
 ;; Ruby:  Handle Rakefiles
-(stante-after ruby-mode
-  (add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode)))
+(stante-auto-modes 'ruby-mode "Rakefile\\'")
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
