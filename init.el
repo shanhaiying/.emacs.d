@@ -215,13 +215,15 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; http://www.marksimonson.com/fonts/view/anonymous-pro or Inconsolata (from the
 ;; Google Webfont directory).  On OS X, we need to give these fonts a larger
 ;; size.  If neither is available, we fall back to the standard faces of OS X
-;; (Menlo) or Linux (DejaVu Sans Mono).
+;; (Menlo), Linux (DejaVu Sans Mono) or Windows (Consolas, Courier New)
 (defconst stante-preferred-monospace-fonts
   `(("Anonymous Pro" . ,(if (eq system-type 'darwin) 140 110))
     ("Anonymous Pro Minus" . ,(if (eq system-type 'darwin) 140 110))
     ("Inconsolata" . ,(if (eq system-type 'darwin) 140 110))
     ("Menlo" . 130)
-    ("DejaVu Sans Mono" 110))
+    ("Consolas" . 130)
+    ("DejaVu Sans Mono" 110)
+    ("Courier New" . 130))
   "Preferred monospace fonts for Stante.
 
 The `car' of each item is the font family, the `cdr' the preferred font size.")
