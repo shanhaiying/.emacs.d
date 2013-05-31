@@ -52,13 +52,25 @@ Please install GNU Emacs 24.1 to use Stante Pede"
 
 ;; A macro to move initialization code until after a package is loaded
 (defmacro stante-after (feature &rest forms)
-  "Evaluate FORMS after FEATURE is loaded.
+  "After FEATURE is loaded, evaluate FORMS.
 
-FEATURE may be a named feature, see `eval-after-load'."
-  (declare (indent 1))
-  `(progn
-     (eval-after-load ,feature
-       '(progn ,@forms))))
+FORMS is byte compiled.
+
+FEATURE may be a named feature or a file name, see
+`eval-after-load' for details."
+  (declare (indent 1)
+           (debug t))
+  ;; Byte compile the body.  If the feature is not available, ignore warnings.
+  ;; Taken from
+  ;; http://lists.gnu.org/archive/html/bug-gnu-emacs/2012-11/msg01262.html
+  `(,(if (if (symbolp feature)
+             (require feature nil :no-error)
+           (load feature :no-message :no-error))
+         'progn
+       (message "stante-after: cannot find %s" feature)
+       'with-no-warnings)
+    (eval-after-load ',feature
+      `(funcall ,(byte-compile (lambda () ,@forms))))))
 
 
 ;;;; Requires
@@ -79,8 +91,8 @@ FEATURE may be a named feature, see `eval-after-load'."
 (defconst stante-custom-file (locate-user-emacs-file "custom.el")
   "File used to store settings from Customization UI.")
 
-(eval-after-load 'cus-edit
-  '(setq custom-file stante-custom-file))
+(stante-after cus-edit
+  (setq custom-file stante-custom-file))
 
 (load stante-custom-file :no-error :no-message)
 
@@ -88,7 +100,7 @@ FEATURE may be a named feature, see `eval-after-load'."
 ;; OS X support
 
 ;; Map OS X modifiers to Emacs modifiers
-(stante-after 'ns-win
+(stante-after ns-win
   (setq mac-option-modifier 'meta       ; Option is simply the natural Meta
         mac-command-modifier 'meta      ; But command is a lot easier to hit
         mac-right-option-modifier 'none ; Keep right option for accented input
@@ -98,7 +110,7 @@ FEATURE may be a named feature, see `eval-after-load'."
 
 ;; Don't pop up new frames at request from the workspace (e.g. drag & drop), but
 ;; keep everything within a single frame
-(stante-after 'ns-win
+(stante-after ns-win
   (setq ns-pop-up-frames nil))
 
 ;; Prefer GNU utilities over the inferior BSD variants.  Also improves
@@ -214,7 +226,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;;;; The minibuffer
 
 ;; Save a minibuffer input history
-(stante-after 'savehist
+(stante-after savehist
   (setq savehist-save-minibuffer-history t
         savehist-autosave-interval 180))
 (savehist-mode t)
@@ -222,7 +234,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; Boost file and buffer operations by flexible matching and the ability to
 ;; perform operations like deleting files or killing buffers directly from the
 ;; minibuffer
-(stante-after 'ido
+(stante-after ido
   (setq ido-enable-flex-matching t      ; Match characters if string doesn't
                                         ; match
         ido-create-new-buffer 'always   ; Create a new buffer if nothing matches
@@ -235,7 +247,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 ;; Replace standard M-x with more powerful Smex
 (global-set-key [remap execute-extended-command] 'smex)
-(stante-after 'smex
+(stante-after smex
   (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 
 
@@ -264,7 +276,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (winner-mode)
 
 ;; Prevent Ediff from spamming the frame
-(stante-after 'ediff-wind
+(stante-after ediff-wind
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 ;; A utility command to quickly switch buffers, see
@@ -340,11 +352,11 @@ to `stante-save-frame-parameters-file'."
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
 ;; Store Tramp auto save files locally
-(stante-after 'tramp
+(stante-after tramp
   (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
 
 ;; Power up dired
-(stante-after 'dired (require 'dired-x))
+(stante-after dired (require 'dired-x))
 
 ;; Update copyright when visiting files
 (add-hook 'find-file-hook 'copyright-update)
@@ -353,7 +365,7 @@ to `stante-save-frame-parameters-file'."
 (ignoramus-setup)
 
 ;; Do not clobber user writeable files
-(stante-after 'hardhat
+(stante-after hardhat
   ;; Add local homebrew prefix to the list of protected directories.  Hardhat
   ;; itself only handles /usr/local/
   (when (eq system-type 'darwin)
@@ -362,18 +374,18 @@ to `stante-save-frame-parameters-file'."
 (global-hardhat-mode)
 
 ;; Save bookmarks immediately after a bookmark was added
-(stante-after 'bookmark
+(stante-after bookmark
   (setq bookmark-save-flag 1))
 
 ;; Track recent files
-(stante-after 'recentf
+(stante-after recentf
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15))
 (recentf-mode t)
 
 ;; Open recent files with IDO, see
 ;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
-(stante-after 'recentf
+(stante-after recentf
   (defun stante-ido-find-recentf ()
     "Find a recent file with IDO."
     (interactive)
@@ -492,7 +504,7 @@ non-directory part only."
 (setq drag-stuff-modifier '(meta shift)) ; Need to set this before loading to
                                         ; prevent Drag Stuff mode from ever
                                         ; claiming M-Arrows!
-(stante-after 'drag-stuff (diminish 'drag-stuff-mode))
+(stante-after drag-stuff (diminish 'drag-stuff-mode))
 (drag-stuff-global-mode)
 
 ;; Make `kill-whole-line' indentation aware
@@ -554,7 +566,7 @@ point reaches the beginning or end of the buffer, stop there."
               tab-width 8)
 
 ;; Highlight bad whitespace
-(stante-after 'whitespace
+(stante-after whitespace
   (diminish 'whitespace-mode)
   ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
   ;; portions of lines via faces.  Also indicate tabs via characters
@@ -592,7 +604,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'text-mode-hook 'stante-text-whitespace-mode)
 
 ;; A function to disable highlighting of long lines in modes
-(stante-after 'whitespace
+(stante-after whitespace
   (defun stante-whitespace-style-no-long-lines ()
     "Configure `whitespace-mode' for Org.
 
@@ -607,7 +619,7 @@ Disable the highlighting of overlong lines."
 (delete-selection-mode)
 
 ;; Wrap the region with delimiters
-(stante-after 'wrap-region
+(stante-after wrap-region
 
   (defun stante-add-wrapper-for-pair (pair &optional mode)
     "Add a Wrap Region wrapper for PAIR in MODE.
@@ -680,12 +692,12 @@ Wrap Region wrappers for the current major mode."
 
 ;; Automatically pairs parenthesis, and provide a function to define local
 ;; pairs.
+(require 'electric)
 (electric-pair-mode)
 
-(stante-after 'electric
-  (defun stante-add-local-electric-pairs (pairs)
-    "Add buffer-local electric PAIRS."
-    (setq-local electric-pair-pairs (append pairs electric-pair-pairs nil))))
+(defun stante-add-local-electric-pairs (pairs)
+  "Add buffer-local electric PAIRS."
+  (setq-local electric-pair-pairs (append pairs electric-pair-pairs nil)))
 
 ;; Highlight the current line, editing operations in the buffer, and matching
 ;; parenthesis
@@ -696,11 +708,11 @@ Wrap Region wrappers for the current major mode."
 (show-paren-mode)
 
 ;; Power up undo
-(stante-after 'undo-tree (diminish 'undo-tree-mode))
+(stante-after undo-tree (diminish 'undo-tree-mode))
 (global-undo-tree-mode)
 
 ;; Nicify page breaks
-(stante-after 'page-break-lines (diminish 'page-break-lines-mode))
+(stante-after page-break-lines (diminish 'page-break-lines-mode))
 (global-page-break-lines-mode)
 
 ;; On the fly syntax checking
@@ -715,7 +727,7 @@ Wrap Region wrappers for the current major mode."
 
 ;; Replace the dumb default dabbrev expand with a reasonably configured
 ;; hippie-expand
-(stante-after 'hippie-exp
+(stante-after hippie-exp
   (setq hippie-expand-try-functions-list
         '(try-expand-dabbrev
           try-expand-dabbrev-all-buffers
@@ -730,7 +742,7 @@ Wrap Region wrappers for the current major mode."
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;; Expandable text snippets
-(stante-after 'yasnippet (diminish 'yas-minor-mode))
+(stante-after yasnippet (diminish 'yas-minor-mode))
 (yas-global-mode)
 
 ;; In `completion-at-point', do not pop up silly completion buffers for less
@@ -738,7 +750,7 @@ Wrap Region wrappers for the current major mode."
 (setq completion-cycle-threshold 5)
 
 ;; Enable auto-completion
-(stante-after 'company
+(stante-after company
   (diminish 'company-mode)
 
   ;; Make auto completion a little less aggressive.
@@ -772,11 +784,11 @@ Wrap Region wrappers for the current major mode."
 (unless (executable-find "aspell")
   (message "Aspell not found.  Spell checking may not be available!"))
 
-(stante-after 'ispell
+(stante-after ispell
   (setq ispell-dictionary "en"          ; Default dictionary
         ispell-silently-savep t))       ; Don't ask when saving the private dict
 
-(stante-after 'flyspell
+(stante-after flyspell
   ;; Free M-Tab and C-M-i, and never take it again!
   (define-key flyspell-mode-map "\M-\t" nil)
   (setq flyspell-use-meta-tab nil
@@ -802,7 +814,7 @@ Wrap Region wrappers for the current major mode."
 (require 'preview-latex nil :no-error)
 
 ;; Some standard defaults
-(stante-after 'tex
+(stante-after tex
   (setq TeX-parse-self t                ; Parse documents to provide completion
                                         ; for packages, etc.
         TeX-auto-save t                 ; Automatically save
@@ -816,15 +828,15 @@ Wrap Region wrappers for the current major mode."
                 TeX-PDF-mode t))        ; Create PDFs by default
 
 ;; Easy Math input for LaTeX
-(stante-after 'latex
+(stante-after latex
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode))
 
 ;; Replace the rotten Lacheck with Chktex
-(stante-after 'tex
+(stante-after tex
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
 
 ;; Build with Latexmk
-(stante-after 'tex
+(stante-after tex
   (unless (boundp 'TeX-command-latexmk)
     (defvar TeX-command-latexmk "latexmk"
       "The name of the latexmk command.")
@@ -835,7 +847,7 @@ Wrap Region wrappers for the current major mode."
                                           :Help "Run latexmk")))))
 
 ;; Clean intermediate files from Latexmk
-(stante-after 'latex
+(stante-after latex
   (--each '("\\.fdb_latexmk" "\\.fls")
     (add-to-list 'LaTeX-clean-intermediate-suffixes it)))
 
@@ -855,7 +867,7 @@ Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
       (executable-find (expand-file-name "Contents/SharedSupport/displayline"
                                          skim-bundle))))
 
-(stante-after 'tex
+(stante-after tex
   (defun stante-TeX-find-view-programs-os-x ()
     "Find TeX view programs on OS X.
 
@@ -890,7 +902,7 @@ Choose Skim if available, or fall back to the default application."
   (stante-TeX-select-view-programs))
 
 ;; Configure BibTeX
-(stante-after 'bibtex
+(stante-after bibtex
   (bibtex-set-dialect 'biblatex)        ; Use a modern dialect
   ;; Exhaustive cleanup and reformatting of entries, to keep Bibtex files in
   ;; good shape
@@ -906,17 +918,17 @@ Choose Skim if available, or fall back to the default application."
                               sort-fields)))
 
 ;; Configure RefTeX
-(stante-after 'reftex
+(stante-after reftex
   (setq reftex-plug-into-AUCTeX t       ; Plug into AUCTeX
         ;; Recommended optimizations
         reftex-enable-partial-scans t
         reftex-save-parse-info t
         reftex-use-multiple-selection-buffers t))
-(stante-after 'bib-cite
+(stante-after bib-cite
   (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
 
 ;; Provide basic RefTeX support for biblatex
-(stante-after 'reftex
+(stante-after reftex
   (unless (assq 'biblatex reftex-cite-format-builtin)
     (add-to-list 'reftex-cite-format-builtin
                  '(biblatex "The biblatex package"
@@ -938,7 +950,7 @@ Choose Skim if available, or fall back to the default application."
   (add-to-list 'auto-mode-alist (cons it 'markdown-mode)))
 
 ;; Find a suitable processor
-(stante-after 'markdown-mode
+(stante-after markdown-mode
   (defconst stante-markdown-commands
     '(("kramdown")
       ("markdown2" "-x" "fenced-code-blocks")
@@ -966,7 +978,7 @@ suitable processor was found."
   (stante-find-markdown-processor)
 
   ;; Teach electric-pair-mode about Markdown pairs
-  (stante-after 'electric
+  (stante-after electric
     (defun stante-markdown-electric-pairs ()
       "Add buffer-local electric pairs for Markdown."
       (stante-add-local-electric-pairs '((?* . ?*)
@@ -977,18 +989,18 @@ suitable processor was found."
 
 ;; Don't do filling in GFM mode, where line breaks are significant, and do not
 ;; highlight overlong lines.  Instead enable visual lines.
-(stante-after 'markdown-mode
+(stante-after markdown-mode
   (--each '(turn-off-fci-mode turn-off-auto-fill visual-line-mode)
     (add-hook 'gfm-mode-hook it))
 
-  (stante-after 'whitespace
+  (stante-after whitespace
     (add-hook 'gfm-mode-hook #'stante-whitespace-style-no-long-lines)))
 
 
 ;;;; Symbol “awareness”
 
 ;; Highlight the symbol under point
-(stante-after 'highlight-symbol
+(stante-after highlight-symbol
   (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
         highlight-symbol-on-navigation-p t) ; Highlight immediately after navigation
   (diminish 'highlight-symbol-mode))
@@ -1010,7 +1022,7 @@ suitable processor was found."
 ;;;; Emacs Lisp
 
 ;; Teach Emacs about Emacs scripts and Carton files
-(stante-after 'lisp-mode
+(stante-after lisp-mode
   (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
   (add-to-list 'auto-mode-alist '("Carton\\'" . emacs-lisp-mode)))
 
@@ -1021,19 +1033,19 @@ suitable processor was found."
     rainbow-delimiters-mode             ; Color parenthesis according to nesting
     elisp-slime-nav-mode)               ; Navigate to symbol definitions
   "Common modes for Emacs Lisp editing.")
-(stante-after 'lisp-mode
+(stante-after lisp-mode
   (--each stante-emacs-lisp-common-modes
     (add-hook 'emacs-lisp-mode-hook it)
     (add-hook 'lisp-interaction-mode-hook it)))
-(stante-after 'ielm
+(stante-after ielm
   (--each stante-emacs-lisp-common-modes
     (add-hook 'ielm-mode-hook it)))
 
 ;; Check documentation conventions when evaluating expressions
-(stante-after 'lisp-mode
+(stante-after lisp-mode
   (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
 
-  (stante-after 'electric
+  (stante-after electric
     (defun stante-emacs-lisp-electric-pairs ()
       "Add electric pairs for Emacs Lisp."
       (stante-add-local-electric-pairs '((?` . ?'))))
@@ -1041,11 +1053,11 @@ suitable processor was found."
     (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-electric-pairs)))
 
 ;; Now de-clutter the mode line
-(stante-after 'eldoc (diminish 'eldoc-mode))
-(stante-after 'checkdoc (diminish 'checkdoc-minor-mode))
-(stante-after 'rainbow-delimiters (diminish 'rainbow-delimiters-mode))
-(stante-after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode))
-(stante-after 'paredit (diminish 'paredit-mode))
+(stante-after eldoc (diminish 'eldoc-mode))
+(stante-after checkdoc (diminish 'checkdoc-minor-mode))
+(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+(stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
+(stante-after paredit (diminish 'paredit-mode))
 
 ;; Remove compiled byte code on save, to avoid loading stale byte code files
 (defun stante-emacs-lisp-clean-byte-code (&optional buffer)
@@ -1066,17 +1078,17 @@ BUFFER defaults to the current buffer."
       (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil :local)
     (remove-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code :local)))
 
-(stante-after 'lisp-mode
+(stante-after lisp-mode
   (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-clean-byte-code-mode))
 
 ;; Load ERT to support unit test writing and running
-(stante-after 'lisp-mode
+(stante-after lisp-mode
   (require 'ert))
 
 
 ;;;; Python
 
-(stante-after 'python
+(stante-after python
   (--each '(stante-python-filling subword-mode)
     (add-hook 'python-mode-hook it))
 
@@ -1096,7 +1108,7 @@ BUFFER defaults to the current buffer."
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
 
 ;; Shell script indentation styles
-(stante-after 'sh-script
+(stante-after sh-script
   (setq sh-styles-alist
         '(("zsh"
            (sh-basic-offset . 2)
@@ -1124,11 +1136,11 @@ BUFFER defaults to the current buffer."
 ;;;; Misc programming languages
 
 ;; Coffeescript: Indentation
-(stante-after 'coffee-mode
+(stante-after coffee-mode
   (setq coffee-tab-width 2))
 
 ;; Haskell: Indentation, and some helpful modes
-(stante-after 'haskell-mode
+(stante-after haskell-mode
   (--each '(subword-mode
             turn-on-haskell-indentation
             turn-on-haskell-doc-mode
@@ -1136,15 +1148,15 @@ BUFFER defaults to the current buffer."
     (add-hook 'haskell-mode-hook it)))
 
 ;; Ruby:  Handle Rakefiles
-(stante-after 'ruby-mode
+(stante-after ruby-mode
   (add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode)))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
-(stante-after 'scss-mode
+(stante-after scss-mode
   (setq scss-compile-at-save nil))
 
 ;; XML: Complete closing tags, and insert XML declarations into empty files
-(stante-after 'nxml-mode
+(stante-after nxml-mode
   (setq nxml-slash-auto-complete-flag t
         nxml-auto-insert-xml-declaration-flag t))
 
@@ -1161,7 +1173,7 @@ BUFFER defaults to the current buffer."
     (add-to-list 'exec-path bin-dir)))
 
 ;; Fix Isabelle string faces
-(stante-after 'isar-syntax
+(stante-after isar-syntax
   (set-face-attribute 'isabelle-string-face nil
                       :foreground nil :background nil
                       :inherit 'font-lock-string-face)
@@ -1173,17 +1185,17 @@ BUFFER defaults to the current buffer."
 ;;;; Git support
 
 ;; The one and only Git frontend
-(stante-after 'magit
+(stante-after magit
   (setq magit-save-some-buffers 'dontask ; Don't ask for saving
         magit-set-upstream-on-push t))   ; Ask for setting upstream branch on push
 
 ;; Show Git diff state in Fringe
-(stante-after 'git-gutter
+(stante-after git-gutter
   (diminish 'git-gutter-mode)
   (require 'git-gutter-fringe))
 (global-git-gutter-mode)
 
-(stante-after 'gist
+(stante-after gist
   (setq gist-view-gist t))              ; View Gists in browser after creation
 
 ;; A key map for Gisting
@@ -1198,7 +1210,7 @@ BUFFER defaults to the current buffer."
 ;;;; Tools and utilities
 
 ;; Project interaction
-(stante-after 'projectile (diminish 'projectile-mode))
+(stante-after projectile (diminish 'projectile-mode))
 (projectile-global-mode)
 
 ;; Quickly switch to IELM
@@ -1224,13 +1236,13 @@ Create a new ielm process if required."
 
 ;; Google from Emacs, under C-c /
 (google-this-mode)
-(stante-after 'google-this (diminish 'google-this-mode))
+(stante-after google-this (diminish 'google-this-mode))
 
 
 ;;;; Personal organization
 
 ;; In Europe, the week starts on Monday
-(stante-after 'calendar
+(stante-after calendar
   (setq calendar-week-start-day 1))
 
 
@@ -1238,7 +1250,7 @@ Create a new ielm process if required."
 
 ;; Tell Org where our files are located.  We keep them in Dropbox for easy
 ;; synchronization.
-(stante-after 'org
+(stante-after org
   (setq org-directory (expand-file-name "~/Dropbox/Org")
         org-agenda-files (list org-directory)
         org-completion-use-ido t        ; Complete with IDO in Org
@@ -1246,7 +1258,7 @@ Create a new ielm process if required."
 
   (make-directory org-directory :with-parents))
 
-(stante-after 'org
+(stante-after org
   ;; Plug windmove into Org
   (add-hook 'org-shiftup-final-hook 'windmove-up)
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
@@ -1257,11 +1269,11 @@ Create a new ielm process if required."
   ;; of buffer text (e.g. link collapsing), thus text may appear shorter than
   ;; the fill column while it is not.  The whitespace mode highlighting is very
   ;; irritating in such cases.
-  (stante-after 'whitespace
+  (stante-after whitespace
     (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines))
 
   ;; Teach Electric about Org mode pairs
-  (stante-after 'electric
+  (stante-after electric
     (defun stante-org-electric-pairs ()
       (stante-add-local-electric-pairs '((?* . ?*)
                                          (?/ . ?/)
@@ -1272,12 +1284,12 @@ Create a new ielm process if required."
 ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
 ;; bindings.  This doesn't do much harm, because Org has its own structural
 ;; movement commands
-(stante-after 'drag-stuff
+(stante-after drag-stuff
   (add-to-list 'drag-stuff-except-modes 'org-mode))
 
 ;; Configure Org mobile target folder and inbox.  Again, we use Dropbox to get
 ;; synchronization for free.
-(stante-after 'org-mobile
+(stante-after org-mobile
   (setq org-mobile-directory "~/Dropbox/Org/Mobile"
         org-mobile-inbox-for-pull
         (expand-file-name "from-mobile.org" org-directory))
@@ -1319,7 +1331,7 @@ Create a new ielm process if required."
   (define-key map "s" stante-symbols-map)
   (define-key map "z" 'stante-switch-to-ielm))
 
-(stante-after 'lisp-mode
+(stante-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
 
 ;; Local Variables:
