@@ -1072,7 +1072,8 @@ suitable processor was found."
 
 ;; Check documentation conventions when evaluating expressions
 (stante-after lisp-mode
-  (add-hook 'emacs-lisp-mode-hook 'checkdoc-minor-mode)
+  (--each '(checkdoc-minor-mode auto-compile-mode)
+    (add-hook 'emacs-lisp-mode-hook it))
 
   (defun stante-emacs-lisp-electric-pairs ()
     "Add electric pairs for Emacs Lisp."
@@ -1086,28 +1087,6 @@ suitable processor was found."
 (stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 (stante-after paredit (diminish 'paredit-mode))
-
-;; Remove compiled byte code on save, to avoid loading stale byte code files
-(defun stante-emacs-lisp-clean-byte-code (&optional buffer)
-  "Remove byte code file corresponding to the Emacs Lisp BUFFER.
-
-BUFFER defaults to the current buffer."
-  (when (eq major-mode 'emacs-lisp-mode)
-    (-when-let (filename (buffer-file-name buffer))
-      (let ((bytecode (concat filename "c")))
-        (when (file-exists-p bytecode)
-          (delete-file bytecode))))))
-
-(define-minor-mode stante-emacs-lisp-clean-byte-code-mode
-  "Minor mode to automatically clean stale Emacs Lisp bytecode."
-  :lighter nil
-  :keymap nil
-  (if stante-emacs-lisp-clean-byte-code-mode
-      (add-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code nil :local)
-    (remove-hook 'after-save-hook 'stante-emacs-lisp-clean-byte-code :local)))
-
-(stante-after lisp-mode
-  (add-hook 'emacs-lisp-mode-hook 'stante-emacs-lisp-clean-byte-code-mode))
 
 ;; Load ERT to support unit test writing and running
 (stante-after lisp-mode

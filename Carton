@@ -54,6 +54,7 @@
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level
 (depends-on "elisp-slime-nav")          ; Navigate to symbol definitions
 (depends-on "macrostep")                ; Interactively expand macros
+(depends-on "auto-compile")             ; Recompile after save
 
 (depends-on "magit")                    ; Git frontend
 (depends-on "git-commit-mode")          ; Git commit message mode
