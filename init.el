@@ -1303,9 +1303,8 @@ Create a new ielm process if required."
         org-completion-use-ido t        ; Complete with IDO in Org
         org-yank-adjusted-subtrees t)   ; Adjust level when yanking entire trees
 
-  (make-directory org-directory :with-parents))
+  (make-directory org-directory :with-parents)
 
-(stante-after org
   ;; Plug windmove into Org
   (add-hook 'org-shiftup-final-hook 'windmove-up)
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
