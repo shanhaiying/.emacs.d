@@ -1300,6 +1300,7 @@ Create a new ielm process if required."
 (stante-after org
   (setq org-directory (expand-file-name "~/Dropbox/Org")
         org-agenda-files (list org-directory)
+        org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-completion-use-ido t        ; Complete with IDO in Org
         org-yank-adjusted-subtrees t)   ; Adjust level when yanking entire trees
 
