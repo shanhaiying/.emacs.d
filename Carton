@@ -65,7 +65,7 @@
 
 (depends-on "helm")                     ; Powerful search and narrowing
 (depends-on "helm-projectile")          ; Helm + Projectile
-(depends-on "ack")                      ; Helm + Ack
+(depends-on "helm-ack")                 ; Helm + Ack
 
 (depends-on "projectile")               ; Project interaction
 (depends-on "ack-and-a-half")           ; Ack frontend
