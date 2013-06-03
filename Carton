@@ -13,14 +13,17 @@
 (depends-on "solarized-theme")
 (depends-on "zenburn-theme")
 
+;; UI improvements
 (depends-on "diminish")                 ; De-clutter mode line
 (depends-on "smex")                     ; Improved M-x
 (depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's
 (depends-on "ido-vertical-mode")        ; Show IDO completions vertically
 
+;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files
 (depends-on "hardhat")                  ; Protect user-writable files
 
+;; Editing utilities
 (depends-on "drag-stuff")               ; Drag stuff around
 (depends-on "fill-column-indicator")    ; Indicate fill column
 (depends-on "volatile-highlights")      ; Highlight editing operations
@@ -33,14 +36,18 @@
 (depends-on "multiple-cursors")         ; Multiple cursors
 (depends-on "undo-tree")                ; Undo reloaded
 
+;; Completion and expansion
 (depends-on "yasnippet")                ; Expandable text snippets
 (depends-on "company")                  ; Auto completion
 
+;; Markup languages
 (depends-on "markdown-mode")            ; Markdown major mode
 (depends-on "bbcode-mode")              ; BBCode major mode
 
+;; General programming utilities
 (depends-on "highlight-symbol")         ; Symbol awareness
 
+;; Programming languages
 (depends-on "coffee-mode")              ; Coffeescript major mode
 (depends-on "js2-mode")                 ; Powerful Javascript mode
 (depends-on "haskell-mode")             ; Haskell major mode
@@ -49,26 +56,32 @@
 (depends-on "feature-mode")             ; Cucumber major mode
 (depends-on "pkgbuild-mode")            ; Arch PKGBUILD files
 
-;; Emacs Lisp helper modes
-(depends-on "paredit")
+;; Basic Lisp utility modes
+(depends-on "paredit")                  ; Edit Sexps, not strings
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level
+
+;; Emacs Lisp utility modes and libraries
 (depends-on "elisp-slime-nav")          ; Navigate to symbol definitions
 (depends-on "macrostep")                ; Interactively expand macros
 (depends-on "auto-compile")             ; Recompile after save
 
+;; Git and Gist integration
 (depends-on "magit")                    ; Git frontend
 (depends-on "git-commit-mode")          ; Git commit message mode
 (depends-on "gitconfig-mode")           ; Git configuration mode
 (depends-on "gitignore-mode")           ; .gitignore mode
-(depends-on "gist")                     ; Gist frontend
 (depends-on "git-gutter-fringe")        ; Show Diff state in buffer
+(depends-on "gist")                     ; Gist frontend
 
+;; Helm – Interactive search and narrowing
 (depends-on "helm")                     ; Powerful search and narrowing
 (depends-on "helm-projectile")          ; Helm + Projectile
 (depends-on "helm-ack")                 ; Helm + Ack
 
+;; Utilities
 (depends-on "projectile")               ; Project interaction
 (depends-on "ack-and-a-half")           ; Ack frontend
 (depends-on "google-this")              ; Google from Emacs
 
-(depends-on "org-plus-contrib")         ; Latest org mode
+;; Org Mode
+(depends-on "org-plus-contrib")         ; Latest Org + Contrib files
