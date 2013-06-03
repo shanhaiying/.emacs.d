@@ -1049,6 +1049,17 @@ suitable processor was found."
   "Keymap to work on symbols.")
 
 
+;;;; Basic Lisp editing
+
+(defvar stante-lisp-common-modes
+  '(paredit-mode                        ; Edit Sexps not strings
+    rainbow-delimiters-mode)            ; Color parenthesis according to nesting
+  "Common modes for Lisp editing.")
+
+(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+(stante-after paredit (diminish 'paredit-mode " π"))
+
+
 ;;;; Emacs Lisp
 
 ;; Teach Emacs about Emacs scripts and Carton files
@@ -1057,10 +1068,10 @@ suitable processor was found."
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
-  '(paredit-mode                        ; Focus on Sexp editing
-    turn-on-eldoc-mode                  ; Show function signatures in echo area
-    rainbow-delimiters-mode             ; Color parenthesis according to nesting
-    elisp-slime-nav-mode)               ; Navigate to symbol definitions
+  (append
+   '(turn-on-eldoc-mode                 ; Show function signatures in echo area
+     elisp-slime-nav-mode)              ; Navigate to symbol definitions
+   stante-lisp-common-modes)
   "Common modes for Emacs Lisp editing.")
 (stante-after lisp-mode
   (--each stante-emacs-lisp-common-modes
@@ -1079,18 +1090,15 @@ suitable processor was found."
     "Add electric pairs for Emacs Lisp."
     (stante-add-local-electric-pairs '((?` . ?'))))
 
-  (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-electric-pairs))
+  (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-electric-pairs)
+
+  ;; Load ERT to support unit test writing and running
+  (require 'ert))
 
 ;; Now de-clutter the mode line
 (stante-after eldoc (diminish 'eldoc-mode))
 (stante-after checkdoc (diminish 'checkdoc-minor-mode))
-(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
-(stante-after paredit (diminish 'paredit-mode))
-
-;; Load ERT to support unit test writing and running
-(stante-after lisp-mode
-  (require 'ert))
 
 
 ;;;; Python
