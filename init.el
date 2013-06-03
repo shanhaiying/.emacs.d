@@ -535,7 +535,7 @@ non-directory part only."
 ;; Drag stuff around with Meta-Shift-Arrows
 (stante-after drag-stuff
   (setq drag-stuff-modifier '(meta shift))
-  (diminish 'drag-stuff-mode))
+  (diminish 'drag-stuff-mode "⇅"))
 (drag-stuff-global-mode)
 
 ;; Make `kill-whole-line' indentation aware
@@ -598,7 +598,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Highlight bad whitespace
 (stante-after whitespace
-  (diminish 'whitespace-mode)
+  (diminish 'whitespace-mode "␣")
   ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
   ;; portions of lines via faces.  Also indicate tabs via characters
   (setq whitespace-style '(face tabs tab-mark empty trailing lines-tail)
@@ -671,7 +671,7 @@ Wrap Region wrappers for the current major mode."
 
   (add-hook #'wrap-region-mode-hook #'stante-add-region-wrappers-from-pairs)
 
-  (diminish 'wrap-region-mode))
+  (diminish 'wrap-region-mode "<>"))
 
 (wrap-region-global-mode)
 
@@ -741,7 +741,7 @@ Wrap Region wrappers for the current major mode."
 (show-paren-mode)
 
 ;; Power up undo
-(stante-after undo-tree (diminish 'undo-tree-mode))
+(stante-after undo-tree (diminish 'undo-tree-mode "⤺"))
 (global-undo-tree-mode)
 
 ;; Nicify page breaks
@@ -775,7 +775,7 @@ Wrap Region wrappers for the current major mode."
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;; Expandable text snippets
-(stante-after yasnippet (diminish 'yas-minor-mode))
+(stante-after yasnippet (diminish 'yas-minor-mode "…"))
 (yas-global-mode)
 
 ;; In `completion-at-point', do not pop up silly completion buffers for less
@@ -784,7 +784,7 @@ Wrap Region wrappers for the current major mode."
 
 ;; Enable auto-completion
 (stante-after company
-  (diminish 'company-mode)
+  (diminish 'company-mode "•")
 
   ;; Make auto completion a little less aggressive.
   (setq company-idle-delay 1.0
@@ -827,7 +827,9 @@ Wrap Region wrappers for the current major mode."
   (setq flyspell-use-meta-tab nil
         ;; Make Flyspell less chatty
         flyspell-issue-welcome-flag nil
-        flyspell-issue-message-flag nil))
+        flyspell-issue-message-flag nil)
+
+  (diminish 'flyspell-mode "✓"))
 
 (--each '(text-mode-hook message-mode-hook)
   (add-hook it 'turn-on-flyspell))
@@ -1056,8 +1058,8 @@ suitable processor was found."
     rainbow-delimiters-mode)            ; Color parenthesis according to nesting
   "Common modes for Lisp editing.")
 
-(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
-(stante-after paredit (diminish 'paredit-mode " π"))
+(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode "()"))
+(stante-after paredit (diminish 'paredit-mode "π"))
 
 
 ;;;; Emacs Lisp
@@ -1098,7 +1100,7 @@ suitable processor was found."
 ;; Now de-clutter the mode line
 (stante-after eldoc (diminish 'eldoc-mode))
 (stante-after checkdoc (diminish 'checkdoc-minor-mode))
-(stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
+(stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode "↪"))
 
 
 ;;;; Clojure
