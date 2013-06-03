@@ -1101,6 +1101,25 @@ suitable processor was found."
 (stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 
 
+;;;; Clojure
+
+;; Enable some common Clojure helper modes
+(defvar stante-clojure-common-modes
+  (append '(subword-mode) stante-lisp-common-modes))
+
+(stante-after clojure-mode
+  (--each stante-clojure-common-modes
+    (add-hook 'clojure-mode-hook it))
+
+  (add-hook 'clojure-mode-hook #'clojure-test-mode))
+
+(stante-after nrepl
+  (--each stante-clojure-common-modes
+    (add-hook 'nrepl-mode-hook it))
+
+  (add-hook 'nrepl-interaction-mode-hook #'nrepl-turn-on-eldoc-mode))
+
+
 ;;;; Python
 
 (stante-after python
