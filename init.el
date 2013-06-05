@@ -347,12 +347,9 @@ to `stante-save-frame-parameters-file'."
       (let ((params (--filter (memq (car it) stante-frame-parameters-to-save)
                               (frame-parameters))))
         (when (and params (display-graphic-p)) ; GUI frames only!
-          (with-temp-buffer
+          (with-temp-file stante-save-frame-parameters-file
             (prin1 params (current-buffer))
-            (terpri (current-buffer))
-            (write-region (point-min) (point-max)
-                          stante-save-frame-parameters-file
-                          nil 0))       ; 0 inhibits the "write file" message
+            (terpri (current-buffer)))
           t))
     (file-error nil)))
 
