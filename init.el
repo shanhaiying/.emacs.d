@@ -998,7 +998,8 @@ suitable processor was found."
 ;; Highlight the symbol under point
 (stante-after highlight-symbol
   (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
-        highlight-symbol-on-navigation-p t) ; Highlight immediately after navigation
+        highlight-symbol-on-navigation-p t) ; Highlight immediately after
+                                            ; navigation
   (diminish 'highlight-symbol-mode))
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
