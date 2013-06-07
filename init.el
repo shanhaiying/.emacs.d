@@ -1035,19 +1035,23 @@ suitable processor was found."
   (--each stante-emacs-lisp-common-modes
     (add-hook 'ielm-mode-hook it)))
 
-;; Check documentation conventions when evaluating expressions
 (stante-after lisp-mode
-  (--each '(checkdoc-minor-mode auto-compile-mode)
+  (--each '(checkdoc-minor-mode         ; Check doc conventions when eval'ing
+                                        ; expressions
+            auto-compile-mode)          ; Automatically compile after save
     (add-hook 'emacs-lisp-mode-hook it))
 
+  ;; Teach Electric about Emacs Lisp pairs
   (defun stante-emacs-lisp-electric-pairs ()
     "Add electric pairs for Emacs Lisp."
     (stante-add-local-electric-pairs '((?` . ?'))))
-
   (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-electric-pairs)
 
   ;; Load ERT to support unit test writing and running
   (require 'ert))
+
+;; Indicate Auto Compile mode
+(stante-after auto-compile (diminish 'auto-compile-mode "⏎"))
 
 ;; Now de-clutter the mode line
 (stante-after eldoc (diminish 'eldoc-mode))
