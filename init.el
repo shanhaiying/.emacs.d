@@ -1295,6 +1295,8 @@ Create a new ielm process if required."
 ;; Find definition sources fast
 (bind-key "C-h F" #'find-function)                           ; C-h f
 (bind-key "C-h V" #'find-variable)                           ; C-h v
+;; Describe all user key bindings
+(bind-key "C-h K" #'describe-personal-keybindings)
 
 ;; Key bindings for extension packages
 (bind-key "C-=" #'er/expand-region)
