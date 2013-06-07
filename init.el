@@ -1358,6 +1358,7 @@ Create a new ielm process if required."
 (bind-key "C-c G c" #'gist-region-or-buffer)
 (bind-key "C-c G l" #'gist-list)
 (bind-key "C-c g" #'magit-status)
+(bind-key "C-c i" #'imenu)
 ;; Multiple Cursors
 (bind-key "C-c m l" #'mc/edit-lines)
 (bind-key "C-c m C-a" #'mc/edit-beginnings-of-lines)
