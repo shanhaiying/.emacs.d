@@ -70,9 +70,10 @@ FEATURE may be a named feature or a file name, see
   ;; Byte compile the body.  If the feature is not available, ignore warnings.
   ;; Taken from
   ;; http://lists.gnu.org/archive/html/bug-gnu-emacs/2012-11/msg01262.html
-  `(,(if (if (symbolp feature)
-             (require feature nil :no-error)
-           (load feature :no-message :no-error))
+  `(,(if (or (not byte-compile-current-file)
+             (if (symbolp feature)
+                 (require feature nil :no-error)
+               (load feature :no-message :no-error)))
          'progn
        (message "stante-after: cannot find %s" feature)
        'with-no-warnings)
