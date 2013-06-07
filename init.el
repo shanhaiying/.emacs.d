@@ -578,6 +578,8 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Disable tabs, but given them proper width
 (setq-default indent-tabs-mode nil
               tab-width 8)
+;; Make Tab complete if the line is indented
+(setq tab-always-indent 'complete)
 
 ;; Highlight bad whitespace
 (stante-after whitespace
