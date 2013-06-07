@@ -1010,7 +1010,7 @@ suitable processor was found."
     rainbow-delimiters-mode)            ; Color parenthesis according to nesting
   "Common modes for Lisp editing.")
 
-(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode "()"))
+(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (stante-after paredit (diminish 'paredit-mode "π"))
 
 
