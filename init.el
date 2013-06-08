@@ -275,7 +275,11 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
         ido-default-file-method 'selected-window)
 
   ;; Boost all `completing-read's with IDO
-  (ido-ubiquitous-mode)
+  (stante-after ido-ubiquitous
+    ;; Disable for TeX-command-master because it breaks the easy selection of a
+    ;; default value
+    (ido-ubiquitous-disable-in TeX-command-master))
+   (ido-ubiquitous-mode)
 
   ;; Show IDO completions vertically
   (ido-vertical-mode))
