@@ -276,9 +276,10 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
   ;; Boost all `completing-read's with IDO
   (stante-after ido-ubiquitous
-    ;; Disable for TeX-command-master because it breaks the easy selection of a
-    ;; default value
-    (ido-ubiquitous-disable-in TeX-command-master))
+    ;; Disable for some AUCTeX commands because it breaks the easy selection of
+    ;; the default value
+    (ido-ubiquitous-disable-in TeX-command-master)
+    (ido-ubiquitous-disable-in LaTeX-section))
    (ido-ubiquitous-mode)
 
   ;; Show IDO completions vertically
@@ -835,18 +836,12 @@ Wrap Region wrappers for the current major mode."
         TeX-source-correlate-method 'synctex)
   (setq-default TeX-master nil          ; Ask for the master file
                 TeX-engine 'luatex      ; Use a modern engine
-                TeX-PDF-mode t))        ; Create PDFs by default
+                TeX-PDF-mode t)         ; Create PDFs by default
 
-;; Easy Math input for LaTeX
-(stante-after latex
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode))
+  ;; Replace the rotten Lacheck with Chktex
+  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s")
 
-;; Replace the rotten Lacheck with Chktex
-(stante-after tex
-  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
-
-;; Build with Latexmk
-(stante-after tex
+  ;; Build with Latexmk
   (unless (boundp 'TeX-command-latexmk)
     (defvar TeX-command-latexmk "latexmk"
       "The name of the latexmk command.")
@@ -856,8 +851,13 @@ Wrap Region wrappers for the current major mode."
                    `(,TeX-command-latexmk "latexmk" TeX-run-command t t
                                           :Help "Run latexmk")))))
 
-;; Clean intermediate files from Latexmk
+
 (stante-after latex
+
+  (--each '(LaTeX-math-mode             ; Easy math input
+            reftex-mode)                ; Cross references on steroids
+    (add-hook 'LaTeX-mode-hook it))
+
   (--each '("\\.fdb_latexmk" "\\.fls")
     (add-to-list 'LaTeX-clean-intermediate-suffixes it)))
 
@@ -933,12 +933,9 @@ Choose Skim if available, or fall back to the default application."
         ;; Recommended optimizations
         reftex-enable-partial-scans t
         reftex-save-parse-info t
-        reftex-use-multiple-selection-buffers t))
-(stante-after bib-cite
-  (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
+        reftex-use-multiple-selection-buffers t)
 
-;; Provide basic RefTeX support for biblatex
-(stante-after reftex
+  ;; Provide basic RefTeX support for biblatex
   (unless (assq 'biblatex reftex-cite-format-builtin)
     (add-to-list 'reftex-cite-format-builtin
                  '(biblatex "The biblatex package"
@@ -949,8 +946,12 @@ Choose Skim if available, or fall back to the default application."
                              (?f . "\\footcite[][]{%l}")
                              (?F . "\\fullcite[]{%l}")
                              (?x . "[]{%l}")
-                             (?X . "{%l}")))))
-  (setq reftex-cite-format 'biblatex))
+                             (?X . "{%l}"))))
+    (setq reftex-cite-format 'biblatex)))
+
+;; Plug reftex into bib-cite
+(stante-after bib-cite
+  (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
 
 
 ;;;; Markdown editing
