@@ -525,6 +525,12 @@ non-directory part only."
 ;; Drag stuff around with Meta-Shift-Arrows
 (stante-after drag-stuff
   (setq drag-stuff-modifier '(meta shift))
+
+  ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
+  ;; bindings.  This doesn't do much harm, because Org has its own structural
+  ;; movement commands
+  (add-to-list 'drag-stuff-except-modes 'org-mode)
+
   (diminish 'drag-stuff-mode "⇅"))
 (drag-stuff-global-mode)
 
@@ -1271,12 +1277,6 @@ Create a new ielm process if required."
                                        (?= . ?=)
                                        (?~ . ?~))))
   (add-hook 'org-mode-hook #'stante-org-electric-pairs))
-
-;; Drag Stuff is incompatible with Org, because it shadows many useful Org
-;; bindings.  This doesn't do much harm, because Org has its own structural
-;; movement commands
-(stante-after drag-stuff
-  (add-to-list 'drag-stuff-except-modes 'org-mode))
 
 ;; Configure Org mobile target folder and inbox.  Again, we use Dropbox to get
 ;; synchronization for free.
