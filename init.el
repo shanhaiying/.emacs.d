@@ -272,14 +272,14 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                                         ; match
         ido-create-new-buffer 'always   ; Create a new buffer if nothing matches
         ido-use-filename-at-point 'guess
-        ido-default-file-method 'selected-window))
+        ido-default-file-method 'selected-window)
+
+  ;; Boost all `completing-read's with IDO
+  (ido-ubiquitous-mode)
+
+  ;; Show IDO completions vertically
+  (ido-vertical-mode))
 (ido-mode t)
-
-;; Boost all `completing-read's with IDO
-(ido-ubiquitous-mode)
-
-;; Show IDO completions vertically
-(ido-vertical-mode)
 
 ;; Configure Smex
 (stante-after smex
