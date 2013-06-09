@@ -279,12 +279,10 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
     ;; Disable for some AUCTeX commands because it breaks the easy selection of
     ;; the default value
     (ido-ubiquitous-disable-in TeX-command-master)
-    (ido-ubiquitous-disable-in LaTeX-section))
-   (ido-ubiquitous-mode)
-
-  ;; Show IDO completions vertically
-  (ido-vertical-mode))
+    (ido-ubiquitous-disable-in LaTeX-section)))
 (ido-mode t)
+(ido-ubiquitous-mode)                   ; Use IDO everywhere
+(ido-vertical-mode)                     ; Show IDO completions vertically
 
 ;; Configure Smex
 (stante-after smex
