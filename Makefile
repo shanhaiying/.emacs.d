@@ -1,18 +1,16 @@
 EMACS = emacs
 CARTON = carton
 
+export EMACS
+
 SRCS = init.el
 OBJECTS = $(SRCS:.el=.elc)
 
 .PHONY: all
-all: packages update-packages compile
+all: compile
 
-.PHONY: packages
-packages : Carton
-	EMACS=$(EMACS) $(CARTON) install
-
-.PHONY: update-packages
-update-packages: Carton
+.PHONY: update
+update: Carton
 	EMACS=$(EMACS) $(CARTON) update
 
 .PHONY: clean-packages
@@ -26,5 +24,8 @@ compile : $(OBJECTS)
 clean :
 	rm -f $(OBJECTS)
 
-%.elc : %.el
+elpa : Carton
+	$(CARTON) install
+
+%.elc : %.el elpa
 	$(EMACS) -f package-initialize -Q --batch $(EMACSFLAGS) -f batch-byte-compile $<
