@@ -1012,6 +1012,12 @@ suitable processor was found."
     (add-hook 'gfm-mode-hook #'stante-whitespace-style-no-long-lines)))
 
 
+;;;; HTML editing
+
+(stante-after sgml-mode
+  (require 'simplezen))
+
+
 ;;;; Symbol “awareness”
 
 ;; Highlight the symbol under point
@@ -1400,6 +1406,10 @@ Create a new ielm process if required."
 
 (stante-after lisp-mode
   (bind-key "C-c e" #'macrostep-expand emacs-lisp-mode-map))
+
+(stante-after sgml-mode
+  (bind-key "C-c e" #'simplezen-expand html-mode-map)
+  (bind-key "TAB" #'simplezen-expand-or-indent-for-tab html-mode-map))
 
 ;; Local Variables:
 ;; coding: utf-8
