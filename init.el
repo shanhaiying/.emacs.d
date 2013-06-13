@@ -774,10 +774,6 @@ Wrap Region wrappers for the current major mode."
           try-complete-lisp-symbol-partially
           try-complete-lisp-symbol)))
 
-;; Expandable text snippets
-(stante-after yasnippet (diminish 'yas-minor-mode "…"))
-(yas-global-mode)
-
 ;; In `completion-at-point', do not pop up silly completion buffers for less
 ;; than five candidates.  Cycle instead.
 (setq completion-cycle-threshold 5)

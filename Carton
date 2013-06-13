@@ -38,7 +38,6 @@
 (depends-on "undo-tree")                ; Undo reloaded
 
 ;; Completion and expansion
-(depends-on "yasnippet")                ; Expandable text snippets
 (depends-on "company")                  ; Auto completion
 
 ;; Markup languages
