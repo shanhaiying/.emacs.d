@@ -451,19 +451,28 @@ for the current platform."
    ((eq system-type 'darwin) "open")
    ((memq system-type '(gnu gnu/linux gnu/kfreebsd)) "xdg-open")))
 
+(defun stante-current-file ()
+  "Gets the \"file\" of the current buffer.
+
+The file is the buffer's file name, or the `default-directory' in
+`dired-mode'."
+  (if (eq major-mode 'dired-mode)
+      default-directory
+    (buffer-file-name)))
+
 (defun stante-open-with (arg)
   "Open the file visited by the current buffer externally.
 
 Use the standard program to open the file.  With prefix ARG,
 prompt for the command to use."
   (interactive "P")
-  (unless (buffer-file-name)
-    (user-error "This buffer is not visiting a file"))
-  (let ((command (unless arg (stante-get-standard-open-command))))
+  (let ((command (unless arg (stante-get-standard-open-command)))
+        (filename (stante-current-file)))
+    (unless filename
+      (user-error "This buffer is not visiting a file"))
     (unless command
       (setq command (read-shell-command "Open current file with: ")))
-    (shell-command (concat command " "
-                           (shell-quote-argument (buffer-file-name))))))
+    (shell-command (concat command " " (shell-quote-argument filename)))))
 
 (defun stante-copy-filename-as-kill (&optional arg)
   "Copy the name of the currently visited file to kill ring.
@@ -473,9 +482,7 @@ With a zero prefix arg, copy the absolute file name.  With
 current buffer's `default-directory'.  Otherwise copy the
 non-directory part only."
   (interactive "P")
-  (-if-let* ((filename (if (eq major-mode 'dired-mode)
-                           default-directory
-                         (buffer-file-name)))
+  (-if-let* ((filename (stante-current-file))
              (name-to-copy (cond ((zerop (prefix-numeric-value arg)) filename)
                                  ((consp arg) (file-relative-name filename))
                                  (:else (file-name-nondirectory filename)))))
