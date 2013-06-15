@@ -60,6 +60,14 @@ Please install GNU Emacs 24.3 to use Stante Pede"
 
 ;;;; Package configuration and initialization
 
+(unless (fboundp 'with-eval-after-load)
+  (defmacro with-eval-after-load (file &rest body)
+    "Execute BODY after FILE is loaded.
+
+Forward compatibility wrapper."
+    `(eval-after-load ,file
+       `(funcall (function ,(lambda () ,@body))))))
+
 (defmacro stante-after (feature &rest forms)
   "After FEATURE is loaded, evaluate FORMS.
 
@@ -78,8 +86,7 @@ FEATURE may be a named feature or a file name, see
          'progn
        (message "stante-after: cannot find %s" feature)
        'with-no-warnings)
-    (eval-after-load ',feature
-      `(funcall (function ,(lambda () ,@forms))))))
+    (with-eval-after-load ',feature ,@forms)))
 
 (defun stante-auto-modes (&rest modes-and-patterns)
   "Add MODES-AND-PATTERNS to `auto-mode-alist'.
