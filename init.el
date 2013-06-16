@@ -1259,6 +1259,19 @@ Create a new ielm process if required."
 (stante-after calendar
   (setq calendar-week-start-day 1))
 
+;; Mail settings
+(stante-after sendmail
+  (setq send-mail-function 'smtpmail-send-it))
+
+(stante-after message
+  (setq message-send-mail-function 'smtpmail-send-it))
+
+(stante-after smtpmail
+  (setq smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        smtpmail-stream-type 'starttls
+        smtpmail-smtp-user user-mail-address))
+
 
 ;;;; Org mode
 
