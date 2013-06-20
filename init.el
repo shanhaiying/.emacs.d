@@ -1161,6 +1161,12 @@ suitable processor was found."
 (stante-after coffee-mode
   (setq coffee-tab-width 2))
 
+;; Javascript: Indentation
+(stante-after js2-mode
+  (setq-default js2-basic-offset 2))
+
+(stante-auto-modes 'js2-mode "\\.js\\'" "\\.json\\'")
+
 ;; Haskell: Indentation, and some helpful modes
 (stante-after haskell-mode
   (--each '(subword-mode
