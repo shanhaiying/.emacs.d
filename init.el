@@ -444,21 +444,32 @@ to `stante-save-frame-parameters-file'."
 ;; Automatically revert files on external changes (e.g. git checkout)
 (global-auto-revert-mode 1)
 
+;; Open files in external programs
+(global-launch-mode)
+
+(defun stante-launch-dired-dwim ()
+  "Open the marked files externally.
+
+If no files are marked, open the current directory instead."
+  (let ((marked-files (dired-get-marked-files)))
+    (if marked-files
+        (launch-files marked-files :confirm)
+      (launch-directory (dired-current-directory)))))
+
+(defun stante-launch-dwim ()
+  "Open the current file externally."
+  (interactive)
+  (if (eq major-mode 'dired-mode)
+      (stante-launch-dired-dwim)
+    (if (buffer-file-name)
+        (launch-file (buffer-file-name))
+      (user-error "The current buffer is not visiting a file"))))
+
 ;; Utility commands for working with files, see:
-;; http://emacsredux.com/blog/2013/03/27/open-file-in-external-program/
 ;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 ;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
 ;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
 ;; https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
-(defun stante-get-standard-open-command ()
-  "Get the standard command to open a file.
-
-Return the command as shell command, or nil if there is no standard command
-for the current platform."
-  (cond
-   ((eq system-type 'darwin) "open")
-   ((memq system-type '(gnu gnu/linux gnu/kfreebsd)) "xdg-open")))
-
 (defun stante-current-file ()
   "Gets the \"file\" of the current buffer.
 
@@ -467,20 +478,6 @@ The file is the buffer's file name, or the `default-directory' in
   (if (eq major-mode 'dired-mode)
       default-directory
     (buffer-file-name)))
-
-(defun stante-open-with (arg)
-  "Open the file visited by the current buffer externally.
-
-Use the standard program to open the file.  With prefix ARG,
-prompt for the command to use."
-  (interactive "P")
-  (let ((command (unless arg (stante-get-standard-open-command)))
-        (filename (stante-current-file)))
-    (unless filename
-      (user-error "This buffer is not visiting a file"))
-    (unless command
-      (setq command (read-shell-command "Open current file with: ")))
-    (shell-command (concat command " " (shell-quote-argument filename)))))
 
 (defun stante-copy-filename-as-kill (&optional arg)
   "Copy the name of the currently visited file to kill ring.
@@ -1398,7 +1395,7 @@ Create a new ielm process if required."
 (bind-key "C-c c t" #'helm-top)
 ;; File commands
 (bind-key "C-c f r" #'stante-ido-find-recentf)
-(bind-key "C-c f o" #'stante-open-with)
+(bind-key "C-c f o" #'stante-launch-dwim)
 (bind-key "C-c f R" #'stante-rename-file-and-buffer)
 (bind-key "C-c f D" #'stante-delete-file-and-buffer)
 (bind-key "C-c f w" #'stante-copy-filename-as-kill)

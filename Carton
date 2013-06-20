@@ -23,6 +23,7 @@
 ;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files
 (depends-on "hardhat")                  ; Protect user-writable files
+(depends-on "launch")                   ; Open files externally
 
 ;; Editing utilities
 (depends-on "drag-stuff")               ; Drag stuff around
