@@ -41,6 +41,9 @@
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion
 
+;; LaTeX/AUCTeX
+(depends-on "auctex-latexmk")           ; latexmk support for AUCTeX
+
 ;; Markup languages
 (depends-on "markdown-mode")            ; Markdown major mode
 (depends-on "bbcode-mode")              ; BBCode major mode

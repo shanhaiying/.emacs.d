@@ -846,27 +846,15 @@ Wrap Region wrappers for the current major mode."
                 TeX-PDF-mode t)         ; Create PDFs by default
 
   ;; Replace the rotten Lacheck with Chktex
-  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s")
-
-  ;; Build with Latexmk
-  (unless (boundp 'TeX-command-latexmk)
-    (defvar TeX-command-latexmk "latexmk"
-      "The name of the latexmk command.")
-
-    (unless (assoc TeX-command-latexmk TeX-command-list)
-      (add-to-list 'TeX-command-list
-                   `(,TeX-command-latexmk "latexmk" TeX-run-command t t
-                                          :Help "Run latexmk")))))
-
+  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
 
 (stante-after latex
-
   (--each '(LaTeX-math-mode             ; Easy math input
             reftex-mode)                ; Cross references on steroids
     (add-hook 'LaTeX-mode-hook it))
 
-  (--each '("\\.fdb_latexmk" "\\.fls")
-    (add-to-list 'LaTeX-clean-intermediate-suffixes it)))
+  ;; Add support for latexmk
+  (auctex-latexmk-setup))
 
 ;; Find Skim.app on OS X, for Sycntex support which Preview.app lacks.
 (defun stante-find-skim-bundle ()
