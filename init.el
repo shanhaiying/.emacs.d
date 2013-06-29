@@ -764,26 +764,6 @@ Disable the highlighting of overlong lines."
 (bind-key "C-M-t" #'sp-transpose-sexp smartparens-mode-map)
 ;; (bind-key "M-q" …) sp-reindent-defun?  See ;; https://github.com/Fuco1/smartparens/issues/125
 
-(defvar stante-smartparens-lisp-mode-map
-  (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map smartparens-mode-map)
-    map)
-  "Keymap for Smartparens bindings in Lisp modes.")
-
-(bind-key ")" #'sp-up-sexp stante-smartparens-lisp-mode-map)
-(bind-key "C-d" #'sp-delete-char stante-smartparens-lisp-mode-map)
-(bind-key "DEL" #'sp-backward-delete-char stante-smartparens-lisp-mode-map)
-(bind-key "M-d" #'sp-kill-word stante-smartparens-lisp-mode-map)
-(bind-key "M-DEL" #'sp-backward-kill-word stante-smartparens-lisp-mode-map)
-
-(defun stante-use-smartparens-lisp-mode-map ()
-  "Use Lisp specific Smartparens bindings in the current buffer.
-
-Replace `smartparens-mode-map' with
-`stante-smartparens-lisp-mode-map' in the current buffer."
-  (add-to-list 'minor-mode-overriding-map-alist
-               (cons 'smartparens-mode stante-smartparens-lisp-mode-map)))
-
 
 ;;;; Completion and expansion
 
@@ -1043,11 +1023,43 @@ suitable processor was found."
 ;;;; Basic Lisp editing
 
 (defvar stante-lisp-common-modes
-  '(stante-use-smartparens-lisp-mode-map  ; Smartparens bindings for Lisp
-    rainbow-delimiters-mode)            ; Color parenthesis according to nesting
+  '(rainbow-delimiters-mode)            ; Color parenthesis according to nesting
   "Common modes for Lisp editing.")
 
 (stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+
+;; Improve Smartparens support for Lisp editing
+(defvar stante-smartparens-lisp-mode-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map smartparens-mode-map)
+    map)
+  "Keymap for Smartparens bindings in Lisp modes.")
+
+;; Be more strict about delimiter deletion in Lisp
+(bind-key ")" #'sp-up-sexp stante-smartparens-lisp-mode-map)
+(bind-key "C-d" #'sp-delete-char stante-smartparens-lisp-mode-map)
+(bind-key "DEL" #'sp-backward-delete-char stante-smartparens-lisp-mode-map)
+(bind-key "M-d" #'sp-kill-word stante-smartparens-lisp-mode-map)
+(bind-key "M-DEL" #'sp-backward-kill-word stante-smartparens-lisp-mode-map)
+
+(defun stante-use-smartparens-lisp-mode-map ()
+  "Use Lisp specific Smartparens bindings in the current buffer.
+
+Replace `smartparens-mode-map' with
+`stante-smartparens-lisp-mode-map' in the current buffer."
+  (add-to-list 'minor-mode-overriding-map-alist
+               (cons 'smartparens-mode stante-smartparens-lisp-mode-map)))
+
+(defun stante-smartparens-setup-lisp-modes (modes)
+  "Setup Smartparens Lisp support in MODES.
+
+Add Lisp pairs and tags to MODES, and use the a special, more strict
+keymap `stante-smartparens-lisp-mode-map'."
+  (let ((modes (if (symbolp modes) (list modes) modes)))
+    (sp-local-pair modes "(" nil :bind "M-(")
+    (--each modes
+      (let ((hook (intern (format "%s-hook" (symbol-name it)))))
+        (add-hook hook #'stante-use-smartparens-lisp-mode-map)))))
 
 
 ;;;; Emacs Lisp
@@ -1063,22 +1075,31 @@ suitable processor was found."
      elisp-slime-nav-mode)              ; Navigate to symbol definitions
    stante-lisp-common-modes)
   "Common modes for Emacs Lisp editing.")
+
 (stante-after lisp-mode
   (--each stante-emacs-lisp-common-modes
     (add-hook 'emacs-lisp-mode-hook it)
-    (add-hook 'lisp-interaction-mode-hook it)))
-(stante-after ielm
-  (--each stante-emacs-lisp-common-modes
-    (add-hook 'ielm-mode-hook it)))
+    (add-hook 'lisp-interaction-mode-hook it))
 
-(stante-after lisp-mode
+  ;; Some more Emacs Lisp editing hooks
   (--each '(checkdoc-minor-mode         ; Check doc conventions when eval'ing
                                         ; expressions
             auto-compile-mode)          ; Automatically compile after save
     (add-hook 'emacs-lisp-mode-hook it))
 
+  ;; Smartparens support for Emacs Lisp editing
+  (stante-smartparens-setup-lisp-modes '(emacs-lisp-mode
+                                         lisp-interaction-mode))
+
   ;; Load ERT to support unit test writing and running
   (require 'ert))
+
+(stante-after ielm
+  (--each stante-emacs-lisp-common-modes
+    (add-hook 'ielm-mode-hook it))
+
+  ;; Smartparens support for IELM
+  (stante-smartparens-setup-lisp-modes 'inferior-emacs-lisp-mode))
 
 ;; Indicate Auto Compile mode
 (stante-after auto-compile (diminish 'auto-compile-mode "⏎"))
@@ -1099,11 +1120,15 @@ suitable processor was found."
   (--each stante-clojure-common-modes
     (add-hook 'clojure-mode-hook it))
 
-  (add-hook 'clojure-mode-hook #'clojure-test-mode))
+  (add-hook 'clojure-mode-hook #'clojure-test-mode)
+
+  (stante-smartparens-setup-lisp-modes 'clojure-mode))
 
 (stante-after nrepl
   (--each stante-clojure-common-modes
     (add-hook 'nrepl-mode-hook it))
+
+  (stante-smartparens-setup-lisp-modes 'nrepl-mode)
 
   (add-hook 'nrepl-interaction-mode-hook #'nrepl-turn-on-eldoc-mode))
 
