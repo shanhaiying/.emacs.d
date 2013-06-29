@@ -656,32 +656,6 @@ Disable the highlighting of overlong lines."
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
 
-;; Wrap the region with delimiters
-(stante-after wrap-region
-
-  (defun stante-add-wrapper-for-pair (pair &optional mode)
-    "Add a Wrap Region wrapper for PAIR in MODE.
-
-PAIR is an electric pair, just like for `electric-pair-pairs'.
-MODE is the major mode to add the wrapper for, defaulting to the
-current major mode."
-    (wrap-region-add-wrapper (string (car pair)) (string (cdr pair))
-                             nil (or mode major-mode)))
-
-  (defun stante-add-region-wrappers-from-pairs ()
-    "Add Wrap Region wrappers from electric pairs.
-
-Add all explicit wrappers defined in `electric-pair-pairs' as
-Wrap Region wrappers for the current major mode."
-    (when (boundp 'electric-pair-pairs)
-      (-each electric-pair-pairs #'stante-add-wrapper-for-pair)))
-
-  (add-hook #'wrap-region-mode-hook #'stante-add-region-wrappers-from-pairs)
-
-  (diminish 'wrap-region-mode "<>"))
-
-(wrap-region-global-mode)
-
 ;; Save the contents of the clipboard to kill ring before killing, except on OS
 ;; X where this behaviour is broken because it causes errors to be signaled
 ;; whenever the clipboard is empty :|
@@ -730,22 +704,11 @@ Wrap Region wrappers for the current major mode."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-;; Automatically pairs parenthesis, and provide a function to define local
-;; pairs.
-(require 'electric)
-(electric-pair-mode)
-
-(defun stante-add-local-electric-pairs (pairs)
-  "Add buffer-local electric PAIRS."
-  (setq-local electric-pair-pairs (append pairs electric-pair-pairs nil)))
-
-;; Highlight the current line, editing operations in the buffer, and matching
-;; parenthesis
+;; Highlight the current line and editing operations in the buffer
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (diminish 'volatile-highlights-mode)
 (volatile-highlights-mode t)
-(show-paren-mode)
 
 ;; Power up undo
 (stante-after undo-tree (diminish 'undo-tree-mode "⤺"))
@@ -761,6 +724,65 @@ Wrap Region wrappers for the current major mode."
 ;; An Emacs server for `emacsclient'
 (require 'server)
 (unless (server-running-p) (server-start))
+
+
+;;;; Smartparens
+(require 'smartparens-config)
+(smartparens-global-mode)
+(show-smartparens-global-mode)          ; Show parenthesis
+
+;; Smartparens bindings
+;; (bind-key "C-j" …) sp-newline? See https://github.com/Fuco1/smartparens/issues/125
+;; Movement and navigation
+(bind-key "C-M-f" #'sp-forward-sexp smartparens-mode-map)
+(bind-key "C-M-b" #'sp-backward-sexp smartparens-mode-map)
+(bind-key "C-M-u" #'sp-backward-up-sexp smartparens-mode-map)
+(bind-key "C-M-d" #'sp-down-sexp smartparens-mode-map)
+(bind-key "C-M-p" #'sp-backward-down-sexp smartparens-mode-map)
+(bind-key "C-M-n" #'sp-up-sexp smartparens-mode-map)
+;; Deleting and killing
+(bind-key "C-M-k" #'sp-kill-sexp smartparens-mode-map)
+(bind-key "C-M-w" #'sp-copy-sexp smartparens-mode-map)
+;; Depth changing
+(bind-key "M-s"  #'sp-splice-sexp smartparens-mode-map)
+(bind-key "M-<up>"  #'sp-splice-sexp-killing-backward smartparens-mode-map)
+(bind-key "M-<down>"  #'sp-splice-sexp-killing-forward smartparens-mode-map)
+(bind-key "M-r"  #'sp-splice-sexp-killing-around smartparens-mode-map)
+(bind-key "M-?"  #'sp-convolute-sexp smartparens-mode-map)
+;; Barfage & Slurpage
+(bind-key "C-)"  #'sp-forward-slurp-sexp smartparens-mode-map)
+(bind-key "C-<right>"  #'sp-forward-slurp-sexp smartparens-mode-map)
+(bind-key "C-}"  #'sp-forward-barf-sexp smartparens-mode-map)
+(bind-key "C-<left>"  #'sp-forward-barf-sexp smartparens-mode-map)
+(bind-key "C-("  #'sp-backward-slurp-sexp smartparens-mode-map)
+(bind-key "C-M-<left>"  #'sp-backward-slurp-sexp smartparens-mode-map)
+(bind-key "C-{"  #'sp-backward-barf-sexp smartparens-mode-map)
+(bind-key "C-M-<right>"  #'sp-backward-barf-sexp smartparens-mode-map)
+;; Miscellaneous commands
+(bind-key "M-S" #'sp-split-sexp smartparens-mode-map)
+(bind-key "M-J" #'sp-join-sexp smartparens-mode-map)
+(bind-key "C-M-t" #'sp-transpose-sexp smartparens-mode-map)
+;; (bind-key "M-q" …) sp-reindent-defun?  See ;; https://github.com/Fuco1/smartparens/issues/125
+
+(defvar stante-smartparens-lisp-mode-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map smartparens-mode-map)
+    map)
+  "Keymap for Smartparens bindings in Lisp modes.")
+
+(bind-key ")" #'sp-up-sexp stante-smartparens-lisp-mode-map)
+(bind-key "C-d" #'sp-delete-char stante-smartparens-lisp-mode-map)
+(bind-key "DEL" #'sp-backward-delete-char stante-smartparens-lisp-mode-map)
+(bind-key "M-d" #'sp-kill-word stante-smartparens-lisp-mode-map)
+(bind-key "M-DEL" #'sp-backward-kill-word stante-smartparens-lisp-mode-map)
+
+(defun stante-use-smartparens-lisp-mode-map ()
+  "Use Lisp specific Smartparens bindings in the current buffer.
+
+Replace `smartparens-mode-map' with
+`stante-smartparens-lisp-mode-map' in the current buffer."
+  (add-to-list 'minor-mode-overriding-map-alist
+               (cons 'smartparens-mode stante-smartparens-lisp-mode-map)))
 
 
 ;;;; Completion and expansion
@@ -854,7 +876,10 @@ Wrap Region wrappers for the current major mode."
     (add-hook 'LaTeX-mode-hook it))
 
   ;; Add support for latexmk
-  (auctex-latexmk-setup))
+  (auctex-latexmk-setup)
+
+  ;; Smartparens LaTeX support
+  (require 'smartparens-latex))
 
 ;; Find Skim.app on OS X, for Sycntex support which Preview.app lacks.
 (defun stante-find-skim-bundle ()
@@ -982,14 +1007,11 @@ suitable processor was found."
 
   (stante-find-markdown-processor)
 
-  ;; Teach electric-pair-mode about Markdown pairs
-  (defun stante-markdown-electric-pairs ()
-    "Add buffer-local electric pairs for Markdown."
-    (stante-add-local-electric-pairs '((?* . ?*)
-                                       (?` . ?`))))
-
-  (--each '(markdown-mode-hook gfm-mode-hook)
-    (add-hook it #'stante-markdown-electric-pairs)))
+  (sp-with-modes '(markdown-mode gfm-mode)
+    (sp-local-pair "*" "*" :bind "C-*")
+    (sp-local-pair "`" "`")
+    (sp-local-tag "s" "```scheme" "```")
+    (sp-local-tag "<"  "<_>" "</_>" :transform 'sp-match-sgml-tags)))
 
 ;; Don't do filling in GFM mode, where line breaks are significant, and do not
 ;; highlight overlong lines.  Instead enable visual lines.
@@ -1021,12 +1043,11 @@ suitable processor was found."
 ;;;; Basic Lisp editing
 
 (defvar stante-lisp-common-modes
-  '(paredit-mode                        ; Edit Sexps not strings
+  '(stante-use-smartparens-lisp-mode-map  ; Smartparens bindings for Lisp
     rainbow-delimiters-mode)            ; Color parenthesis according to nesting
   "Common modes for Lisp editing.")
 
 (stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
-(stante-after paredit (diminish 'paredit-mode "π"))
 
 
 ;;;; Emacs Lisp
@@ -1055,12 +1076,6 @@ suitable processor was found."
                                         ; expressions
             auto-compile-mode)          ; Automatically compile after save
     (add-hook 'emacs-lisp-mode-hook it))
-
-  ;; Teach Electric about Emacs Lisp pairs
-  (defun stante-emacs-lisp-electric-pairs ()
-    "Add electric pairs for Emacs Lisp."
-    (stante-add-local-electric-pairs '((?` . ?'))))
-  (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-electric-pairs)
 
   ;; Load ERT to support unit test writing and running
   (require 'ert))
@@ -1162,6 +1177,9 @@ suitable processor was found."
 
 ;; Ruby:  Handle Rakefiles
 (stante-auto-modes 'ruby-mode "/Rakefile\\'")
+(stante-after ruby-mode
+  ;; Smartparens Ruby support
+  (require 'smartparens-ruby))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
@@ -1291,13 +1309,9 @@ Create a new ielm process if required."
   (stante-after whitespace
     (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines))
 
-  ;; Teach Electric about Org mode pairs
-  (defun stante-org-electric-pairs ()
-    (stante-add-local-electric-pairs '((?* . ?*)
-                                       (?/ . ?/)
-                                       (?= . ?=)
-                                       (?~ . ?~))))
-  (add-hook 'org-mode-hook #'stante-org-electric-pairs))
+  ;; Teach Smartparens about Org Mode markup
+  (--each '("*" "/" "=" "~")
+    (sp-local-pair 'org-mode it it)))
 
 ;; Configure Org mobile target folder and inbox.  Again, we use Dropbox to get
 ;; synchronization for free.
