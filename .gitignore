@@ -15,7 +15,7 @@ auto-save-list/
 tutorial/
 
 # Various caches
-.frame-parameters
+frame-restore-parameters
 history
 places
 recentf
