@@ -690,6 +690,42 @@ Disable the highlighting of overlong lines."
 (smartparens-global-mode)
 (show-smartparens-global-mode)          ; Show parenthesis
 
+(defun sp-current-indentation ()
+  "Get the indentation offset of the current line."
+  (save-excursion
+    (back-to-indentation)
+    (current-column)))
+
+(defun sp-reindent-defun (arg)
+  "Reindent the current function.
+
+If point is inside a string or comment, fill the current
+paragraph instead, and with ARG, justify as well.
+
+Otherwise, reindent the current function, and adjust the position
+of the point."
+  (interactive "P")
+  (if (sp-point-in-string-or-comment)
+      (fill-paragraph arg)
+    (let ((column (current-column))
+          (indentation (sp-current-indentation)))
+      (save-excursion
+        (end-of-defun)
+        (beginning-of-defun)
+        (indent-sexp))
+      (let* ((indentation* (sp-current-indentation))
+             (offset
+              (cond
+               ;; Point was in code, so move it along with the re-indented code
+               ((>= column indentation)
+                (+ column (- indentation* indentation)))
+               ;; Point was indentation, but would be in code now, so move to
+               ;; the beginning of indentation
+               ((<= indentation* column) indentation*)
+               ;; Point was in indentation, and still is, so leave it there
+               (:else column))))
+        (goto-char (+ (line-beginning-position) offset))))))
+
 ;; Smartparens bindings
 ;; (bind-key "C-j" …) sp-newline? See https://github.com/Fuco1/smartparens/issues/125
 ;; Movement and navigation
@@ -721,7 +757,6 @@ Disable the highlighting of overlong lines."
 (bind-key "M-S" #'sp-split-sexp smartparens-mode-map)
 (bind-key "M-J" #'sp-join-sexp smartparens-mode-map)
 (bind-key "C-M-t" #'sp-transpose-sexp smartparens-mode-map)
-;; (bind-key "M-q" …) sp-reindent-defun?  See ;; https://github.com/Fuco1/smartparens/issues/125
 
 
 ;;;; Completion and expansion
@@ -1000,6 +1035,7 @@ suitable processor was found."
 (bind-key "DEL" #'sp-backward-delete-char stante-smartparens-lisp-mode-map)
 (bind-key "M-d" #'sp-kill-word stante-smartparens-lisp-mode-map)
 (bind-key "M-DEL" #'sp-backward-kill-word stante-smartparens-lisp-mode-map)
+(bind-key "M-q" #'sp-reindent-defun stante-smartparens-lisp-mode-map)
 
 (defun stante-use-smartparens-lisp-mode-map ()
   "Use Lisp specific Smartparens bindings in the current buffer.
