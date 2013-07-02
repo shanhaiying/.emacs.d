@@ -1036,6 +1036,7 @@ suitable processor was found."
 (bind-key "M-d" #'sp-kill-word stante-smartparens-lisp-mode-map)
 (bind-key "M-DEL" #'sp-backward-kill-word stante-smartparens-lisp-mode-map)
 (bind-key "M-q" #'sp-reindent-defun stante-smartparens-lisp-mode-map)
+(bind-key "C-j" #'newline-and-indent)
 
 (defun stante-use-smartparens-lisp-mode-map ()
   "Use Lisp specific Smartparens bindings in the current buffer.
