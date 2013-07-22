@@ -155,12 +155,13 @@ mode symbol."
 ;; Prefer GNU utilities over the inferior BSD variants.  Also improves
 ;; integration with Emacs (for instance, GNU ls has a special --dired flag to
 ;; support dired)
-(when (eq system-type 'darwin)
-  ;; GNU ls
-  (-if-let (gls (executable-find "gls")) (setq insert-directory-program gls)
-           (message "GNU Coreutils not found.  Install coreutils with homebrew."))
-  ;; GNU find
-  (-when-let (gfind (executable-find "gfind"))
+(stante-after files
+  (-if-let (gls (and (eq system-type 'darwin) (executable-find "gls")))
+    (setq insert-directory-program gls)
+    (message "GNU Coreutils not found.  Install coreutils with homebrew.")))
+
+(stante-after grep
+  (-when-let (gfind (and (eq system-type 'darwin) (executable-find "gfind")))
     (setq find-program gfind)))
 
 ;; Utility functions for OS X
