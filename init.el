@@ -161,8 +161,14 @@ mode symbol."
     (message "GNU Coreutils not found.  Install coreutils with homebrew.")))
 
 (stante-after grep
+  ;; Use GNU find on OS X, if possible
   (-when-let (gfind (and (eq system-type 'darwin) (executable-find "gfind")))
     (setq find-program gfind)))
+
+(stante-after locate
+  ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
+  (-when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
+    (setq locate-command mdfind)))
 
 ;; Utility functions for OS X
 (defun stante-id-of-bundle (bundle)
