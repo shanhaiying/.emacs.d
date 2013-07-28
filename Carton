@@ -2,8 +2,6 @@
 (source "melpa" "http://melpa.milkbox.net/packages/")
 (source "org" "http://orgmode.org/elpa/")
 
-(depends-on "carton")                   ; Essential package management
-
 ;; Basic libraries
 (depends-on "dash")
 (depends-on "s")
