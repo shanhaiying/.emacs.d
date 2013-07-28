@@ -5,6 +5,7 @@ export EMACS
 
 SRCS = init.el
 OBJECTS = $(SRCS:.el=.elc)
+PKGDIR := $(shell carton package-directory)
 
 .PHONY: all
 all: compile
@@ -15,7 +16,7 @@ update: Carton
 
 .PHONY: clean-packages
 clean-packages:
-	rm -rf elpa
+	rm -rf $(PKGDIR)
 
 .PHONY: compile
 compile : $(OBJECTS)
@@ -24,8 +25,9 @@ compile : $(OBJECTS)
 clean :
 	rm -f $(OBJECTS)
 
-elpa : Carton
+$(PKGDIR) : Carton
 	$(CARTON) install
+	touch $(PKGDIR)
 
-%.elc : %.el elpa
-	$(EMACS) -f package-initialize -Q --batch $(EMACSFLAGS) -f batch-byte-compile $<
+%.elc : %.el $(PKGDIR)
+	$(CARTON) exec $(EMACS) -f package-initialize -Q --batch $(EMACSFLAGS) -f batch-byte-compile $<
