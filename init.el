@@ -43,9 +43,8 @@ Please install GNU Emacs 24.3 to use Stante Pede"
 
 (package-initialize)
 
-;; Load the Carton file to add our package sources
-(require 'carton)
-(carton-setup user-emacs-directory)
+(require 'carton "~/.carton/carton")
+(carton-initialize)
 
 (defconst stante-vendor-dir (locate-user-emacs-file "vendor")
   "Directory for embedded 3rd party extensions.")
