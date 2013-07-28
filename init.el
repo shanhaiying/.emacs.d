@@ -104,12 +104,15 @@ mode symbol."
         (add-to-list 'auto-mode-alist (cons it mode))))))
 
 (defconst stante-font-lock-keywords
-  `((,(eval-when-compile (concat "(" (regexp-opt '("stante-after"
-                                                   "stante-auto-modes")
-                                                 'symbols)
-                                 "\\s-+\\_<\\(\\(?:\\sw\\|\\s_\\)+\\)\\_>"))
+  `((,(rx "(" symbol-start
+          (group (or "stante-after" "stante-auto-modes"))
+          symbol-end
+          (optional (one-or-more (syntax whitespace))
+                    symbol-start
+                    (group (one-or-more (or (syntax word) (syntax symbol))))
+                    symbol-end))
      (1 font-lock-keyword-face)
-     (2 font-lock-constant-face)))
+     (2 font-lock-constant-face nil t)))
   "Our font lock keywords for Lisp modes.")
 
 (stante-after lisp-mode
@@ -960,7 +963,7 @@ Choose Skim if available, or fall back to the default application."
 ;;;; Markdown editing
 
 ;; Why doesn't Markdown Mode do this itself?!
-(stante-auto-modes 'markdown-mode "\\.md\\'" "\\.markdown\\'")
+(stante-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
 
 ;; Find a suitable processor
 (stante-after markdown-mode
@@ -1075,7 +1078,7 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;; Teach Emacs about Emacs scripts and Carton files
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
-(stante-auto-modes 'emacs-lisp-mode "/Carton\\'")
+(stante-auto-modes 'emacs-lisp-mode (rx "/Carton" string-end))
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
@@ -1161,7 +1164,7 @@ keymap `stante-smartparens-lisp-mode-map'."
 ;;;; Shell scripting
 
 ;; Teach Emacs about Zsh scripts
-(stante-auto-modes 'sh-mode "\\.zsh\\'")
+(stante-auto-modes 'sh-mode (rx ".zsh" string-end))
 
 ;; Shell script indentation styles
 (stante-after sh-script
@@ -1199,7 +1202,7 @@ keymap `stante-smartparens-lisp-mode-map'."
 (stante-after js2-mode
   (setq-default js2-basic-offset 2))
 
-(stante-auto-modes 'js2-mode "\\.js\\'" "\\.json\\'")
+(stante-auto-modes 'js2-mode "." (rx (or "js" "json") string-end))
 
 ;; Haskell: Indentation, and some helpful modes
 (stante-after haskell-mode
@@ -1210,7 +1213,7 @@ keymap `stante-smartparens-lisp-mode-map'."
     (add-hook 'haskell-mode-hook it)))
 
 ;; Ruby:  Handle Rakefiles
-(stante-auto-modes 'ruby-mode "/Rakefile\\'")
+(stante-auto-modes 'ruby-mode (rx "/Rakefile" string-end))
 (stante-after ruby-mode
   ;; Smartparens Ruby support
   (require 'smartparens-ruby))
@@ -1225,7 +1228,7 @@ keymap `stante-smartparens-lisp-mode-map'."
         nxml-auto-insert-xml-declaration-flag t))
 
 ;; PKGBUILD: Recognize PKGBUILD's
-(stante-auto-modes 'pkgbuild-mode "/PKGBUILD\\'")
+(stante-auto-modes 'pkgbuild-mode (rx "/PKGBUILD" string-end))
 
 
 ;;;; Proof General
