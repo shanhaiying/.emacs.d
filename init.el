@@ -1257,10 +1257,10 @@ keymap `stante-smartparens-lisp-mode-map'."
         magit-set-upstream-on-push t))   ; Ask for setting upstream branch on push
 
 ;; Show Git diff state in Fringe
-(stante-after git-gutter
-  (diminish 'git-gutter-mode)
-  (require 'git-gutter-fringe))
-(global-git-gutter-mode)
+(stante-after git-gutter+
+  (diminish 'git-gutter+-mode)
+  (require 'git-gutter-fringe+))
+(global-git-gutter+-mode)
 
 (stante-after gist
   (setq gist-view-gist t))              ; View Gists in browser after creation
