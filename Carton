@@ -50,8 +50,10 @@
 ;; Markup languages
 (depends-on "markdown-mode")            ; Markdown major mode
 (depends-on "bbcode-mode")              ; BBCode major mode
-
 (depends-on "simplezen")                ; Zencoding KISS way
+
+;; Configuration languages
+(depends-on "puppet-mode")              ; For Puppet files
 
 ;; General programming utilities
 (depends-on "highlight-symbol")         ; Symbol awareness

@@ -57,6 +57,8 @@ Please install GNU Emacs 24.3 to use Stante Pede"
 (require 's)
 (require 'bind-key)
 
+(require 'rx)
+
 
 ;;;; Package configuration and initialization
 
@@ -1008,6 +1010,10 @@ suitable processor was found."
 
 (stante-after sgml-mode
   (require 'simplezen))
+
+
+;;;; Various configuration languages
+(stante-auto-modes 'emacs-lisp-mode (rx ".pp" string-end))
 
 
 ;;;; Symbol “awareness”
