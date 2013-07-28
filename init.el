@@ -1212,10 +1212,8 @@ keymap `stante-smartparens-lisp-mode-map'."
             turn-on-haskell-decl-scan)
     (add-hook 'haskell-mode-hook it)))
 
-;; Ruby:  Handle Rakefiles
-(stante-auto-modes 'ruby-mode (rx "/Rakefile" string-end))
+;; Ruby: Smartparens support
 (stante-after ruby-mode
-  ;; Smartparens Ruby support
   (require 'smartparens-ruby))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
