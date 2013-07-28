@@ -1201,7 +1201,7 @@ keymap `stante-smartparens-lisp-mode-map'."
 (stante-after js2-mode
   (setq-default js2-basic-offset 2))
 
-(stante-auto-modes 'js2-mode "." (rx (or "js" "json") string-end))
+(stante-auto-modes 'js2-mode (rx "." (or "js" "json") string-end))
 
 ;; Haskell: Indentation, and some helpful modes
 (stante-after haskell-mode
