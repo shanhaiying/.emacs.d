@@ -1015,7 +1015,7 @@ suitable processor was found."
 
 
 ;;;; Various configuration languages
-(stante-auto-modes 'emacs-lisp-mode (rx ".pp" string-end))
+(stante-auto-modes 'puppet-mode (rx ".pp" string-end))
 
 
 ;;;; Symbol “awareness”
