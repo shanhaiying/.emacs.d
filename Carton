@@ -50,6 +50,7 @@
 (depends-on "markdown-mode")            ; Markdown major mode
 (depends-on "bbcode-mode")              ; BBCode major mode
 (depends-on "simplezen")                ; Zencoding KISS way
+(depends-on "yaml-mode")                ; YAML major mode
 
 ;; Configuration languages
 (depends-on "puppet-mode")              ; For Puppet files
@@ -63,7 +64,6 @@
 (depends-on "haskell-mode")             ; Haskell major mode
 (depends-on "scss-mode")                ; SCSS major mode
 (depends-on "less-css-mode")            ; LESS major mode
-(depends-on "yaml-mode")                ; YAML major mode
 (depends-on "feature-mode")             ; Cucumber major mode
 (depends-on "pkgbuild-mode")            ; Arch PKGBUILD files
 

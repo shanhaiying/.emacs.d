@@ -1014,6 +1014,18 @@ suitable processor was found."
   (require 'simplezen))
 
 
+;;;; Various markup languages
+(stante-after yaml-mode
+  ;; YAML is kind of a mixture between text and programming language, and hence
+  ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
+  ;; explicitly
+  (--each '(stante-text-whitespace-mode
+            stante-auto-fill-comments-mode
+            fci-mode
+            flyspell-prog-mode)
+    (add-hook 'yaml-mode-hook it)))
+
+
 ;;;; Various configuration languages
 (stante-auto-modes 'puppet-mode (rx ".pp" string-end))
 
