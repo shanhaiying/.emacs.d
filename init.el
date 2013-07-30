@@ -41,9 +41,10 @@ Please install GNU Emacs 24.3 to use Stante Pede"
 
 ;;;; Package management
 
-(package-initialize)
+(unless (require 'cask "~/.cask/cask" :no-error)
+  (message "WARNING: Falling back to deprecated Carton, use Cask")
+  (require 'carton "~/.carton/carton"))
 
-(require 'carton "~/.carton/carton")
 (carton-initialize)
 
 (defconst stante-vendor-dir (locate-user-emacs-file "vendor")
