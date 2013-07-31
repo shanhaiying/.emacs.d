@@ -1,18 +1,18 @@
 EMACS = emacs
-CARTON = carton
+CASK = cask
 
 export EMACS
 
 SRCS = init.el
 OBJECTS = $(SRCS:.el=.elc)
-PKGDIR := $(shell carton package-directory)
+PKGDIR := $(shell cask package-directory)
 
 .PHONY: all
 all: compile
 
 .PHONY: update
-update: Carton
-	EMACS=$(EMACS) $(CARTON) update
+update: Cask
+	EMACS=$(EMACS) $(CASK) update
 
 .PHONY: clean-packages
 clean-packages:
@@ -25,9 +25,9 @@ compile : $(OBJECTS)
 clean :
 	rm -f $(OBJECTS)
 
-$(PKGDIR) : Carton
-	$(CARTON) install
+$(PKGDIR) : Cask
+	$(CASK) install
 	touch $(PKGDIR)
 
 %.elc : %.el $(PKGDIR)
-	$(CARTON) exec $(EMACS) -f package-initialize -Q --batch $(EMACSFLAGS) -f batch-byte-compile $<
+	$(CASK) exec $(EMACS) -f package-initialize -Q --batch $(EMACSFLAGS) -f batch-byte-compile $<

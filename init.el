@@ -41,11 +41,8 @@ Please install GNU Emacs 24.3 to use Stante Pede"
 
 ;;;; Package management
 
-(unless (require 'cask "~/.cask/cask" :no-error)
-  (message "WARNING: Falling back to deprecated Carton, use Cask")
-  (require 'carton "~/.carton/carton"))
-
-(carton-initialize)
+(require 'cask "~/.cask/cask" :no-error)
+(cask-initialize)
 
 (defconst stante-vendor-dir (locate-user-emacs-file "vendor")
   "Directory for embedded 3rd party extensions.")
@@ -1088,9 +1085,9 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;;;; Emacs Lisp
 
-;; Teach Emacs about Emacs scripts and Carton files
+;; Teach Emacs about Emacs scripts and Cask/Carton files
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
-(stante-auto-modes 'emacs-lisp-mode (rx "/Carton" string-end))
+(stante-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
