@@ -1174,6 +1174,17 @@ keymap `stante-smartparens-lisp-mode-map'."
   (setq python-check-command "flake8"))
 
 
+;;;; Ruby
+(stante-after ruby-mode
+  (inf-ruby-setup-keybindings)
+
+  (add-hook 'ruby-mode-hook #'robe-mode))
+
+(stante-after robe
+  (stante-after company
+    (push 'company-robe company-backends)))
+
+
 ;;;; Shell scripting
 
 ;; Teach Emacs about Zsh scripts
