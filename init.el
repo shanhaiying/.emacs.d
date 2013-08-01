@@ -1027,6 +1027,10 @@ suitable processor was found."
 ;;;; Various configuration languages
 (stante-auto-modes 'puppet-mode (rx ".pp" string-end))
 
+(stante-after puppet-mode
+  (add-hook 'puppet-mode-hook (apply-partially #'run-hooks 'prog-mode-hook))
+  (set-keymap-parent puppet-mode-map prog-mode-map))
+
 
 ;;;; Symbol “awareness”
 
