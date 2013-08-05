@@ -695,6 +695,9 @@ Disable the highlighting of overlong lines."
 
 
 ;;;; Smartparens
+(stante-after smartparens
+  (setq sp-autoskip-closing-pair 'always))
+
 (require 'smartparens-config)
 (smartparens-global-mode)
 (show-smartparens-global-mode)          ; Show parenthesis
@@ -1059,7 +1062,6 @@ suitable processor was found."
   "Keymap for Smartparens bindings in Lisp modes.")
 
 ;; Be more strict about delimiter deletion in Lisp
-(bind-key ")" #'sp-up-sexp stante-smartparens-lisp-mode-map)
 (bind-key "C-d" #'sp-delete-char stante-smartparens-lisp-mode-map)
 (bind-key "DEL" #'sp-backward-delete-char stante-smartparens-lisp-mode-map)
 (bind-key "M-d" #'sp-kill-word stante-smartparens-lisp-mode-map)
