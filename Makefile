@@ -12,7 +12,7 @@ all: compile
 
 .PHONY: update
 update: Cask
-	EMACS=$(EMACS) $(CASK) update
+	$(CASK) update
 
 .PHONY: clean-packages
 clean-packages:
