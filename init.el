@@ -307,7 +307,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 
 
-;;;; Buffer management
+;;;; Buffer, Windows and Frames
 
 ;; De-duplicate buffer names by prepending parts of the directory until the name
 ;; is unique, instead of just appending numbers.
@@ -318,9 +318,6 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 ;; Clean stale buffers
 (require 'midnight)
-
-
-;; Window management
 
 ;; Move between windows with Shift + Arrow keys
 (windmove-default-keybindings)
@@ -342,16 +339,12 @@ buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) :visible-ok)))
 
-
-;;;; Frames
-
-;; A reasonable frame title
 (setq frame-title-format
       '(:eval (if (buffer-file-name)
                   (abbreviate-file-name (buffer-file-name)) "%b")))
 
-;; Save and restore frame parameters
-(frame-restore)
+;; Save buffers, windows and frames
+(desktop-save-mode)
 
 
 ;;;; File handling

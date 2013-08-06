@@ -19,9 +19,6 @@
 (depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's
 (depends-on "ido-vertical-mode")        ; Show IDO completions vertically
 
-;; Frames
-(depends-on "frame-restore")            ; Restore Emacs frame size and position
-
 ;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files
 (depends-on "hardhat")                  ; Protect user-writable files

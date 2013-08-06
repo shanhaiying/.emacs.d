@@ -26,3 +26,4 @@ semanticdb/
 .org-id-locations
 projectile-bookmarks.eld
 bookmarks
+.emacs.desktop*
