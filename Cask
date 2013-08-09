@@ -102,5 +102,3 @@
 
 ;; Org Mode
 (depends-on "org-plus-contrib")         ; Latest Org + Contrib files
-(depends-on "o-blog")                   ; Org mode based blogging
-(depends-on "htmlize")                  ; For fontified snippets in Oblog
