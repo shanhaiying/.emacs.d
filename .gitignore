@@ -1,29 +1,26 @@
 # Elisp byte code
 *.elc
 
-# Autoload file
-lib/stante-autoloads.el*
-
 # Installed packages
-elpa/
+/.cask/
 
 # Recovery directory
-auto-save-list/
+/auto-save-list/
 # Backup directory
-.backup/
+/.backup/
 # Tutorial states
-tutorial/
+/tutorial/
 
 # Various caches
-frame-restore-parameters
-history
-places
-recentf
-ido.last
-semanticdb/
-.smex-items
-.mc-lists.el
-.org-id-locations
-projectile-bookmarks.eld
-bookmarks
-.emacs.desktop*
+/frame-restore-parameters
+/history
+/places
+/recentf
+/ido.last
+/semanticdb/
+/.smex-items
+/.mc-lists.el
+/.org-id-locations
+/projectile-bookmarks.eld
+/bookmarks
+/.emacs.desktop*
