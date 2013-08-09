@@ -52,6 +52,7 @@ Please install GNU Emacs 24.3 to use Stante Pede"
 
 (require 'dash)
 (require 's)
+(require 'f)
 (require 'bind-key)
 
 (require 'rx)
@@ -1377,6 +1378,32 @@ Create a new ielm process if required."
   (make-directory org-mobile-directory :with-parents))
 
 
+;;;; Calendar
+
+(require 'calfw-org)
+(require 'calfw-ical)
+
+(defconst stante-ical-urls-file
+  (locate-user-emacs-file "stante-ical-urls")
+  "Path to the file storing private ICal URLs.")
+
+(defun stante-ical-sources ()
+  "Get calfw sources for private ICal URLs."
+  (when (f-exists? stante-ical-urls-file)
+    (->> (decode-coding-string (f-read stante-ical-urls-file) 'utf-8 t)
+      s-lines
+      (--map (pcase-let* ((`(,name ,color ,url) (s-split " " it)))
+               (cfw:ical-create-source name url color))))))
+
+(defun stante-personal-calendar ()
+  "Show my personal calendar."
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (cons (cfw:org-create-source "DarkGreen")
+         (stante-ical-sources))))
+
+
 ;; Key bindings
 
 ;; Improve standard bindings
@@ -1472,6 +1499,7 @@ Create a new ielm process if required."
 (bind-key "C-c m h" #'mc/mark-all-like-this-dwim)
 (bind-key "C-c o" #'occur)
 ;; Symbol operations
+(bind-key "C-c S" #'stante-personal-calendar) ; S for Schedule
 (bind-key "C-c s o" #'highlight-symbol-occur)
 (bind-key "C-c s %" #'highlight-symbol-query-replace)
 (bind-key "C-c s n" #'highlight-symbol-next-in-defun)

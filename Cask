@@ -5,6 +5,7 @@
 ;; Basic libraries
 (depends-on "dash")
 (depends-on "s")
+(depends-on "f")
 (depends-on "bind-key")                 ; Keybindings deluxe
 
 (depends-on "exec-path-from-shell")     ; Fix environment
@@ -100,5 +101,6 @@
 (depends-on "ack-and-a-half")           ; Ack frontend
 (depends-on "google-this")              ; Google from Emacs
 
-;; Org Mode
+;; Personal organization
 (depends-on "org-plus-contrib")         ; Latest Org + Contrib files
+(depends-on "calfw")
