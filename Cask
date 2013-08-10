@@ -81,6 +81,7 @@
 (depends-on "clojure-mode")             ; Clojure editing
 (depends-on "clojure-test-mode")        ; Clojure test runner
 (depends-on "nrepl")                    ; Clojure REPL
+(depends-on "clojure-cheatsheet")       ; The one and only cheatsheet
 
 ;; Git and Gist integration
 (depends-on "magit")                    ; Git frontend
