@@ -1327,6 +1327,17 @@ Create a new ielm process if required."
   (--each '("*" "/" "=" "~")
     (sp-local-pair 'org-mode it it)))
 
+(stante-after ox-latex
+  ;; Teach Org LaTeX exporter about KOMA script
+  (add-to-list 'org-latex-classes
+               '("scrartcl"
+                 "\\documentclass{scrartcl}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
 ;; Configure Org mobile target folder and inbox.  Again, we use Dropbox to get
 ;; synchronization for free.
 (stante-after org-mobile
