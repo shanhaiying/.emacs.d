@@ -290,11 +290,13 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                                         ; match
         ido-create-new-buffer 'always   ; Create a new buffer if nothing matches
         ido-use-filename-at-point 'guess
-        ido-default-file-method 'selected-window))
+        ido-default-file-method 'selected-window
+        ido-use-faces nil))             ; Prefer flx ido faces
 
 (ido-mode t)
 (ido-ubiquitous-mode)                   ; Use IDO everywhere
 (ido-vertical-mode)                     ; Show IDO completions vertically
+(flx-ido-mode)                          ; Powerful IDO flex matching
 
 ;; Configure Smex
 (stante-after smex

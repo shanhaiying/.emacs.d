@@ -19,6 +19,7 @@
 (depends-on "smex")                     ; Improved M-x
 (depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's
 (depends-on "ido-vertical-mode")        ; Show IDO completions vertically
+(depends-on "flx-ido")                  ; Powerful flex matching
 
 ;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files
