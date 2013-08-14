@@ -774,6 +774,8 @@ Disable the highlighting of overlong lines."
         flyspell-issue-welcome-flag nil
         flyspell-issue-message-flag nil)
 
+  (add-hook 'flyspell-mode-hook #'auto-dictionary-mode)
+
   (diminish 'flyspell-mode "✓"))
 
 (--each '(text-mode-hook message-mode-hook)
