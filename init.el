@@ -1478,6 +1478,7 @@ Create a new ielm process if required."
 (bind-key "C-c s p" #'highlight-symbol-prev-in-defun)
 (bind-key "C-c s M-n" #'highlight-symbol-next)
 (bind-key "C-c s M-p" #'highlight-symbol-prev)
+(bind-key "C-c y" #'browse-kill-ring)
 (bind-key "C-c z" #'stante-switch-to-ielm)
 
 (stante-after lisp-mode

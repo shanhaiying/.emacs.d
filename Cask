@@ -38,6 +38,7 @@
 (depends-on "flycheck")                 ; On the fly syntax checkingx
 (depends-on "multiple-cursors")         ; Multiple cursors
 (depends-on "undo-tree")                ; Undo reloaded
+(depends-on "browse-kill-ring")         ; Kill ring browser
 
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion
