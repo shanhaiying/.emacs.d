@@ -1274,6 +1274,10 @@ Create a new ielm process if required."
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
+(stante-after ack-and-a-half
+  ;; Use IDO in Ack prompts
+  (setq ack-and-a-half-use-ido t))
+
 ;; Google from Emacs, under C-c /
 (google-this-mode)
 (stante-after google-this (diminish 'google-this-mode))
