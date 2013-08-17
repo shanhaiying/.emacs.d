@@ -1366,7 +1366,7 @@ Create a new ielm process if required."
 (defun stante-ical-sources ()
   "Get calfw sources for private ICal URLs."
   (when (f-exists? stante-ical-urls-file)
-    (->> (decode-coding-string (f-read stante-ical-urls-file) 'utf-8 t)
+    (->> (f-read-text stante-ical-urls-file 'utf-8)
       s-lines
       (--map (pcase-let* ((`(,name ,color ,url) (s-split " " it)))
                (cfw:ical-create-source name url color))))))
