@@ -94,6 +94,7 @@
 (depends-on "git-commit-mode")          ; Git commit message mode
 (depends-on "gitconfig-mode")           ; Git configuration mode
 (depends-on "gitignore-mode")           ; .gitignore mode
+(depends-on "git-rebase-mode")          ; Mode for git rebase -i
 (depends-on "git-gutter+")              ; Show Diff state in buffer…
 (depends-on "git-gutter-fringe+")       ; …and do so in the fringe
 (depends-on "gist")                     ; Gist frontend
