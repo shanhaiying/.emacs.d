@@ -299,9 +299,11 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
             (lambda () (setq ido-ubiquitous-enable-compatibility t))))
 
 (ido-mode t)
-(ido-ubiquitous-mode)                   ; Use IDO everywhere
+(ido-ubiquitous-mode)                   ; Use IDO everywhere…
+(ido-at-point-setup)                    ; …even in `completion-at-point'
 (ido-vertical-mode)                     ; Show IDO completions vertically
 (flx-ido-mode)                          ; Powerful IDO flex matching
+
 
 ;; Configure Smex
 (stante-after smex
