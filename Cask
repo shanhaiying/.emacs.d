@@ -17,9 +17,10 @@
 ;; UI improvements
 (depends-on "diminish")                 ; De-clutter mode line
 (depends-on "smex")                     ; Improved M-x
-(depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's
 (depends-on "ido-vertical-mode")        ; Show IDO completions vertically
-(depends-on "flx-ido")                  ; Powerful flex matching
+(depends-on "flx-ido")                  ; Powerful flex matching for IDO
+(depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's…
+(depends-on "ido-at-point")             ; …and even for completion-at-point
 
 ;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files
