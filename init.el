@@ -1083,6 +1083,9 @@ keymap `stante-smartparens-lisp-mode-map'."
   ;; Load ERT to support unit test writing and running
   (require 'ert))
 
+(stante-after flycheck
+  (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
+
 (stante-after ielm
   (--each stante-emacs-lisp-common-modes
     (add-hook 'ielm-mode-hook it))
