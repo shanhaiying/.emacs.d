@@ -300,7 +300,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 (ido-mode t)
 (ido-ubiquitous-mode)                   ; Use IDO everywhere…
-(ido-at-point-setup)                    ; …even in `completion-at-point'
+(ido-at-point-mode)                     ; …even in `completion-at-point'
 (ido-vertical-mode)                     ; Show IDO completions vertically
 (flx-ido-mode)                          ; Powerful IDO flex matching
 
