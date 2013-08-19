@@ -1070,10 +1070,15 @@ keymap `stante-smartparens-lisp-mode-map'."
     (add-hook 'emacs-lisp-mode-hook it)
     (add-hook 'lisp-interaction-mode-hook it))
 
+  (defun stante-auto-compile-user-init-file ()
+    "Enable `auto-compile-mode' for `user-init-file'."
+    (when (and (buffer-file-name) (f-same (buffer-file-name) user-init-file))
+      (auto-compile-mode)))
+
   ;; Some more Emacs Lisp editing hooks
   (--each '(checkdoc-minor-mode         ; Check doc conventions when eval'ing
                                         ; expressions
-            auto-compile-mode)          ; Automatically compile after save
+            stante-auto-compile-user-init-file) ; Automatically compile init.el
     (add-hook 'emacs-lisp-mode-hook it))
 
   ;; Smartparens support for Emacs Lisp editing
