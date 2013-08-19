@@ -1348,8 +1348,10 @@ Create a new ielm process if required."
   ;; In Europe we start on Monday
   (setq calendar-week-start-day 1))
 
-(require 'calfw-org)
-(require 'calfw-ical)
+;; Calfw autoloads (which should really be in calfw itself…)
+(autoload 'cfw:open-calendar-buffer "calfw")
+(autoload 'cfw:org-create-source "calfw-org")
+(autoload 'cfw:ical-create-source "calfw-ical")
 
 (defconst stante-ical-urls-file
   (locate-user-emacs-file "stante-ical-urls")
