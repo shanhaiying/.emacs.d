@@ -1389,6 +1389,14 @@ Create a new ielm process if required."
         smtpmail-stream-type 'starttls
         smtpmail-smtp-user user-mail-address))
 
+;; Settings for reading mail via Gnus
+(stante-after gnus
+  (setq gnus-select-method
+        '(nnimap "gmail"
+                 (nnimap-address "imap.gmail.com")
+                 (nnimap-server-port 993)
+                 (nnimap-stream ssl))))
+
 
 ;;;; Key bindings
 
