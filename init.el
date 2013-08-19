@@ -1070,7 +1070,7 @@ keymap `stante-smartparens-lisp-mode-map'."
 
   (defun stante-auto-compile-user-init-file ()
     "Enable `auto-compile-mode' for `user-init-file'."
-    (when (and (buffer-file-name) (f-same (buffer-file-name) user-init-file))
+    (when (and (buffer-file-name) (f-same? (buffer-file-name) user-init-file))
       (auto-compile-mode)))
 
   ;; Some more Emacs Lisp editing hooks
