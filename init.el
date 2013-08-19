@@ -827,7 +827,13 @@ Disable the highlighting of overlong lines."
   (auctex-latexmk-setup)
 
   ;; Smartparens LaTeX support
-  (require 'smartparens-latex))
+  (require 'smartparens-latex)
+
+  (sp-with-modes 'latex-mode
+    (sp-local-pair "$" "$")
+    (sp-local-pair "\\[" "\\]")
+    (sp-local-pair "`" "'")
+    (sp-local-tag "\\b" "\\begin{_}" "\\end{_}")))
 
 ;; Find Skim.app on OS X, for Sycntex support which Preview.app lacks.
 (defun stante-find-skim-bundle ()
