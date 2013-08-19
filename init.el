@@ -1293,28 +1293,7 @@ Create a new ielm process if required."
 (stante-after google-this (diminish 'google-this-mode))
 
 
-;;;; Personal organization
-
-;; In Europe, the week starts on Monday
-(stante-after calendar
-  (setq calendar-week-start-day 1))
-
-;; Mail settings
-(stante-after sendmail
-  (setq send-mail-function 'smtpmail-send-it))
-
-(stante-after message
-  (setq message-send-mail-function 'smtpmail-send-it))
-
-(stante-after smtpmail
-  (setq smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587
-        smtpmail-stream-type 'starttls
-        smtpmail-smtp-user user-mail-address))
-
-
 ;;;; Org mode
-
 ;; Tell Org where our files are located.  We keep them in Dropbox for easy
 ;; synchronization.
 (stante-after org
@@ -1365,6 +1344,9 @@ Create a new ielm process if required."
 
 
 ;;;; Calendar
+(stante-after calendar
+  ;; In Europe we start on Monday
+  (setq calendar-week-start-day 1))
 
 (require 'calfw-org)
 (require 'calfw-ical)
@@ -1390,7 +1372,23 @@ Create a new ielm process if required."
          (stante-ical-sources))))
 
 
-;; Key bindings
+;;;; E-Mail
+
+;; Settings for sending mail via GMail
+(stante-after sendmail
+  (setq send-mail-function 'smtpmail-send-it))
+
+(stante-after message
+  (setq message-send-mail-function 'smtpmail-send-it))
+
+(stante-after smtpmail
+  (setq smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        smtpmail-stream-type 'starttls
+        smtpmail-smtp-user user-mail-address))
+
+
+;;;; Key bindings
 
 ;; Improve standard bindings
 (bind-key "M-x" #'smex)
