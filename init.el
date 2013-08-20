@@ -1269,7 +1269,10 @@ keymap `stante-smartparens-lisp-mode-map'."
 (setq helm-command-prefix-key "C-c c")
 
 ;; Project interaction
-(stante-after projectile (diminish 'projectile-mode))
+(stante-after projectile
+  (diminish 'projectile-mode)
+
+  (setq projectile-completion-system 'grizzl))
 (projectile-global-mode)
 
 ;; Quickly switch to IELM
