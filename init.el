@@ -293,17 +293,10 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
         ido-default-file-method 'selected-window
         ido-use-faces nil))             ; Prefer flx ido faces
 
-(stante-after ido-ubiquitous
-  ;; Unbreak our `completing-read's
-  (add-hook 'ido-vertical-mode-hook
-            (lambda () (setq ido-ubiquitous-enable-compatibility t))))
-
 (ido-mode t)
 (ido-ubiquitous-mode)                   ; Use IDO everywhere…
 (ido-at-point-mode)                     ; …even in `completion-at-point'
-(ido-vertical-mode)                     ; Show IDO completions vertically
 (flx-ido-mode)                          ; Powerful IDO flex matching
-
 
 ;; Configure Smex
 (stante-after smex
