@@ -676,6 +676,8 @@ Disable the highlighting of overlong lines."
 (global-page-break-lines-mode)
 
 ;; On the fly syntax checking
+(stante-after flycheck
+  (setq flycheck-completion-system 'grizzl))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
