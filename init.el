@@ -694,7 +694,6 @@ Disable the highlighting of overlong lines."
 (show-smartparens-global-mode)          ; Show parenthesis
 
 ;; Smartparens bindings
-;; (bind-key "C-j" …) sp-newline? See https://github.com/Fuco1/smartparens/issues/125
 ;; Movement and navigation
 (bind-key "C-M-f" #'sp-forward-sexp smartparens-mode-map)
 (bind-key "C-M-b" #'sp-backward-sexp smartparens-mode-map)
@@ -1012,17 +1011,19 @@ suitable processor was found."
 ;; Improve Smartparens support for Lisp editing
 (defvar stante-smartparens-lisp-mode-map
   (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map smartparens-mode-map)
+    ;; Be strict about delimiters
+    (set-keymap-parent map sp-keymap)
+    (define-key map [remap delete-char] #'sp-delete-char)
+    (define-key map [remap backward-delete-char-untabify] #'sp-backward-delete-char)
+    (define-key map [remap backward-delete-char] #'sp-backward-delete-char)
+    (define-key map [remap delete-backward-char] #'sp-backward-delete-char)
+    (define-key map [remap kill-word] #'sp-kill-word)
+    (define-key map [remap backward-kill-word] #'sp-backward-kill-word)
+    ;; More clever filling and new line insertion
+    (define-key map [remap fill-paragraph] #'sp-indent-defun)
+    (define-key map [remap newline-and-indent] #'sp-newline)
     map)
   "Keymap for Smartparens bindings in Lisp modes.")
-
-;; Be more strict about delimiter deletion in Lisp
-(bind-key "C-d" #'sp-delete-char stante-smartparens-lisp-mode-map)
-(bind-key "DEL" #'sp-backward-delete-char stante-smartparens-lisp-mode-map)
-(bind-key "M-d" #'sp-kill-word stante-smartparens-lisp-mode-map)
-(bind-key "M-DEL" #'sp-backward-kill-word stante-smartparens-lisp-mode-map)
-(bind-key "M-q" #'sp-indent-defun stante-smartparens-lisp-mode-map)
-(bind-key "C-j" #'newline-and-indent stante-smartparens-lisp-mode-map)
 
 (defun stante-use-smartparens-lisp-mode-map ()
   "Use Lisp specific Smartparens bindings in the current buffer.
