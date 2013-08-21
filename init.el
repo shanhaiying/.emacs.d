@@ -53,7 +53,6 @@ Please install GNU Emacs 24.3 to use Stante Pede"
 (require 'dash)
 (require 's)
 (require 'f)
-(require 'bind-key)
 
 (require 'rx)
 
@@ -485,6 +484,17 @@ non-directory part only."
   (interactive)
   (find-file-other-window user-init-file))
 
+(defvar stante-files-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "r") #'stante-ido-find-recentf)
+    (define-key map (kbd "o") #'stante-launch-dwim)
+    (define-key map (kbd "R") #'stante-rename-file-and-buffer)
+    (define-key map (kbd "D") #'stante-delete-file-and-buffer)
+    (define-key map (kbd "w") #'stante-copy-filename-as-kill)
+    (define-key map (kbd "i") #'stante-find-user-init-file-other-window)
+    map)
+  "Keymap for file operations.")
+
 
 ;;;; Basic editing
 
@@ -685,6 +695,20 @@ Disable the highlighting of overlong lines."
 (unless (server-running-p) (server-start))
 
 
+;;;; Multiple cursors
+(defvar stante-multiple-cursors-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "l") #'mc/edit-lines)
+    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
+    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
+    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
+    (define-key map (kbd ">") #'mc/mark-next-like-this)
+    (define-key map (kbd "<") #'mc/mark-previous-like-this)
+    (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
+    (define-key map (kbd "h") #'mc/mark-all-like-this-dwim)
+    map))
+
+
 ;;;; Smartparens
 (stante-after smartparens
   (setq sp-autoskip-closing-pair 'always))
@@ -695,34 +719,34 @@ Disable the highlighting of overlong lines."
 
 ;; Smartparens bindings
 ;; Movement and navigation
-(bind-key "C-M-f" #'sp-forward-sexp smartparens-mode-map)
-(bind-key "C-M-b" #'sp-backward-sexp smartparens-mode-map)
-(bind-key "C-M-u" #'sp-backward-up-sexp smartparens-mode-map)
-(bind-key "C-M-d" #'sp-down-sexp smartparens-mode-map)
-(bind-key "C-M-p" #'sp-backward-down-sexp smartparens-mode-map)
-(bind-key "C-M-n" #'sp-up-sexp smartparens-mode-map)
-;; Deleting and killing
-(bind-key "C-M-k" #'sp-kill-sexp smartparens-mode-map)
-(bind-key "C-M-w" #'sp-copy-sexp smartparens-mode-map)
-;; Depth changing
-(bind-key "M-s"  #'sp-splice-sexp smartparens-mode-map)
-(bind-key "M-<up>"  #'sp-splice-sexp-killing-backward smartparens-mode-map)
-(bind-key "M-<down>"  #'sp-splice-sexp-killing-forward smartparens-mode-map)
-(bind-key "M-r"  #'sp-splice-sexp-killing-around smartparens-mode-map)
-(bind-key "M-?"  #'sp-convolute-sexp smartparens-mode-map)
-;; Barfage & Slurpage
-(bind-key "C-)"  #'sp-forward-slurp-sexp smartparens-mode-map)
-(bind-key "C-<right>"  #'sp-forward-slurp-sexp smartparens-mode-map)
-(bind-key "C-}"  #'sp-forward-barf-sexp smartparens-mode-map)
-(bind-key "C-<left>"  #'sp-forward-barf-sexp smartparens-mode-map)
-(bind-key "C-("  #'sp-backward-slurp-sexp smartparens-mode-map)
-(bind-key "C-M-<left>"  #'sp-backward-slurp-sexp smartparens-mode-map)
-(bind-key "C-{"  #'sp-backward-barf-sexp smartparens-mode-map)
-(bind-key "C-M-<right>"  #'sp-backward-barf-sexp smartparens-mode-map)
-;; Miscellaneous commands
-(bind-key "M-S" #'sp-split-sexp smartparens-mode-map)
-(bind-key "M-J" #'sp-join-sexp smartparens-mode-map)
-(bind-key "C-M-t" #'sp-transpose-sexp smartparens-mode-map)
+(define-key sp-keymap (kbd "C-M-f") #'sp-forward-sexp)
+(define-key sp-keymap (kbd "C-M-b") #'sp-backward-sexp)
+(define-key sp-keymap (kbd "C-M-u") #'sp-backward-up-sexp)
+(define-key sp-keymap (kbd "C-M-d") #'sp-down-sexp)
+(define-key sp-keymap (kbd "C-M-p") #'sp-backward-down-sexp)
+(define-key sp-keymap (kbd "C-M-n") #'sp-up-sexp)
+;stante-; Deleting and killing
+(define-key sp-keymap (kbd "C-M-k") #'sp-kill-sexp)
+(define-key sp-keymap (kbd "C-M-w") #'sp-copy-sexp)
+;stante-; Depth changing
+(define-key sp-keymap (kbd "M-s") #'sp-splice-sexp)
+(define-key sp-keymap (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
+(define-key sp-keymap (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
+(define-key sp-keymap (kbd "M-r") #'sp-splice-sexp-killing-around)
+(define-key sp-keymap (kbd "M-?") #'sp-convolute-sexp)
+;stante-; Barfage & Slurpage
+(define-key sp-keymap (kbd "C-)")  #'sp-forward-slurp-sexp)
+(define-key sp-keymap (kbd "C-<right>") #'sp-forward-slurp-sexp)
+(define-key sp-keymap (kbd "C-}")  #'sp-forward-barf-sexp)
+(define-key sp-keymap (kbd "C-<left>") #'sp-forward-barf-sexp)
+(define-key sp-keymap (kbd "C-(")  #'sp-backward-slurp-sexp)
+(define-key sp-keymap (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
+(define-key sp-keymap (kbd "C-{")  #'sp-backward-barf-sexp)
+(define-key sp-keymap (kbd "C-M-<right>") #'sp-backward-barf-sexp)
+;stante-; Miscellaneous commands
+(define-key sp-keymap (kbd "M-S") #'sp-split-sexp)
+(define-key sp-keymap (kbd "M-J") #'sp-join-sexp)
+(define-key sp-keymap (kbd "C-M-t") #'sp-transpose-sexp)
 
 
 ;;;; Completion and expansion
@@ -999,6 +1023,17 @@ suitable processor was found."
   (diminish 'highlight-symbol-mode))
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
+(defvar stante-symbol-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "o") #'highlight-symbol-occur)
+    (define-key map (kbd "%") #'highlight-symbol-query-replace)
+    (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
+    (define-key map (kbd "p") #'highlight-symbol-prev-in-defun)
+    (define-key map (kbd "M-n") #'highlight-symbol-next)
+    (define-key map (kbd "M-p") #'highlight-symbol-prev)
+    map)
+  "Keymap for symbol operations.")
+
 
 ;;;; Basic Lisp editing
 
@@ -1256,13 +1291,28 @@ keymap `stante-smartparens-lisp-mode-map'."
 (stante-after gist
   (setq gist-view-gist t))              ; View Gists in browser after creation
 
+(defvar stante-gist-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "c") #'gist-region-or-buffer)
+    (define-key map (kbd "l") #'gist-list)
+    map)
+  "Keymap for Gist operations.")
+
 
 ;;;; Tools and utilities
 
 ;; Powerful search and narrowing framework
+;; Set the prefix key before loading to prevent Helm from ever claiming "C-x c"
+(defvar helm-command-prefix-key)
+(setq helm-command-prefix-key nil)
 (require 'helm-config)
-(unbind-key helm-command-prefix-key)
-(setq helm-command-prefix-key "C-c c")
+
+;; Some custom helm bindings
+(define-key helm-command-map (kbd "A") #'helm-apropos)
+(define-key helm-command-map (kbd "a") #'helm-ack)
+(define-key helm-command-map (kbd "g") #'helm-do-grep)
+(define-key helm-command-map (kbd "o") #'helm-occur)
+(define-key helm-command-map (kbd "p") #'helm-projectile)
 
 ;; Project interaction
 (stante-after projectile
@@ -1289,6 +1339,13 @@ Create a new ielm process if required."
 (stante-after ack-and-a-half
   ;; Use IDO in Ack prompts
   (setq ack-and-a-half-use-ido t))
+
+(defvar stante-ack-and-a-half-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a") #'ack-and-a-half)
+    (define-key map (kbd "s") #'ack-and-a-half-same)
+    map)
+  "Keymap for Ack and a Half.")
 
 ;; Google from Emacs, under C-c /
 (google-this-mode)
@@ -1403,114 +1460,52 @@ Create a new ielm process if required."
 ;;;; Key bindings
 
 ;; Improve standard bindings
-(bind-key "M-x" #'smex)
-(bind-key "C-x C-b" #'ibuffer)
-(bind-key "C-S-<backspace>" #'stante-smart-kill-whole-line)
-(bind-key "C-a" #'stante-back-to-indentation-or-beginning-of-line)
-(bind-key "M-/" #'hippie-expand)
+(global-set-key [remap execute-extended-command] #'smex)
+(global-set-key [remap list-buffers] #'ibuffer)
+(global-set-key [remap kill-whole-line] #'stante-smart-kill-whole-line)
+(global-set-key [remap move-beginning-of-line]
+                #'stante-back-to-indentation-or-beginning-of-line)
+(global-set-key [remap dabbrev-expand] #'hippie-expand)
 ;; Complement standard bindings (the comments indicate the related bindings)
-(bind-key "M-X" #'smex-major-mode-commands)                  ; M-x
-(bind-key "C-<backspace>" #'stante-smart-backward-kill-line) ; C-S-backspace
-(bind-key "C-S-j" #'stante-smart-open-line)                  ; C-j
-(bind-key "M-Z" #'zap-up-to-char)                            ; M-z
-(bind-key "C-h A" #'apropos)                                 ; C-h a
-(bind-key "C-x p" #'proced)                                  ; C-x p
+(global-set-key (kbd "M-X") #'smex-major-mode-commands)                  ; M-x
+(global-set-key (kbd "C-<backspace>") #'stante-smart-backward-kill-line) ; C-S-backspace
+(global-set-key (kbd "C-S-j") #'stante-smart-open-line)                  ; C-j
+(global-set-key (kbd "M-Z") #'zap-up-to-char)                            ; M-z
+(global-set-key (kbd "C-h A") #'apropos)                                 ; C-h a
+(global-set-key (kbd "C-x p") #'proced)                                  ; C-x p
 ;; Find definition sources fast
-(bind-key "C-h F" #'find-function)                           ; C-h f
-(bind-key "C-h V" #'find-variable)                           ; C-h v
-;; Describe all user key bindings
-(bind-key "C-h K" #'describe-personal-keybindings)
+(global-set-key (kbd "C-h F") #'find-function) ; C-h f
+(global-set-key (kbd "C-h V") #'find-variable) ; C-h v
 
 ;; Key bindings for extension packages
-(bind-key "C-=" #'er/expand-region)
-(bind-key "C-c SPC" #'ace-jump-mode)
-(bind-key "C-c C-SPC" #'ace-jump-mode)
-(bind-key "C-x SPC" #'ace-jump-mode-pop-mark)
+(global-set-key (kbd "C-=") #'er/expand-region)
+(global-set-key (kbd "C-c SPC") #'ace-jump-mode)
+(global-set-key (kbd "C-c C-SPC") #'ace-jump-mode)
+(global-set-key (kbd "C-x SPC") #'ace-jump-mode-pop-mark)
 
 ;; User key bindings in the C-c space.
-(bind-key "C-c A" #'org-agenda)
-;; Ack bindings
-(bind-key "C-c a a" #'ack-and-a-half)
-(bind-key "C-c a s" #'ack-and-a-half-same)
-(bind-key "C-c b" #'stante-switch-to-previous-buffer)
-(bind-key "C-c C" #'org-capture)
-;; Helm bindings
-(bind-key "C-c c /" #'helm-find)
-(bind-key "C-c c 8" #'helm-ucs)
-(bind-key "C-c c <tab>" #'helm-lisp-completion-at-point)
-(bind-key "C-c c A" #'helm-apropos)
-(bind-key "C-c c C-," #'helm-calcul-expression)
-(bind-key "C-c c C-:" #'helm-eval-expression-with-eldoc)
-(bind-key "C-c c C-c <SPC>" #'helm-all-mark-rings)
-(bind-key "C-c c C-c C-b" #'helm-browse-code)
-(bind-key "C-c c C-c C-x" #'helm-run-external-command)
-(bind-key "C-c c C-c f" #'helm-recentf)
-(bind-key "C-c c C-c g" #'helm-google-suggest)
-(bind-key "C-c c C-x C-b" #'helm-buffers-list)
-(bind-key "C-c c C-x C-f" #'helm-find-files)
-(bind-key "C-c c C-x r b" #'helm-bookmarks)
-(bind-key "C-c c C-x r i" #'helm-register)
-(bind-key "C-c c M-g s" #'helm-do-grep)
-(bind-key "C-c c M-s o" #'helm-occur)
-(bind-key "C-c c M-x" #'helm-M-x)
-(bind-key "C-c c M-y" #'helm-show-kill-ring)
-(bind-key "C-c c P" #'helm-list-emacs-process)
-(bind-key "C-c c a" #'helm-ack)
-(bind-key "C-c c b" #'helm-resume)
-(bind-key "C-c c c" #'helm-colors)
-(bind-key "C-c c e" #'helm-etags-select)
-(bind-key "C-c c f" #'helm-for-files)
-(bind-key "C-c c g" #'helm-do-grep)
-(bind-key "C-c c h g" #'helm-info-gnus)
-(bind-key "C-c c h i" #'helm-info-at-point)
-(bind-key "C-c c h r" #'helm-info-emacs)
-(bind-key "C-c c i" #'helm-imenu)
-(bind-key "C-c c l" #'helm-locate)
-(bind-key "C-c c m" #'helm-man-woman)
-(bind-key "C-c c o" #'helm-occur)
-(bind-key "C-c c p" #'helm-projectile)
-(bind-key "C-c c r" #'helm-regexp)
-(bind-key "C-c c s" #'helm-surfraw)
-(bind-key "C-c c t" #'helm-top)
-;; File commands
-(bind-key "C-c f r" #'stante-ido-find-recentf)
-(bind-key "C-c f o" #'stante-launch-dwim)
-(bind-key "C-c f R" #'stante-rename-file-and-buffer)
-(bind-key "C-c f D" #'stante-delete-file-and-buffer)
-(bind-key "C-c f w" #'stante-copy-filename-as-kill)
-(bind-key "C-c f i" #'stante-find-user-init-file-other-window)
-;; Gist commands
-(bind-key "C-c G c" #'gist-region-or-buffer)
-(bind-key "C-c G l" #'gist-list)
-(bind-key "C-c g" #'magit-status)
-(bind-key "C-c i" #'imenu)
-;; Multiple Cursors
-(bind-key "C-c m l" #'mc/edit-lines)
-(bind-key "C-c m C-a" #'mc/edit-beginnings-of-lines)
-(bind-key "C-c m C-e" #'mc/edit-ends-of-lines)
-(bind-key "C-c m C-s" #'mc/mark-all-in-region)
-(bind-key "C-c m >" #'mc/mark-next-like-this)
-(bind-key "C-c m <" #'mc/mark-previous-like-this)
-(bind-key "C-c m e" #'mc/mark-more-like-this-extended)
-(bind-key "C-c m h" #'mc/mark-all-like-this-dwim)
-(bind-key "C-c o" #'occur)
-;; Symbol operations
-(bind-key "C-c S" #'stante-personal-calendar) ; S for Schedule
-(bind-key "C-c s o" #'highlight-symbol-occur)
-(bind-key "C-c s %" #'highlight-symbol-query-replace)
-(bind-key "C-c s n" #'highlight-symbol-next-in-defun)
-(bind-key "C-c s p" #'highlight-symbol-prev-in-defun)
-(bind-key "C-c s M-n" #'highlight-symbol-next)
-(bind-key "C-c s M-p" #'highlight-symbol-prev)
-(bind-key "C-c y" #'browse-kill-ring)
-(bind-key "C-c z" #'stante-switch-to-ielm)
+(define-key mode-specific-map (kbd "A") #'org-agenda)
+(define-key mode-specific-map (kbd "a") stante-ack-and-a-half-map)
+(define-key mode-specific-map (kbd "c") #'stante-switch-to-previous-buffer)
+(define-key mode-specific-map (kbd "C") #'org-capture)
+(define-key mode-specific-map (kbd "c") 'helm-command-prefix)
+(define-key mode-specific-map (kbd "f") stante-files-map)
+(define-key mode-specific-map (kbd "G") stante-gist-map)
+(define-key mode-specific-map (kbd "g") #'magit-status)
+(define-key mode-specific-map (kbd "i") #'imenu)
+(define-key mode-specific-map (kbd "m") stante-multiple-cursors-map)
+(define-key mode-specific-map (kbd "o") #'occur)
+(define-key mode-specific-map (kbd "S") #'stante-personal-calendar) ; S for Schedule
+(define-key mode-specific-map (kbd "s") stante-symbol-keymap)
+(define-key mode-specific-map (kbd "y") #'browse-kill-ring)
+(define-key mode-specific-map (kbd "z") #'stante-switch-to-ielm)
 
 (stante-after lisp-mode
-  (bind-key "C-c e" #'macrostep-expand emacs-lisp-mode-map))
+  (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
 
 (stante-after sgml-mode
-  (bind-key "C-c e" #'simplezen-expand html-mode-map)
-  (bind-key "TAB" #'simplezen-expand-or-indent-for-tab html-mode-map))
+  (define-key html-mode-map (kbd "C-c e") #'simplezen-expand)
+  (define-key html-mode-map (kbd "TAB") #'simplezen-expand-or-indent-for-tab))
 
 ;; Local Variables:
 ;; coding: utf-8

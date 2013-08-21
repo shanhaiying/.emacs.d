@@ -6,7 +6,6 @@
 (depends-on "dash")
 (depends-on "s")
 (depends-on "f")
-(depends-on "bind-key")                 ; Keybindings deluxe
 
 (depends-on "exec-path-from-shell")     ; Fix environment
 
