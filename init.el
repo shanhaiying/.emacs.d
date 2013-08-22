@@ -1046,38 +1046,34 @@ suitable processor was found."
 ;; Improve Smartparens support for Lisp editing
 (defvar stante-smartparens-lisp-mode-map
   (let ((map (make-sparse-keymap)))
-    ;; Be strict about delimiters
-    (set-keymap-parent map sp-keymap)
-    (define-key map [remap delete-char] #'sp-delete-char)
-    (define-key map [remap backward-delete-char-untabify] #'sp-backward-delete-char)
-    (define-key map [remap backward-delete-char] #'sp-backward-delete-char)
-    (define-key map [remap delete-backward-char] #'sp-backward-delete-char)
-    (define-key map [remap kill-word] #'sp-kill-word)
-    (define-key map [remap backward-kill-word] #'sp-backward-kill-word)
     ;; More clever filling and new line insertion
     (define-key map [remap fill-paragraph] #'sp-indent-defun)
     (define-key map [remap newline-and-indent] #'sp-newline)
     map)
-  "Keymap for Smartparens bindings in Lisp modes.")
+  "Keymap for `stante-smartparens-lisp-mode'.")
 
-(defun stante-use-smartparens-lisp-mode-map ()
-  "Use Lisp specific Smartparens bindings in the current buffer.
+(define-minor-mode stante-smartparens-lisp-mode
+  "A minor mode to enable Lisp editing with Smartparens.
 
-Replace `smartparens-mode-map' with
-`stante-smartparens-lisp-mode-map' in the current buffer."
-  (add-to-list 'minor-mode-overriding-map-alist
-               (cons 'smartparens-mode stante-smartparens-lisp-mode-map)))
+When enabled, this mode essentially just adds some new key
+bindings."
+  :init-value nil)
 
 (defun stante-smartparens-setup-lisp-modes (modes)
   "Setup Smartparens Lisp support in MODES.
 
 Add Lisp pairs and tags to MODES, and use the a special, more strict
 keymap `stante-smartparens-lisp-mode-map'."
-  (let ((modes (if (symbolp modes) (list modes) modes)))
-    (sp-local-pair modes "(" nil :bind "M-(")
-    (--each modes
-      (let ((hook (intern (format "%s-hook" (symbol-name it)))))
-        (add-hook hook #'stante-use-smartparens-lisp-mode-map)))))
+  (when (symbolp modes)
+    (setq modes (list modes)))
+  ;; Wrap expressions with M-( (just like in Paredit)
+  (sp-local-pair modes "(" nil :bind "M-(")
+  (--each modes
+    (let ((hook (intern (format "%s-hook" (symbol-name it)))))
+      ;; Be strict about delimiters
+      (add-hook hook #'smartparens-strict-mode)
+      ;; Add our own keymap for some additional clever bindings
+      (add-hook hook #'stante-smartparens-lisp-mode))))
 
 
 ;;;; Emacs Lisp
