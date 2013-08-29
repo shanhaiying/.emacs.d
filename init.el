@@ -249,6 +249,13 @@ Without FORMULA determine whether Homebrew itself is available."
 
 The `car' of each item is the font family, the `cdr' the preferred font size.")
 
+(defconst stante-preferred-proportional-fonts
+  '(("Lucida Grande" . 110)
+    ("DejaVu Sans" . 110))
+  "Preferred proportional fonts for Stante.
+
+The `car' of each item is the font family, the `cdr' the preferred font size.")
+
 (defun stante-first-existing-font (fonts)
   "Get the first existing font from FONTS."
   (--first (x-family-fonts (car it)) fonts))
@@ -258,7 +265,11 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   (interactive)
   (-when-let (font  (stante-first-existing-font stante-preferred-monospace-fonts))
     (--each '(default fixed-pitch)
-      (set-face-attribute it nil :family (car font) :height (cdr font)))))
+      (set-face-attribute it nil
+                          :family (car font) :height (cdr font))))
+  (-when-let (font (stante-first-existing-font stante-preferred-proportional-fonts))
+    (set-face-attribute 'variable-pitch nil
+                        :family (car font) :height (cdr font))))
 
 (stante-choose-best-fonts)
 (load-theme 'solarized-light :no-confirm)
