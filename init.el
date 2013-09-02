@@ -250,7 +250,7 @@ Without FORMULA determine whether Homebrew itself is available."
 The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 (defconst stante-preferred-proportional-fonts
-  '(("Lucida Grande" . 110)
+  '(("Lucida Grande" . 120)
     ("DejaVu Sans" . 110))
   "Preferred proportional fonts for Stante.
 
