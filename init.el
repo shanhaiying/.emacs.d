@@ -1497,7 +1497,7 @@ Create a new ielm process if required."
 ;; User key bindings in the C-c space.
 (define-key mode-specific-map (kbd "A") #'org-agenda)
 (define-key mode-specific-map (kbd "a") stante-ack-and-a-half-map)
-(define-key mode-specific-map (kbd "c") #'stante-switch-to-previous-buffer)
+(define-key mode-specific-map (kbd "b") #'stante-switch-to-previous-buffer)
 (define-key mode-specific-map (kbd "C") #'org-capture)
 (define-key mode-specific-map (kbd "c") 'helm-command-prefix)
 (define-key mode-specific-map (kbd "f") stante-files-map)
