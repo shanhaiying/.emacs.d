@@ -1495,21 +1495,21 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-x SPC") #'ace-jump-mode-pop-mark)
 
 ;; User key bindings in the C-c space.
-(define-key mode-specific-map (kbd "A") #'org-agenda)
-(define-key mode-specific-map (kbd "a") stante-ack-and-a-half-map)
-(define-key mode-specific-map (kbd "b") #'stante-switch-to-previous-buffer)
-(define-key mode-specific-map (kbd "C") #'org-capture)
-(define-key mode-specific-map (kbd "c") 'helm-command-prefix)
-(define-key mode-specific-map (kbd "f") stante-files-map)
-(define-key mode-specific-map (kbd "G") stante-gist-map)
-(define-key mode-specific-map (kbd "g") #'magit-status)
-(define-key mode-specific-map (kbd "i") #'imenu)
-(define-key mode-specific-map (kbd "m") stante-multiple-cursors-map)
-(define-key mode-specific-map (kbd "o") #'occur)
-(define-key mode-specific-map (kbd "S") #'stante-personal-calendar) ; S for Schedule
-(define-key mode-specific-map (kbd "s") stante-symbol-keymap)
-(define-key mode-specific-map (kbd "y") #'browse-kill-ring)
-(define-key mode-specific-map (kbd "z") #'stante-switch-to-ielm)
+(global-set-key (kbd "C-c A") #'org-agenda)
+(global-set-key (kbd "C-c a") stante-ack-and-a-half-map)
+(global-set-key (kbd "C-c b") #'stante-switch-to-previous-buffer)
+(global-set-key (kbd "C-c C") #'org-capture)
+(global-set-key (kbd "C-c c") 'helm-command-prefix)
+(global-set-key (kbd "C-c f") stante-files-map)
+(global-set-key (kbd "C-c G") stante-gist-map)
+(global-set-key (kbd "C-c g") #'magit-status)
+(global-set-key (kbd "C-c i") #'imenu)
+(global-set-key (kbd "C-c m") stante-multiple-cursors-map)
+(global-set-key (kbd "C-c o") #'occur)
+(global-set-key (kbd "C-c S") #'stante-personal-calendar) ; S for Schedule
+(global-set-key (kbd "C-c s") stante-symbol-keymap)
+(global-set-key (kbd "C-c y") #'browse-kill-ring)
+(global-set-key (kbd "C-c z") #'stante-switch-to-ielm)
 
 (stante-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
