@@ -75,18 +75,17 @@ FORMS is byte compiled.
 FEATURE may be a named feature or a file name, see
 `eval-after-load' for details."
   (declare (indent 1) (debug t))
-  ;; Byte compile the body.  If the feature is not available, ignore warnings.
-  ;; Taken from
-  ;; http://lists.gnu.org/archive/html/bug-gnu-emacs/2012-11/msg01262.html
-  `(,(if (or (not (boundp 'byte-compile-current-file))
-             (not byte-compile-current-file)
-             (if (symbolp feature)
-                 (require feature nil :no-error)
-               (load feature :no-message :no-error)))
-         'progn
-       (message "stante-after: cannot find %s" feature)
-       'with-no-warnings)
-    (with-eval-after-load ',feature ,@forms)))
+  `(progn
+     (eval-when-compile
+       ;; Require the feature during compilation to avoid compiler
+       ;; errors/warnings. Since `eval-when-compile' also evaluated during macro
+       ;; expansion we check whether the current file is really being compiled
+       (when (bound-and-true-p byte-compile-current-file)
+         ,(if (stringp feature)
+              `(load ,feature :no-message :no-error)
+            `(require ',feature nil :no-error))))
+     ;; Register FORMS to be eval'ed after FEATURE
+     (with-eval-after-load ',feature ,@forms)))
 
 (defun stante-auto-modes (&rest modes-and-patterns)
   "Add MODES-AND-PATTERNS to `auto-mode-alist'.
