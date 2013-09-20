@@ -271,6 +271,11 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                         :family (car font) :height (cdr font))))
 
 (stante-choose-best-fonts)
+
+(stante-after solarized
+  ;; Disable variable pitch fonts in Solarized theme
+  (setq solarized-use-variable-pitch nil))
+
 (load-theme 'solarized-light :no-confirm)
 ;; (load-theme 'solarized-dark :no-confirm)
 ;; (load-theme 'zenburn :no-confirm)
