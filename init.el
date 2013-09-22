@@ -1478,6 +1478,8 @@ Create a new ielm process if required."
 (global-set-key [remap move-beginning-of-line]
                 #'stante-back-to-indentation-or-beginning-of-line)
 (global-set-key [remap dabbrev-expand] #'hippie-expand)
+(global-set-key [remap isearch-forward] #'isearch-forward-regexp)
+(global-set-key [remap isearch-backward] #'isearch-backward-regexp)
 ;; Complement standard bindings (the comments indicate the related bindings)
 (global-set-key (kbd "M-X") #'smex-major-mode-commands)                  ; M-x
 (global-set-key (kbd "C-<backspace>") #'stante-smart-backward-kill-line) ; C-S-backspace
