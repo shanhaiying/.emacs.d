@@ -55,6 +55,7 @@
 (depends-on "bbcode-mode")              ; BBCode major mode
 (depends-on "simplezen")                ; Zencoding KISS way
 (depends-on "yaml-mode")                ; YAML major mode
+(depends-on "graphviz-dot-mode")        ; Graphviz mode
 
 ;; Configuration languages
 (depends-on "puppet-mode")              ; For Puppet files
