@@ -1011,7 +1011,8 @@ suitable processor was found."
   ;; YAML is kind of a mixture between text and programming language, and hence
   ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
   ;; explicitly
-  (--each '(stante-text-whitespace-mode
+  (--each '(whitespace-mode
+            whitespace-cleanup-mode
             stante-auto-fill-comments-mode
             fci-mode
             flyspell-prog-mode)
