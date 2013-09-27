@@ -21,6 +21,8 @@
 (depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's…
 (depends-on "ido-at-point")             ; …and even for completion-at-point
 (depends-on "grizzl")                   ; Fuzzy completion reloaded
+(depends-on "anzu")                     ; Show position indicators for
+                                        ; incremental search
 
 ;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files

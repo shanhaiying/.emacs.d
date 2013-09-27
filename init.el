@@ -287,6 +287,12 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (column-number-mode t)
 (size-indication-mode t)
 
+;; Indicate position/total matches for incremental searches in the mode line
+(stante-after anzu
+  (diminish 'anzu-mode))
+
+(global-anzu-mode)
+
 
 ;;;; The minibuffer
 
