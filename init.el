@@ -131,7 +131,7 @@ mode symbol."
     (setq user-mail-address email)))
 
 
-;; the custom file
+;; The custom file
 (defconst stante-custom-file (locate-user-emacs-file "custom.el")
   "File used to store settings from Customization UI.")
 
