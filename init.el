@@ -1506,6 +1506,7 @@ Create a new ielm process if required."
 
 ;; Local Variables:
 ;; coding: utf-8
+;; indent-tabs-mode: nil
 ;; End:
 
 ;;; init.el ends here
