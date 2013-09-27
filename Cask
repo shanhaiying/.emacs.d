@@ -6,7 +6,7 @@
 (depends-on "dash")
 (depends-on "s")
 (depends-on "f")
-(depends-on "epl")
+(depends-on "epl")                      ; Package management
 
 (depends-on "exec-path-from-shell")     ; Fix environment
 
@@ -28,6 +28,7 @@
 (depends-on "launch")                   ; Open files externally
 
 ;; Editing utilities
+(depends-on "whitespace-cleanup-mode")  ; Cleanup whitespace on save
 (depends-on "drag-stuff")               ; Drag stuff around
 (depends-on "fill-column-indicator")    ; Indicate fill column
 (depends-on "volatile-highlights")      ; Highlight editing operations

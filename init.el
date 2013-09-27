@@ -586,6 +586,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Make Tab complete if the line is indented
 (setq tab-always-indent 'complete)
 
+;; Indicate empty lines at the end of a buffer in the fringe
+(setq indicate-empty-lines t)
+
 ;; Highlight bad whitespace
 (stante-after whitespace
   (diminish 'whitespace-mode "␣")
@@ -593,36 +596,15 @@ point reaches the beginning or end of the buffer, stop there."
   ;; portions of lines via faces.  Also indicate tabs via characters
   (setq whitespace-style '(face tabs tab-mark empty trailing lines-tail)
         whitespace-line-column nil))    ; Use `fill-column' for overlong lines
-;; Indicate empty lines at the end of a buffer in the fringe
-(setq indicate-empty-lines t)
 
-;; Rigidly cleanup whitespace in programming modes
-(define-minor-mode stante-prog-whitespace-mode
-  "Minor mode to highlight and cleanup whitespace."
-  :lighter nil
-  :keymap nil
-  (cond
-   (stante-prog-whitespace-mode
-    (whitespace-mode 1)
-    (add-hook 'before-save-hook 'whitespace-cleanup nil :local))
-   (:else
-    (whitespace-mode -1)
-    (remove-hook 'before-save-hook 'whitespace-cleanup :local))))
-(add-hook 'prog-mode-hook 'stante-prog-whitespace-mode)
+;; Clean up whitespace
+(stante-after whitespace-cleanup-mode
+  ;; Always clean up whitespace
+  (setq whitespace-cleanup-mode-only-if-initially-clean nil))
 
-;; In plain text, only cleanup trailing whitespace
-(define-minor-mode stante-text-whitespace-mode
-  "Minor mode to highlight and cleanup whitespace."
-  :lighter nil
-  :keymap nil
-  (cond
-   (stante-text-whitespace-mode
-    (whitespace-mode 1)
-    (add-hook 'before-save-hook 'delete-trailing-whitespace nil :local))
-   (:else
-    (whitespace-mode -1)
-    (remove-hook 'before-save-hook 'delete-trailing-whitespace :local))))
-(add-hook 'text-mode-hook 'stante-text-whitespace-mode)
+(--each '(prog-mode-hook text-mode-hook)
+  (add-hook it #'whitespace-mode)
+  (add-hook it #'whitespace-cleanup-mode))
 
 ;; A function to disable highlighting of long lines in modes
 (stante-after whitespace
