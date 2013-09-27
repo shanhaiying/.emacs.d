@@ -594,7 +594,8 @@ point reaches the beginning or end of the buffer, stop there."
   (diminish 'whitespace-mode "␣")
   ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
   ;; portions of lines via faces.  Also indicate tabs via characters
-  (setq whitespace-style '(face tabs tab-mark empty trailing lines-tail)
+  (setq whitespace-style '(face indentation space-after-tab space-before-tab
+                                tab-mark empty trailing lines-tail)
         whitespace-line-column nil))    ; Use `fill-column' for overlong lines
 
 ;; Clean up whitespace
