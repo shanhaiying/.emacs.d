@@ -716,7 +716,9 @@ Disable the highlighting of overlong lines."
 
 ;;;; Smartparens
 (stante-after smartparens
-  (setq sp-autoskip-closing-pair 'always))
+  (setq sp-autoskip-closing-pair 'always
+        ;; Don't kill the entire symbol on C-k
+        sp-hybrid-kill-entire-symbol t))
 
 (require 'smartparens-config)
 (smartparens-global-mode)
