@@ -30,4 +30,7 @@ $(PKGDIR) : Cask
 	touch $(PKGDIR)
 
 %.elc : %.el $(PKGDIR)
-	$(CASK) exec $(EMACS) -f package-initialize -Q --batch $(EMACSFLAGS) -f batch-byte-compile $<
+	$(CASK) exec $(EMACS) -Q --batch \
+		--eval '(setq package-user-dir "$(PKGDIR)")' -f package-initialize \
+		$(EMACSFLAGS) \
+		-f batch-byte-compile $<
