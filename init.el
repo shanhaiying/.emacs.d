@@ -1005,7 +1005,9 @@ suitable processor was found."
 ;;;; HTML editing
 
 (stante-after sgml-mode
-  (require 'simplezen))
+  (require 'simplezen)
+
+  (require 'smartparens-html))
 
 
 ;;;; Various markup languages
