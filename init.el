@@ -825,7 +825,8 @@ Disable the highlighting of overlong lines."
                                               (stante-homebrew-prefix)))))
 
 (require 'tex-site nil :no-error)
-(require 'preview-latex nil :no-error)
+(eval-and-compile
+  (load "preview-latex" :no-error :no-message))
 
 ;; Some standard defaults
 (stante-after tex
