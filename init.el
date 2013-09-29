@@ -1262,27 +1262,6 @@ keymap `stante-smartparens-lisp-mode-map'."
 (stante-auto-modes 'pkgbuild-mode (rx "/PKGBUILD" string-end))
 
 
-;;;; Proof General
-
-(load (expand-file-name "ProofGeneral/generic/proof-site.el" stante-vendor-dir))
-
-;; On OS X, add executables from the Isabelle application bundle to path
-(when (eq system-type 'darwin)
-  (-when-let* ((bundle-dir (stante-path-of-bundle "de.tum.in.isabelle"))
-               (bin-dir (expand-file-name "Contents/Resources/Isabelle/bin"
-                                          bundle-dir)))
-    (add-to-list 'exec-path bin-dir)))
-
-;; Fix Isabelle string faces
-(stante-after isar-syntax
-  (set-face-attribute 'isabelle-string-face nil
-                      :foreground nil :background nil
-                      :inherit 'font-lock-string-face)
-  (set-face-attribute 'isabelle-quote-face nil
-                      :foreground nil :background nil
-                      :inherit 'font-lock-string-face))
-
-
 ;;;; Git support
 
 ;; The one and only Git frontend
