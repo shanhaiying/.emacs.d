@@ -192,27 +192,28 @@ the directory path of the bundle as string."
   (let ((query (format "kMDItemCFBundleIdentifier == '%s'" id)))
     (car (process-lines "mdfind" query))))
 
-(defun stante-homebrew-prefix (&optional formula)
-  "Get the homebrew prefix for FORMULA.
+(eval-and-compile
+  (defun stante-homebrew-prefix (&optional formula)
+    "Get the homebrew prefix for FORMULA.
 
 Without FORMULA, get the homebrew prefix itself.
 
 Return nil, if homebrew is not available, or if the prefix
 directory does not exist."
-  (let ((prefix (condition-case nil
-                    (car (apply #'process-lines "brew" "--prefix"
-                                (when formula (list formula))))
-                  (error nil))))
-    (when (and prefix (file-directory-p prefix))
-      prefix)))
+    (let ((prefix (condition-case nil
+                      (car (apply #'process-lines "brew" "--prefix"
+                                  (when formula (list formula))))
+                    (error nil))))
+      (when (and prefix (file-directory-p prefix))
+        prefix)))
 
-(defun stante-homebrew-installed-p (&optional formula)
-  "Determine whether a homebrew FORMULA is installed.
+  (defun stante-homebrew-installed-p (&optional formula)
+    "Determine whether a homebrew FORMULA is installed.
 
 Without FORMULA determine whether Homebrew itself is available."
-  (if formula
-      (when (stante-homebrew-prefix formula) t)
-    (when (executable-find "brew") t)))
+    (if formula
+        (when (stante-homebrew-prefix formula) t)
+      (when (executable-find "brew") t))))
 
 
 ;;;; User interface
@@ -818,10 +819,10 @@ Disable the highlighting of overlong lines."
 ;;;; AUCTeX
 
 ;; Load AUCTeX from package manager, because the ELPA package is out-dated
-(when (and (eq system-type 'darwin) (stante-homebrew-installed-p "auctex"))
-  (let ((homebrew-prefix (stante-homebrew-prefix)))
+(eval-and-compile
+  (when (and (eq system-type 'darwin) (stante-homebrew-installed-p "auctex"))
     (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
-                                              homebrew-prefix))))
+                                              (stante-homebrew-prefix)))))
 
 (require 'tex-site nil :no-error)
 (require 'preview-latex nil :no-error)
