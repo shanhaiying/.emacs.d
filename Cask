@@ -51,6 +51,7 @@
 (depends-on "auto-dictionary")     ; Guess dictionaries for buffers
 
 ;; LaTeX/AUCTeX
+(depends-on "auctex")                   ; The one and only LaTeX environment
 (depends-on "auctex-latexmk")           ; latexmk support for AUCTeX
 
 ;; Markup languages

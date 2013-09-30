@@ -818,15 +818,7 @@ Disable the highlighting of overlong lines."
 
 ;;;; AUCTeX
 
-;; Load AUCTeX from package manager, because the ELPA package is out-dated
-(eval-and-compile
-  (when (and (eq system-type 'darwin) (stante-homebrew-installed-p "auctex"))
-    (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp"
-                                              (stante-homebrew-prefix)))))
-
 (require 'tex-site nil :no-error)
-(eval-and-compile
-  (load "preview-latex" :no-error :no-message))
 
 ;; Some standard defaults
 (stante-after tex
@@ -847,6 +839,7 @@ Disable the highlighting of overlong lines."
 
 (stante-after latex
   (--each '(LaTeX-math-mode             ; Easy math input
+            LaTeX-preview-setup         ; Setup LaTeX preview
             reftex-mode)                ; Cross references on steroids
     (add-hook 'LaTeX-mode-hook it))
 
