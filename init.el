@@ -716,12 +716,13 @@ Disable the highlighting of overlong lines."
 
 
 ;;;; Smartparens
+(require 'smartparens-config)           ; Setup standard configuration
+
 (stante-after smartparens
   (setq sp-autoskip-closing-pair 'always
         ;; Don't kill the entire symbol on C-k
         sp-hybrid-kill-entire-symbol nil))
 
-(require 'smartparens-config)
 (smartparens-global-mode)
 (show-smartparens-global-mode)          ; Show parenthesis
 
@@ -844,18 +845,9 @@ Disable the highlighting of overlong lines."
     (add-hook 'LaTeX-mode-hook it))
 
   ;; Add support for latexmk
-  (auctex-latexmk-setup)
+  (auctex-latexmk-setup))
 
-  ;; Smartparens LaTeX support
-  (require 'smartparens-latex)
-
-  (sp-with-modes 'latex-mode
-    (sp-local-pair "$" "$")
-    (sp-local-pair "\\[" "\\]")
-    (sp-local-pair "`" "'")
-    (sp-local-tag "\\b" "\\begin{_}" "\\end{_}")))
-
-;; Find Skim.app on OS X, for Sycntex support which Preview.app lacks.
+;; Find Skim.app on OS X, for Sycntex support, which Preview.app lacks.
 (defun stante-find-skim-bundle ()
     "Return the location of the Skim bundle, or nil if Skim is not installed.
 
@@ -1000,9 +992,7 @@ suitable processor was found."
 ;;;; HTML editing
 
 (stante-after sgml-mode
-  (require 'simplezen)
-
-  (require 'smartparens-html))
+  (require 'simplezen))
 
 
 ;;;; Various markup languages
@@ -1237,10 +1227,6 @@ keymap `stante-smartparens-lisp-mode-map'."
             turn-on-haskell-doc-mode
             turn-on-haskell-decl-scan)
     (add-hook 'haskell-mode-hook it)))
-
-;; Ruby: Smartparens support
-(stante-after ruby-mode
-  (require 'smartparens-ruby))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
