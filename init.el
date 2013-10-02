@@ -1042,8 +1042,8 @@ suitable processor was found."
 (defvar stante-smartparens-lisp-mode-map
   (let ((map (make-sparse-keymap)))
     ;; More clever filling and new line insertion
-    (define-key map [remap fill-paragraph] #'sp-indent-defun)
-    (define-key map [remap newline-and-indent] #'sp-newline)
+    (define-key map (kbd "M-q") #'sp-indent-defun)
+    (define-key map (kbd "C-j") #'sp-newline)
     map)
   "Keymap for `stante-smartparens-lisp-mode'.")
 
