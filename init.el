@@ -1245,8 +1245,12 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;; The one and only Git frontend
 (stante-after magit
-  (setq magit-save-some-buffers 'dontask ; Don't ask for saving
-        magit-set-upstream-on-push t))   ; Ask for setting upstream branch on push
+  ;; Shut up, Magit!
+  (setq magit-save-some-buffers 'dontask
+        magit-stage-all-confirm nil
+        magit-unstage-all-confirm nil
+        ;; Except when you ask something useful…
+        magit-set-upstream-on-push t))
 
 ;; Show Git diff state in Fringe
 (stante-after git-gutter+
