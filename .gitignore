@@ -24,6 +24,7 @@
 /projectile-bookmarks.eld
 /bookmarks
 /.emacs.desktop*
+/url/
 
 # Private files
 /stante-ical-urls
