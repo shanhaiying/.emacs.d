@@ -1168,9 +1168,12 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;;;; Ruby
 (stante-after ruby-mode
-  (inf-ruby-setup-keybindings)
+  ;; Setup inf-ruby and Robe
+  (--each '(robe-mode inf-ruby-minor-mode)
+    (add-hook 'ruby-mode-hook it))
 
-  (add-hook 'ruby-mode-hook #'robe-mode))
+  ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
+  (inf-ruby-switch-setup))
 
 (stante-after robe
   (stante-after company
