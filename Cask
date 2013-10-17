@@ -114,6 +114,7 @@
 (depends-on "projectile")               ; Project interaction
 (depends-on "ack-and-a-half")           ; Ack frontend
 (depends-on "google-this")              ; Google from Emacs
+(depends-on "elnode")                   ; evented Emacs webserver
 
 ;; Personal organization
 (depends-on "org-plus-contrib")         ; Latest Org + Contrib files
