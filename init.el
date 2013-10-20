@@ -629,11 +629,8 @@ Disable the highlighting of overlong lines."
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
 
-;; Save the contents of the clipboard to kill ring before killing, except on OS
-;; X where this behaviour is broken because it causes errors to be signaled
-;; whenever the clipboard is empty :|
-(when (not (eq system-type 'darwin))
-  (setq save-interprogram-paste-before-kill t))
+;; Save the contents of the clipboard to kill ring before killing
+(setq save-interprogram-paste-before-kill t)
 
 ;; Configure a reasonable fill column, indicate it in the buffer and enable
 ;; automatic filling
