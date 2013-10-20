@@ -1029,6 +1029,11 @@ suitable processor was found."
     map)
   "Keymap for symbol operations.")
 
+;; Regular expression helpers
+(rxt-global-mode)                       ; Powerful explanation and conversion
+                                        ; functions for regular expressions in
+                                        ; the C-c / map
+
 ;; Font-lock enhancements
 (cl-lib-highlight-initialize)                      ; Font lock for cl-lib
 (cl-lib-highlight-warn-cl-initialize)              ; Warning face for deprecated
