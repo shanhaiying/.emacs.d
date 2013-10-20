@@ -66,6 +66,8 @@
 
 ;; General programming utilities
 (depends-on "highlight-symbol")         ; Symbol awareness
+(depends-on "number-font-lock-mode")    ; Syntax highlighting for numeric
+                                        ; literals
 
 ;; Programming languages
 (depends-on "coffee-mode")              ; Coffeescript major mode

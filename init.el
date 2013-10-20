@@ -1029,6 +1029,10 @@ suitable processor was found."
     map)
   "Keymap for symbol operations.")
 
+;; Font-lock enhancements
+(add-hook 'prog-mode-hook #'number-font-lock-mode) ; Font lock for numeric
+                                                   ; literals
+
 
 ;;;; Basic Lisp editing
 
