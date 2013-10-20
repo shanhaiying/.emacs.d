@@ -75,6 +75,7 @@
 (depends-on "coffee-mode")              ; Coffeescript major mode
 (depends-on "js2-mode")                 ; Powerful Javascript mode
 (depends-on "haskell-mode")             ; Haskell major mode
+(depends-on "tuareg")                   ; OCaml major mode
 (depends-on "scss-mode")                ; SCSS major mode
 (depends-on "less-css-mode")            ; LESS major mode
 (depends-on "feature-mode")             ; Cucumber major mode
