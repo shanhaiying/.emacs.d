@@ -66,6 +66,7 @@
 
 ;; General programming utilities
 (depends-on "highlight-symbol")         ; Symbol awareness
+(depends-on "cl-lib-highlight")         ; Font-lock for cl-lib
 (depends-on "number-font-lock-mode")    ; Syntax highlighting for numeric
                                         ; literals
 

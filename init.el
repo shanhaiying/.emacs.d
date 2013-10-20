@@ -1030,8 +1030,11 @@ suitable processor was found."
   "Keymap for symbol operations.")
 
 ;; Font-lock enhancements
+(cl-lib-highlight-initialize)                      ; Font lock for cl-lib
+(cl-lib-highlight-warn-cl-initialize)              ; Warning face for deprecated
+                                        ; cl functions
 (add-hook 'prog-mode-hook #'number-font-lock-mode) ; Font lock for numeric
-                                                   ; literals
+                                        ; literals
 
 
 ;;;; Basic Lisp editing
