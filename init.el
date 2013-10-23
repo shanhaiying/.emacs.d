@@ -32,11 +32,8 @@
 
 
 ;; Guard against Emacs 24
-(when (or (< emacs-major-version 24)
-          (and (= emacs-major-version 24) (< emacs-minor-version 3)))
-  (error "Stante Pede needs at least GNU Emacs 24.3, but this is Emacs %s.
-Please install GNU Emacs 24.3 to use Stante Pede"
-         emacs-version))
+(when (version< "24.3.50" emacs-version)
+  (error "Stante Pede needs Emacs trunk, but this is %s!" emacs-version))
 
 
 ;;;; Package management
