@@ -155,8 +155,10 @@ mode symbol."
 ;; support dired)
 (stante-after files
   (-if-let (gls (and (eq system-type 'darwin) (executable-find "gls")))
-    (setq insert-directory-program gls)
-    (message "GNU Coreutils not found.  Install coreutils with homebrew.")))
+      (setq insert-directory-program gls)
+    ;; Don't probe for --dired flag, since we already know that GNU ls is
+    ;; missing!
+    (setq dired-use-ls-dired nil)))
 
 (stante-after grep
   ;; Use GNU find on OS X, if possible
