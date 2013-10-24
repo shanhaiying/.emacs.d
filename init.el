@@ -150,14 +150,20 @@ mode symbol."
         mac-function-modifier 'hyper
         mac-right-command-modifier 'super))
 
-;; Prefer GNU utilities over the inferior BSD variants.  Also improves
-;; integration with Emacs (for instance, GNU ls has a special --dired flag to
-;; support dired)
+;; Prefer GNU utilities over the BSD variants in Emacs, because the GNU tools
+;; integrate better with Emacs
+(defconst stante-gnu-ls (and (eq system-type 'darwin) (executable-find "gls"))
+  "Path to GNU ls on OS X.")
+
 (stante-after files
-  (-if-let (gls (and (eq system-type 'darwin) (executable-find "gls")))
-      (setq insert-directory-program gls)
-    ;; Don't probe for --dired flag, since we already know that GNU ls is
-    ;; missing!
+  (when stante-gnu-ls
+    ;; Use GNU ls if available
+    (setq insert-directory-program stante-gnu-ls)))
+
+(stante-after dired
+  (when (and (eq system-type 'darwin) (not stante-gnu-ls))
+    ;; Don't probe for --dired flag in Dired, because we already know that GNU
+    ;; ls is missing!
     (setq dired-use-ls-dired nil)))
 
 (stante-after grep
