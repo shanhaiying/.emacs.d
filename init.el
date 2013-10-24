@@ -32,7 +32,7 @@
 
 
 ;; Guard against Emacs 24
-(when (version< "24.3.50" emacs-version)
+(when (version< emacs-version "24.3.50")
   (error "Stante Pede needs Emacs trunk, but this is %s!" emacs-version))
 
 
