@@ -1338,11 +1338,6 @@ Create a new ielm process if required."
 (google-this-mode)
 (stante-after google-this (diminish 'google-this-mode))
 
-;; Elnode, the Emacs webserer
-(stante-after elnode
-  ;; Please, don't start a webserver automatically
-  (setq elnode-do-init nil))
-
 
 ;;;; Org mode
 ;; Tell Org where our files are located.  We keep them in Dropbox for easy
