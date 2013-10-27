@@ -1257,6 +1257,12 @@ keymap `stante-smartparens-lisp-mode-map'."
 ;; PKGBUILD: Recognize PKGBUILD's
 (stante-auto-modes 'pkgbuild-mode (rx "/PKGBUILD" string-end))
 
+;; Feature Mode
+(stante-after feature-mode
+  ;; Add standard hooks for Feature Mode, since it is no derived mode
+  (--each '(whitespace-mode whitespace-cleanup-mode flyspell-mode)
+    (add-hook 'feature-mode it)))
+
 
 ;;;; Git support
 
