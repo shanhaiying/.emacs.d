@@ -1148,20 +1148,26 @@ keymap `stante-smartparens-lisp-mode-map'."
   (append '(subword-mode) stante-lisp-common-modes))
 
 (stante-after clojure-mode
+  ;; Standard Lisp/Clojure goodies for Clojure Mode
+  (stante-smartparens-setup-lisp-modes 'clojure-mode)
   (--each stante-clojure-common-modes
     (add-hook 'clojure-mode-hook it))
 
-  (add-hook 'clojure-mode-hook #'clojure-test-mode)
+  (add-hook 'clojure-mode-hook #'clojure-test-mode))
 
-  (stante-smartparens-setup-lisp-modes 'clojure-mode))
-
-(stante-after nrepl
+(stante-after cider-repl-mode
+  ;; Standard Lisp/Clojure goodies for the Cider Repl
+  (stante-smartparens-setup-lisp-modes 'cider-repl-mode)
   (--each stante-clojure-common-modes
-    (add-hook 'nrepl-mode-hook it))
+    (add-hook cider-repl-mode-hook it)))
 
-  (stante-smartparens-setup-lisp-modes 'nrepl-mode)
+(stante-after cider-mode
+  ;; Eldoc for Cider
+  (add-hook 'cider-mode-hook #'cider-turn-on-eldoc-mode))
 
-  (add-hook 'nrepl-interaction-mode-hook #'nrepl-turn-on-eldoc-mode))
+(stante-after nrepl-client
+  ;; Hide Nrepl connection buffers from the buffer list
+  (setq nrepl-hide-special-buffers t))
 
 
 ;;;; Python
