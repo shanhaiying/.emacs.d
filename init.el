@@ -1302,7 +1302,6 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;; Some custom helm bindings
 (define-key helm-command-map (kbd "A") #'helm-apropos)
-(define-key helm-command-map (kbd "a") #'helm-ack)
 (define-key helm-command-map (kbd "g") #'helm-do-grep)
 (define-key helm-command-map (kbd "o") #'helm-occur)
 (define-key helm-command-map (kbd "p") #'helm-projectile)
@@ -1323,20 +1322,15 @@ Create a new ielm process if required."
   (pop-to-buffer (get-buffer-create "*ielm*"))
   (ielm))
 
-;; Searching with Ack (the aliases are for fullack compatibility)
-(defalias 'ack 'ack-and-a-half)
-(defalias 'ack-same 'ack-and-a-half-same)
-(defalias 'ack-find-file 'ack-and-a-half-find-file)
-(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+(stante-after ag
+  (setq ag-reuse-buffers t              ; Don't spam buffer list with ag buffers
+        ag-highlight-search t           ; A little fanciness
+        ))
 
-(stante-after ack-and-a-half
-  ;; Use IDO in Ack prompts
-  (setq ack-and-a-half-use-ido t))
-
-(defvar stante-ack-and-a-half-map
+(defvar stante-ag-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'ack-and-a-half)
-    (define-key map (kbd "s") #'ack-and-a-half-same)
+    (define-key map (kbd "a") #'ag-regexp)
+    (define-key map (kbd "p") #'ag-project-regexp)
     map)
   "Keymap for Ack and a Half.")
 
@@ -1480,7 +1474,7 @@ Create a new ielm process if required."
 
 ;; User key bindings in the C-c space.
 (global-set-key (kbd "C-c A") #'org-agenda)
-(global-set-key (kbd "C-c a") stante-ack-and-a-half-map)
+(global-set-key (kbd "C-c a") stante-ag-map)
 (global-set-key (kbd "C-c b") #'stante-switch-to-previous-buffer)
 (global-set-key (kbd "C-c C") #'org-capture)
 (global-set-key (kbd "C-c c") 'helm-command-prefix)

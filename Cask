@@ -114,11 +114,10 @@
 ;; Helm – Interactive search and narrowing
 (depends-on "helm")                     ; Powerful search and narrowing
 (depends-on "helm-projectile")          ; Helm + Projectile
-(depends-on "helm-ack")                 ; Helm + Ack
 
 ;; Utilities
 (depends-on "projectile")               ; Project interaction
-(depends-on "ack-and-a-half")           ; Ack frontend
+(depends-on "ag")                       ; Ag frontend
 (depends-on "google-this")              ; Google from Emacs
 (depends-on "elnode")                   ; evented Emacs webserver
 
