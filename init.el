@@ -1284,6 +1284,9 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;;;; Git support
 
+;; Enable Git Commit Mode
+(git-commit-auto-mode-enable)
+
 ;; The one and only Git frontend
 (stante-after magit
   ;; Shut up, Magit!
