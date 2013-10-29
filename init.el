@@ -941,6 +941,18 @@ Choose Skim if available, or fall back to the default application."
 (stante-after bib-cite
   (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
 
+
+
+;;;; ReStructuredText editing
+(stante-after rst
+  ;; Indent with 3 spaces after all kinds of literal blocks
+  (setq rst-indent-literal-minimized 3
+        rst-indent-literal-normal 3)
+
+  ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c C-a
+  ;; C-a
+  (define-key rst-mode-map (kbd "C-=") nil))
+
 
 ;;;; Markdown editing
 
