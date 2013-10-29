@@ -1316,6 +1316,9 @@ keymap `stante-smartparens-lisp-mode-map'."
 (stante-after projectile
   (diminish 'projectile-mode)
 
+  ;; Replace Ack with Ag in Projectile
+  (define-key projectile-mode-map [remap projectile-ack] #'projectile-ag)
+
   (setq projectile-completion-system 'grizzl))
 (projectile-global-mode)
 
