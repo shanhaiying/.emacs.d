@@ -951,7 +951,13 @@ Choose Skim if available, or fall back to the default application."
 
   ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c C-a
   ;; C-a
-  (define-key rst-mode-map (kbd "C-=") nil))
+  (define-key rst-mode-map (kbd "C-=") nil)
+
+  (sp-with-modes 'rst-mode
+    (sp-local-pair "*" "*")
+    (sp-local-pair "**" "**")
+    (sp-local-pair "`" "`")
+    (sp-local-pair "``" "``")))
 
 
 ;;;; Markdown editing
