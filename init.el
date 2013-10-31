@@ -615,7 +615,7 @@ point reaches the beginning or end of the buffer, stop there."
   ;; Always clean up whitespace
   (setq whitespace-cleanup-mode-only-if-initially-clean nil))
 
-(--each '(prog-mode-hook text-mode-hook)
+(--each '(prog-mode-hook text-mode-hook conf-mode-hook)
   (add-hook it #'whitespace-mode)
   (add-hook it #'whitespace-cleanup-mode))
 
