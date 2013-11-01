@@ -1030,13 +1030,16 @@ suitable processor was found."
 
 ;;;; Symbol “awareness”
 
+;; Navigate occurrences of the symbol under point with M-n and M-p
+(add-hook 'prog-mode-hook #'smartscan-mode)
+
 ;; Highlight the symbol under point
 (stante-after highlight-symbol
   (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
         highlight-symbol-on-navigation-p t) ; Highlight immediately after
                                             ; navigation
   (diminish 'highlight-symbol-mode))
-(add-hook 'prog-mode-hook 'highlight-symbol-mode)
+(add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
 (defvar stante-symbol-keymap
   (let ((map (make-sparse-keymap)))

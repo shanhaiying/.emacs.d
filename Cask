@@ -39,10 +39,12 @@
 (depends-on "expand-region")            ; Expand region by semantic units
 (depends-on "smartparens")              ; Parenthesis reloaded
 (depends-on "ace-jump-mode")            ; Jump through the buffer
-(depends-on "flycheck")                 ; On the fly syntax checkingx
+(depends-on "flycheck")                 ; On the fly syntax checking
 (depends-on "multiple-cursors")         ; Multiple cursors
 (depends-on "undo-tree")                ; Undo reloaded
 (depends-on "browse-kill-ring")         ; Kill ring browser
+(depends-on "smartscan")                ; Navigate occurrences of symbol at
+                                        ; point
 
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion
