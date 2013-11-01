@@ -1049,6 +1049,9 @@ suitable processor was found."
     map)
   "Keymap for symbol operations.")
 
+
+;;;; Programming utilities
+
 ;; Regular expression helpers
 (rxt-global-mode)                       ; Powerful explanation and conversion
                                         ; functions for regular expressions in
