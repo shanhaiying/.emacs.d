@@ -43,8 +43,6 @@
 (depends-on "multiple-cursors")         ; Multiple cursors
 (depends-on "undo-tree")                ; Undo reloaded
 (depends-on "browse-kill-ring")         ; Kill ring browser
-(depends-on "smartscan")                ; Navigate occurrences of symbol at
-                                        ; point
 
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion

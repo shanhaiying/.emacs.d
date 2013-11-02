@@ -1031,7 +1031,18 @@ suitable processor was found."
 ;;;; Symbol “awareness”
 
 ;; Navigate occurrences of the symbol under point with M-n and M-p
-(add-hook 'prog-mode-hook #'smartscan-mode)
+(defvar stante-smartscan-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "M-n") #'highlight-symbol-next)
+    (define-key map (kbd "M-p") #'highlight-symbol-prev)
+    map)
+  "Keymap for `stante-smartscan-mode'.")
+
+(define-minor-mode stante-smartscan-mode
+  "Navigate occurrences of symbols.
+
+\\{stante-smartscan-mode-map}")
+(add-hook 'prog-mode-hook #'stante-smartscan-mode)
 
 ;; Highlight the symbol under point
 (stante-after highlight-symbol
@@ -1047,8 +1058,6 @@ suitable processor was found."
     (define-key map (kbd "%") #'highlight-symbol-query-replace)
     (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
     (define-key map (kbd "p") #'highlight-symbol-prev-in-defun)
-    (define-key map (kbd "M-n") #'highlight-symbol-next)
-    (define-key map (kbd "M-p") #'highlight-symbol-prev)
     map)
   "Keymap for symbol operations.")
 
