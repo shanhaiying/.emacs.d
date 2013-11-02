@@ -1367,7 +1367,9 @@ Create a new ielm process if required."
 (stante-after ag
   (setq ag-reuse-buffers t              ; Don't spam buffer list with ag buffers
         ag-highlight-search t           ; A little fanciness
-        ))
+        ;; Use Projectile to find the project root
+        ag-project-root-function (lambda (d) (let ((default-directory d))
+                                               (projectile-project-root)))))
 
 (defvar stante-ag-map
   (let ((map (make-sparse-keymap)))
