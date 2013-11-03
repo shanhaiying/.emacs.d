@@ -1303,6 +1303,13 @@ keymap `stante-smartparens-lisp-mode-map'."
     (add-hook 'feature-mode it)))
 
 
+;;;; General version control
+
+(stante-after vc-hooks
+  ;; Always follow symlinks to files in VCS repos
+  (setq vc-follow-symlinks t))
+
+
 ;;;; Git support
 
 ;; The one and only Git frontend
