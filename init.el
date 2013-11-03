@@ -387,6 +387,11 @@ buffers."
   ;; Always revert Dired buffers on revisiting
   (setq dired-auto-revert-buffer t))
 
+(stante-after dired-x
+  (when (eq system-type 'darwin)
+    ;; OS X bsdtar is mostly compatible with GNU Tar
+    (setq dired-guess-shell-gnutar "tar")))
+
 ;; Update copyright when visiting files
 (add-hook 'find-file-hook 'copyright-update)
 
