@@ -380,8 +380,12 @@ buffers."
 (stante-after tramp
   (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
 
-;; Power up dired
-(stante-after dired (require 'dired-x))
+(stante-after dired
+  ;; Power up dired
+  (require 'dired-x)
+
+  ;; Always revert Dired buffers on revisiting
+  (setq dired-auto-revert-buffer t))
 
 ;; Update copyright when visiting files
 (add-hook 'find-file-hook 'copyright-update)
