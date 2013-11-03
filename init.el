@@ -1316,6 +1316,11 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;;;; Git support
 
+(stante-after hardhat
+  ;; We really want to edit Git Commit Mode messages.
+  (add-to-list 'hardhat-buffer-editable-functions
+               (cons 'git-commit-mode (lambda () t))))
+
 ;; The one and only Git frontend
 (stante-after magit
   ;; Shut up, Magit!
