@@ -243,7 +243,8 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; size.  If neither is available, we fall back to the standard faces of OS X
 ;; (Menlo), Linux (DejaVu Sans Mono) or Windows (Consolas, Courier New)
 (defconst stante-preferred-monospace-fonts
-  `(("Anonymous Pro" . ,(if (eq system-type 'darwin) 140 110))
+  `(("Source Code Pro" . ,(if (eq system-type 'darwin) 130 110))
+    ("Anonymous Pro" . ,(if (eq system-type 'darwin) 140 110))
     ("Anonymous Pro Minus" . ,(if (eq system-type 'darwin) 140 110))
     ("Inconsolata" . ,(if (eq system-type 'darwin) 140 110))
     ("Menlo" . 130)
