@@ -1190,7 +1190,7 @@ keymap `stante-smartparens-lisp-mode-map'."
   ;; Standard Lisp/Clojure goodies for the Cider Repl
   (stante-smartparens-setup-lisp-modes 'cider-repl-mode)
   (--each stante-clojure-common-modes
-    (add-hook cider-repl-mode-hook it)))
+    (add-hook 'cider-repl-mode-hook it)))
 
 (stante-after cider-mode
   ;; Eldoc for Cider
