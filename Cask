@@ -101,14 +101,15 @@
 (depends-on "nrepl")                    ; Clojure REPL
 (depends-on "clojure-cheatsheet")       ; The one and only cheatsheet
 
+;; General Version Control
+(depends-on "diff-hl")                  ; Highlight VCS diffs in the fringe
+
 ;; Git and Gist integration
 (depends-on "magit")                    ; Git frontend
 (depends-on "git-commit-mode")          ; Git commit message mode
 (depends-on "gitconfig-mode")           ; Git configuration mode
 (depends-on "gitignore-mode")           ; .gitignore mode
 (depends-on "git-rebase-mode")          ; Mode for git rebase -i
-(depends-on "git-gutter+")              ; Show Diff state in buffer…
-(depends-on "git-gutter-fringe+")       ; …and do so in the fringe
 (depends-on "gist")                     ; Gist frontend
 
 ;; Helm – Interactive search and narrowing

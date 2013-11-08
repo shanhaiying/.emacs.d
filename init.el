@@ -1308,6 +1308,15 @@ keymap `stante-smartparens-lisp-mode-map'."
   ;; Always follow symlinks to files in VCS repos
   (setq vc-follow-symlinks t))
 
+;; Highlight VCS diffs
+;; Highlight changes to the current file in the fringe
+(global-diff-hl-mode)
+;; Highlight changed files in the fringe of Dired
+(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+;; Fall back to the display margin, if the fringe is unavailable
+(unless (window-system)
+  (diff-hl-margin-mode))
+
 
 ;;;; Git support
 
@@ -1324,12 +1333,6 @@ keymap `stante-smartparens-lisp-mode-map'."
         magit-unstage-all-confirm nil
         ;; Except when you ask something useful…
         magit-set-upstream-on-push t))
-
-;; Show Git diff state in Fringe
-(stante-after git-gutter+
-  (diminish 'git-gutter+-mode)
-  (require 'git-gutter-fringe+))
-(global-git-gutter+-mode)
 
 (stante-after gist
   (setq gist-view-gist t))              ; View Gists in browser after creation
