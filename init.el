@@ -1317,6 +1317,14 @@ keymap `stante-smartparens-lisp-mode-map'."
 (unless (window-system)
   (diff-hl-margin-mode))
 
+(defun stante-update-all-diff-hl-buffers ()
+  "Update diff highlighting in all affected buffers."
+  (when (fboundp 'diff-hl-update)
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (bound-and-true-p diff-hl-mode)
+          (diff-hl-update))))))
+
 
 ;;;; Git support
 
@@ -1332,7 +1340,15 @@ keymap `stante-smartparens-lisp-mode-map'."
         magit-stage-all-confirm nil
         magit-unstage-all-confirm nil
         ;; Except when you ask something useful…
-        magit-set-upstream-on-push t))
+        magit-set-upstream-on-push t)
+
+  ;; Update Diff highlighting after Magit operations
+  (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update))
+
+(stante-after git-commit-mode
+  ;; Update Diff highlighting after Git commits from Git commit mode
+  (advice-add 'git-commit-commit :after
+              (lambda (&rest _r) (stante-update-all-diff-hl-buffers))))
 
 (stante-after gist
   (setq gist-view-gist t))              ; View Gists in browser after creation
