@@ -746,16 +746,16 @@ Disable the highlighting of overlong lines."
 (define-key sp-keymap (kbd "C-M-d") #'sp-down-sexp)
 (define-key sp-keymap (kbd "C-M-p") #'sp-backward-down-sexp)
 (define-key sp-keymap (kbd "C-M-n") #'sp-up-sexp)
-;stante-; Deleting and killing
+;; Deleting and killing
 (define-key sp-keymap (kbd "C-M-k") #'sp-kill-sexp)
 (define-key sp-keymap (kbd "C-M-w") #'sp-copy-sexp)
-;stante-; Depth changing
+;; Depth changing
 (define-key sp-keymap (kbd "M-s") #'sp-splice-sexp)
 (define-key sp-keymap (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
 (define-key sp-keymap (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
 (define-key sp-keymap (kbd "M-r") #'sp-splice-sexp-killing-around)
 (define-key sp-keymap (kbd "M-?") #'sp-convolute-sexp)
-;stante-; Barfage & Slurpage
+;; Barfage & Slurpage
 (define-key sp-keymap (kbd "C-)")  #'sp-forward-slurp-sexp)
 (define-key sp-keymap (kbd "C-<right>") #'sp-forward-slurp-sexp)
 (define-key sp-keymap (kbd "C-}")  #'sp-forward-barf-sexp)
@@ -764,7 +764,7 @@ Disable the highlighting of overlong lines."
 (define-key sp-keymap (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
 (define-key sp-keymap (kbd "C-{")  #'sp-backward-barf-sexp)
 (define-key sp-keymap (kbd "C-M-<right>") #'sp-backward-barf-sexp)
-;stante-; Miscellaneous commands
+;; Miscellaneous commands
 (define-key sp-keymap (kbd "M-S") #'sp-split-sexp)
 (define-key sp-keymap (kbd "M-J") #'sp-join-sexp)
 (define-key sp-keymap (kbd "C-M-t") #'sp-transpose-sexp)
