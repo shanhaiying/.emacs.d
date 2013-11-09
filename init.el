@@ -764,7 +764,12 @@ Disable the highlighting of overlong lines."
   ;; Miscellaneous commands
   (define-key sp-keymap (kbd "M-S") #'sp-split-sexp)
   (define-key sp-keymap (kbd "M-J") #'sp-join-sexp)
-  (define-key sp-keymap (kbd "C-M-t") #'sp-transpose-sexp))
+  (define-key sp-keymap (kbd "C-M-t") #'sp-transpose-sexp)
+
+  ;; Some additional bindings for strict mode
+  (let ((map smartparens-strict-mode-map))
+    (define-key map (kbd "M-q") #'sp-indent-defun)
+    (define-key map (kbd "C-j") #'sp-newline)))
 
 (smartparens-global-mode)
 (show-smartparens-global-mode)          ; Show parenthesis
@@ -1084,22 +1089,6 @@ suitable processor was found."
 
 (stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 
-;; Improve Smartparens support for Lisp editing
-(defvar stante-smartparens-lisp-mode-map
-  (let ((map (make-sparse-keymap)))
-    ;; More clever filling and new line insertion
-    (define-key map (kbd "M-q") #'sp-indent-defun)
-    (define-key map (kbd "C-j") #'sp-newline)
-    map)
-  "Keymap for `stante-smartparens-lisp-mode'.")
-
-(define-minor-mode stante-smartparens-lisp-mode
-  "A minor mode to enable Lisp editing with Smartparens.
-
-When enabled, this mode essentially just adds some new key
-bindings."
-  :init-value nil)
-
 (defun stante-smartparens-setup-lisp-modes (modes)
   "Setup Smartparens Lisp support in MODES.
 
@@ -1112,9 +1101,7 @@ keymap `stante-smartparens-lisp-mode-map'."
   (--each modes
     (let ((hook (intern (format "%s-hook" (symbol-name it)))))
       ;; Be strict about delimiters
-      (add-hook hook #'smartparens-strict-mode)
-      ;; Add our own keymap for some additional clever bindings
-      (add-hook hook #'stante-smartparens-lisp-mode))))
+      (add-hook hook #'smartparens-strict-mode))))
 
 
 ;;;; Emacs Lisp
