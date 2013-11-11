@@ -297,8 +297,11 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; Indicate position/total matches for incremental searches in the mode line
 (stante-after anzu
   (diminish 'anzu-mode))
-
 (global-anzu-mode)
+
+(stante-after smart-mode-line
+  (setq sml/theme 'respectful))
+(sml/setup)
 
 
 ;;;; The minibuffer

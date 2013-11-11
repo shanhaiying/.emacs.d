@@ -15,7 +15,8 @@
 (depends-on "zenburn-theme")
 
 ;; UI improvements
-(depends-on "diminish")                 ; De-clutter mode line
+(depends-on "diminish")                 ; De-clutter the mode line…
+(depends-on "smart-mode-line")          ; …and make it fancy
 (depends-on "smex")                     ; Improved M-x
 (depends-on "flx-ido")                  ; Powerful flex matching for IDO
 (depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's…
