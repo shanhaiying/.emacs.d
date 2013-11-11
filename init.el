@@ -1504,9 +1504,34 @@ Create a new ielm process if required."
                  (nnimap-stream ssl))))
 
 
-;;;; Key bindings
+;;;; IRC
 
-;; Improve standard bindings
+(stante-after erc
+  ;; Default server and nick
+  (setq erc-server "chat.freenode.net"
+        erc-port 7000
+        erc-nick "lunaryorn"
+        erc-nick-uniquifier "_"
+        ;; Never open unencrypted ERC connections
+        erc-server-connect-function 'erc-open-tls-stream)
+
+  ;; Spell-check ERC buffers
+  (add-to-list 'erc-modules 'spelling)
+  (erc-update-modules))
+
+(stante-after erc-join
+  ;; Standard channels on Freenode
+  (setq erc-autojoin-channels-alist '(("\\.freenode\\.net" . ("#emacs")))))
+
+(stante-after erc-track
+  ;; Switch to newest buffer by default, and don't ask before rebinding the keys
+  (setq erc-track-switch-direction 'newest
+        erc-track-enable-keybindings t))
+
+
+;;;; key bindings
+
+;; improve standard bindings
 (global-set-key [remap execute-extended-command] #'smex)
 (global-set-key [remap list-buffers] #'ibuffer)
 (global-set-key [remap kill-whole-line] #'stante-smart-kill-whole-line)
