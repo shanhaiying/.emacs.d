@@ -25,6 +25,8 @@
 /bookmarks
 /.emacs.desktop*
 /url/
+/tramp
+/tramp-auto-save
 
 # Private files
 /stante-ical-urls
