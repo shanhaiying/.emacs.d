@@ -324,6 +324,12 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
         ido-default-file-method 'selected-window
         ido-use-faces nil))             ; Prefer flx ido faces
 
+(stante-after ido-at-point
+  (setq ido-at-point-partial nil        ; Do not complete partial matches
+                                        ; immediately
+        ido-at-point-fuzzy nil))        ; Do not use iap's built-in fuzzy
+                                        ; matching, we have flx
+
 (ido-mode t)
 (ido-ubiquitous-mode)                   ; Use IDO everywhere…
 (ido-at-point-mode)                     ; …even in `completion-at-point'
