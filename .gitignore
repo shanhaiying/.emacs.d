@@ -12,6 +12,7 @@
 /tutorial/
 
 # Various caches
+/var/
 /frame-restore-parameters
 /history
 /places
