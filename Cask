@@ -92,7 +92,6 @@
 ;; Emacs Lisp utility modes and libraries
 (depends-on "elisp-slime-nav")          ; Navigate to symbol definitions
 (depends-on "macrostep")                ; Interactively expand macros
-(depends-on "auto-compile")             ; Recompile after save
 (depends-on "flycheck-cask")            ; Cask support for Flycheck
 
 ;; Clojure modes

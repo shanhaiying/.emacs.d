@@ -1136,7 +1136,8 @@ keymap `stante-smartparens-lisp-mode-map'."
   (defun stante-auto-compile-user-init-file ()
     "Enable `auto-compile-mode' for `user-init-file'."
     (when (and (buffer-file-name) (f-same? (buffer-file-name) user-init-file))
-      (auto-compile-mode)))
+      (add-hook 'after-save-hook
+                (apply-partially #'compile "make -k") nil 'local)))
 
   ;; Some more Emacs Lisp editing hooks
   (--each '(checkdoc-minor-mode         ; Check doc conventions when eval'ing
