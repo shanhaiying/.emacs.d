@@ -424,7 +424,11 @@ buffers."
 ;; Track recent files
 (stante-after recentf
   (setq recentf-max-saved-items 200
-        recentf-max-menu-items 15))
+        recentf-max-menu-items 15
+        ;; Cleanup recent files only when Emacs is idle, but not when the mode
+        ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
+        ;; idles often enough to have the recent files list clean up regularly
+        recentf-auto-cleanup 300))
 (recentf-mode t)
 
 ;; Open recent files with IDO, see
