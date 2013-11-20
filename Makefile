@@ -13,6 +13,7 @@ all: compile
 .PHONY: update
 update: Cask
 	$(CASK) update
+	$(MAKE) clean compile
 
 .PHONY: clean-packages
 clean-packages:
