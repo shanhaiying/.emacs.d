@@ -18,6 +18,12 @@ update: Cask
 clean-packages:
 	rm -rf $(PKGDIR)
 
+.PHONY: profile
+profile:
+	$(EMACS) -Q -l ./vendor/profile-dotemacs.el \
+		--eval '(setq profile-dotemacs-file "./init.el")' \
+		-f profile-dotemacs
+
 .PHONY: compile
 compile : $(OBJECTS)
 
