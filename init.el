@@ -41,6 +41,8 @@
 (require 'cask "~/.cask/cask" :no-error)
 (cask-initialize)
 
+(setq package-enable-at-startup nil)    ; Don't initialize packages twice
+
 (defconst stante-vendor-dir (locate-user-emacs-file "vendor")
   "Directory for embedded 3rd party extensions.")
 
