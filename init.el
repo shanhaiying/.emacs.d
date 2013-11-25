@@ -126,8 +126,7 @@ mode symbol."
 (when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
   (exec-path-from-shell-initialize)
 
-  (-when-let (email (getenv "EMAIL"))
-    (setq user-mail-address email)))
+  (setq user-mail-address (getenv "EMAIL")))
 
 
 ;; The custom file
