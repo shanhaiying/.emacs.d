@@ -121,7 +121,8 @@ mode symbol."
 
 ;;;; Environment fixup
 (stante-after exec-path-from-shell
-  (add-to-list 'exec-path-from-shell-variables "EMAIL"))
+  (--each '("EMAIL" "PYTHONPATH")
+    (add-to-list 'exec-path-from-shell-variables it)))
 
 (when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
   (exec-path-from-shell-initialize)
