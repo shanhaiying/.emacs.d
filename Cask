@@ -108,6 +108,7 @@
 (depends-on "git-commit-mode")          ; Git commit message mode
 (depends-on "gitconfig-mode")           ; Git configuration mode
 (depends-on "gitignore-mode")           ; .gitignore mode
+(depends-on "gitattributes-mode")       ; Git attributes mode
 (depends-on "git-rebase-mode")          ; Mode for git rebase -i
 (depends-on "gist")                     ; Gist frontend
 
