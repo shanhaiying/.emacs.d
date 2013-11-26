@@ -714,7 +714,7 @@ Disable the highlighting of overlong lines."
 
 ;; On the fly syntax checking
 (stante-after flycheck
-  (setq flycheck-completion-system 'grizzl))
+  (setq flycheck-completion-system 'ido))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
@@ -1375,7 +1375,7 @@ keymap `stante-smartparens-lisp-mode-map'."
   ;; Replace Ack with Ag in Projectile
   (define-key projectile-mode-map [remap projectile-ack] #'projectile-ag)
 
-  (setq projectile-completion-system 'grizzl))
+  (setq projectile-completion-system 'ido))
 (projectile-global-mode)
 
 ;; Quickly switch to IELM
