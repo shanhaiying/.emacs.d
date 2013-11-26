@@ -1575,6 +1575,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c i") #'imenu)
 (global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
+(global-set-key (kbd "C-c r") #'vr/query-replace)
 (global-set-key (kbd "C-c S") #'stante-personal-calendar) ; S for Schedule
 (global-set-key (kbd "C-c s") stante-symbol-keymap)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
