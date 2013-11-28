@@ -974,9 +974,12 @@ Choose Skim if available, or fall back to the default application."
   (setq rst-indent-literal-minimized 3
         rst-indent-literal-normal 3)
 
-  ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c C-a
-  ;; C-a
-  (define-key rst-mode-map (kbd "C-=") nil)
+  (let ((map rst-mode-map))
+    ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c
+    ;; C-a C-a
+    (define-key map (kbd "C-=") nil)
+    ;; For similarity with AUCTeX
+    (define-key map (kbd "C-c C-j") #'rst-insert-list))
 
   (sp-with-modes 'rst-mode
     (sp-local-pair "*" "*")
