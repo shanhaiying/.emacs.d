@@ -1278,10 +1278,12 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;; Haskell: Indentation, and some helpful modes
 (stante-after haskell-mode
-  (--each '(subword-mode
-            turn-on-haskell-indentation
-            turn-on-haskell-doc-mode
-            turn-on-haskell-decl-scan)
+  (--each '(haskell-mode-hook inferior-haskell-mode-hook)
+    (add-hook it #'haskell-doc-mode)    ; Eldoc for Haskell
+    (add-hook it #'subword-mode))       ; Subword navigation
+
+  (--each '(haskell-decl-scan-mode      ; Scan and navigate declarations
+            turn-on-haskell-indent)     ; Powerful indentation for Haskell
     (add-hook 'haskell-mode-hook it)))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
