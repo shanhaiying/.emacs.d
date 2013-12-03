@@ -1543,9 +1543,9 @@ Create a new ielm process if required."
         erc-track-enable-keybindings t))
 
 
-;;;; key bindings
+;;;; Key bindings
 
-;; improve standard bindings
+;; Improve standard bindings
 (global-set-key [remap execute-extended-command] #'smex)
 (global-set-key [remap list-buffers] #'ibuffer)
 (global-set-key [remap kill-whole-line] #'stante-smart-kill-whole-line)
