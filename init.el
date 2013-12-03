@@ -1604,6 +1604,9 @@ Create a new ielm process if required."
   (define-key html-mode-map (kbd "C-c e") #'simplezen-expand)
   (define-key html-mode-map (kbd "TAB") #'simplezen-expand-or-indent-for-tab))
 
+(stante-after haskell-mode
+  (define-key haskell-mode-map (kbd "C-c h") #'haskell-hoogle))
+
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
