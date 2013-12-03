@@ -1413,6 +1413,13 @@ Create a new ielm process if required."
     map)
   "Keymap for Ack and a Half.")
 
+(defvar stante-utilities-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a") #'align)
+    (define-key map (kbd "A") #'align-regexp)
+    map)
+  "Key map for various utilities.")
+
 ;; Google from Emacs, under C-c /
 (google-this-mode)
 (stante-after google-this (diminish 'google-this-mode))
@@ -1597,6 +1604,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c r") #'vr/query-replace)
 (global-set-key (kbd "C-c S") #'stante-personal-calendar) ; S for Schedule
 (global-set-key (kbd "C-c s") stante-symbol-keymap)
+(global-set-key (kbd "C-c u") stante-utilities-map)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 (global-set-key (kbd "C-c z") #'stante-switch-to-ielm)
 
