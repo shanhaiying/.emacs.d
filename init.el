@@ -1069,7 +1069,7 @@ suitable processor was found."
   (diminish 'highlight-symbol-mode))
 (add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
-(defvar stante-symbol-keymap
+(defvar stante-symbols-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "o") #'highlight-symbol-occur)
     (define-key map (kbd "%") #'highlight-symbol-query-replace)
@@ -1603,7 +1603,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
 (global-set-key (kbd "C-c S") #'stante-personal-calendar) ; S for Schedule
-(global-set-key (kbd "C-c s") stante-symbol-keymap)
+(global-set-key (kbd "C-c s") stante-symbols-map)
 (global-set-key (kbd "C-c u") stante-utilities-map)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 (global-set-key (kbd "C-c z") #'stante-switch-to-ielm)
