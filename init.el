@@ -1545,6 +1545,9 @@ Create a new ielm process if required."
 
 ;;;; Key bindings
 
+;; More standard mouse bindings
+(global-set-key (kbd "<mouse-3>") #'mouse-buffer-menu) ; Right click shows
+                                                       ; context menu
 ;; Improve standard bindings
 (global-set-key [remap execute-extended-command] #'smex)
 (global-set-key [remap list-buffers] #'ibuffer)
