@@ -75,7 +75,6 @@
 ;; Programming languages
 (depends-on "coffee-mode")              ; Coffeescript major mode
 (depends-on "js2-mode")                 ; Powerful Javascript mode
-(depends-on "haskell-mode")             ; Haskell major mode
 (depends-on "tuareg")                   ; OCaml major mode
 (depends-on "scss-mode")                ; SCSS major mode
 (depends-on "less-css-mode")            ; LESS major mode
@@ -85,6 +84,10 @@
 ;; Ruby support
 (depends-on "inf-ruby")                 ; Ruby interpreter in Emacs
 (depends-on "robe")                     ; Code navigation, docs and completion
+
+;; Haskell support
+(depends-on "haskell-mode")             ; Haskell major modes
+(depends-on "ghci-completion")          ; Complete GHCI commands
 
 ;; Basic Lisp utility modes
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level

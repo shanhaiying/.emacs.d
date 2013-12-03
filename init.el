@@ -1284,7 +1284,10 @@ keymap `stante-smartparens-lisp-mode-map'."
 
   (--each '(haskell-decl-scan-mode      ; Scan and navigate declarations
             turn-on-haskell-indent)     ; Powerful indentation for Haskell
-    (add-hook 'haskell-mode-hook it)))
+    (add-hook 'haskell-mode-hook it))
+
+  ;; Completion for GHCI commands
+  (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
