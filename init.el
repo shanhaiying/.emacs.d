@@ -301,7 +301,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (global-anzu-mode)
 
 (stante-after smart-mode-line
-  (setq sml/theme 'respectful))
+  (sml/apply-theme 'respectful))
 (sml/setup)
 
 
