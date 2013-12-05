@@ -1165,9 +1165,6 @@ keymap `stante-smartparens-lisp-mode-map'."
   ;; Smartparens support for IELM
   (stante-smartparens-setup-lisp-modes 'inferior-emacs-lisp-mode))
 
-;; Indicate Auto Compile mode
-(stante-after auto-compile (diminish 'auto-compile-mode "⏎"))
-
 ;; Now de-clutter the mode line
 (stante-after eldoc (diminish 'eldoc-mode))
 (stante-after checkdoc (diminish 'checkdoc-minor-mode))
