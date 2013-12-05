@@ -1081,6 +1081,15 @@ suitable processor was found."
 
 ;;;; Programming utilities
 
+;; Compilation from Emacs
+(stante-after compile
+  (setq compilation-ask-about-save nil  ; Just save before compiling
+        compilation-always-kill t       ; Just kill old compile processes before
+                                        ; starting the new one
+        compilation-scroll-output 'first-error ; Automatically scroll to first
+                                               ; error
+        ))
+
 ;; Regular expression helpers
 (rxt-global-mode)                       ; Powerful explanation and conversion
                                         ; functions for regular expressions in
