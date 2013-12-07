@@ -386,6 +386,9 @@ buffers."
 (setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
+;; Delete to Trash
+(setq delete-by-moving-to-trash t)
+
 ;; Store Tramp auto save files locally
 (stante-after tramp
   (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
