@@ -705,6 +705,10 @@ Disable the highlighting of overlong lines."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
+;; Basic folding
+(--each '(prog-mode-hook text-mode-hook)
+  (add-hook it #'hs-minor-mode))
+
 ;; Highlight the current line and editing operations in the buffer
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
@@ -1097,8 +1101,8 @@ suitable processor was found."
                                                ; error
         ))
 
-(add-hook 'prog-mode-hook #'number-font-lock-mode) ; Font lock for numeric
-                                        ; literals
+;; Font lock for numeric literals
+(add-hook 'prog-mode-hook #'number-font-lock-mode)
 
 
 ;;;; Basic Lisp editing
