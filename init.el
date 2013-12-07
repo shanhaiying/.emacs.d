@@ -1093,15 +1093,6 @@ suitable processor was found."
                                                ; error
         ))
 
-;; Regular expression helpers
-(rxt-global-mode)                       ; Powerful explanation and conversion
-                                        ; functions for regular expressions in
-                                        ; the C-c / map
-
-;; Font-lock enhancements
-(cl-lib-highlight-initialize)                      ; Font lock for cl-lib
-(cl-lib-highlight-warn-cl-initialize)              ; Warning face for deprecated
-                                        ; cl functions
 (add-hook 'prog-mode-hook #'number-font-lock-mode) ; Font lock for numeric
                                         ; literals
 
@@ -1186,6 +1177,16 @@ nil otherwise."
 
   ;; Load ERT to support unit test writing and running
   (require 'ert))
+
+;; Helpers for Emacs Lisp regexps
+(rxt-global-mode)                       ; Powerful explanation and conversion
+                                        ; functions for regular expressions in
+                                        ; the C-c / map
+
+;; Font Lock for cl-lib
+(cl-lib-highlight-initialize)                      ; Font lock for cl-lib
+(cl-lib-highlight-warn-cl-initialize)              ; Warning face for deprecated
+                                        ; cl functions
 
 (stante-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
