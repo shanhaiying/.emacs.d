@@ -1316,7 +1316,11 @@ nil otherwise."
     (add-hook 'haskell-mode-hook it))
 
   ;; Completion for GHCI commands
-  (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion))
+  (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion)
+
+  ;; Smartparens for Haskell
+  (--each '("@" "/")                    ; Haddock markup
+    (sp-local-pair 'haskell-mode it it :when '(sp-in-string-p))))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
