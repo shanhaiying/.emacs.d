@@ -1346,6 +1346,10 @@ nil otherwise."
     (add-hook 'feature-mode it)))
 
 
+;;;; Special modes
+(auto-image-file-mode)                  ; Visit images as images
+
+
 ;;;; General version control
 
 (stante-after vc-hooks
