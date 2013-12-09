@@ -12,24 +12,24 @@
 /tutorial/
 
 # Various caches
-/var/
-/frame-restore-parameters
-/history
-/places
-/recentf
-/ido.last
-/semanticdb/
-/.smex-items
+/.emacs.desktop*
 /.mc-lists.el
 /.org-id-locations
+/.smex-items
+/bookmarks
+/frame-restore-parameters
+/history
+/ido.last
+/places
 /projectile-bookmarks.eld
 /projectile.cache
-/bookmarks
-/.emacs.desktop*
+/recentf
+/semanticdb/
 /session.*
-/url/
 /tramp
 /tramp-auto-save
+/url/
+/var/
 
 # Private files
 /stante-ical-urls
