@@ -1138,7 +1138,7 @@ TAG is a string denoting the name of the tag to find.
 
 Try to find TAG with `find-tag'.  Return t if TAG was found, and
 nil otherwise."
-    (when tag
+    (when (and tag tags-file-name)
       (condition-case nil
           (progn
             (find-tag tag)
