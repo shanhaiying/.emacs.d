@@ -23,8 +23,10 @@
 /.mc-lists.el
 /.org-id-locations
 /projectile-bookmarks.eld
+/projectile.cache
 /bookmarks
 /.emacs.desktop*
+/session.*
 /url/
 /tramp
 /tramp-auto-save
