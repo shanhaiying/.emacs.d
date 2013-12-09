@@ -1278,28 +1278,8 @@ nil otherwise."
 
 ;; Shell script indentation styles
 (stante-after sh-script
-  (setq sh-styles-alist
-        '(("zsh"
-           (sh-basic-offset . 2)
-           (sh-first-lines-indent . 0)
-           (sh-indent-after-case . +)
-           (sh-indent-after-do . +)
-           (sh-indent-after-done . 0)
-           (sh-indent-after-else . +)
-           (sh-indent-after-if . +)
-           (sh-indent-after-loop-construct . +)
-           (sh-indent-after-open . +)
-           (sh-indent-comment)
-           (sh-indent-for-case-alt . ++)
-           (sh-indent-for-case-label . +)
-           (sh-indent-for-continuation . +)
-           (sh-indent-for-do . 0)
-           (sh-indent-for-done . 0)
-           (sh-indent-for-else . 0)
-           (sh-indent-for-fi . 0)
-           (sh-indent-for-then . 0))))
-
-  (add-hook 'sh-mode-hook (apply-partially #'sh-load-style "zsh")))
+  ;; Use two spaces in shell scripts
+  (setq sh-indentation 2))
 
 
 ;;;; Misc programming languages
