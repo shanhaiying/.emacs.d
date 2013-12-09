@@ -1368,8 +1368,6 @@ nil otherwise."
         magit-unstage-all-confirm nil
         ;; Except when you ask something useful…
         magit-set-upstream-on-push t
-        ;; Show me the changes when committing
-        magit-expand-staged-on-commit 'full
         ;; Use IDO for completion
         magit-completing-read-function #'magit-ido-completing-read)
 
