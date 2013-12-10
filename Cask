@@ -19,7 +19,6 @@
 (depends-on "smart-mode-line")          ; …and make it fancy
 (depends-on "smex")                     ; Improved M-x
 (depends-on "flx-ido")                  ; Powerful flex matching for IDO
-(depends-on "ido-ubiquitous")           ; Use IDO for all `completing-read's…
 (depends-on "ido-at-point")             ; …and even for completion-at-point
 (depends-on "anzu")                     ; Show position indicators for
                                         ; incremental search

@@ -313,6 +313,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
         savehist-autosave-interval 180))
 (savehist-mode t)
 
+;; Improved completion
+(icomplete-mode)
+
 ;; Boost file and buffer operations by flexible matching and the ability to
 ;; perform operations like deleting files or killing buffers directly from the
 ;; minibuffer
@@ -331,7 +334,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                                         ; matching, we have flx
 
 (ido-mode t)
-(ido-ubiquitous-mode)                   ; Use IDO everywhere…
+(ido-everywhere)                        ; Use IDO everywhere…
 (ido-at-point-mode)                     ; …even in `completion-at-point'
 (flx-ido-mode)                          ; Powerful IDO flex matching
 
