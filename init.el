@@ -1624,7 +1624,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c f") stante-files-map)
 (global-set-key (kbd "C-c G") stante-gist-map)
 (global-set-key (kbd "C-c g") #'magit-status)
-(global-set-key (kbd "C-c i") #'imenu)
+(global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
