@@ -1411,6 +1411,9 @@ nil otherwise."
 
   ;; Replace Ack with Ag in Projectile
   (define-key projectile-mode-map [remap projectile-ack] #'projectile-ag)
+  (def-projectile-commander-method ?a
+    "Find ag on project."
+    (call-interactively 'projectile-ag))
 
   (setq projectile-completion-system 'ido))
 (projectile-global-mode)
