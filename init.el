@@ -1149,7 +1149,7 @@ nil otherwise."
   ;; Find a tag on M-. first
   (advice-add 'elisp-slime-nav-find-elisp-thing-at-point
               :before-until #'stante-try-find-tag
-              '(:name stante-find-tag-before-elisp-thing)))
+              '((name . stante-find-tag-before-elisp-thing))))
 
 ;; Teach Emacs about Emacs scripts and Cask/Carton files
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
@@ -1378,7 +1378,8 @@ nil otherwise."
 (stante-after git-commit-mode
   ;; Update Diff highlighting after Git commits from Git commit mode
   (advice-add 'git-commit-commit :after
-              (lambda (&rest _r) (stante-update-all-diff-hl-buffers))))
+              (lambda (&rest _r) (stante-update-all-diff-hl-buffers))
+              '((name . git-commit-commit-update-diff-hl))))
 
 (stante-after gist
   (setq gist-view-gist t))              ; View Gists in browser after creation
