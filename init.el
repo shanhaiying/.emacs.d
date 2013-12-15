@@ -1131,26 +1131,6 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;;;; Emacs Lisp
 
-(stante-after elisp-slime-nav
-  (defun stante-try-find-tag (tag)
-    "Try to find TAG.
-
-TAG is a string denoting the name of the tag to find.
-
-Try to find TAG with `find-tag'.  Return t if TAG was found, and
-nil otherwise."
-    (when (and tag tags-file-name)
-      (condition-case nil
-          (progn
-            (find-tag tag)
-            t)
-        (error nil))))
-
-  ;; Find a tag on M-. first
-  (advice-add 'elisp-slime-nav-find-elisp-thing-at-point
-              :before-until #'stante-try-find-tag
-              '((name . stante-find-tag-before-elisp-thing))))
-
 ;; Teach Emacs about Emacs scripts and Cask/Carton files
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
 (stante-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
