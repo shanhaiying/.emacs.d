@@ -1396,14 +1396,7 @@ keymap `stante-smartparens-lisp-mode-map'."
   (define-key projectile-mode-map [remap projectile-ack] #'projectile-ag)
   (def-projectile-commander-method ?a
     "Find ag on project."
-    (call-interactively 'projectile-ag))
-
-  (advice-add 'projectile-vc-dir
-              :before-until (lambda ()
-                              (when (eq (projectile-project-vcs) 'git)
-                                (magit-status (projectile-project-root))
-                                t))
-              '((name . stante-use-magit-for-projectile-vc-dir))))
+    (call-interactively 'projectile-ag)))
 (projectile-global-mode)
 
 ;; Quickly switch to IELM
