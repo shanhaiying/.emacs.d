@@ -642,11 +642,6 @@ point reaches the beginning or end of the buffer, stop there."
                                 tab-mark empty trailing lines-tail)
         whitespace-line-column nil))    ; Use `fill-column' for overlong lines
 
-;; Clean up whitespace
-(--each '(prog-mode-hook text-mode-hook conf-mode-hook)
-  (add-hook it #'whitespace-mode)
-  (add-hook it #'whitespace-cleanup-mode))
-
 ;; A function to disable highlighting of long lines in modes
 (stante-after whitespace
   (defun stante-whitespace-style-no-long-lines ()
@@ -658,6 +653,11 @@ Disable the highlighting of overlong lines."
     (when whitespace-mode
       (whitespace-mode -1)
       (whitespace-mode 1))))
+
+;; Clean up whitespace
+(--each '(prog-mode-hook text-mode-hook conf-mode-hook)
+  (add-hook it #'whitespace-mode)
+  (add-hook it #'whitespace-cleanup-mode))
 
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
