@@ -659,6 +659,9 @@ Disable the highlighting of overlong lines."
   (add-hook it #'whitespace-mode)
   (add-hook it #'whitespace-cleanup-mode))
 
+;; Require a final new line in every file
+(setq require-final-newline t)
+
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
 
