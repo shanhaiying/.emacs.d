@@ -1167,7 +1167,11 @@ keymap `stante-smartparens-lisp-mode-map'."
                                          lisp-interaction-mode))
 
   ;; Load ERT to support unit test writing and running
-  (require 'ert))
+  (require 'ert)
+
+  ;; Load Dash and enable font-locking for its special forms
+  (require 'dash)
+  (dash-enable-font-lock))
 
 ;; Helpers for Emacs Lisp regexps
 (rxt-global-mode)                       ; Powerful explanation and conversion
