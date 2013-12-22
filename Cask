@@ -17,33 +17,37 @@
 ;; UI improvements
 (depends-on "diminish")                 ; De-clutter the mode line…
 (depends-on "smart-mode-line")          ; …and make it fancy
+(depends-on "anzu")                     ; Mode line indicators for isearch
+(depends-on "browse-kill-ring")         ; Kill ring browser
 (depends-on "smex")                     ; Improved M-x
-(depends-on "flx-ido")                  ; Powerful flex matching for IDO
-(depends-on "ido-at-point")             ; Use IDO for completion-at-point
-(depends-on "imenu-anywhere")           ; imenu with IDO and for all buffers
-(depends-on "anzu")                     ; Position indicators for isearch
-(depends-on "ace-jump-buffer")          ; Fast switch between buffers
 
 ;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files
 (depends-on "hardhat")                  ; Protect user-writable files
 (depends-on "launch")                   ; Open files externally
 
-;; Editing utilities
+;; Navigation tools
+(depends-on "flx-ido")                  ; Powerful flex matching for IDO
+(depends-on "ido-at-point")             ; Use IDO for completion-at-point
+(depends-on "imenu-anywhere")           ; imenu with IDO and for all buffers
+(depends-on "ace-jump-buffer")          ; Fast switch between buffers
+(depends-on "ace-jump-mode")            ; Fast jump within the buffer
+
+;; Editing indicators
+(depends-on "fill-column-indicator")    ; Indicate fill column,
+(depends-on "page-break-lines")         ; page breaks
+(depends-on "volatile-highlights")      ; certain editing operations,
+(depends-on "flycheck")                 ; and syntax errors
+
+;; Editing helpers
 (depends-on "whitespace-cleanup-mode")  ; Cleanup whitespace on save
 (depends-on "drag-stuff")               ; Drag stuff around
-(depends-on "fill-column-indicator")    ; Indicate fill column
-(depends-on "volatile-highlights")      ; Highlight editing operations
-(depends-on "adaptive-wrap")            ; Automatic wrap prefix
-(depends-on "page-break-lines")         ; Nice page breaks
-(depends-on "expand-region")            ; Expand region by semantic units
 (depends-on "smartparens")              ; Parenthesis reloaded
-(depends-on "ace-jump-mode")            ; Jump through the buffer
-(depends-on "flycheck")                 ; On the fly syntax checking
-(depends-on "multiple-cursors")         ; Multiple cursors
+(depends-on "visual-regexp")            ; Regexp reloaded
 (depends-on "undo-tree")                ; Undo reloaded
-(depends-on "browse-kill-ring")         ; Kill ring browser
-(depends-on "visual-regexp")            ; Visual feedback for regexp replace
+(depends-on "adaptive-wrap")            ; Automatic wrap prefix
+(depends-on "expand-region")            ; Expand region by semantic units
+(depends-on "multiple-cursors")         ; Multiple cursors
 
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion
