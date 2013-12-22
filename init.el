@@ -1156,6 +1156,20 @@ keymap `stante-smartparens-lisp-mode-map'."
       (add-hook 'after-save-hook
                 (apply-partially #'compile "make -k") nil 'local)))
 
+  (defun stante-find-cask-file (other-window)
+    "Find the Cask file for this buffer.
+
+When other-window is non-nil, find the Cask file in another
+window."
+    (interactive "P")
+    (unless (buffer-file-name)
+      (user-error "The buffer has no file"))
+    (let ((directory (locate-dominating-file (buffer-file-name) "Cask")))
+      (unless directory
+        (user-error "No Cask file found for this file"))
+      (funcall (if other-window #'find-file-other-window #'find-file)
+               (expand-file-name "Cask" directory))))
+
   ;; Some more Emacs Lisp editing hooks
   (--each '(checkdoc-minor-mode         ; Check doc conventions when eval'ing
                                         ; expressions
@@ -1624,7 +1638,8 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c z") #'stante-switch-to-ielm)
 
 (stante-after lisp-mode
-  (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
+  (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
+  (define-key emacs-lisp-mode-map (kbd "C-c f c") #'stante-find-cask-file))
 
 (stante-after sgml-mode
   (define-key html-mode-map (kbd "C-c e") #'simplezen-expand)
