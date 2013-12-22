@@ -364,16 +364,6 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (stante-after ediff-wind
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
-;; A utility command to quickly switch buffers, see
-;; http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/
-(defun stante-switch-to-previous-buffer ()
-  "Switch to the previous buffer.
-
-Repeated invocations toggle between the two most recently used
-buffers."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) :visible-ok)))
-
 (setq frame-title-format
       '(:eval (if (buffer-file-name)
                   (abbreviate-file-name (buffer-file-name)) "%b")))
@@ -1620,8 +1610,8 @@ Create a new ielm process if required."
 ;; User key bindings in the C-c space.
 (global-set-key (kbd "C-c A") #'org-agenda)
 (global-set-key (kbd "C-c a") stante-ag-map)
-(global-set-key (kbd "C-c b") #'browse-url)
-(global-set-key (kbd "C-c B") #'stante-switch-to-previous-buffer)
+(global-set-key (kbd "C-c b") #'ace-jump-buffer)
+(global-set-key (kbd "C-c B") #'browse-url)
 (global-set-key (kbd "C-c C") #'org-capture)
 (global-set-key (kbd "C-c c") 'helm-command-prefix)
 (global-set-key (kbd "C-c f") stante-files-map)

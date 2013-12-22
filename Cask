@@ -19,10 +19,10 @@
 (depends-on "smart-mode-line")          ; …and make it fancy
 (depends-on "smex")                     ; Improved M-x
 (depends-on "flx-ido")                  ; Powerful flex matching for IDO
-(depends-on "ido-at-point")             ; …and even for completion-at-point…
-(depends-on "imenu-anywhere")           ; …and imenu.
-(depends-on "anzu")                     ; Show position indicators for
-                                        ; incremental search
+(depends-on "ido-at-point")             ; Use IDO for completion-at-point
+(depends-on "imenu-anywhere")           ; imenu with IDO and for all buffers
+(depends-on "anzu")                     ; Position indicators for isearch
+(depends-on "ace-jump-buffer")          ; Fast switch between buffers
 
 ;; File handling
 (depends-on "ignoramus")                ; Ignore uninteresting files
