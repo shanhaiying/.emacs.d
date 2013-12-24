@@ -144,6 +144,7 @@ mode symbol."
 (stante-after ns-win
   (setq ns-pop-up-frames nil            ; Don't pop up new frames from the
                                         ; workspace
+        ns-use-srgb-colorspace t        ; Fix colors on OS X
         mac-option-modifier 'meta       ; Option is simply the natural Meta
         mac-command-modifier 'meta      ; But command is a lot easier to hit
         mac-right-option-modifier 'none ; Keep right option for accented input
