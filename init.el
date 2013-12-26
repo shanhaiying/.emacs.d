@@ -617,7 +617,8 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Make Tab complete if the line is indented
 (setq tab-always-indent 'complete)
 
-;; Automatic layout
+;; Disable Electric indent mode. I prefer C-j for indentation
+(electric-indent-mode -1)
 (electric-layout-mode)
 
 ;; Indicate empty lines at the end of a buffer in the fringe
