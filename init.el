@@ -45,6 +45,9 @@
 (defconst stante-vendor-dir (locate-user-emacs-file "vendor")
   "Directory for embedded 3rd party extensions.")
 
+;; Please don't load outdated byte code
+(setq load-prefer-newer t)
+
 
 ;;;; Requires
 
