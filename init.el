@@ -1304,7 +1304,7 @@ window."
 
   ;; Smartparens for Haskell
   (--each '("@" "/")                    ; Haddock markup
-    (sp-local-pair 'haskell-mode it it :when '(sp-in-string-p))))
+    (sp-local-pair 'haskell-mode it it :when '(sp-in-comment-p))))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
