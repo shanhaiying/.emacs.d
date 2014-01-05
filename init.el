@@ -1291,20 +1291,33 @@ window."
 
 ;; Haskell: Indentation, and some helpful modes
 (stante-after haskell-mode
-  (--each '(haskell-mode-hook inferior-haskell-mode-hook)
-    (add-hook it #'haskell-doc-mode)    ; Eldoc for Haskell
-    (add-hook it #'subword-mode))       ; Subword navigation
+  (--each '(haskell-doc-mode            ; Eldoc for Haskell
+            subword-mode)               ; Subword navigation
+    (add-hook 'haskell-mode-hook it))
 
   (--each '(haskell-decl-scan-mode      ; Scan and navigate declarations
             turn-on-haskell-indent)     ; Powerful indentation for Haskell
     (add-hook 'haskell-mode-hook it))
 
-  ;; Completion for GHCI commands
-  (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion)
-
   ;; Smartparens for Haskell
   (--each '("@" "/")                    ; Haddock markup
     (sp-local-pair 'haskell-mode it it :when '(sp-in-comment-p))))
+
+(stante-after inf-haskell
+  (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
+            haskell-doc-mode            ; Eldoc for Haskell
+            subword-mode)               ; Subword navigation
+    (add-hook 'inferior-haskell-mode-hook it)))
+
+(stante-after haskell-interactive-mode
+  (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
+            haskell-doc-mode            ; Eldoc for Haskell
+            subword-mode)               ; Subword navigation
+    (add-hook 'haskell-interactive-mode-hook it)))
+
+(stante-after haskell-process
+  (setq haskell-process-path-cabal (executable-find "cabal")
+        haskell-process-type 'cabal-repl))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
