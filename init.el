@@ -1144,12 +1144,6 @@ keymap `stante-smartparens-lisp-mode-map'."
     (add-hook 'emacs-lisp-mode-hook it)
     (add-hook 'lisp-interaction-mode-hook it))
 
-  (defun stante-auto-compile-user-init-file ()
-    "Enable `auto-compile-mode' for `user-init-file'."
-    (when (and (buffer-file-name) (f-same? (buffer-file-name) user-init-file))
-      (add-hook 'after-save-hook
-                (apply-partially #'compile "make -k") nil 'local)))
-
   (defun stante-find-cask-file (other-window)
     "Find the Cask file for this buffer.
 
@@ -1164,11 +1158,8 @@ window."
       (funcall (if other-window #'find-file-other-window #'find-file)
                (expand-file-name "Cask" directory))))
 
-  ;; Some more Emacs Lisp editing hooks
-  (--each '(checkdoc-minor-mode         ; Check doc conventions when eval'ing
-                                        ; expressions
-            stante-auto-compile-user-init-file) ; Automatically compile init.el
-    (add-hook 'emacs-lisp-mode-hook it))
+  ;; Check doc conventions when eval'ing expressions
+  (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
 
   ;; Smartparens support for Emacs Lisp editing
   (stante-smartparens-setup-lisp-modes '(emacs-lisp-mode
