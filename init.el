@@ -1266,30 +1266,7 @@ window."
     (push 'company-robe company-backends)))
 
 
-;;;; Shell scripting
-
-;; Teach Emacs about Zsh scripts
-(stante-auto-modes 'sh-mode (rx ".zsh" string-end))
-
-;; Shell script indentation styles
-(stante-after sh-script
-  ;; Use two spaces in shell scripts
-  (setq sh-indentation 2))
-
-
-;;;; Misc programming languages
-
-;; Coffeescript: Indentation
-(stante-after coffee-mode
-  (setq coffee-tab-width 2))
-
-;; Javascript: Indentation
-(stante-after js2-mode
-  (setq-default js2-basic-offset 2))
-
-(stante-auto-modes 'js2-mode (rx "." (or "js" "json") string-end))
-
-;; Haskell: Indentation, and some helpful modes
+;;;; Haskell
 (stante-after haskell-mode
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode)               ; Subword navigation
@@ -1318,6 +1295,30 @@ window."
 (stante-after haskell-process
   (setq haskell-process-path-cabal (executable-find "cabal")
         haskell-process-type 'cabal-repl))
+
+
+;;;; Shell scripting
+
+;; Teach Emacs about Zsh scripts
+(stante-auto-modes 'sh-mode (rx ".zsh" string-end))
+
+;; Shell script indentation styles
+(stante-after sh-script
+  ;; Use two spaces in shell scripts
+  (setq sh-indentation 2))
+
+
+;;;; Misc programming languages
+
+;; Coffeescript: Indentation
+(stante-after coffee-mode
+  (setq coffee-tab-width 2))
+
+;; Javascript: Indentation
+(stante-after js2-mode
+  (setq-default js2-basic-offset 2))
+
+(stante-auto-modes 'js2-mode (rx "." (or "js" "json") string-end))
 
 ;; SCSS: Don't compile when saving (aka please don't spam my directories!)
 (stante-after scss-mode
