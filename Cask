@@ -92,6 +92,7 @@
 ;; Haskell support
 (depends-on "haskell-mode")             ; Haskell major modes
 (depends-on "ghci-completion")          ; Complete GHCI commands
+(depends-on "flycheck-haskell")         ; Improve Haskell syntax checking
 
 ;; Basic Lisp utility modes
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level

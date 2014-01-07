@@ -1296,6 +1296,9 @@ window."
   (setq haskell-process-path-cabal (executable-find "cabal")
         haskell-process-type 'cabal-repl))
 
+(stante-after flycheck
+  (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
 
 ;;;; Shell scripting
 
