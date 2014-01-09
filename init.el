@@ -1264,7 +1264,7 @@ window."
     (add-hook 'haskell-mode-hook it))
 
   (--each '(haskell-decl-scan-mode      ; Scan and navigate declarations
-            turn-on-haskell-indent)     ; Powerful indentation for Haskell
+            turn-on-hi2)     ; Powerful indentation for Haskell
     (add-hook 'haskell-mode-hook it))
 
   ;; Smartparens for Haskell
