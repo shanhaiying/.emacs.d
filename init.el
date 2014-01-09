@@ -1271,6 +1271,10 @@ window."
   (--each '("@" "/")                    ; Haddock markup
     (sp-local-pair 'haskell-mode it it :when '(sp-in-comment-p))))
 
+(stante-after hi2
+  ;; Don't show indentation markers
+  (setq hi2-show-indentations nil))
+
 (stante-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
