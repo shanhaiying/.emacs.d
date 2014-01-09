@@ -92,7 +92,6 @@
 ;; Haskell support
 (depends-on "haskell-mode")             ; Haskell major modes
 (depends-on "ghci-completion")          ; Complete GHCI commands
-(depends-on "hi2")                      ; Haskell indentation reloaded
 (depends-on "flycheck-haskell")         ; Improve Haskell syntax checking
 
 ;; Basic Lisp utility modes

@@ -1264,16 +1264,12 @@ window."
     (add-hook 'haskell-mode-hook it))
 
   (--each '(haskell-decl-scan-mode      ; Scan and navigate declarations
-            turn-on-hi2)     ; Powerful indentation for Haskell
+            turn-on-haskell-indent)     ; Powerful indentation for Haskell
     (add-hook 'haskell-mode-hook it))
 
   ;; Smartparens for Haskell
   (--each '("@" "/")                    ; Haddock markup
     (sp-local-pair 'haskell-mode it it :when '(sp-in-comment-p))))
-
-(stante-after hi2
-  ;; Don't show indentation markers
-  (setq hi2-show-indentations nil))
 
 (stante-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
