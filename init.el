@@ -1561,6 +1561,26 @@ Create a new ielm process if required."
                  (nnimap-server-port 993)
                  (nnimap-stream ssl))))
 
+;; Mu4e
+(stante-after mu4e
+  (setq mu4e-drafts-folder "/[Gmail].Entw&APw-rfe"
+        mu4e-sent-folder   "/[Gmail].Gesendet"
+        mu4e-trash-folder  "/[Gmail].Papierkorb"
+        ;; Don't save sent messages. GMail takes care of this
+        mu4e-sent-messages-behavior 'delete
+        ;; Handy shortcuts
+        mu4e-maildir-shortcuts '(("/INBOX"                          . ?i)
+                                 ("/Uni"                            . ?u)
+                                 ("/Privat"                         . ?p)
+                                 ("/Emacs.emacs-devel"              . ?e)
+                                 ("/[Google Mail].Wichtig"          . ?w)
+                                 ("/[Google Mail].Alle Nachrichten" . ?a))
+        ;; Update mail with U in the main view
+        mu4e-get-mail-command "offlineimap"))
+
+;; Mu4e may not have autoloads available
+(autoload 'mu4e "mu4e" 'interactive)
+
 
 ;;;; IRC
 
