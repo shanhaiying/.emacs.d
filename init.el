@@ -1574,6 +1574,7 @@ Create a new ielm process if required."
                                  ("/Privat"                         . ?p)
                                  ("/Emacs.emacs-devel"              . ?e)
                                  ("/[Google Mail].Wichtig"          . ?w)
+                                 ("/[Google Mail].Markiert"         . ?m)
                                  ("/[Google Mail].Alle Nachrichten" . ?a))
         ;; Update mail with U in the main view
         mu4e-get-mail-command "offlineimap"))
