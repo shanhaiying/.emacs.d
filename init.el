@@ -1563,9 +1563,9 @@ Create a new ielm process if required."
 
 ;; Mu4e
 (stante-after mu4e
-  (setq mu4e-drafts-folder "/[Gmail].Entw&APw-rfe"
-        mu4e-sent-folder   "/[Gmail].Gesendet"
-        mu4e-trash-folder  "/[Gmail].Papierkorb"
+  (setq mu4e-drafts-folder "/[Google Mail].Entw&APw-rfe"
+        mu4e-sent-folder   "/[Google Mail].Gesendet"
+        mu4e-trash-folder  "/[Google Mail].Papierkorb"
         ;; Don't save sent messages. GMail takes care of this
         mu4e-sent-messages-behavior 'delete
         ;; Handy shortcuts
