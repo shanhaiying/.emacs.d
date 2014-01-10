@@ -1589,6 +1589,9 @@ Create a new ielm process if required."
 ;; Mu4e may not have autoloads available
 (autoload 'mu4e "mu4e" 'interactive)
 
+;; Make mu4e the default mail client
+(setq mail-user-agent 'mu4e-user-agent)
+
 
 ;;;; IRC
 
