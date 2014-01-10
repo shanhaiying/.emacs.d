@@ -1577,7 +1577,9 @@ Create a new ielm process if required."
                                  ("/[Google Mail].Markiert"         . ?m)
                                  ("/[Google Mail].Alle Nachrichten" . ?a))
         ;; Update mail with U in the main view
-        mu4e-get-mail-command "offlineimap"))
+        mu4e-get-mail-command "offlineimap"
+        ;; Prettify the header view
+        mu4e-use-fancy-chars t))
 
 ;; Mu4e may not have autoloads available
 (autoload 'mu4e "mu4e" 'interactive)
