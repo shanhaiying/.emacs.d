@@ -1582,7 +1582,9 @@ Create a new ielm process if required."
         ;; Update mail with U in the main view
         mu4e-get-mail-command "offlineimap"
         ;; Prettify the header view
-        mu4e-use-fancy-chars t))
+        mu4e-use-fancy-chars t
+        ;; Shut up, mu4e!
+        mu4e-confirm-quit nil))
 
 ;; Mu4e may not have autoloads available
 (autoload 'mu4e "mu4e" 'interactive)
