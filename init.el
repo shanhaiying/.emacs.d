@@ -1556,10 +1556,7 @@ Create a new ielm process if required."
 ;; Settings for reading mail via Gnus
 (stante-after gnus
   (setq gnus-select-method
-        '(nnimap "gmail"
-                 (nnimap-address "imap.gmail.com")
-                 (nnimap-server-port 993)
-                 (nnimap-stream ssl))))
+        '(nnmaildir "gmail" (directory "~/Maildir"))))
 
 ;; Mu4e
 (stante-after mu4e
