@@ -1547,7 +1547,10 @@ Create a new ielm process if required."
 ;; Settings for reading mail via Gnus
 (stante-after gnus
   (setq gnus-select-method
-        '(nnmaildir "gmail" (directory "~/Maildir"))))
+        '(nnmaildir "gmail" (directory "~/Maildir")))
+
+  ;; Synchronize mails before starting GNUs
+  (add-hook 'gnus-before-startup-hook #'offlineimap))
 
 ;; Mu4e
 (stante-after mu4e

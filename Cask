@@ -130,4 +130,5 @@
 
 ;; Personal organization
 (depends-on "org-plus-contrib")         ; Latest Org + Contrib files
-(depends-on "calfw")
+(depends-on "calfw")                    ; Calendar framework
+(depends-on "offlineimap")              ; Mail synchronization
