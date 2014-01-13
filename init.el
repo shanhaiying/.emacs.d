@@ -711,8 +711,6 @@ Disable the highlighting of overlong lines."
 (global-page-break-lines-mode)
 
 ;; On the fly syntax checking
-(stante-after flycheck
-  (setq flycheck-completion-system 'ido))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
@@ -1365,7 +1363,7 @@ window."
         ;; Except when you ask something useful…
         magit-set-upstream-on-push t
         ;; Use IDO for completion
-        magit-completing-read-function #'magit-ido-completing-read)
+        magit-completing-read-function #'magit-builtin-completing-read)
 
   ;; Update Diff highlighting after Magit operations
   (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update))
@@ -1405,7 +1403,7 @@ window."
 (stante-after projectile
   (diminish 'projectile-mode)
 
-  (setq projectile-completion-system 'ido)
+  (setq projectile-completion-system 'default)
 
   ;; Replace Ack with Ag in Projectile
   (define-key projectile-mode-map [remap projectile-ack] #'projectile-ag)
