@@ -28,7 +28,6 @@
 
 ;; Navigation tools
 (depends-on "flx-ido")                  ; Powerful flex matching for IDO
-(depends-on "ido-at-point")             ; Use IDO for completion-at-point
 (depends-on "imenu-anywhere")           ; imenu with IDO and for all buffers
 (depends-on "ace-jump-buffer")          ; Fast switch between buffers
 (depends-on "ace-jump-mode")            ; Fast jump within the buffer
