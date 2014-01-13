@@ -127,7 +127,6 @@
 (depends-on "projectile")               ; Project interaction
 (depends-on "ag")                       ; Ag frontend
 (depends-on "google-this")              ; Google from Emacs
-(depends-on "elnode")                   ; evented Emacs webserver
 
 ;; Personal organization
 (depends-on "org-plus-contrib")         ; Latest Org + Contrib files
