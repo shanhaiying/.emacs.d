@@ -1568,10 +1568,10 @@ Create a new ielm process if required."
                                  ("/[Google Mail].Alle Nachrichten" . ?a))
         ;; Personal bookmarks
         mu4e-bookmarks
-        '(("flag:unread and not maildir:'[Google Mail].Papierkorb'" "Unread" ?u)
+        '(("flag:unread and not flag:trashed" "Unread" ?u)
           ("date:today..now" "Today's messages" 116)
           ("date:7d..now" "Last 7 days" 119)
-          ("from:notifications@github.com and not maildir:'[Google Mail].Papierkorb'" "Github" ?g))
+          ("from:notifications@github.com and not flag:trashed" "Github" ?g))
         ;; Update mail with U in the main view
         mu4e-get-mail-command "offlineimap"
         ;; Prettify the header view
