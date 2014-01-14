@@ -1555,20 +1555,18 @@ Create a new ielm process if required."
 
 ;; Mu4e
 (stante-after mu4e
-  (setq mu4e-drafts-folder "/[Google Mail].Entw&APw-rfe"
-        mu4e-sent-folder   "/[Google Mail].Gesendet"
-        mu4e-trash-folder  "/[Google Mail].Papierkorb"
+  (setq mu4e-drafts-folder "/[Google Mail].Drafts"
+        mu4e-sent-folder   "/[Google Mail].Sent Mail"
+        mu4e-trash-folder  "/[Google Mail].Trash"
         ;; Don't save sent messages. GMail takes care of this
         mu4e-sent-messages-behavior 'delete
         ;; Handy shortcuts
-        mu4e-maildir-shortcuts '(("/INBOX"                          . ?i)
-                                 ("/Uni"                            . ?u)
-                                 ("/Privat"                         . ?p)
-                                 ("/Emacs.emacs-devel"              . ?e)
-                                 ("/[Google Mail].Entw&APw-rfe"     . ?d)
-                                 ("/[Google Mail].Wichtig"          . ?w)
-                                 ("/[Google Mail].Markiert"         . ?m)
-                                 ("/[Google Mail].Alle Nachrichten" . ?a))
+        mu4e-maildir-shortcuts '(("/INBOX"                 . ?i)
+                                 ("/Uni"                   . ?u)
+                                 ("/Privat"                . ?p)
+                                 ("/Emacs.emacs-devel"     . ?e)
+                                 ("/[Google Mail].Drafts"  . ?d)
+                                 ("/[Google Mail].Starred" . ?s))
         ;; Personal bookmarks
         mu4e-bookmarks
         '(("flag:unread and not flag:trashed" "Unread" ?u)
