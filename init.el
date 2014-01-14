@@ -315,9 +315,6 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
         savehist-autosave-interval 180))
 (savehist-mode t)
 
-;; Improved completion
-(icomplete-mode)
-
 ;; Boost file and buffer operations by flexible matching and the ability to
 ;; perform operations like deleting files or killing buffers directly from the
 ;; minibuffer
@@ -329,8 +326,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
         ido-default-file-method 'selected-window
         ido-use-faces nil))             ; Prefer flx ido faces
 
-(ido-mode t)
-(ido-everywhere)                        ; Use IDO everywhere
+(ido-mode t)                            ; Enable IDO,…
+(ido-everywhere)                        ; …everywhere…
+(ido-ubiquitous-mode)                   ; …really!
 (flx-ido-mode)                          ; Powerful IDO flex matching
 
 ;; Configure Smex
@@ -711,6 +709,8 @@ Disable the highlighting of overlong lines."
 (global-page-break-lines-mode)
 
 ;; On the fly syntax checking
+(stante-after flycheck
+  (setq flycheck-completion-system 'ido))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
@@ -1363,7 +1363,7 @@ window."
         ;; Except when you ask something useful…
         magit-set-upstream-on-push t
         ;; Use IDO for completion
-        magit-completing-read-function #'magit-builtin-completing-read)
+        magit-completing-read-function #'magit-ido-completing-read)
 
   ;; Update Diff highlighting after Magit operations
   (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update))
@@ -1403,7 +1403,7 @@ window."
 (stante-after projectile
   (diminish 'projectile-mode)
 
-  (setq projectile-completion-system 'default)
+  (setq projectile-completion-system 'ido)
 
   ;; Replace Ack with Ag in Projectile
   (define-key projectile-mode-map [remap projectile-ack] #'projectile-ag)

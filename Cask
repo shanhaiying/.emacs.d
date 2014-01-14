@@ -27,6 +27,7 @@
 (depends-on "launch")                   ; Open files externally
 
 ;; Navigation tools
+(depends-on "ido-ubiquitous")           ; Use IDO everywhere
 (depends-on "flx-ido")                  ; Powerful flex matching for IDO
 (depends-on "imenu-anywhere")           ; imenu with IDO and for all buffers
 (depends-on "ace-jump-buffer")          ; Fast switch between buffers
