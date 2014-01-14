@@ -1565,6 +1565,7 @@ Create a new ielm process if required."
                                  ("/Uni"                            . ?u)
                                  ("/Privat"                         . ?p)
                                  ("/Emacs.emacs-devel"              . ?e)
+                                 ("/[Google Mail].Entw&APw-rfe"     . ?d)
                                  ("/[Google Mail].Wichtig"          . ?w)
                                  ("/[Google Mail].Markiert"         . ?m)
                                  ("/[Google Mail].Alle Nachrichten" . ?a))
