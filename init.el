@@ -330,6 +330,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (ido-everywhere)                        ; …everywhere…
 (ido-ubiquitous-mode)                   ; …really!
 (flx-ido-mode)                          ; Powerful IDO flex matching
+(ido-vertical-mode)                     ; Show IDO completions vertically
 
 ;; Configure Smex
 (stante-after smex
