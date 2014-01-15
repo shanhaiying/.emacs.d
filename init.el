@@ -1561,12 +1561,19 @@ Create a new ielm process if required."
         ;; Don't save sent messages. GMail takes care of this
         mu4e-sent-messages-behavior 'delete
         ;; Handy shortcuts
-        mu4e-maildir-shortcuts '(("/INBOX"                 . ?i)
-                                 ("/Uni"                   . ?u)
-                                 ("/Privat"                . ?p)
-                                 ("/Emacs.emacs-devel"     . ?e)
+        mu4e-maildir-shortcuts '(("/Emacs.AUCTeX"          . ?a)
+                                 ("/Emacs.cask"            . ?c)
                                  ("/[Google Mail].Drafts"  . ?d)
-                                 ("/[Google Mail].Starred" . ?s))
+                                 ("/Emacs.emacs-devel"     . ?e)
+                                 ("/Emacs.flycheck"        . ?f)
+                                 ("/Haskell.haskell"       . ?h)
+                                 ("/Haskell.haskell-cafe"  . ?H)
+                                 ("/INBOX"                 . ?i)
+                                 ("/High order Munich"     . ?m)
+                                 ("/Emacs.Org Mode"        . ?o)
+                                 ("/Privat"                . ?p)
+                                 ("/[Google Mail].Starred" . ?s)
+                                 ("/Uni"                   . ?u))
         ;; Personal bookmarks
         mu4e-bookmarks
         '(("flag:unread and not flag:trashed" "Unread" ?u)
