@@ -1560,6 +1560,9 @@ Create a new ielm process if required."
         mu4e-trash-folder  "/[Google Mail].Trash"
         ;; Don't save sent messages. GMail takes care of this
         mu4e-sent-messages-behavior 'delete
+        ;; Disable the automatic signature, and remove the default signature
+        mu4e-compose-signature-auto-include nil
+        mu4e-compose-signature ""
         ;; Handy shortcuts
         mu4e-maildir-shortcuts '(("/Emacs.AUCTeX"          . ?a)
                                  ("/Emacs.cask"            . ?c)
