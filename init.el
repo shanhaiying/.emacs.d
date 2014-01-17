@@ -1573,7 +1573,7 @@ Create a new ielm process if required."
                                  ("/Haskell.haskell-cafe"  . ?H)
                                  ("/INBOX"                 . ?i)
                                  ("/High order Munich"     . ?m)
-                                 ("/Emacs.Org Mode"        . ?o)
+                                 ("/Emacs.Org Mode"        . ?O)
                                  ("/Privat"                . ?p)
                                  ("/[Google Mail].Starred" . ?s)
                                  ("/Uni"                   . ?u))
