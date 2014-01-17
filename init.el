@@ -34,6 +34,9 @@
 (when (version< emacs-version "24.3.50")
   (error "Stante Pede needs Emacs trunk, but this is %s!" emacs-version))
 
+;; And disable the site default settings
+(setq inhibit-default-init t)
+
 
 ;;;; Package management
 
