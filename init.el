@@ -1539,7 +1539,7 @@ Create a new ielm process if required."
 
 (stante-after message
   (setq message-send-mail-function 'smtpmail-send-it
-    message-kill-buffer-on-exit t))     ; Don't keep message buffers around
+        message-kill-buffer-on-exit t)) ; Don't keep message buffers around
 
 (stante-after smtpmail
   (setq smtpmail-smtp-server "smtp.gmail.com"
