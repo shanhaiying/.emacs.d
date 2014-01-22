@@ -724,14 +724,14 @@ Disable the highlighting of overlong lines."
 ;;;; Multiple cursors
 (defvar stante-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
+    (define-key map (kbd "h") #'mc/mark-all-like-this-dwim)
     (define-key map (kbd "l") #'mc/edit-lines)
+    (define-key map (kbd "n") #'mc/mark-next-like-this)
+    (define-key map (kbd "p") #'mc/mark-previous-like-this)
     (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
     (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
     (define-key map (kbd "C-s") #'mc/mark-all-in-region)
-    (define-key map (kbd "n") #'mc/mark-next-like-this)
-    (define-key map (kbd "p") #'mc/mark-previous-like-this)
-    (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
-    (define-key map (kbd "h") #'mc/mark-all-like-this-dwim)
     map))
 
 
