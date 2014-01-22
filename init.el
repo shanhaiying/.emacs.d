@@ -729,6 +729,7 @@ Disable the highlighting of overlong lines."
     (define-key map (kbd "l") #'mc/edit-lines)
     (define-key map (kbd "n") #'mc/mark-next-like-this)
     (define-key map (kbd "p") #'mc/mark-previous-like-this)
+    (define-key map (kbd "r") #'vr/mc-mark)
     (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
     (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
     (define-key map (kbd "C-s") #'mc/mark-all-in-region)
@@ -1669,6 +1670,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
+(global-set-key (kbd "C-c R") #'vr/replace)
 (global-set-key (kbd "C-c S") #'stante-personal-calendar) ; S for Schedule
 (global-set-key (kbd "C-c s") stante-symbols-map)
 (global-set-key (kbd "C-c u") stante-utilities-map)
