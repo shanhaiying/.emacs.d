@@ -1652,8 +1652,6 @@ Create a new ielm process if required."
 
 ;; Key bindings for extension packages
 (global-set-key (kbd "C-=") #'er/expand-region)
-(global-set-key (kbd "C-c SPC") #'ace-jump-mode)
-(global-set-key (kbd "C-x SPC") #'ace-jump-mode-pop-mark)
 
 ;; User key bindings in the C-c space.
 (global-set-key (kbd "C-c A") #'org-agenda)
@@ -1666,6 +1664,8 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c G") stante-gist-map)
 (global-set-key (kbd "C-c g") #'magit-status)
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
+(global-set-key (kbd "C-c j") #'ace-jump-mode)
+(global-set-key (kbd "C-c J") #'ace-jump-pop-mark)
 (global-set-key (kbd "C-c M") #'mu4e)
 (global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
