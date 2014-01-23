@@ -241,6 +241,8 @@ Without FORMULA determine whether Homebrew itself is available."
 (blink-cursor-mode -1)
 (setq ring-bell-function 'ignore
       inhibit-startup-screen t)
+;; Shut the fuck up, Emacs, I don't care about GNU
+(fset 'display-startup-echo-area-message 'ignore)
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Choose Font and color theme.  We try to use Anonymous Pro from
