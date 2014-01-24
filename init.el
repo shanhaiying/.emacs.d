@@ -314,6 +314,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 ;;;; The minibuffer
 
+;; Increase Emacs' memory of the past
+(setq history-length 1000)
+
 ;; Save a minibuffer input history
 (stante-after savehist
   (setq savehist-save-minibuffer-history t
