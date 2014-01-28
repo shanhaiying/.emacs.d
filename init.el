@@ -1177,11 +1177,6 @@ window."
                                         ; functions for regular expressions in
                                         ; the C-c / map
 
-;; Font Lock for cl-lib
-(cl-lib-highlight-initialize)                      ; Font lock for cl-lib
-(cl-lib-highlight-warn-cl-initialize)              ; Warning face for deprecated
-                                        ; cl functions
-
 (stante-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
 
