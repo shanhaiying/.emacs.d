@@ -1467,6 +1467,7 @@ Create a new ielm process if required."
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a") #'align)
     (define-key map (kbd "A") #'align-regexp)
+    (define-key map (kbd "z") #'stante-switch-to-ielm)
     map)
   "Key map for various utilities.")
 
@@ -1699,7 +1700,6 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c s") stante-symbols-map)
 (global-set-key (kbd "C-c u") stante-utilities-map)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
-(global-set-key (kbd "C-c z") #'stante-switch-to-ielm)
 
 (stante-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
