@@ -1403,28 +1403,7 @@ window."
 (define-key helm-command-map (kbd "o") #'helm-occur)
 (define-key helm-command-map (kbd "p") #'helm-projectile)
 
-;; Project interaction
-(stante-after projectile
-  (diminish 'projectile-mode)
-
-  (setq projectile-completion-system 'ido)
-
-  ;; Replace Ack with Ag in Projectile
-  (define-key projectile-mode-map [remap projectile-ack] #'projectile-ag)
-  (def-projectile-commander-method ?a
-    "Find ag on project."
-    (call-interactively 'projectile-ag)))
-(projectile-global-mode)
-
-;; Quickly switch to IELM
-(defun stante-switch-to-ielm ()
-  "Switch to an ielm window.
-
-Create a new ielm process if required."
-  (interactive)
-  (pop-to-buffer (get-buffer-create "*ielm*"))
-  (ielm))
-
+;; Powerful file and code search
 (stante-after ag
   (setq ag-reuse-buffers t              ; Don't spam buffer list with ag buffers
         ag-highlight-search t           ; A little fanciness
@@ -1435,9 +1414,54 @@ Create a new ielm process if required."
 (defvar stante-ag-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a") #'ag-regexp)
-    (define-key map (kbd "p") #'ag-project-regexp)
+    (define-key map (kbd "A") #'ag)
+    (define-key map (kbd "d") #'ag-dired-regexp)
+    (define-key map (kbd "D") #'ag-dired)
+    (define-key map (kbd "f") #'ag-files)
+    (define-key map (kbd "k") #'ag-kill-other-buffers)
+    (define-key map (kbd "K") #'ag-kill-buffers)
     map)
   "Keymap for Ack and a Half.")
+
+(defvar stante-ag-project-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a") #'ag-project-regexp)
+    (define-key map (kbd "A") #'ag-project)
+    (define-key map (kbd "d") #'ag-project-dired-regexp)
+    (define-key map (kbd "D") #'ag-project-dired)
+    (define-key map (kbd "f") #'ag-project-files)
+    ;; For symmetry with `stante-ag-map'
+    (define-key map (kbd "k") #'ag-kill-other-buffers)
+    (define-key map (kbd "K") #'ag-kill-buffers)
+    map)
+  "Keymap for Ag's project commands.")
+
+;; Project interaction
+(stante-after projectile
+  (diminish 'projectile-mode)
+
+  (setq projectile-completion-system 'ido)
+
+  ;; Replace Ack with Ag in Projectile commander
+  (def-projectile-commander-method ?a
+    "Find ag on project."
+    (call-interactively 'projectile-ag))
+
+  ;; Use our custom Ag bindings in Projectile.  We use functions from ag here,
+  ;; because they are way more powerful
+  (let ((prefix-map (lookup-key projectile-mode-map projectile-keymap-prefix)))
+    (define-key prefix-map "a" stante-ag-project-map))
+  (define-key projectile-mode-map [remap projectile-ag] nil))
+(projectile-global-mode)
+
+;; Quickly switch to IELM
+(defun stante-switch-to-ielm ()
+  "Switch to an ielm window.
+
+Create a new ielm process if required."
+  (interactive)
+  (pop-to-buffer (get-buffer-create "*ielm*"))
+  (ielm))
 
 (defvar stante-utilities-map
   (let ((map (make-sparse-keymap)))
