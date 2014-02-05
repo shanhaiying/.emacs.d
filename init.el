@@ -794,8 +794,46 @@ Disable the highlighting of overlong lines."
 
 ;; Configure hippie-expand reasonably
 (stante-after hippie-exp
+  (defun stante-try-expand-dabbrev-in-current-namespace (old)
+    "Expand text at point via `dabbbrev', but in the current namespace."
+    (let (expansion)
+      (unless old
+        (he-init-string (he-dabbrev-beg) (point))
+        (set-marker he-search-loc he-string-beg)
+        (setq he-search-bw t))
+
+      (when (and (s-starts-with? "-" he-search-string)
+                 (buffer-file-name))
+        (setq he-search-string (concat (f-base (buffer-file-name))
+                                       he-search-string))
+        (save-excursion
+          (save-restriction
+            (when hippie-expand-no-restriction
+              (widen))
+            ;; Try looking backward unless inhibited.
+            (when he-search-bw
+              (goto-char he-search-loc)
+              (setq expansion (he-dabbrev-search he-search-string t))
+              (set-marker he-search-loc (point))
+              (unless expansion
+                (set-marker he-search-loc he-string-end)
+                (setq he-search-bw nil)))
+
+            (unless expansion           ; Then look forward.
+              (goto-char he-search-loc)
+              (setq expansion (he-dabbrev-search he-search-string nil))
+              (set-marker he-search-loc (point))))))
+
+      (when (and old (not expansion))
+        (he-reset-string))
+
+      (when expansion
+        (he-substitute-string expansion t)
+        t)))
+
   (setq hippie-expand-try-functions-list
-        '(try-expand-dabbrev
+        '(stante-try-complete-lisp-symbol-partially-in-current-namespace
+          try-expand-dabbrev
           try-expand-dabbrev-all-buffers
           try-expand-dabbrev-from-kill
           try-complete-file-name-partially
