@@ -792,7 +792,7 @@ Disable the highlighting of overlong lines."
 
 ;;;; Completion and expansion
 
-;; Configured hippie-expand reasonably
+;; Configure hippie-expand reasonably
 (stante-after hippie-exp
   (setq hippie-expand-try-functions-list
         '(try-expand-dabbrev
@@ -802,7 +802,6 @@ Disable the highlighting of overlong lines."
           try-complete-file-name
           try-expand-all-abbrevs
           try-expand-list
-          try-expand-line
           try-complete-lisp-symbol-partially
           try-complete-lisp-symbol)))
 
