@@ -794,46 +794,8 @@ Disable the highlighting of overlong lines."
 
 ;; Configure hippie-expand reasonably
 (stante-after hippie-exp
-  (defun stante-try-expand-dabbrev-in-current-namespace (old)
-    "Expand text at point via `dabbbrev', but in the current namespace."
-    (let (expansion)
-      (unless old
-        (he-init-string (he-dabbrev-beg) (point))
-        (set-marker he-search-loc he-string-beg)
-        (setq he-search-bw t))
-
-      (when (and (s-starts-with? "-" he-search-string)
-                 (buffer-file-name))
-        (setq he-search-string (concat (f-base (buffer-file-name))
-                                       he-search-string))
-        (save-excursion
-          (save-restriction
-            (when hippie-expand-no-restriction
-              (widen))
-            ;; Try looking backward unless inhibited.
-            (when he-search-bw
-              (goto-char he-search-loc)
-              (setq expansion (he-dabbrev-search he-search-string t))
-              (set-marker he-search-loc (point))
-              (unless expansion
-                (set-marker he-search-loc he-string-end)
-                (setq he-search-bw nil)))
-
-            (unless expansion           ; Then look forward.
-              (goto-char he-search-loc)
-              (setq expansion (he-dabbrev-search he-search-string nil))
-              (set-marker he-search-loc (point))))))
-
-      (when (and old (not expansion))
-        (he-reset-string))
-
-      (when expansion
-        (he-substitute-string expansion t)
-        t)))
-
   (setq hippie-expand-try-functions-list
-        '(stante-try-complete-lisp-symbol-partially-in-current-namespace
-          try-expand-dabbrev
+        '(try-expand-dabbrev
           try-expand-dabbrev-all-buffers
           try-expand-dabbrev-from-kill
           try-complete-file-name-partially
@@ -1164,6 +1126,28 @@ keymap `stante-smartparens-lisp-mode-map'."
 
 ;;;; Emacs Lisp
 
+;; Utility functions
+(defun stante-find-cask-file (other-window)
+    "Find the Cask file for this buffer.
+
+When other-window is non-nil, find the Cask file in another
+window."
+    (interactive "P")
+    (unless (buffer-file-name)
+      (user-error "The buffer has no file"))
+    (let ((directory (locate-dominating-file (buffer-file-name) "Cask")))
+      (unless directory
+        (user-error "No Cask file found for this file"))
+      (funcall (if other-window #'find-file-other-window #'find-file)
+               (expand-file-name "Cask" directory))))
+
+(defun stante-emacs-lisp-current-feature ()
+  "Return the feature provided by the current buffer."
+  (save-excursion
+    (goto-char (point-min))
+    (when (search-forward-regexp (rx line-start "(provide '"))
+      (symbol-name (symbol-at-point)))))
+
 ;; Teach Emacs about Emacs scripts and Cask/Carton files
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
 (stante-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
@@ -1180,20 +1164,6 @@ keymap `stante-smartparens-lisp-mode-map'."
   (--each stante-emacs-lisp-common-modes
     (add-hook 'emacs-lisp-mode-hook it)
     (add-hook 'lisp-interaction-mode-hook it))
-
-  (defun stante-find-cask-file (other-window)
-    "Find the Cask file for this buffer.
-
-When other-window is non-nil, find the Cask file in another
-window."
-    (interactive "P")
-    (unless (buffer-file-name)
-      (user-error "The buffer has no file"))
-    (let ((directory (locate-dominating-file (buffer-file-name) "Cask")))
-      (unless directory
-        (user-error "No Cask file found for this file"))
-      (funcall (if other-window #'find-file-other-window #'find-file)
-               (expand-file-name "Cask" directory))))
 
   ;; Check doc conventions when eval'ing expressions
   (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
@@ -1223,6 +1193,34 @@ window."
 
   ;; Smartparens support for IELM
   (stante-smartparens-setup-lisp-modes 'inferior-emacs-lisp-mode))
+
+;; Hippie expand for Emacs Lisp
+(stante-after hippie-exp
+  (defun stante-try-complete-lisp-symbol-without-namespace (old)
+    "Hippie expand \"try\" function which expands \"-foo\" to \"modname-foo\" in elisp."
+    (unless old
+      (he-init-string (he-lisp-symbol-beg) (point))
+      (when (string-prefix-p "-" he-search-string)
+        (let ((mod-name (stante-emacs-lisp-current-feature)))
+          (when mod-name
+            (setq he-expand-list (list (concat mod-name he-search-string)))))))
+
+    (when he-expand-list
+      (he-substitute-string (car he-expand-list))
+      (setq he-expand-list nil)
+      t))
+
+  (defun stante-emacs-lisp-setup-hippie-expand ()
+    (setq-local hippie-expand-try-functions-list
+                (append hippie-expand-try-functions-list
+                        '(stante-try-complete-lisp-symbol-without-namespace))))
+
+  (stante-after lisp-mode
+    (--each '(emacs-lisp-mode-hook lisp-interaction-mode-hook)
+      (add-hook it #'stante-emacs-lisp-setup-hippie-expand)))
+
+  (stante-after ielm
+    (add-hook 'ielm-mode-hook #'stante-emacs-lisp-setup-hippie-expand)))
 
 ;; Now de-clutter the mode line
 (stante-after eldoc (diminish 'eldoc-mode))
