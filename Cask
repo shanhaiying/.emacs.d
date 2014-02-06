@@ -85,6 +85,9 @@
 (depends-on "feature-mode")             ; Cucumber major mode
 (depends-on "pkgbuild-mode")            ; Arch PKGBUILD files
 
+;; Python
+(depends-on "virtualenv")               ; Virtualenv support
+
 ;; Ruby support
 (depends-on "inf-ruby")                 ; Ruby interpreter in Emacs
 (depends-on "robe")                     ; Code navigation, docs and completion
