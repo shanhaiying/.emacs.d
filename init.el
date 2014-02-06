@@ -1272,7 +1272,19 @@ window."
     (setq fill-column 79))
 
   ;; Use a decent syntax and style checker
-  (setq python-check-command "pylint"))
+  (setq python-check-command "pylint")
+
+  ;; Use IPython as interpreter.  Stolen from Elpy
+  (setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args ""
+        python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+        python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+        python-shell-completion-setup-code
+        "from IPython.core.completerlib import module_completion"
+        python-shell-completion-module-string-code
+        "';'.join(module_completion('''%s'''))\n"
+        python-shell-completion-string-code
+        "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 
 
 ;;;; Ruby
