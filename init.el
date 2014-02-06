@@ -1260,7 +1260,9 @@ window."
 ;;;; Python
 
 (stante-after python
-  (--each '(stante-python-filling subword-mode)
+  (--each '(stante-python-filling       ; PEP 8 compliant filling rules
+            subword-mode                ; Word commands on parts of ClassNames
+            )
     (add-hook 'python-mode-hook it))
 
   ;; Fill according to PEP 8
