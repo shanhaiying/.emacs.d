@@ -1270,7 +1270,7 @@ window."
     (setq fill-column 79))
 
   ;; Use a decent syntax and style checker
-  (setq python-check-command "flake8"))
+  (setq python-check-command "pylint"))
 
 
 ;;;; Ruby
