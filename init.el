@@ -1624,11 +1624,17 @@ Create a new ielm process if required."
 
 ;; Settings for reading mail via Gnus
 (stante-after gnus
-  (setq gnus-select-method
-        '(nnmaildir "gmail" (directory "~/Maildir")))
+  (setq gnus-select-method '(nnmaildir "gmail" (directory "~/Documents/Mail"))
+        gnus-parameters '((".*"
+                           (gnus-show-threads t)
+                           (auto-expire . nil))
+                          ("INBOX"
+                           (display . all)
+                           (gnus-use-scoring nil)))))
 
-  ;; Synchronize mails before starting GNUs
-  (add-hook 'gnus-before-startup-hook #'offlineimap))
+(stante-after gnus-group
+  ;; Gnus, please don't hide my groups
+  (setq gnus-permanently-visible-groups ".*"))
 
 ;; Mu4e
 (stante-after mu4e
