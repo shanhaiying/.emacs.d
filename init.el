@@ -347,12 +347,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 ;;;; Buffer, Windows and Frames
 
-;; De-duplicate buffer names by prepending parts of the directory until the name
-;; is unique, instead of just appending numbers.
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward
-      uniquify-after-kill-buffer-p t
-      uniquify-ignore-buffers-re "^\\*") ; Do not rename special buffers!
+;; Make uniquify rename buffers like in path name notation
+(stante-after uniquify
+  (setq uniquify-buffer-name-style 'forward))
 
 ;; Clean stale buffers
 (require 'midnight)
