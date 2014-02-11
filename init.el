@@ -1672,7 +1672,7 @@ Create a new ielm process if required."
           ("date:7d..now" "Last 7 days" 119)
           ("from:notifications@github.com and not flag:trashed" "Github" ?g))
         ;; Update mail with U in the main view
-        mu4e-get-mail-command "offlineimap"
+        mu4e-get-mail-command "mbsync -a -q"
         ;; Prettify the header view
         mu4e-use-fancy-chars t
         ;; Shut up, mu4e!
