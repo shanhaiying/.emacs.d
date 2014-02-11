@@ -1642,7 +1642,8 @@ Create a new ielm process if required."
 
 ;; Mu4e
 (stante-after mu4e
-  (setq mu4e-drafts-folder "/[Google Mail].Drafts"
+  (setq mu4e-maildir       "~/Documents/Mail"
+        mu4e-drafts-folder "/[Google Mail].Drafts"
         mu4e-sent-folder   "/[Google Mail].Sent Mail"
         mu4e-trash-folder  "/[Google Mail].Trash"
         ;; Don't save sent messages. GMail takes care of this
