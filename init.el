@@ -390,7 +390,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   (require 'dired-x)
 
   ;; Always revert Dired buffers on revisiting
-  (setq dired-auto-revert-buffer t))
+  (setq dired-auto-revert-buffer t
+        dired-listing-switches "-alh"  ; Human-readable sizes by default
+        ))
 
 (stante-after dired-x
   (when (eq system-type 'darwin)
