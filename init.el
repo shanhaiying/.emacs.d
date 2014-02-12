@@ -877,13 +877,13 @@ Skim is an advanced PDF viewer for OS X with SyncTex support.
 See http://skim-app.sourceforge.net/ for more information."
     (stante-path-of-bundle "net.sourceforge.skim-app.skim"))
 
-  (defun stante-find-skim-displayline ()
-    "Return the path of the displayline frontend of Skim.
+(defun stante-find-skim-displayline ()
+  "Return the path of the displayline frontend of Skim.
 
 Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
-    (-when-let (skim-bundle (stante-find-skim-bundle))
-      (executable-find (expand-file-name "Contents/SharedSupport/displayline"
-                                         skim-bundle))))
+  (-when-let (skim-bundle (stante-find-skim-bundle))
+    (executable-find (expand-file-name "Contents/SharedSupport/displayline"
+                                       skim-bundle))))
 
 (stante-after tex
   (defun stante-TeX-find-view-programs-os-x ()
