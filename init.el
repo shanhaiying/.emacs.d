@@ -63,14 +63,6 @@
 
 ;;;; Package configuration and initialization
 
-(unless (fboundp 'with-eval-after-load)
-  (defmacro with-eval-after-load (file &rest body)
-    "Execute BODY after FILE is loaded.
-
-Forward compatibility wrapper."
-    `(eval-after-load ,file
-       `(funcall (function ,(lambda () ,@body))))))
-
 (defmacro stante-after (feature &rest forms)
   "After FEATURE is loaded, evaluate FORMS.
 
