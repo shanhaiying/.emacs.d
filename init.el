@@ -1343,19 +1343,11 @@ window."
 
 ;;;; Misc programming languages
 
-;; Coffeescript: Indentation
-(stante-after coffee-mode
-  (setq coffee-tab-width 2))
-
 ;; Javascript: Indentation
 (stante-after js2-mode
   (setq-default js2-basic-offset 2))
 
 (stante-auto-modes 'js2-mode (rx "." (or "js" "json") string-end))
-
-;; SCSS: Don't compile when saving (aka please don't spam my directories!)
-(stante-after scss-mode
-  (setq scss-compile-at-save nil))
 
 ;; XML: Complete closing tags, and insert XML declarations into empty files
 (stante-after nxml-mode
