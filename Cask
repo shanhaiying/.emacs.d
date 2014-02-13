@@ -81,6 +81,7 @@
 (depends-on "tuareg")                   ; OCaml major mode
 (depends-on "feature-mode")             ; Cucumber major mode
 (depends-on "pkgbuild-mode")            ; Arch PKGBUILD files
+(depends-on "rust-mode")                ; Rust major mode
 
 ;; Python
 (depends-on "virtualenv")               ; Virtualenv support
