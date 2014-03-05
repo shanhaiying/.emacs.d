@@ -1551,45 +1551,11 @@ Create a new ielm process if required."
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
-;; Configure Org mobile target folder and inbox.  Again, we use Dropbox to get
-;; synchronization for free.
-(stante-after org-mobile
-  (setq org-mobile-directory "~/Dropbox/Org/Mobile"
-        org-mobile-inbox-for-pull
-        (expand-file-name "from-mobile.org" org-directory))
-
-  (make-directory org-mobile-directory :with-parents))
-
 
 ;;;; Calendar
 (stante-after calendar
   ;; In Europe we start on Monday
   (setq calendar-week-start-day 1))
-
-;; Calfw autoloads (which should really be in calfw itself…)
-(autoload 'cfw:open-calendar-buffer "calfw")
-(autoload 'cfw:org-create-source "calfw-org")
-(autoload 'cfw:ical-create-source "calfw-ical")
-
-(defconst stante-ical-urls-file
-  (locate-user-emacs-file "stante-ical-urls")
-  "Path to the file storing private ICal URLs.")
-
-(defun stante-ical-sources ()
-  "Get calfw sources for private ICal URLs."
-  (when (f-exists? stante-ical-urls-file)
-    (->> (f-read-text stante-ical-urls-file 'utf-8)
-      s-lines
-      (--map (pcase-let* ((`(,name ,color ,url) (s-split " " it)))
-               (cfw:ical-create-source name url color))))))
-
-(defun stante-personal-calendar ()
-  "Show my personal calendar."
-  (interactive)
-  (cfw:open-calendar-buffer
-   :contents-sources
-   (cons (cfw:org-create-source "DarkGreen")
-         (stante-ical-sources))))
 
 
 ;;;; E-Mail
@@ -1722,7 +1688,6 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-=") #'er/expand-region)
 
 ;; User key bindings in the C-c space.
-(global-set-key (kbd "C-c A") #'org-agenda)
 (global-set-key (kbd "C-c a") stante-ag-map)
 (global-set-key (kbd "C-c b") #'ace-jump-buffer)
 (global-set-key (kbd "C-c B") #'browse-url)
@@ -1739,7 +1704,6 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
 (global-set-key (kbd "C-c R") #'vr/replace)
-(global-set-key (kbd "C-c S") #'stante-personal-calendar) ; S for Schedule
 (global-set-key (kbd "C-c s") stante-symbols-map)
 (global-set-key (kbd "C-c u") stante-utilities-map)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)

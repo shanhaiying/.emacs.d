@@ -129,7 +129,3 @@
 (depends-on "projectile")               ; Project interaction
 (depends-on "ag")                       ; Ag frontend
 (depends-on "google-this")              ; Google from Emacs
-
-;; Personal organization
-(depends-on "org-plus-contrib")         ; Latest Org + Contrib files
-(depends-on "calfw")                    ; Calendar framework
