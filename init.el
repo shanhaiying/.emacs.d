@@ -1277,9 +1277,8 @@ window."
         python-shell-completion-string-code
         "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 
-(stante-after virtualenv
-  ;; Do not start Python when switching virtualenvs
-  (setq virtualenv-workon-starts-python nil))
+;; Enable Virtualenv support
+(pyvenv-mode)
 
 
 ;;;; Ruby

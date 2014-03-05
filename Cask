@@ -84,7 +84,7 @@
 (depends-on "rust-mode")                ; Rust major mode
 
 ;; Python
-(depends-on "virtualenv")               ; Virtualenv support
+(depends-on "pyvenv")               ; Virtualenv support
 
 ;; Ruby support
 (depends-on "inf-ruby")                 ; Ruby interpreter in Emacs
