@@ -1080,13 +1080,26 @@ suitable processor was found."
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 
 ;; Compilation from Emacs
+(defun stante-colorize-compilation-buffer ()
+  "Colorize a compilation mode buffer.
+
+Taken from http://stackoverflow.com/a/3072831/355252."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
 (stante-after compile
   (setq compilation-ask-about-save nil  ; Just save before compiling
         compilation-always-kill t       ; Just kill old compile processes before
                                         ; starting the new one
         compilation-scroll-output 'first-error ; Automatically scroll to first
                                                ; error
-        ))
+        )
+
+  ;; Colorize output of Compilation Mode, see
+  ;; http://stackoverflow.com/a/3072831/355252
+  (require 'ansi-color)
+  (add-hook 'compilation-filter-hook #'stante-colorize-compilation-buffer))
 
 ;; Font lock for numeric literals
 (add-hook 'prog-mode-hook #'number-font-lock-mode)
