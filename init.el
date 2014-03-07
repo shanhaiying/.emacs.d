@@ -1405,7 +1405,10 @@ window."
         magit-completing-read-function #'magit-ido-completing-read)
 
   ;; Update Diff highlighting after Magit operations
-  (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update))
+  (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update)
+
+  ;; Auto-revert files after Magit operations
+  (magit-auto-revert-mode))
 
 (stante-after git-commit-mode
   ;; Update Diff highlighting after Git commits from Git commit mode
