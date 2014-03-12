@@ -1516,7 +1516,8 @@ Create a new ielm process if required."
 
 (defvar stante-utilities-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'align)
+    (define-key map (kbd "a") #'align-current)
+    (define-key map (kbd "r") #'align-region)
     (define-key map (kbd "A") #'align-regexp)
     (define-key map (kbd "z") #'stante-switch-to-ielm)
     map)
