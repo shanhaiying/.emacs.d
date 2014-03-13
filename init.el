@@ -1051,6 +1051,12 @@ suitable processor was found."
     (add-hook 'yaml-mode-hook it)))
 
 
+;;;; Configuration languages
+(stante-after puppet-mode
+  ;; Fontify variables in Puppet comments
+  (setq puppet-fontify-variables-in-comments t))
+
+
 ;;;; Symbol “awareness”
 
 ;; Navigate occurrences of the symbol under point with M-n and M-p
