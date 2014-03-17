@@ -961,7 +961,6 @@ Choose Skim if available, or fall back to the default application."
 (stante-after bib-cite
   (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
 
-
 
 ;;;; ReStructuredText editing
 (stante-after rst
@@ -1751,6 +1750,10 @@ Create a new ielm process if required."
   (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
   (define-key haskell-mode-map (kbd "C-c M-.") nil)
   (define-key haskell-mode-map (kbd "C-c C-d") nil))
+
+(stante-after tuareg
+  ;; Please, Tuareg, don't kill my imenu
+  (define-key tuareg-mode-map [?\C-c ?i] nil))
 
 ;; Local Variables:
 ;; coding: utf-8
