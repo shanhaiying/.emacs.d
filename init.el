@@ -1596,61 +1596,6 @@ Create a new ielm process if required."
         smtpmail-stream-type 'starttls
         smtpmail-smtp-user user-mail-address))
 
-;; Settings for reading mail via Gnus
-(stante-after gnus
-  (setq gnus-select-method '(nnmaildir "gmail" (directory "~/Documents/Mail"))
-        gnus-parameters '((".*"
-                           (gnus-show-threads t)
-                           (auto-expire . nil))
-                          ("INBOX"
-                           (display . all)
-                           (gnus-use-scoring nil)))))
-
-(stante-after gnus-group
-  ;; Gnus, please don't hide my groups
-  (setq gnus-permanently-visible-groups ".*"))
-
-;; Mu4e
-(stante-after mu4e
-  (setq mu4e-maildir       "~/Documents/Mail"
-        mu4e-drafts-folder "/[Google Mail].Drafts"
-        mu4e-sent-folder   "/[Google Mail].Sent Mail"
-        mu4e-trash-folder  "/[Google Mail].Trash"
-        ;; Don't save sent messages. GMail takes care of this
-        mu4e-sent-messages-behavior 'delete
-        ;; Disable the automatic signature, and remove the default signature
-        mu4e-compose-signature-auto-include nil
-        mu4e-compose-signature ""
-        ;; Handy shortcuts
-        mu4e-maildir-shortcuts '(("/Emacs.AUCTeX"          . ?a)
-                                 ("/Emacs.cask"            . ?c)
-                                 ("/[Google Mail].Drafts"  . ?d)
-                                 ("/Emacs.emacs-devel"     . ?e)
-                                 ("/Emacs.flycheck"        . ?f)
-                                 ("/Haskell.haskell"       . ?h)
-                                 ("/Haskell.haskell-cafe"  . ?H)
-                                 ("/INBOX"                 . ?i)
-                                 ("/High order Munich"     . ?m)
-                                 ("/Emacs.Org Mode"        . ?O)
-                                 ("/Privat"                . ?p)
-                                 ("/[Google Mail].Starred" . ?s)
-                                 ("/Uni"                   . ?u))
-        ;; Personal bookmarks
-        mu4e-bookmarks
-        '(("flag:unread and not flag:trashed" "Unread" ?u)
-          ("date:today..now" "Today's messages" 116)
-          ("date:7d..now" "Last 7 days" 119)
-          ("from:notifications@github.com and not flag:trashed" "Github" ?g))
-        ;; Update mail with U in the main view
-        mu4e-get-mail-command "mbsync -a -q"
-        ;; Prettify the header view
-        mu4e-use-fancy-chars t
-        ;; Shut up, mu4e!
-        mu4e-confirm-quit nil))
-
-;; Mu4e may not have autoloads available
-(autoload 'mu4e "mu4e" 'interactive)
-
 
 ;;;; IRC
 
