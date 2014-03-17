@@ -1721,7 +1721,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
 (global-set-key (kbd "C-c J") #'ace-jump-pop-mark)
-(global-set-key (kbd "C-c M") #'mu4e)
+(global-set-key (kbd "C-C M") #'recompile)
 (global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
