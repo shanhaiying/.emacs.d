@@ -1655,8 +1655,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-h A") #'apropos)                                 ; C-h a
 (global-set-key (kbd "C-x p") #'proced)                                  ; C-x p
 ;; Find definition sources fast
-(global-set-key (kbd "C-h F") #'find-function) ; C-h f
-(global-set-key (kbd "C-h V") #'find-variable) ; C-h v
+(find-function-setup-keys)
 
 ;; Key bindings for extension packages
 (global-set-key (kbd "C-=") #'er/expand-region)
