@@ -1347,6 +1347,13 @@ window."
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
+;;;; OCaml
+
+(stante-after tuareg
+  ;; Enable advanced completion engine for OCaml
+  (add-hook 'tuareg-mode-hook #'merlin-mode))
+
+
 ;;;; Shell scripting
 
 ;; Teach Emacs about Zsh scripts

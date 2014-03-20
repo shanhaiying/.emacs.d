@@ -78,7 +78,6 @@
 
 ;; Programming languages
 (depends-on "js2-mode")                 ; Powerful Javascript mode
-(depends-on "tuareg")                   ; OCaml major mode
 (depends-on "feature-mode")             ; Cucumber major mode
 (depends-on "pkgbuild-mode")            ; Arch PKGBUILD files
 (depends-on "rust-mode")                ; Rust major mode
@@ -94,6 +93,10 @@
 (depends-on "haskell-mode")             ; Haskell major modes
 (depends-on "ghci-completion")          ; Complete GHCI commands
 (depends-on "flycheck-haskell")         ; Improve Haskell syntax checking
+
+;; Ocaml support
+(depends-on "tuareg")                   ; OCaml major mode
+(depends-on "merlin")                   ; OCaml completion engine
 
 ;; Basic Lisp utility modes
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level
