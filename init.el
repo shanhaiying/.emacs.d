@@ -1350,6 +1350,9 @@ window."
 ;;;; OCaml
 
 (stante-after tuareg
+  ;; Disable SMIE indentation in Tuareg.  It's just broken currently…
+  (setq tuareg-use-smie nil)
+
   ;; Enable advanced completion engine for OCaml
   (add-hook 'tuareg-mode-hook #'merlin-mode))
 
