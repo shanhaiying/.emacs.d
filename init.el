@@ -370,6 +370,13 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
+;; Autosave buffers when focus is lost, see
+;; http://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
+(defun stante-force-save-some-buffers ()
+  "Save all modified buffers, without prompts."
+  (save-some-buffers 'dont-ask))
+(add-hook 'focus-out-hook #'stante-force-save-some-buffers)
+
 ;; Delete to Trash
 (setq delete-by-moving-to-trash t)
 
