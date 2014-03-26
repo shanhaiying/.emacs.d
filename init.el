@@ -1088,6 +1088,11 @@ suitable processor was found."
 
 ;;;; Programming utilities
 
+;; Colorize parenthesis
+(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
 ;; Basic folding
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 
@@ -1118,13 +1123,6 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 
 
 ;;;; Basic Lisp editing
-
-(defvar stante-lisp-common-modes
-  '(rainbow-delimiters-mode)            ; Color parenthesis according to nesting
-  "Common modes for Lisp editing.")
-
-(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
-
 (defun stante-smartparens-setup-lisp-modes (modes)
   "Setup Smartparens Lisp support in MODES.
 
@@ -1170,10 +1168,8 @@ window."
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
-  (append
-   '(turn-on-eldoc-mode                 ; Show function signatures in echo area
-     elisp-slime-nav-mode)              ; Navigate to symbol definitions
-   stante-lisp-common-modes)
+  '(turn-on-eldoc-mode                  ; Show function signatures in echo area
+    elisp-slime-nav-mode)               ; Navigate to symbol definitions
   "Common modes for Emacs Lisp editing.")
 
 (stante-after lisp-mode
@@ -1246,23 +1242,17 @@ window."
 
 ;;;; Clojure
 
-;; Enable some common Clojure helper modes
-(defvar stante-clojure-common-modes
-  (append '(subword-mode) stante-lisp-common-modes))
-
 (stante-after clojure-mode
   ;; Standard Lisp/Clojure goodies for Clojure Mode
   (stante-smartparens-setup-lisp-modes 'clojure-mode)
-  (--each stante-clojure-common-modes
-    (add-hook 'clojure-mode-hook it))
 
+  (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'clojure-test-mode))
 
 (stante-after cider-repl-mode
   ;; Standard Lisp/Clojure goodies for the Cider Repl
   (stante-smartparens-setup-lisp-modes 'cider-repl-mode)
-  (--each stante-clojure-common-modes
-    (add-hook 'cider-repl-mode-hook it)))
+  (add-hook 'cider-repl-mode-hook #'subword-mode))
 
 (stante-after cider-mode
   ;; Eldoc for Cider
