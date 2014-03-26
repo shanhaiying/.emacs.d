@@ -556,8 +556,7 @@ non-directory part only."
   ;; bindings.  This doesn't do much harm, because Org has its own structural
   ;; movement commands
   (add-to-list 'drag-stuff-except-modes 'org-mode)
-
-  (diminish 'drag-stuff-mode "⇅"))
+  (diminish 'drag-stuff-mode))
 (drag-stuff-global-mode)
 
 ;; Make `kill-whole-line' indentation aware
@@ -625,7 +624,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Highlight bad whitespace
 (stante-after whitespace
-  (diminish 'whitespace-mode "␣")
+  (diminish 'whitespace-mode)
+
   ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
   ;; portions of lines via faces.  Also indicate tabs via characters
   (setq whitespace-style '(face indentation space-after-tab space-before-tab
@@ -707,7 +707,7 @@ Disable the highlighting of overlong lines."
 (volatile-highlights-mode t)
 
 ;; Power up undo
-(stante-after undo-tree (diminish 'undo-tree-mode "⤺"))
+(stante-after undo-tree (diminish 'undo-tree-mode))
 (global-undo-tree-mode)
 
 ;; Nicify page breaks
@@ -809,7 +809,7 @@ Disable the highlighting of overlong lines."
 
 ;; Enable auto-completion
 (stante-after company
-  (diminish 'company-mode "•")
+  (diminish 'company-mode)
 
   ;; Make auto completion a little less aggressive.
   (setq company-idle-delay 1.0
@@ -837,9 +837,7 @@ Disable the highlighting of overlong lines."
         flyspell-issue-welcome-flag nil
         flyspell-issue-message-flag nil)
 
-  (add-hook 'flyspell-mode-hook #'auto-dictionary-mode)
-
-  (diminish 'flyspell-mode "✓"))
+  (add-hook 'flyspell-mode-hook #'auto-dictionary-mode))
 
 (--each '(text-mode-hook message-mode-hook)
   (add-hook it 'turn-on-flyspell))
@@ -1237,7 +1235,7 @@ window."
 ;; Now de-clutter the mode line
 (stante-after eldoc (diminish 'eldoc-mode))
 (stante-after checkdoc (diminish 'checkdoc-minor-mode))
-(stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode "↪"))
+(stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 
 
 ;;;; Clojure
