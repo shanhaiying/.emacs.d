@@ -702,11 +702,15 @@ Disable the highlighting of overlong lines."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-;; Highlight the current line and editing operations in the buffer
+;; Highlight the current line, editing operations, and match parens in the
+;; buffer
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (diminish 'volatile-highlights-mode)
 (volatile-highlights-mode t)
+(show-paren-mode)
+(stante-after paren
+  (setq show-paren-style 'mixed))
 
 ;; Power up undo
 (stante-after undo-tree (diminish 'undo-tree-mode))
