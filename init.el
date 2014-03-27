@@ -618,8 +618,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Make Tab complete if the line is indented
 (setq tab-always-indent 'complete)
 
-;; Electric code layout
+;; Electric pairing and code layout
 (electric-layout-mode)
+(electric-pair-mode)
 
 ;; Indicate empty lines at the end of a buffer in the fringe
 (setq indicate-empty-lines t)
@@ -1227,13 +1228,23 @@ window."
 
 
 ;;;; Haskell
+(defconst stante-haskell-electric-haddock-pairs
+  '((?/ . ?/)
+    (?@ . ?@))
+  "Electric pairs for Haddock mode.")
+
+(defun stante-haskell-setup-electric-pairs ()
+  "Setup electric pairs for Haskell Mode."
+  (setq-local electric-pair-text-pairs
+              (append stante-haskell-electric-haddock-pairs
+                      electric-pair-text-pairs)))
+
 (stante-after haskell-mode
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
-            subword-mode)               ; Subword navigation
-    (add-hook 'haskell-mode-hook it))
-
-  (--each '(haskell-decl-scan-mode      ; Scan and navigate declarations
-            turn-on-haskell-indent)     ; Powerful indentation for Haskell
+            subword-mode                ; Subword navigation
+            haskell-decl-scan-mode      ; Scan and navigate declarations
+            turn-on-haskell-indent      ; Powerful indentation for Haskell
+            stante-haskell-setup-electric-pairs)
     (add-hook 'haskell-mode-hook it)))
 
 (stante-after inf-haskell
