@@ -1096,7 +1096,8 @@ window."
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
-  '(turn-on-eldoc-mode                  ; Show function signatures in echo area
+  '(paredit-mode                        ; Balanced sexp editing
+    turn-on-eldoc-mode                  ; Show function signatures in echo area
     elisp-slime-nav-mode)               ; Navigate to symbol definitions
   "Common modes for Emacs Lisp editing.")
 
@@ -1164,12 +1165,15 @@ window."
 ;;;; Clojure
 
 (stante-after clojure-mode
-  (add-hook 'clojure-mode-hook #'subword-mode)
-  (add-hook 'clojure-mode-hook #'clojure-test-mode))
+  (--each '(paredit-mode                ; Balanced sexp editing
+            subword-word                ; Handle camelCaseIdentifiers
+            clojure-test-mode)          ; Support unit tests
+    (add-hook 'clojure-mode-hook it)))
 
 (stante-after cider-repl-mode
   ;; Standard Lisp/Clojure goodies for the Cider Repl
-  (add-hook 'cider-repl-mode-hook #'subword-mode))
+  (--each '(paredit-mode subword-mode)
+    (add-hook 'cider-repl-mode-hook it)))
 
 (stante-after cider-mode
   ;; Eldoc for Cider

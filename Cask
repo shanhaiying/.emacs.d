@@ -99,6 +99,7 @@
 
 ;; Basic Lisp utility modes
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level
+(depends-on "paredit")                  ; Sexp-editing for Lisp
 
 ;; Emacs Lisp utility modes and libraries
 (depends-on "elisp-slime-nav")          ; Navigate to symbol definitions
