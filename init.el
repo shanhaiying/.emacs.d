@@ -741,55 +741,6 @@ Disable the highlighting of overlong lines."
     map))
 
 
-;;;; Smartparens
-(require 'smartparens-config)           ; Setup standard configuration
-
-(stante-after smartparens
-  (setq sp-autoskip-closing-pair 'always
-        ;; Don't kill the entire symbol on C-k
-        sp-hybrid-kill-entire-symbol nil)
-
-  ;; Smartparens bindings
-  (let ((map smartparens-mode-map))
-    ;; Movement and navigation
-    (define-key map (kbd "C-M-f") #'sp-forward-sexp)
-    (define-key map (kbd "C-M-b") #'sp-backward-sexp)
-    (define-key map (kbd "C-M-u") #'sp-backward-up-sexp)
-    (define-key map (kbd "C-M-d") #'sp-down-sexp)
-    (define-key map (kbd "C-M-p") #'sp-backward-down-sexp)
-    (define-key map (kbd "C-M-n") #'sp-up-sexp)
-    ;; Deleting and killing
-    (define-key map (kbd "C-M-k") #'sp-kill-sexp)
-    (define-key map (kbd "C-M-w") #'sp-copy-sexp)
-    ;; Depth changing
-    (define-key map (kbd "M-s") #'sp-splice-sexp)
-    (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
-    (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
-    (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
-    (define-key map (kbd "M-?") #'sp-convolute-sexp)
-    ;; Barfage & Slurpage
-    (define-key map (kbd "C-)")  #'sp-forward-slurp-sexp)
-    (define-key map (kbd "C-<right>") #'sp-forward-slurp-sexp)
-    (define-key map (kbd "C-}")  #'sp-forward-barf-sexp)
-    (define-key map (kbd "C-<left>") #'sp-forward-barf-sexp)
-    (define-key map (kbd "C-(")  #'sp-backward-slurp-sexp)
-    (define-key map (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
-    (define-key map (kbd "C-{")  #'sp-backward-barf-sexp)
-    (define-key map (kbd "C-M-<right>") #'sp-backward-barf-sexp)
-    ;; Miscellaneous commands
-    (define-key map (kbd "M-S") #'sp-split-sexp)
-    (define-key map (kbd "M-J") #'sp-join-sexp)
-    (define-key map (kbd "C-M-t") #'sp-transpose-sexp))
-
-  ;; Some additional bindings for strict mode
-  (let ((map smartparens-strict-mode-map))
-    (define-key map (kbd "M-q") #'sp-indent-defun)
-    (define-key map (kbd "C-j") #'sp-newline)))
-
-(smartparens-global-mode)
-(show-smartparens-global-mode)          ; Show parenthesis
-
-
 ;;;; Completion and expansion
 
 ;; Configure hippie-expand reasonably
@@ -980,13 +931,7 @@ Choose Skim if available, or fall back to the default application."
     ;; C-a C-a
     (define-key map (kbd "C-=") nil)
     ;; For similarity with AUCTeX
-    (define-key map (kbd "C-c C-j") #'rst-insert-list))
-
-  (sp-with-modes 'rst-mode
-    (sp-local-pair "*" "*")
-    (sp-local-pair "**" "**")
-    (sp-local-pair "`" "`")
-    (sp-local-pair "``" "``")))
+    (define-key map (kbd "C-c C-j") #'rst-insert-list)))
 
 
 ;;;; Markdown editing
@@ -1020,13 +965,7 @@ suitable processor was found."
       (error "No markdown processor found"))
     markdown-command)
 
-  (stante-find-markdown-processor)
-
-  (sp-with-modes '(markdown-mode gfm-mode)
-    (sp-local-pair "*" "*" :bind "C-*")
-    (sp-local-pair "`" "`")
-    (sp-local-tag "s" "```scheme" "```")
-    (sp-local-tag "<"  "<_>" "</_>" :transform 'sp-match-sgml-tags)))
+  (stante-find-markdown-processor))
 
 ;; Don't do filling in GFM mode, where line breaks are significant, and do not
 ;; highlight overlong lines.  Instead enable visual lines.
@@ -1122,22 +1061,6 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 (add-hook 'prog-mode-hook #'number-font-lock-mode)
 
 
-;;;; Basic Lisp editing
-(defun stante-smartparens-setup-lisp-modes (modes)
-  "Setup Smartparens Lisp support in MODES.
-
-Add Lisp pairs and tags to MODES, and use the a special, more strict
-keymap `stante-smartparens-lisp-mode-map'."
-  (when (symbolp modes)
-    (setq modes (list modes)))
-  ;; Wrap expressions with M-( (just like in Paredit)
-  (sp-local-pair modes "(" nil :bind "M-(")
-  (--each modes
-    (let ((hook (intern (format "%s-hook" (symbol-name it)))))
-      ;; Be strict about delimiters
-      (add-hook hook #'smartparens-strict-mode))))
-
-
 ;;;; Emacs Lisp
 
 ;; Utility functions
@@ -1180,10 +1103,6 @@ window."
   ;; Check doc conventions when eval'ing expressions
   (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
 
-  ;; Smartparens support for Emacs Lisp editing
-  (stante-smartparens-setup-lisp-modes '(emacs-lisp-mode
-                                         lisp-interaction-mode))
-
   ;; Load ERT to support unit test writing and running
   (require 'ert)
 
@@ -1201,10 +1120,7 @@ window."
 
 (stante-after ielm
   (--each stante-emacs-lisp-common-modes
-    (add-hook 'ielm-mode-hook it))
-
-  ;; Smartparens support for IELM
-  (stante-smartparens-setup-lisp-modes 'inferior-emacs-lisp-mode))
+    (add-hook 'ielm-mode-hook it)))
 
 ;; Hippie expand for Emacs Lisp
 (stante-after hippie-exp
@@ -1243,15 +1159,11 @@ window."
 ;;;; Clojure
 
 (stante-after clojure-mode
-  ;; Standard Lisp/Clojure goodies for Clojure Mode
-  (stante-smartparens-setup-lisp-modes 'clojure-mode)
-
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'clojure-test-mode))
 
 (stante-after cider-repl-mode
   ;; Standard Lisp/Clojure goodies for the Cider Repl
-  (stante-smartparens-setup-lisp-modes 'cider-repl-mode)
   (add-hook 'cider-repl-mode-hook #'subword-mode))
 
 (stante-after cider-mode
@@ -1318,11 +1230,7 @@ window."
 
   (--each '(haskell-decl-scan-mode      ; Scan and navigate declarations
             turn-on-haskell-indent)     ; Powerful indentation for Haskell
-    (add-hook 'haskell-mode-hook it))
-
-  ;; Smartparens for Haskell
-  (--each '("@" "/")                    ; Haddock markup
-    (sp-local-pair 'haskell-mode it it :when '(sp-in-comment-p))))
+    (add-hook 'haskell-mode-hook it)))
 
 (stante-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
@@ -1563,11 +1471,7 @@ Create a new ielm process if required."
   ;; the fill column while it is not.  The whitespace mode highlighting is very
   ;; irritating in such cases.
   (stante-after whitespace
-    (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines))
-
-  ;; Teach Smartparens about Org Mode markup
-  (--each '("*" "/" "=" "~")
-    (sp-local-pair 'org-mode it it)))
+    (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines)))
 
 (stante-after ox-latex
   ;; Teach Org LaTeX exporter about KOMA script

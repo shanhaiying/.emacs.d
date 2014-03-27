@@ -43,7 +43,6 @@
 ;; Editing helpers
 (depends-on "whitespace-cleanup-mode")  ; Cleanup whitespace on save
 (depends-on "drag-stuff")               ; Drag stuff around
-(depends-on "smartparens")              ; Parenthesis reloaded
 (depends-on "visual-regexp")            ; Regexp reloaded
 (depends-on "undo-tree")                ; Undo reloaded
 (depends-on "adaptive-wrap")            ; Automatic wrap prefix
