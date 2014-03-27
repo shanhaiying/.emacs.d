@@ -410,9 +410,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   ;; itself only handles /usr/local/
   (when (eq system-type 'darwin)
     (-when-let (prefix (stante-homebrew-prefix))
-      (add-to-list 'hardhat-fullpath-protected-regexps prefix)))
-
-  (diminish 'global-hardhat-mode))
+      (add-to-list 'hardhat-fullpath-protected-regexps prefix))))
 (global-hardhat-mode)
 
 ;; Save bookmarks immediately after a bookmark was added
