@@ -283,9 +283,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   ;; Disable variable pitch fonts in Solarized theme
   (setq solarized-use-variable-pitch nil))
 
-;; (load-theme 'solarized-light 'no-confirm)
+(load-theme 'solarized-light 'no-confirm)
 ;; (load-theme 'solarized-dark 'no-confirm)
-(load-theme 'zenburn 'no-confirm)
+;; (load-theme 'zenburn 'no-confirm)
 
 
 ;;;; The mode line
