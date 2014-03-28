@@ -1077,7 +1077,7 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 (defun stante-find-cask-file (other-window)
     "Find the Cask file for this buffer.
 
-When other-window is non-nil, find the Cask file in another
+When OTHER-WINDOW is non-nil, find the Cask file in another
 window."
     (interactive "P")
     (unless (buffer-file-name)
