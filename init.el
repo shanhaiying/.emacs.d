@@ -1428,7 +1428,8 @@ window."
 (stante-after projectile
   (diminish 'projectile-mode)
 
-  (setq projectile-completion-system 'ido)
+  (setq projectile-completion-system 'ido
+        projectile-find-dir-includes-top-level t)
 
   ;; Replace Ack with Ag in Projectile commander
   (def-projectile-commander-method ?a
