@@ -91,6 +91,7 @@
 ;; Haskell support
 (depends-on "haskell-mode")             ; Haskell major modes
 (depends-on "ghci-completion")          ; Complete GHCI commands
+(depends-on "hi2")                      ; Alternative Haskell indentation
 (depends-on "flycheck-haskell")         ; Improve Haskell syntax checking
 
 ;; Ocaml support

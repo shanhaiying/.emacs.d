@@ -1252,7 +1252,7 @@ window."
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
-            turn-on-haskell-indent      ; Powerful indentation for Haskell
+            hi2-mode                    ; Powerful indentation for Haskell
             stante-haskell-setup-electric-pairs)
     (add-hook 'haskell-mode-hook it)))
 
