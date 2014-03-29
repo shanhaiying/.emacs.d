@@ -1256,6 +1256,10 @@ window."
             stante-haskell-setup-electric-pairs)
     (add-hook 'haskell-mode-hook it)))
 
+(stante-after hi2
+  ;; Don't show indentation markers after EOL
+  (setq hi2-show-indentations-after-eol nil))
+
 (stante-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
