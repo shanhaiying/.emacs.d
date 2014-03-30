@@ -1356,6 +1356,14 @@ window."
 ;;;; Git support
 
 ;; The one and only Git frontend
+(defun stante-magit-default-tracking-name-origin-branch-only (remote branch)
+  "Get the name of the tracking branch for REMOTE and BRANCH.
+
+Use REMOTE-BRANCH, except when REMOTE is origin."
+  (let ((branch (magit-escape-branch-name branch)))
+    (if (string= remote "origin") branch
+      (concat remote "-" branch))))
+
 (stante-after magit
   ;; Shut up, Magit!
   (setq magit-save-some-buffers 'dontask
@@ -1364,7 +1372,10 @@ window."
         ;; Except when you ask something useful…
         magit-set-upstream-on-push t
         ;; Use IDO for completion
-        magit-completing-read-function #'magit-ido-completing-read)
+        magit-completing-read-function #'magit-ido-completing-read
+        ;; Don't include origin in the name of tracking branches
+        magit-default-tracking-name-function #'stante-magit-default-tracking-name-origin-branch-only
+        )
 
   ;; Update Diff highlighting after Magit operations
   (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update)
