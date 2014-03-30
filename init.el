@@ -1239,7 +1239,8 @@ window."
 ;;;; Haskell
 (defconst stante-haskell-electric-haddock-pairs
   '((?/ . ?/)
-    (?@ . ?@))
+    (?@ . ?@)
+    (?' . ?'))
   "Electric pairs for Haddock mode.")
 
 (defun stante-haskell-setup-electric-pairs ()
