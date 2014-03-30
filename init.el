@@ -1381,7 +1381,8 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
   (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update)
 
   ;; Auto-revert files after Magit operations
-  (magit-auto-revert-mode))
+  (magit-auto-revert-mode)
+  (setq magit-auto-revert-mode-lighter ""))
 
 (stante-after git-commit-mode
   ;; Update Diff highlighting after Git commits from Git commit mode
