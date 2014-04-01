@@ -1315,9 +1315,6 @@ window."
   (setq nxml-slash-auto-complete-flag t
         nxml-auto-insert-xml-declaration-flag t))
 
-;; PKGBUILD: Recognize PKGBUILD's
-(stante-auto-modes 'pkgbuild-mode (rx "/PKGBUILD" string-end))
-
 ;; Feature Mode
 (stante-after feature-mode
   ;; Add standard hooks for Feature Mode, since it is no derived mode
