@@ -43,13 +43,14 @@
 ;; Please don't load outdated byte code
 (setq load-prefer-newer t)
 
-(require 'cask "~/.cask/cask" :no-error)
-(cask-initialize)
+(require 'package)
+(setq package-enable-at-startup nil     ; We explicitly enable package.el
+      package-user-dir (locate-user-emacs-file (format ".cask/%s/elpa"
+                                                       emacs-version)))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
 
-(setq package-enable-at-startup nil)    ; Don't initialize packages twice
-
-(defconst stante-vendor-dir (locate-user-emacs-file "vendor")
-  "Directory for embedded 3rd party extensions.")
+(package-initialize)
 
 
 ;;;; Requires
