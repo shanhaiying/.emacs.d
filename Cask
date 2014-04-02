@@ -1,6 +1,5 @@
 (source gnu)
 (source melpa)
-(source org)
 
 ;; Basic libraries
 (depends-on "dash")
