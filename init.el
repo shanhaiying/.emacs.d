@@ -1210,7 +1210,7 @@ window."
 (stante-after python
   (--each '(stante-python-filling       ; PEP 8 compliant filling rules
             subword-mode                ; Word commands on parts of ClassNames
-            )
+            stante-flycheck-setup-python)
     (add-hook 'python-mode-hook it))
 
   ;; Fill according to PEP 8
@@ -1232,8 +1232,21 @@ window."
         python-shell-completion-module-string-code
         "';'.join(module_completion('''%s'''))\n"
         python-shell-completion-string-code
-        "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
+        "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
+  (stante-after flycheck
+    (defun stante-flycheck-setup-python-executables ()
+      "Setup Python executables based on the current virtualenv."
+      (let ((exec-path (python-shell-calculate-exec-path)))
+        (setq flycheck-python-pylint-executable
+              (executable-find "pylint")
+              flycheck-python-flake8-executable
+              (executable-find "flake8"))))
+
+    (defun stante-flycheck-setup-python ()
+      "Setup Flycheck in Python buffers."
+      (add-hook 'hack-local-variables-hook
+                #'stante-flycheck-setup-python-executables 'local))))
 
 
 ;;;; Ruby
