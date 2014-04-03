@@ -1089,6 +1089,13 @@ window."
       (funcall (if other-window #'find-file-other-window #'find-file)
                (expand-file-name "Cask" directory))))
 
+(defconst stante-imenu-generic-expression
+  `(("Stante packages" ,(rx line-start (zero-or-more (syntax whitespace))
+                            "(stante-after" (one-or-more (syntax whitespace))
+                            (group-n 1 (one-or-more (or (syntax word)
+                                                        (syntax symbol))))) 1))
+  "IMenu index expression for Stante Pede.")
+
 (defun stante-emacs-lisp-current-feature ()
   "Return the feature provided by the current buffer."
   (save-excursion
@@ -1114,6 +1121,14 @@ window."
 
   ;; Check doc conventions when eval'ing expressions
   (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
+
+  ;; Add our IMenu index keywords
+  (defun stante-emacs-lisp-setup-imenu ()
+    "Add Stante Pede IMenu index keywords."
+    (setq imenu-generic-expression
+          (append imenu-generic-expression stante-imenu-generic-expression)))
+
+  (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-setup-imenu)
 
   ;; Load ERT to support unit test writing and running
   (require 'ert)
