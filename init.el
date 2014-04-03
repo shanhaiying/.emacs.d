@@ -1234,8 +1234,6 @@ window."
         python-shell-completion-string-code
         "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 
-;; Enable Virtualenv support
-(pyvenv-mode)
 
 
 ;;;; Ruby
