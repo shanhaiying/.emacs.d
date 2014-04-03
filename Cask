@@ -81,6 +81,7 @@
 (depends-on "rust-mode")                ; Rust major mode
 
 ;; Python
+(depends-on "anaconda-mode")            ; Documentation, lookup and navigation
 
 ;; Ruby support
 (depends-on "inf-ruby")                 ; Ruby interpreter in Emacs
