@@ -1623,6 +1623,9 @@ Create a new ielm process if required."
 (global-set-key [remap isearch-forward] #'isearch-forward-regexp)
 (global-set-key [remap isearch-backward] #'isearch-backward-regexp)
 (global-set-key [remap just-one-space] #'cycle-spacing)
+;;; Killing and marking on steroids
+(global-set-key [remap kill-ring-save] #'easy-kill)
+(global-set-key [remap mark-sexp] 'easy-mark)
 ;; Complement standard bindings (the comments indicate the related bindings)
 (global-set-key (kbd "M-X") #'smex-major-mode-commands)                  ; M-x
 (global-set-key (kbd "C-<backspace>") #'stante-smart-backward-kill-line) ; C-S-backspace

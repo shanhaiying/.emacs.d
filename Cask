@@ -47,6 +47,7 @@
 (depends-on "adaptive-wrap")            ; Automatic wrap prefix
 (depends-on "expand-region")            ; Expand region by semantic units
 (depends-on "multiple-cursors")         ; Multiple cursors
+(depends-on "easy-kill")                ; Killing and marking on steroids
 
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion
