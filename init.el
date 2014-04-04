@@ -30,7 +30,7 @@
 ;;; Code:
 
 
-;; Guard against Emacs 24
+;;; Initialization
 (when (version< emacs-version "24.3.50")
   (error "Stante Pede needs Emacs trunk, but this is %s!" emacs-version))
 
@@ -38,13 +38,14 @@
 (setq inhibit-default-init t)
 
 
-;;;; Package management
+;;; Package management
 
 ;; Please don't load outdated byte code
 (setq load-prefer-newer t)
 
 (require 'package)
 (setq package-enable-at-startup nil     ; We explicitly enable package.el
+      ;; Take packages from Cask
       package-user-dir (locate-user-emacs-file (format ".cask/%s/elpa"
                                                        emacs-version)))
 (add-to-list 'package-archives
@@ -53,7 +54,7 @@
 (package-initialize)
 
 
-;;;; Requires
+;;; Requires
 
 (require 'dash)
 (require 's)
@@ -62,7 +63,7 @@
 (require 'rx)
 
 
-;;;; Package configuration and initialization
+;;; Package configuration and initialization
 
 (defmacro stante-after (feature &rest forms)
   "After FEATURE is loaded, evaluate FORMS.
@@ -108,6 +109,7 @@ mode symbol."
      (2 font-lock-constant-face nil t)))
   "Our font lock keywords for Lisp modes.")
 
+;; Teach Emacs Lisp modes about our keywords
 (stante-after lisp-mode
   (--each '(emacs-lisp-mode lisp-interaction-mode)
     (font-lock-add-keywords it stante-font-lock-keywords :append)))
@@ -117,7 +119,7 @@ mode symbol."
                           stante-font-lock-keywords :append))
 
 
-;;;; Environment fixup
+;;; Environment fixup
 (stante-after exec-path-from-shell
   (--each '("EMAIL" "PYTHONPATH")
     (add-to-list 'exec-path-from-shell-variables it)))
@@ -128,7 +130,7 @@ mode symbol."
   (setq user-mail-address (getenv "EMAIL")))
 
 
-;; The custom file
+;;; Customization interface
 (defconst stante-custom-file (locate-user-emacs-file "custom.el")
   "File used to store settings from Customization UI.")
 
@@ -138,7 +140,7 @@ mode symbol."
 (load stante-custom-file :no-error :no-message)
 
 
-;; OS X support
+;;; OS X support
 
 (stante-after ns-win
   (setq ns-pop-up-frames nil            ; Don't pop up new frames from the
@@ -220,7 +222,7 @@ Without FORMULA determine whether Homebrew itself is available."
     (when (executable-find "brew") t)))
 
 
-;;;; User interface
+;;; User interface
 
 ;; Get rid of tool bar and menu bar, except on OS X, where the menu bar is
 ;; present anyway, so disabling it is pointless
@@ -289,7 +291,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; (load-theme 'zenburn 'no-confirm)
 
 
-;;;; The mode line
+;;; The mode line
 
 (line-number-mode t)
 (column-number-mode t)
@@ -305,7 +307,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (sml/setup)
 
 
-;;;; The minibuffer
+;;; The minibuffer
 
 ;; Increase Emacs' memory of the past
 (setq history-length 1000)
@@ -338,7 +340,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 
 
-;;;; Buffer, Windows and Frames
+;;; Buffer, Windows and Frames
 
 ;; Make uniquify rename buffers like in path name notation
 (stante-after uniquify
@@ -365,7 +367,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (desktop-save-mode)
 
 
-;;;; File handling
+;;; File handling
 
 ;; Keep backup and auto save files out of the way
 (setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
@@ -544,7 +546,7 @@ non-directory part only."
   "Keymap for file operations.")
 
 
-;;;; Basic editing
+;;; Basic editing
 
 ;; Prefer UTF-8
 (set-language-environment "UTF-8")
@@ -730,7 +732,7 @@ Disable the highlighting of overlong lines."
 (unless (server-running-p) (server-start))
 
 
-;;;; Multiple cursors
+;;; Multiple cursors
 (defvar stante-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
@@ -745,7 +747,7 @@ Disable the highlighting of overlong lines."
     map))
 
 
-;;;; Completion and expansion
+;;; Completion and expansion
 
 ;; Configure hippie-expand reasonably
 (stante-after hippie-exp
@@ -776,7 +778,7 @@ Disable the highlighting of overlong lines."
 (global-company-mode)
 
 
-;;;; Spell checking
+;;; Spell checking
 
 ;; Warn if the spell checker is missing
 (unless (executable-find "aspell")
@@ -801,7 +803,7 @@ Disable the highlighting of overlong lines."
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 
-;;;; AUCTeX
+;;; AUCTeX
 
 (require 'tex-site nil :no-error)
 
@@ -924,7 +926,7 @@ Choose Skim if available, or fall back to the default application."
   (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
 
 
-;;;; ReStructuredText editing
+;;; ReStructuredText editing
 (defun stante-rst-setup-electric-pairs ()
   "Setup electric pairs in RST Mode."
   (setq-local electric-pair-pairs
@@ -945,7 +947,7 @@ Choose Skim if available, or fall back to the default application."
     (define-key map (kbd "C-c C-j") #'rst-insert-list)))
 
 
-;;;; Markdown editing
+;;; Markdown editing
 
 ;; Why doesn't Markdown Mode do this itself?!
 (stante-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
@@ -988,13 +990,13 @@ suitable processor was found."
     (add-hook 'gfm-mode-hook #'stante-whitespace-style-no-long-lines)))
 
 
-;;;; HTML editing
+;;; HTML editing
 
 (stante-after sgml-mode
   (require 'simplezen))
 
 
-;;;; Various markup languages
+;;; Various markup languages
 (stante-after yaml-mode
   ;; YAML is kind of a mixture between text and programming language, and hence
   ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
@@ -1007,13 +1009,13 @@ suitable processor was found."
     (add-hook 'yaml-mode-hook it)))
 
 
-;;;; Configuration languages
+;;; Configuration languages
 (stante-after puppet-mode
   ;; Fontify variables in Puppet comments
   (setq puppet-fontify-variables-in-comments t))
 
 
-;;;; Symbol “awareness”
+;;; Symbol “awareness”
 
 ;; Navigate occurrences of the symbol under point with M-n and M-p
 (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
@@ -1036,11 +1038,10 @@ suitable processor was found."
   "Keymap for symbol operations.")
 
 
-;;;; Programming utilities
+;;; Programming utilities
 
 ;; Colorize parenthesis
 (stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
-
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; Basic folding
@@ -1073,7 +1074,7 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 (add-hook 'prog-mode-hook #'number-font-lock-mode)
 
 
-;;;; Emacs Lisp
+;;; Emacs Lisp
 
 ;; Utility functions
 (defun stante-find-cask-file (other-window)
@@ -1184,7 +1185,7 @@ window."
 (stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 
 
-;;;; Clojure
+;;; Clojure
 
 (stante-after clojure-mode
   (--each '(paredit-mode                ; Balanced sexp editing
@@ -1206,7 +1207,7 @@ window."
   (setq nrepl-hide-special-buffers t))
 
 
-;;;; Python
+;;; Python
 
 (stante-after python
   (--each '(stante-python-filling       ; PEP 8 compliant filling rules
@@ -1255,7 +1256,7 @@ window."
   (add-to-list 'company-backends 'company-anaconda))
 
 
-;;;; Ruby
+;;; Ruby
 (stante-after ruby-mode
   ;; Setup inf-ruby and Robe
   (--each '(robe-mode inf-ruby-minor-mode)
@@ -1269,7 +1270,7 @@ window."
     (push 'company-robe company-backends)))
 
 
-;;;; Haskell
+;;; Haskell
 (defconst stante-haskell-electric-haddock-pairs
   '((?/ . ?/)
     (?@ . ?@)
@@ -1314,7 +1315,7 @@ window."
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
-;;;; OCaml
+;;; OCaml
 
 (stante-after tuareg
   ;; Disable SMIE indentation in Tuareg.  It's just broken currently…
@@ -1324,7 +1325,7 @@ window."
   (add-hook 'tuareg-mode-hook #'merlin-mode))
 
 
-;;;; Shell scripting
+;;; Shell scripting
 
 ;; Teach Emacs about Zsh scripts
 (stante-auto-modes 'sh-mode (rx ".zsh" string-end))
@@ -1335,7 +1336,7 @@ window."
   (setq sh-indentation 2))
 
 
-;;;; Misc programming languages
+;;; Misc programming languages
 
 ;; Javascript: Indentation
 (stante-after js2-mode
@@ -1355,11 +1356,11 @@ window."
     (add-hook 'feature-mode it)))
 
 
-;;;; Special modes
+;;; Special modes
 (auto-image-file-mode)                  ; Visit images as images
 
 
-;;;; General version control
+;;; General version control
 
 (stante-after vc-hooks
   ;; Always follow symlinks to files in VCS repos
@@ -1383,7 +1384,7 @@ window."
           (diff-hl-update))))))
 
 
-;;;; Git support
+;;; Git support
 
 ;; The one and only Git frontend
 (defun stante-magit-default-tracking-name-origin-branch-only (remote branch)
@@ -1431,7 +1432,7 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
   "Keymap for Gist operations.")
 
 
-;;;; Tools and utilities
+;;; Tools and utilities
 
 ;; Powerful search and narrowing framework
 ;; Set the prefix key before loading to prevent Helm from ever claiming "C-x c"
@@ -1520,7 +1521,7 @@ Create a new ielm process if required."
 (stante-after google-this (diminish 'google-this-mode))
 
 
-;;;; Org mode
+;;; Org mode
 ;; Tell Org where our files are located.  We keep them in Dropbox for easy
 ;; synchronization.
 (stante-after org
@@ -1557,13 +1558,13 @@ Create a new ielm process if required."
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 
-;;;; Calendar
+;;; Calendar
 (stante-after calendar
   ;; In Europe we start on Monday
   (setq calendar-week-start-day 1))
 
 
-;;;; E-Mail
+;;; E-Mail
 
 ;; Settings for sending mail via GMail
 (stante-after sendmail
@@ -1580,7 +1581,7 @@ Create a new ielm process if required."
         smtpmail-smtp-user user-mail-address))
 
 
-;;;; IRC
+;;; IRC
 
 (stante-after erc
   ;; Default server and nick
@@ -1605,7 +1606,7 @@ Create a new ielm process if required."
         erc-track-enable-keybindings t))
 
 
-;;;; Key bindings
+;;; Key bindings
 
 ;; More standard mouse bindings
 (global-set-key (kbd "<mouse-3>") #'mouse-buffer-menu) ; Right click shows
