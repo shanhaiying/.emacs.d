@@ -1044,8 +1044,8 @@ suitable processor was found."
 (stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-;; Basic folding
-(add-hook 'prog-mode-hook #'hs-minor-mode)
+;; Folding and heading navigation
+(add-hook 'prog-mode-hook #'outline-minor-mode)
 
 ;; Compilation from Emacs
 (defun stante-colorize-compilation-buffer ()
