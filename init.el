@@ -1049,6 +1049,8 @@ suitable processor was found."
 
 ;; Show the current function name in the header line
 (which-function-mode)
+(stante-after which-func
+  (setq which-func-unknown "⊤"))
 (setq-default header-line-format
               '((which-func-mode ("" which-func-format " "))))
 (setq mode-line-misc-info
