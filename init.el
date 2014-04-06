@@ -147,10 +147,10 @@ mode symbol."
                                         ; workspace
         mac-option-modifier 'meta       ; Option is simply the natural Meta
         mac-command-modifier 'meta      ; But command is a lot easier to hit
+        mac-right-command-modifier 'left
         mac-right-option-modifier 'none ; Keep right option for accented input
         ;; Just in case we ever need these keys
-        mac-function-modifier 'hyper
-        mac-right-command-modifier 'super))
+        mac-function-modifier 'hyper))
 
 ;; Prefer GNU utilities over the BSD variants in Emacs, because the GNU tools
 ;; integrate better with Emacs
