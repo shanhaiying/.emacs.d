@@ -1680,6 +1680,9 @@ Create a new ielm process if required."
   (define-key html-mode-map (kbd "C-c e") #'simplezen-expand)
   (define-key html-mode-map (kbd "TAB") #'simplezen-expand-or-indent-for-tab))
 
+(stante-after markdown-mode
+  (define-key markdown-mode-map (kbd "C-c e") #'simplezen-expand))
+
 (stante-after haskell-mode
   (define-key haskell-mode-map (kbd "C-c h") #'haskell-hoogle)
   (define-key haskell-mode-map (kbd "C-c f c") #'haskell-cabal-visit-file)
