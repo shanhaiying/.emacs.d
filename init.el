@@ -781,11 +781,12 @@ Disable the highlighting of overlong lines."
 ;;; Spell checking
 
 ;; Warn if the spell checker is missing
-(unless (executable-find "aspell")
-  (message "Aspell not found.  Spell checking may not be available!"))
+(unless (executable-find "hunspell")
+  (message "Hunspell not found.  Spell checking may not be available!"))
 
 (stante-after ispell
-  (setq ispell-dictionary "en"          ; Default dictionary
+  (setq ispell-program-name "hunspell"  ; Force hunspell
+        ispell-dictionary "en_GB"       ; Default dictionary
         ispell-silently-savep t))       ; Don't ask when saving the private dict
 
 (stante-after flyspell
