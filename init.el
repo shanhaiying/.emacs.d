@@ -956,7 +956,7 @@ Choose Skim if available, or fall back to the default application."
 ;; Find a suitable processor
 (stante-after markdown-mode
   (defconst stante-markdown-commands
-    '(("pandoc" "-s" "-f" "markdown_github" "-t" "html5")
+    '(("pandoc" "-s" "-f" "markdown" "-t" "html5")
       ("kramdown")
       ("markdown2" "-x" "fenced-code-blocks"))
     "Markdown processors we try to use.")
