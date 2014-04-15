@@ -970,32 +970,8 @@ Choose Skim if available, or fall back to the default application."
 
   (add-hook 'markdown-mode-hook #'stante-markdown-setup-electric-pairs)
 
-  ;; Find a suitable processor
-  (defconst stante-markdown-commands
-    '(("pandoc" "-s" "-f" "markdown" "-t" "html5")
-      ("kramdown")
-      ("markdown2" "-x" "fenced-code-blocks"))
-    "Markdown processors we try to use.")
-
-  (defun stante-find-markdown-processor ()
-    "Find a suitable markdown processor.
-
-Search for a suitable markdown processor using
-`stante-markdown-commands' and set `markdown-command' properly.
-
-Return the new `markdown-command' or signal an error if no
-suitable processor was found."
-    (interactive)
-    ;; Clear previous command
-    (setq markdown-command
-          (mapconcat #'shell-quote-argument
-                     (--first (executable-find (car it)) stante-markdown-commands)
-                     " "))
-    (unless markdown-command
-      (error "No markdown processor found"))
-    markdown-command)
-
-  (stante-find-markdown-processor)
+  ;; Use Pandoc to process Markdown
+  (setq markdown-command "pandoc -s -f markdown -t html5")
 
   ;; Don't do filling in GFM mode, where line breaks are significant, and do not
   ;; highlight overlong lines.  Instead enable visual lines.
