@@ -621,7 +621,17 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Electric pairing and code layout
 (electric-layout-mode)
+(require 'elec-pair)                    ; To bring `electric-pair-pairs' into
+                                        ; scope
 (electric-pair-mode)
+
+(defun stante-add-local-electric-pairs (&rest pairs)
+  "Add local electric PAIRS in the current buffer."
+  (setq-local electric-pair-pairs (append pairs electric-pair-pairs)))
+
+(defun stante-add-local-electric-text-pairs (&rest pairs)
+  "Add local electric text PAIRS in the current buffer."
+  (setq-local electric-pair-text-pairs (append pairs electric-pair-text-pairs)))
 
 ;; Indicate empty lines at the end of a buffer in the fringe
 (setq indicate-empty-lines t)
@@ -928,12 +938,11 @@ Choose Skim if available, or fall back to the default application."
 
 
 ;;; ReStructuredText editing
-(defun stante-rst-setup-electric-pairs ()
-  "Setup electric pairs in RST Mode."
-  (setq-local electric-pair-pairs
-              (append '((?` . ?`) (?* . ?*)) electric-pair-pairs)))
-
 (stante-after rst
+  (defun stante-rst-setup-electric-pairs ()
+    "Setup electric pairs in RST Mode."
+    (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*)))
+
   ;; Indent with 3 spaces after all kinds of literal blocks
   (setq rst-indent-literal-minimized 3
         rst-indent-literal-normal 3)
@@ -953,8 +962,16 @@ Choose Skim if available, or fall back to the default application."
 ;; Why doesn't Markdown Mode do this itself?!
 (stante-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
 
-;; Find a suitable processor
 (stante-after markdown-mode
+  ;; Add electric pairs for Markdown mode
+  (defun stante-markdown-setup-electric-pairs ()
+    "Setup electric pairs in Markdown mode."
+    (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*)
+                                     '(?_ . ?_) '(?- . ?-)))
+
+  (add-hook 'markdown-mode-hook #'stante-markdown-setup-electric-pairs)
+
+  ;; Find a suitable processor
   (defconst stante-markdown-commands
     '(("pandoc" "-s" "-f" "markdown" "-t" "html5")
       ("kramdown")
@@ -979,11 +996,10 @@ suitable processor was found."
       (error "No markdown processor found"))
     markdown-command)
 
-  (stante-find-markdown-processor))
+  (stante-find-markdown-processor)
 
-;; Don't do filling in GFM mode, where line breaks are significant, and do not
-;; highlight overlong lines.  Instead enable visual lines.
-(stante-after markdown-mode
+  ;; Don't do filling in GFM mode, where line breaks are significant, and do not
+  ;; highlight overlong lines.  Instead enable visual lines.
   (--each '(turn-off-fci-mode turn-off-auto-fill visual-line-mode)
     (add-hook 'gfm-mode-hook it))
 
@@ -1283,19 +1299,12 @@ window."
 
 
 ;;; Haskell
-(defconst stante-haskell-electric-haddock-pairs
-  '((?/ . ?/)
-    (?@ . ?@)
-    (?' . ?'))
-  "Electric pairs for Haddock mode.")
-
-(defun stante-haskell-setup-electric-pairs ()
-  "Setup electric pairs for Haskell Mode."
-  (setq-local electric-pair-text-pairs
-              (append stante-haskell-electric-haddock-pairs
-                      electric-pair-text-pairs)))
-
 (stante-after haskell-mode
+  (defun stante-haskell-setup-electric-pairs ()
+    "Setup electric pairs for Haskell Mode."
+    ;; Add Haddock markup
+    (stante-add-local-electric-text-pairs '(?/ . ?/) '(?@ . ?@) '(?' . ?')))
+
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
