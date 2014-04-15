@@ -966,8 +966,7 @@ Choose Skim if available, or fall back to the default application."
   ;; Add electric pairs for Markdown mode
   (defun stante-markdown-setup-electric-pairs ()
     "Setup electric pairs in Markdown mode."
-    (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*)
-                                     '(?_ . ?_) '(?- . ?-)))
+    (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*) '(?_ . ?_)))
 
   (add-hook 'markdown-mode-hook #'stante-markdown-setup-electric-pairs)
 
