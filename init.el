@@ -1371,14 +1371,6 @@ window."
 (unless (window-system)
   (diff-hl-margin-mode))
 
-(defun stante-update-all-diff-hl-buffers ()
-  "Update diff highlighting in all affected buffers."
-  (when (fboundp 'diff-hl-update)
-    (dolist (buffer (buffer-list))
-      (with-current-buffer buffer
-        (when (bound-and-true-p diff-hl-mode)
-          (diff-hl-update))))))
-
 
 ;;; Git support
 
@@ -1404,18 +1396,9 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
         magit-default-tracking-name-function #'stante-magit-default-tracking-name-origin-branch-only
         )
 
-  ;; Update Diff highlighting after Magit operations
-  (add-hook 'magit-refresh-file-buffer-hook #'diff-hl-update)
-
   ;; Auto-revert files after Magit operations
   (magit-auto-revert-mode)
   (setq magit-auto-revert-mode-lighter ""))
-
-(stante-after git-commit-mode
-  ;; Update Diff highlighting after Git commits from Git commit mode
-  (advice-add 'git-commit-commit :after
-              (lambda (&rest _r) (stante-update-all-diff-hl-buffers))
-              '((name . git-commit-commit-update-diff-hl))))
 
 (stante-after gist
   (setq gist-view-gist t))              ; View Gists in browser after creation
