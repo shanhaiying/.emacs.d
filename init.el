@@ -797,7 +797,10 @@ Disable the highlighting of overlong lines."
 (stante-after ispell
   (setq ispell-program-name "hunspell"  ; Force hunspell
         ispell-dictionary "en_GB"       ; Default dictionary
-        ispell-silently-savep t))       ; Don't ask when saving the private dict
+        ispell-silently-savep t         ; Don't ask when saving the private dict
+        ;; Increase the height of the choices window to take our header line
+        ;; into account.
+        ispell-choices-win-default-height 5))
 
 (stante-after flyspell
   ;; Free M-Tab and C-M-i, and never take it again!
