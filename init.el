@@ -808,9 +808,7 @@ Disable the highlighting of overlong lines."
   (setq flyspell-use-meta-tab nil
         ;; Make Flyspell less chatty
         flyspell-issue-welcome-flag nil
-        flyspell-issue-message-flag nil)
-
-  (add-hook 'flyspell-mode-hook #'auto-dictionary-mode))
+        flyspell-issue-message-flag nil))
 
 (--each '(text-mode-hook message-mode-hook)
   (add-hook it 'turn-on-flyspell))

@@ -52,9 +52,6 @@
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion
 
-;; Spell checking
-(depends-on "auto-dictionary")     ; Guess dictionaries for buffers
-
 ;; LaTeX/AUCTeX
 (depends-on "auctex")                   ; The one and only LaTeX environment
 (depends-on "auctex-latexmk")           ; latexmk support for AUCTeX
