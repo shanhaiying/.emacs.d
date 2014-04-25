@@ -1284,7 +1284,7 @@ window."
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
-            hi2-mode                    ; Powerful indentation for Haskell
+            haskell-indentation-mode
             stante-haskell-setup-electric-pairs)
     (add-hook 'haskell-mode-hook it)))
 
