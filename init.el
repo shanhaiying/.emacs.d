@@ -969,6 +969,9 @@ Choose Skim if available, or fall back to the default application."
     "Setup electric pairs in Markdown mode."
     (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*) '(?_ . ?_)))
 
+  (define-key markdown-mode-map (kbd "C-c C-s P")
+              #'markdown-insert-gfm-code-block)
+
   (add-hook 'markdown-mode-hook #'stante-markdown-setup-electric-pairs)
 
   ;; Use Pandoc to process Markdown
