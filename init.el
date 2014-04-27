@@ -1332,8 +1332,10 @@ window."
 
 ;; Shell script indentation styles
 (stante-after sh-script
-  ;; Use two spaces in shell scripts
-  (setq sh-indentation 2))
+  ;; Use two spaces in shell scripts.
+  (setq sh-indentation 2                ; The basic indentation
+        sh-basic-offset 2               ; The offset for nested indentation
+        ))
 
 
 ;;; Misc programming languages
