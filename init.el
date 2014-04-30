@@ -221,6 +221,13 @@ Without FORMULA determine whether Homebrew itself is available."
       (when (stante-homebrew-prefix formula) t)
     (when (executable-find "brew") t)))
 
+(defconst stante-darwin-trash-tool "trash"
+  "A CLI tool to trash files.")
+
+(defun stante-darwin-move-file-to-trash (file)
+  "Move FILE to trash on OS X."
+  (call-process stante-darwin-trash-tool nil nil nil (expand-file-name file)))
+
 
 ;;; User interface
 
@@ -380,8 +387,22 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   (save-some-buffers 'dont-ask))
 (add-hook 'focus-out-hook #'stante-force-save-some-buffers)
 
-;; Delete to Trash
+;; Delete files to trash
 (setq delete-by-moving-to-trash t)
+
+;; On OS X, Emacs doesn't support the system trash properly, so we try to work
+;; around it by providing our own trashing function.  If that fails, disable
+;; trashing and warn!
+(when (and (eq system-type 'darwin) (not (fboundp 'system-move-file-to-trash)))
+  (if (executable-find stante-darwin-trash-tool)
+      (defalias 'system-move-file-to-trash 'stante-darwin-move-file-to-trash)
+    (message "WARNING: Trash support not available!
+Install Trash from https://github.com/ali-rantakari/trash!
+Homebrew: brew install trash")))
+
+(unless (and (eq system-type 'darwin) )
+  ;; Delete to Trash, except on OS X, where it's broken…
+  (setq delete-by-moving-to-trash t))
 
 ;; Store Tramp auto save files locally
 (stante-after tramp
