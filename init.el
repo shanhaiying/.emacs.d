@@ -1013,7 +1013,34 @@ Choose Skim if available, or fall back to the default application."
   (require 'simplezen))
 
 
-;;; Various markup languages
+;;; YAML
+
+(defconst stante-ansible-doc-buffer " *Ansible Doc*"
+  "The Ansible Doc buffer.")
+
+(defun stante-ansible-doc (module)
+  "Show ansible doc for MODULE."
+  (interactive
+   (let* ((default-module (thing-at-point 'symbol 'no-properties))
+          (prompt (if default-module
+                      (format "Ansible Module [default %s]: " default-module)
+                    "Ansible Module: "))
+          (module (read-from-minibuffer prompt nil nil nil nil
+                                        default-module)))
+     (when (string= module "")
+       ;; Lord, praise the fancy semantics of `read-from-minibuffer'
+       (setq module default-module))
+     (list module)))
+  (let ((buffer (get-buffer-create stante-ansible-doc-buffer)))
+    (with-current-buffer buffer
+      (setq buffer-read-only t)
+      (view-mode)
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (call-process "ansible-doc" nil t t module))
+      (goto-char (point-min)))
+    (display-buffer buffer)))
+
 (stante-after yaml-mode
   ;; YAML is kind of a mixture between text and programming language, and hence
   ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
@@ -1674,6 +1701,9 @@ Create a new ielm process if required."
 (stante-after sgml-mode
   (define-key html-mode-map (kbd "C-c e") #'simplezen-expand)
   (define-key html-mode-map (kbd "TAB") #'simplezen-expand-or-indent-for-tab))
+
+(stante-after yaml-mode
+  (define-key yaml-mode-map (kbd "C-c h a") #'stante-ansible-doc))
 
 (stante-after markdown-mode
   (define-key markdown-mode-map (kbd "C-c e") #'simplezen-expand))
