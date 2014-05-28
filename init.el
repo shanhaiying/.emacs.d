@@ -1333,6 +1333,13 @@ window."
 
 ;;; Haskell
 (stante-after haskell-mode
+  ;; We need the following tools for our Haskell setup:
+  ;;
+  ;; cabal install hasktags hoogle shm
+  ;;
+  ;; Much of this Haskell Mode setup is taken from
+  ;; https://github.com/chrisdone/chrisdone-emacs
+
   (defun stante-haskell-setup-electric-pairs ()
     "Setup electric pairs for Haskell Mode."
     ;; Add Haddock markup
@@ -1341,13 +1348,13 @@ window."
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
+            structured-haskell-mode     ; Improved Haskell indentation
             haskell-indentation-mode
             stante-haskell-setup-electric-pairs)
-    (add-hook 'haskell-mode-hook it)))
+    (add-hook 'haskell-mode-hook it))
 
-(stante-after hi2
-  ;; Don't show indentation markers after EOL
-  (setq hi2-show-indentations-after-eol nil))
+  (setq haskell-tags-on-save t)
+  )
 
 (stante-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
@@ -1358,15 +1365,27 @@ window."
 (stante-after haskell-interactive-mode
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
+            structured-haskell-repl-mode ; Improved Haskell indentation
             subword-mode)               ; Subword navigation
     (add-hook 'haskell-interactive-mode-hook it)))
 
 (stante-after haskell-process
-  (setq haskell-process-path-cabal (executable-find "cabal")
-        haskell-process-type 'cabal-repl))
+  ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI loaded
+  ;; modules respectively
+  (setq haskell-process-suggest-remove-import-lines t
+        haskell-process-auto-import-loaded-modules t
+        haskell-process-suggest-hoogle-imports t
+        haskell-process-use-presentation-mode t ; Don't clutter the echo area
+        haskell-process-type 'ghci
+        haskell-process-args-ghci nil))
 
 (stante-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+(stante-after shm
+  (setq shm-use-presentation-mode t     ; Don't clutter the each area
+        shm-auto-insert-skeletons t
+        shm-auto-insert-bangs t))
 
 
 ;;; OCaml
