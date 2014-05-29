@@ -1349,12 +1349,11 @@ window."
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
             structured-haskell-mode     ; Improved Haskell indentation
-            haskell-indentation-mode
+            haskell-auto-insert-module-template ; Insert module templates
             stante-haskell-setup-electric-pairs)
     (add-hook 'haskell-mode-hook it))
 
-  (setq haskell-tags-on-save t)
-  )
+  (setq haskell-tags-on-save t))
 
 (stante-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
@@ -1376,8 +1375,9 @@ window."
         haskell-process-auto-import-loaded-modules t
         haskell-process-suggest-hoogle-imports t
         haskell-process-use-presentation-mode t ; Don't clutter the echo area
-        haskell-process-type 'ghci
-        haskell-process-args-ghci nil))
+        haskell-process-show-debug-tips nil ; Disable tips
+        haskell-process-log t           ; Log debugging information
+        haskell-process-type 'cabal-repl))
 
 (stante-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
@@ -1734,17 +1734,29 @@ Create a new ielm process if required."
   (define-key markdown-mode-map (kbd "C-c e") #'simplezen-expand))
 
 (stante-after haskell-mode
-  (define-key haskell-mode-map (kbd "C-c h") #'haskell-hoogle)
-  (define-key haskell-mode-map (kbd "C-c f c") #'haskell-cabal-visit-file)
-  ;; Replace Inferior Haskell Mode with Interactive Haskell Mode
-  (define-key haskell-mode-map (kbd "C-x C-d") nil)
-  (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-  (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-file)
-  (define-key haskell-mode-map (kbd "C-c C-b") 'haskell-interactive-switch)
-  (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
-  (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-  (define-key haskell-mode-map (kbd "C-c M-.") nil)
-  (define-key haskell-mode-map (kbd "C-c C-d") nil))
+  (let ((map haskell-mode-map))
+    (define-key map (kbd "C-c h") #'haskell-hoogle)
+    (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
+    ;; Replace Inferior Haskell Mode with Interactive Haskell Mode
+    (define-key map (kbd "C-c C-l") #'haskell-process-load-or-reload)
+    (define-key map (kbd "C-`") #'haskell-interactive-bring)
+    (define-key map (kbd "C-c C-t") #'haskell-process-do-type)
+    (define-key map (kbd "C-c C-i") #'haskell-process-do-info)
+    (define-key map (kbd "C-c C-c") #'haskell-process-cabal-build)
+    (define-key map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
+    (define-key map (kbd "C-c c") #'haskell-process-cabal)
+    ;; Magic space
+    (define-key map (kbd "SPC") #'haskell-mode-contextual-space)
+    ;; Some convenience bindings
+    (define-key map (kbd "C-c I") #'haskell-navigate-imports)
+    (define-key map (kbd "M-.") #'haskell-mode-tag-find)))
+
+(stante-after haskell-cabal
+  (let ((map haskell-cabal-mode-map))
+    (define-key map (kbd "C-`") #'haskell-interactive-bring)
+    (define-key map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
+    (define-key map (kbd "C-c C-c") #'haskell-process-cabal-build)
+    (define-key map (kbd "C-c c") #'haskell-process-cabal)))
 
 (stante-after tuareg
   ;; Please, Tuareg, don't kill my imenu
