@@ -377,6 +377,10 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                   (abbreviate-file-name (buffer-file-name)) "%b")))
 
 ;; Save buffers, windows and frames
+(stante-after desktop
+  ;; Don't autosave desktops, it's too expensive.  Desktops aren't that
+  ;; precious, and Emacs will save the desktop on exit anyway.
+  (setq desktop-auto-save-timeout nil))
 (desktop-save-mode)
 
 
