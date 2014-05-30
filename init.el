@@ -1352,7 +1352,7 @@ window."
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
-            structured-haskell-mode     ; Improved Haskell indentation
+            haskell-simple-indent-mode  ; Simple and predictable indentation
             haskell-auto-insert-module-template ; Insert module templates
             stante-haskell-setup-electric-pairs)
     (add-hook 'haskell-mode-hook it))
@@ -1368,7 +1368,6 @@ window."
 (stante-after haskell-interactive-mode
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
-            structured-haskell-repl-mode ; Improved Haskell indentation
             subword-mode)               ; Subword navigation
     (add-hook 'haskell-interactive-mode-hook it)))
 

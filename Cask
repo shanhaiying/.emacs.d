@@ -88,7 +88,6 @@
 ;; Haskell support
 (depends-on "haskell-mode")             ; Haskell major modes
 (depends-on "ghci-completion")          ; Complete GHCI commands
-(depends-on "shm")                      ; Structured Haskell Mode
 (depends-on "flycheck-haskell")         ; Improve Haskell syntax checking
 
 ;; Ocaml support
