@@ -755,6 +755,11 @@ Disable the highlighting of overlong lines."
 (stante-after paren
   (setq show-paren-style 'mixed))
 
+;; Jump to characters in buffers
+(stante-after ace-jump-mode
+  ;; Sync marks with Emacs built-in commands
+  (ace-jump-mode-enable-mark-sync))
+
 ;; Power up undo
 (stante-after undo-tree (diminish 'undo-tree-mode))
 (global-undo-tree-mode)
@@ -1702,6 +1707,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-=") #'er/expand-region)
 
 ;; User key bindings in the C-c space.
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-c a") stante-ag-map)
 (global-set-key (kbd "C-c b") #'ace-jump-buffer)
 (global-set-key (kbd "C-c B") #'browse-url)
@@ -1712,7 +1718,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c g") #'magit-status)
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
-(global-set-key (kbd "C-c J") #'ace-jump-pop-mark)
+(global-set-key (kbd "C-c J") #'ace-jump-mode-pop-mark)
 (global-set-key (kbd "C-C M") #'recompile)
 (global-set-key (kbd "C-c m") stante-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
