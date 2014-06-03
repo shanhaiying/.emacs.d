@@ -1005,9 +1005,6 @@ Choose Skim if available, or fall back to the default application."
     "Setup electric pairs in Markdown mode."
     (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*) '(?_ . ?_)))
 
-  (define-key markdown-mode-map (kbd "C-c C-s P")
-              #'markdown-insert-gfm-code-block)
-
   (add-hook 'markdown-mode-hook #'stante-markdown-setup-electric-pairs)
 
   ;; Use Pandoc to process Markdown
@@ -1738,6 +1735,10 @@ Create a new ielm process if required."
   (define-key yaml-mode-map (kbd "C-c h a") #'stante-ansible-doc))
 
 (stante-after markdown-mode
+  (define-key markdown-mode-map (kbd "C-c C-s C")
+    #'markdown-insert-gfm-code-block)
+  (define-key markdown-mode-map (kbd "C-c C-s P")
+    #'markdown-insert-gfm-code-block)
   (define-key markdown-mode-map (kbd "C-c e") #'simplezen-expand))
 
 (stante-after haskell-mode
