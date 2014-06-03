@@ -1313,9 +1313,7 @@ window."
       "Setup Python executables based on the current virtualenv."
       (let ((exec-path (python-shell-calculate-exec-path)))
         (setq flycheck-python-pylint-executable
-              (executable-find "pylint")
-              flycheck-python-flake8-executable
-              (executable-find "flake8"))))
+              (executable-find "pylint"))))
 
     (defun stante-flycheck-setup-python ()
       "Setup Flycheck in Python buffers."
