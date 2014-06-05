@@ -1747,7 +1747,7 @@ Create a new ielm process if required."
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
     ;; Replace Inferior Haskell Mode with Interactive Haskell Mode
     (define-key map (kbd "C-c C-l") #'haskell-process-load-or-reload)
-    (define-key map (kbd "C-`") #'haskell-interactive-bring)
+    (define-key map (kbd "C-c C-z") #'haskell-interactive-bring)
     (define-key map (kbd "C-c C-t") #'haskell-process-do-type)
     (define-key map (kbd "C-c C-i") #'haskell-process-do-info)
     (define-key map (kbd "C-c C-c") #'haskell-process-cabal-build)
