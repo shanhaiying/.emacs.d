@@ -42,12 +42,17 @@
 ;; Editing helpers
 (depends-on "whitespace-cleanup-mode")  ; Cleanup whitespace on save
 (depends-on "drag-stuff")               ; Drag stuff around
-(depends-on "visual-regexp")            ; Regexp reloaded
 (depends-on "undo-tree")                ; Undo reloaded
 (depends-on "adaptive-wrap")            ; Automatic wrap prefix
 (depends-on "expand-region")            ; Expand region by semantic units
 (depends-on "multiple-cursors")         ; Multiple cursors
 (depends-on "easy-kill")                ; Killing and marking on steroids
+
+;; Search and replace
+(depends-on "ag")                       ; Code search
+(depends-on "wgrep")
+(depends-on "wgrep-ag")                 ; Edit ag results in-place
+(depends-on "visual-regexp")            ; Regexp reloaded
 
 ;; Completion and expansion
 (depends-on "company")                  ; Auto completion
@@ -127,5 +132,4 @@
 
 ;; Utilities
 (depends-on "projectile")               ; Project interaction
-(depends-on "ag")                       ; Ag frontend
 (depends-on "google-this")              ; Google from Emacs
