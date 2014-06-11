@@ -1636,7 +1636,7 @@ Create a new ielm process if required."
         message-kill-buffer-on-exit t)) ; Don't keep message buffers around
 
 (stante-after smtpmail
-  (setq smtpmail-smtp-server "smtp.gmail.com"
+  (setq smtpmail-smtp-server "vega.uberspace.de"
         smtpmail-smtp-service 587
         smtpmail-stream-type 'starttls
         smtpmail-smtp-user user-mail-address))
