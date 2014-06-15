@@ -362,6 +362,22 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; Clean stale buffers
 (require 'midnight)
 
+;; Don't kill the important buffers
+(defconst stante-do-not-kill-buffer-names '("*scratch*" "*Messages*")
+  "Names of buffers that should not be killed.")
+
+(defun stante-do-not-kill-important-buffers ()
+  "Inhibit killing of important buffers.
+
+Add this to `kill-buffer-query-functions'."
+  (if (not (member (buffer-name) stante-do-not-kill-buffer-names))
+      t
+    (message "Not allowed to kill %s, burying instead" (buffer-name))
+    (bury-buffer)
+    nil))
+
+(add-hook 'kill-buffer-query-functions #'stante-do-not-kill-important-buffers)
+
 ;; Move between windows with Shift + Arrow keys
 (windmove-default-keybindings)
 
