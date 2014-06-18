@@ -1303,7 +1303,7 @@ window."
   (--each '(stante-python-filling       ; PEP 8 compliant filling rules
             subword-mode                ; Word commands on parts of ClassNames
             anaconda-mode               ; Lookup, navigation and completion
-            anaconda-eldoc              ; Inline documentation
+            eldoc-mode                  ; Inline documentation
             stante-flycheck-setup-python)
     (add-hook 'python-mode-hook it))
 

@@ -86,6 +86,7 @@
 
 ;; Python
 (depends-on "anaconda-mode")            ; Documentation, lookup and navigation
+(depends-on "company-anaconda")         ; Company integration for Anaconda
 
 ;; Ruby support
 (depends-on "inf-ruby")                 ; Ruby interpreter in Emacs
