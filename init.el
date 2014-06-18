@@ -1024,8 +1024,14 @@ Choose Skim if available, or fall back to the default application."
   (sp-with-modes '(markdown-mode gfm-mode)
     (sp-local-pair "*" "*")
     (sp-local-pair "`" "`")
+    (sp-local-pair "<" ">")
     (sp-local-tag "s" "```scheme" "```")
-    (sp-local-tag "<" "<_>" "</_>" :transform 'sp-match-sgml-tags))
+    (sp-local-tag "<" "<_>" "</_>"
+                  :transform 'sp-match-sgml-tags
+                  :post-handlers '(sp-html-post-handler)))
+
+  (--each '(markdown-mode gfm-mode)
+    (add-to-list 'sp-navigate-consider-sgml-tags it))
 
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
