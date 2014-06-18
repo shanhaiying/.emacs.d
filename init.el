@@ -316,6 +316,8 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (global-anzu-mode)
 
 (stante-after smart-mode-line
+  ;; Don't ask me, please
+  (setq sml/no-confirm-load-theme t)
   (sml/apply-theme 'respectful))
 (sml/setup)
 
