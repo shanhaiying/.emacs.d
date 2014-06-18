@@ -668,17 +668,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Electric pairing and code layout
 (electric-layout-mode)
-(require 'elec-pair)                    ; To bring `electric-pair-pairs' into
-                                        ; scope
-(electric-pair-mode)
-
-(defun stante-add-local-electric-pairs (&rest pairs)
-  "Add local electric PAIRS in the current buffer."
-  (setq-local electric-pair-pairs (append pairs electric-pair-pairs)))
-
-(defun stante-add-local-electric-text-pairs (&rest pairs)
-  "Add local electric text PAIRS in the current buffer."
-  (setq-local electric-pair-text-pairs (append pairs electric-pair-text-pairs)))
 
 ;; Indicate empty lines at the end of a buffer in the fringe
 (setq indicate-empty-lines t)
@@ -767,9 +756,6 @@ Disable the highlighting of overlong lines."
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (diminish 'volatile-highlights-mode)
 (volatile-highlights-mode t)
-(show-paren-mode)
-(stante-after paren
-  (setq show-paren-style 'mixed))
 
 ;; Jump to characters in buffers
 (stante-after ace-jump-mode
@@ -807,6 +793,23 @@ Disable the highlighting of overlong lines."
     (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
     (define-key map (kbd "C-s") #'mc/mark-all-in-region)
     map))
+
+
+;;; Smartparens
+(require 'smartparens-config)
+
+(stante-after smartparens
+  (setq sp-autoskip-closing-pair 'always
+        ;; Don't kill the entire symbol on C-k
+        sp-hybrid-kill-entire-symbol nil))
+
+(stante-after smartparens
+  (setq sp-autoskip-closing-pair 'always
+        ;; Don't kill the entire symbol on C-k
+        sp-hybrid-kill-entire-symbol nil))
+
+(smartparens-global-mode)
+(show-smartparens-global-mode)          ; Show parenthesis
 
 
 ;;; Completion and expansion
@@ -992,22 +995,22 @@ Choose Skim if available, or fall back to the default application."
 
 ;;; ReStructuredText editing
 (stante-after rst
-  (defun stante-rst-setup-electric-pairs ()
-    "Setup electric pairs in RST Mode."
-    (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*)))
-
   ;; Indent with 3 spaces after all kinds of literal blocks
   (setq rst-indent-literal-minimized 3
         rst-indent-literal-normal 3)
-
-  (add-hook 'rst-mode-hook #'stante-rst-setup-electric-pairs)
 
   (let ((map rst-mode-map))
     ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c
     ;; C-a C-a
     (define-key map (kbd "C-=") nil)
     ;; For similarity with AUCTeX
-    (define-key map (kbd "C-c C-j") #'rst-insert-list)))
+    (define-key map (kbd "C-c C-j") #'rst-insert-list))
+
+  (sp-with-modes 'rst-mode
+    (sp-local-pair "*" "*")
+    (sp-local-pair "**" "**")
+    (sp-local-pair "`" "`")
+    (sp-local-pair "``" "``")))
 
 
 ;;; Markdown editing
@@ -1016,12 +1019,11 @@ Choose Skim if available, or fall back to the default application."
 (stante-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
 
 (stante-after markdown-mode
-  ;; Add electric pairs for Markdown mode
-  (defun stante-markdown-setup-electric-pairs ()
-    "Setup electric pairs in Markdown mode."
-    (stante-add-local-electric-pairs '(?` . ?`) '(?* . ?*) '(?_ . ?_)))
-
-  (add-hook 'markdown-mode-hook #'stante-markdown-setup-electric-pairs)
+  (sp-with-modes '(markdown-mode gfm-mode)
+    (sp-local-pair "*" "*")
+    (sp-local-pair "`" "`")
+    (sp-local-tag "s" "```scheme" "```")
+    (sp-local-tag "<" "<_>" "</_>" :transform 'sp-match-sgml-tags))
 
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
@@ -1194,7 +1196,7 @@ window."
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar stante-emacs-lisp-common-modes
-  '(paredit-mode                        ; Balanced sexp editing
+  '(smartparens-strict-mode
     turn-on-eldoc-mode                  ; Show function signatures in echo area
     elisp-slime-nav-mode)               ; Navigate to symbol definitions
   "Common modes for Emacs Lisp editing.")
@@ -1203,6 +1205,9 @@ window."
   (--each stante-emacs-lisp-common-modes
     (add-hook 'emacs-lisp-mode-hook it)
     (add-hook 'lisp-interaction-mode-hook it))
+
+  (sp-local-pair '(emacs-lisp-mode lisp-interaction-mode)
+                 "(" nil :bind "M-(")
 
   ;; Check doc conventions when eval'ing expressions
   (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
@@ -1232,7 +1237,9 @@ window."
 
 (stante-after ielm
   (--each stante-emacs-lisp-common-modes
-    (add-hook 'ielm-mode-hook it)))
+    (add-hook 'ielm-mode-hook it))
+
+  (sp-local-pair 'inferior-emacs-lisp-mode "(" nil :bind "M-("))
 
 ;; Hippie expand for Emacs Lisp
 (stante-after hippie-exp
@@ -1271,15 +1278,13 @@ window."
 ;;; Clojure
 
 (stante-after clojure-mode
-  (--each '(paredit-mode                ; Balanced sexp editing
-            subword-word                ; Handle camelCaseIdentifiers
+  (--each '(subword-word                ; Handle camelCaseIdentifiers
             clojure-test-mode)          ; Support unit tests
     (add-hook 'clojure-mode-hook it)))
 
 (stante-after cider-repl-mode
   ;; Standard Lisp/Clojure goodies for the Cider Repl
-  (--each '(paredit-mode subword-mode)
-    (add-hook 'cider-repl-mode-hook it)))
+  (add-hook 'cider-repl-mode-hook #'subword-mode))
 
 (stante-after cider-mode
   ;; Eldoc for Cider
@@ -1360,17 +1365,20 @@ window."
   ;; Much of this Haskell Mode setup is taken from
   ;; https://github.com/chrisdone/chrisdone-emacs
 
-  (defun stante-haskell-setup-electric-pairs ()
-    "Setup electric pairs for Haskell Mode."
-    ;; Add Haddock markup
-    (stante-add-local-electric-text-pairs '(?/ . ?/) '(?@ . ?@) '(?' . ?')))
+  (sp-with-modes 'haskell-mode
+    ;; Haddock markup
+    (sp-local-pair 'haskell-mode "@" "@" :when '(sp-in-comment-p))
+    (sp-local-pair 'haskell-mode "/" "/" :when '(sp-in-comment-p))
+    (sp-local-pair 'haskell-mode "'" "'" :when '(sp-in-comment-p))
+    ;; Explicit parenthesis wrapping
+    (sp-local-pair "(" nil :bind "M-("))
 
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
             haskell-simple-indent-mode  ; Simple and predictable indentation
             haskell-auto-insert-module-template ; Insert module templates
-            stante-haskell-setup-electric-pairs)
+            )
     (add-hook 'haskell-mode-hook it))
 
   (setq haskell-tags-on-save t))
@@ -1379,13 +1387,17 @@ window."
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
             subword-mode)               ; Subword navigation
-    (add-hook 'inferior-haskell-mode-hook it)))
+    (add-hook 'inferior-haskell-mode-hook it))
+
+  (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
 
 (stante-after haskell-interactive-mode
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
             subword-mode)               ; Subword navigation
-    (add-hook 'haskell-interactive-mode-hook it)))
+    (add-hook 'haskell-interactive-mode-hook it))
+
+  (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
 
 (stante-after haskell-process
   ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI loaded
@@ -1738,6 +1750,42 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c s") stante-symbols-map)
 (global-set-key (kbd "C-c u") stante-utilities-map)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
+
+(stante-after smartparens
+  (let ((map smartparens-mode-map))
+    ;; Movement and navigation
+    (define-key map (kbd "C-M-f") #'sp-forward-sexp)
+    (define-key map (kbd "C-M-b") #'sp-backward-sexp)
+    (define-key map (kbd "C-M-u") #'sp-backward-up-sexp)
+    (define-key map (kbd "C-M-d") #'sp-down-sexp)
+    (define-key map (kbd "C-M-p") #'sp-backward-down-sexp)
+    (define-key map (kbd "C-M-n") #'sp-up-sexp)
+    ;; Deleting and killing
+    (define-key map (kbd "C-M-k") #'sp-kill-sexp)
+    (define-key map (kbd "C-M-w") #'sp-copy-sexp)
+    ;; Depth changing
+    (define-key map (kbd "M-s") #'sp-splice-sexp)
+    (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
+    (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
+    (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
+    (define-key map (kbd "M-?") #'sp-convolute-sexp)
+    ;; Barfage & Slurpage
+    (define-key map (kbd "C-)")  #'sp-forward-slurp-sexp)
+    (define-key map (kbd "C-<right>") #'sp-forward-slurp-sexp)
+    (define-key map (kbd "C-}")  #'sp-forward-barf-sexp)
+    (define-key map (kbd "C-<left>") #'sp-forward-barf-sexp)
+    (define-key map (kbd "C-(")  #'sp-backward-slurp-sexp)
+    (define-key map (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
+    (define-key map (kbd "C-{")  #'sp-backward-barf-sexp)
+    (define-key map (kbd "C-M-<right>") #'sp-backward-barf-sexp)
+    ;; Miscellaneous commands
+    (define-key map (kbd "M-S") #'sp-split-sexp)
+    (define-key map (kbd "M-J") #'sp-join-sexp)
+    (define-key map (kbd "C-M-t") #'sp-transpose-sexp))
+
+  (let ((map smartparens-strict-mode-map))
+    (define-key map (kbd "M-q") #'sp-indent-defun)
+    (define-key map (kbd "C-j") #'sp-newline)))
 
 (stante-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)

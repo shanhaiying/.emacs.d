@@ -99,7 +99,8 @@ Notable packages
   [Easy Kill](https://github.com/leoliu/easy-kill)
 - Region and editing:
   [Expand Region](https://github.com/magnars/expand-region.el),
-  [Multiple Cursors](https://github.com/magnars/multiple-cursors.el) and
+  [Multiple Cursors](https://github.com/magnars/multiple-cursors.el),
+  [Smartparens](https://github.com/Fuco1/smartparens) and
   [Visual Regexp](https://github.com/benma/visual-regexp.el)
 - In-buffer navigation:
   [ACE Jump Mode](https://github.com/winterTTr/ace-jump-mode) and
@@ -110,8 +111,7 @@ Notable packages
   [Highlight Symbol](https://github.com/nschum/highlight-symbol.el)
 - Project navigation: [Projectile](https://github.com/bbatsov/projectile)
 - Search: [Ag](https://github.com/Wilfred/ag.el)
-- Lisp editing: [Paredit](http://www.emacswiki.org/emacs/ParEdit) and
-  [Rainbow Delimiters](https://github.com/jlr/rainbow-delimiters)
+- Lisp editing: [Rainbow Delimiters](https://github.com/jlr/rainbow-delimiters)
 - Emacs Lisp tools: [Macrostep](https://github.com/joddie/macrostep),
   [Elisp Slime Nav](https://github.com/purcell/elisp-slime-nav) and
   [Flycheck Cask](https://github.com/flycheck/flycheck-cask)

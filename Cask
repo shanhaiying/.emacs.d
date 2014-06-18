@@ -47,6 +47,7 @@
 (depends-on "expand-region")            ; Expand region by semantic units
 (depends-on "multiple-cursors")         ; Multiple cursors
 (depends-on "easy-kill")                ; Killing and marking on steroids
+(depends-on "smartparens")              ; Parenthesis balancing and pair editing
 
 ;; Search and replace
 (depends-on "ag")                       ; Code search
@@ -101,7 +102,6 @@
 
 ;; Basic Lisp utility modes
 (depends-on "rainbow-delimiters")       ; Color parenthesis by level
-(depends-on "paredit")                  ; Sexp-editing for Lisp
 
 ;; Emacs Lisp utility modes and libraries
 (depends-on "elisp-slime-nav")          ; Navigate to symbol definitions
