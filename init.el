@@ -1375,9 +1375,9 @@ window."
 
   (sp-with-modes 'haskell-mode
     ;; Haddock markup
-    (sp-local-pair 'haskell-mode "@" "@" :when '(sp-in-comment-p))
-    (sp-local-pair 'haskell-mode "/" "/" :when '(sp-in-comment-p))
-    (sp-local-pair 'haskell-mode "'" "'" :when '(sp-in-comment-p))
+    (sp-local-pair "@" "@" :when '(sp-in-comment-p))
+    (sp-local-pair "/" "/" :when '(sp-in-comment-p))
+    (sp-local-pair "'" "'" :when '(sp-in-comment-p))
     ;; Explicit parenthesis wrapping
     (sp-local-pair "(" nil :bind "M-("))
 
