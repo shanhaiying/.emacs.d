@@ -1675,7 +1675,7 @@ Create a new ielm process if required."
   (setq smtpmail-smtp-server "vega.uberspace.de"
         smtpmail-smtp-service 587
         smtpmail-stream-type 'starttls
-        smtpmail-smtp-user user-mail-address))
+        smtpmail-smtp-user user-login-name))
 
 
 ;;; IRC
