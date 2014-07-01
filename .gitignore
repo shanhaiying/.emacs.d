@@ -2,6 +2,9 @@
 *.elc
 
 # Installed packages
+/elpa/
+
+# Cask directory
 /.cask/
 
 # Recovery directory

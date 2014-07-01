@@ -50,14 +50,133 @@
 (setq load-prefer-newer t)
 
 (require 'package)
-(setq package-enable-at-startup nil     ; We explicitly enable package.el
-      ;; Take packages from Cask
-      package-user-dir (locate-user-emacs-file (format ".cask/%s/elpa"
-                                                       emacs-version)))
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 (package-initialize)
+
+;; Install all required packages if absent
+(defconst stante-packages
+  '(
+    ;; Basic libraries
+    dash s f
+    epl                                 ; Package environment
+    exec-path-from-shell                ; Environment fixup
+    ;; Color theme
+    solarized-theme
+    zenburn-theme
+    ;; UI improvements
+    diminish                            ; De-clutter the mode line…
+    smart-mode-line                     ; …and make it fancy
+    anzu                                ; Mode line indicators for isearch
+    browse-kill-ring                    ; Kill ring browser
+    smex                                ; Improved M-x
+    ;; File handling
+    ignoramus                           ; Ignore uninteresting files
+    hardhat                             ; Protect user-writable files
+    launch                              ; Open files externally
+    ;; Navigation tools
+    ido-ubiquitous                      ; Use IDO everywhere
+    flx-ido                             ; Powerful flex matching for IDO
+    imenu-anywhere                      ; imenu with IDO and for all buffers
+    ido-vertical-mode                   ; Show IDO vertically
+    ace-jump-buffer                     ; Fast switch between buffers
+    ace-jump-mode                       ; Fast jump within the buffer
+    ;; Editing indicators
+    fill-column-indicator               ; Indicate fill column,
+    page-break-lines                    ; page breaks
+    volatile-highlights                 ; certain editing operations,
+    flycheck                            ; and syntax errors
+    ;; Editing helpers
+    whitespace-cleanup-mode             ; Cleanup whitespace on save
+    drag-stuff                          ; Drag stuff around
+    undo-tree                           ; Undo reloaded
+    adaptive-wrap                       ; Automatic wrap prefix
+    expand-region                       ; Expand region by semantic units
+    multiple-cursors                    ; Multiple cursors
+    easy-kill                           ; Killing and marking on steroids
+    smartparens                         ; Parenthesis balancing and pair editing
+    ;; Search and replace
+    ag                                  ; Code search
+    wgrep wgrep-ag                      ; Edit ag results in-place
+    visual-regexp                       ; Regexp reloaded
+    ;; Completion and expansion
+    company                             ; Auto completion
+    ;; LaTeX/AUCTeX
+    auctex                              ; The one and only LaTeX environment
+    auctex-latexmk                      ; latexmk support for AUCTeX
+    ;; Markup languages
+    markdown-mode                       ; Markdown major mode
+    bbcode-mode                         ; BBCode major mode
+    simplezen                           ; Zencoding KISS way
+    yaml-mode                           ; YAML major mode
+    graphviz-dot-mode                   ; Graphviz mode
+    ;; Configuration languages
+    puppet-mode                         ; For Puppet files
+    ;; General programming utilities
+    highlight-symbol                    ; Symbol awareness
+    pcre2el                             ; Regular expression utilities
+    number-font-lock-mode               ; Syntax highlighting for numeric
+                                        ; literals
+    ;; Programming languages
+    js2-mode                            ; Powerful Javascript mode
+    feature-mode                        ; Cucumber major mode
+    pkgbuild-mode                       ; Arch PKGBUILD files
+    rust-mode                           ; Rust major mode
+    ;; Python
+    anaconda-mode                       ; Documentation, lookup and navigation
+    company-anaconda                    ; Company integration for Anaconda
+    ;; Ruby support
+    inf-ruby                            ; Ruby interpreter in Emacs
+    robe                                ; Code navigation, docs and completion
+    ;; Haskell support
+    haskell-mode                        ; Haskell major modes
+    ghci-completion                     ; Complete GHCI commands
+    flycheck-haskell                    ; Improve Haskell syntax checking
+    ;; Ocaml support
+    tuareg                              ; OCaml major mode
+    merlin                              ; OCaml completion engine
+    ;; Basic Lisp utility modes
+    rainbow-delimiters                  ; Color parenthesis by level
+    ;; Emacs Lisp utility modes and libraries
+    elisp-slime-nav                     ; Navigate to symbol definitions
+    macrostep                           ; Interactively expand macros
+    flycheck-cask                       ; Cask support for Flycheck
+    ;; Clojure modes
+    clojure-mode                        ; Clojure editing
+    clojure-test-mode                   ; Clojure test runner
+    cider                               ; Clojure IDE
+    clojure-cheatsheet                  ; The one and only cheatsheet
+    ;; General Version Control
+    diff-hl                             ; Highlight VCS diffs in the fringe
+    ;; Git and Gist integration
+    magit                               ; Git frontend
+    git-commit-mode                     ; Git commit message mode
+    gitconfig-mode                      ; Git configuration mode
+    gitignore-mode                      ; .gitignore mode
+    gitattributes-mode                  ; Git attributes mode
+    git-rebase-mode                     ; Mode for git rebase -i
+    gist                                ; Gist frontend
+    ;; Helm – Interactive search and narrowing
+    helm                                ; Powerful search and narrowing
+    helm-projectile                     ; Helm + Projectile
+    ;; Utilities
+    projectile                          ; Project interaction
+    google-this                         ; Google from Emacs
+    )
+  "Packages needed by Stante Pede.")
+
+(defun stante-ensure-packages ()
+  "Install all Stante packages."
+  (interactive)
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (dolist (package stante-packages)
+    (unless (package-installed-p package)
+      (package-install package))))
+
+(stante-ensure-packages)
 
 
 ;;; Requires
