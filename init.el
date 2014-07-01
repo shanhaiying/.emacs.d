@@ -81,7 +81,6 @@
     flx-ido                             ; Powerful flex matching for IDO
     imenu-anywhere                      ; imenu with IDO and for all buffers
     ido-vertical-mode                   ; Show IDO vertically
-    ace-jump-buffer                     ; Fast switch between buffers
     ace-jump-mode                       ; Fast jump within the buffer
     ;; Editing indicators
     fill-column-indicator               ; Indicate fill column,
@@ -109,7 +108,6 @@
     ;; Markup languages
     markdown-mode                       ; Markdown major mode
     bbcode-mode                         ; BBCode major mode
-    simplezen                           ; Zencoding KISS way
     yaml-mode                           ; YAML major mode
     graphviz-dot-mode                   ; Graphviz mode
     ;; Configuration languages
@@ -122,7 +120,6 @@
     ;; Programming languages
     js2-mode                            ; Powerful Javascript mode
     feature-mode                        ; Cucumber major mode
-    pkgbuild-mode                       ; Arch PKGBUILD files
     rust-mode                           ; Rust major mode
     ;; Python
     anaconda-mode                       ; Documentation, lookup and navigation
@@ -143,11 +140,8 @@
     elisp-slime-nav                     ; Navigate to symbol definitions
     macrostep                           ; Interactively expand macros
     flycheck-cask                       ; Cask support for Flycheck
-    ;; Clojure modes
-    clojure-mode                        ; Clojure editing
-    clojure-test-mode                   ; Clojure test runner
+    ;; Clojure
     cider                               ; Clojure IDE
-    clojure-cheatsheet                  ; The one and only cheatsheet
     ;; General Version Control
     diff-hl                             ; Highlight VCS diffs in the fringe
     ;; Git and Gist integration
@@ -157,10 +151,6 @@
     gitignore-mode                      ; .gitignore mode
     gitattributes-mode                  ; Git attributes mode
     git-rebase-mode                     ; Mode for git rebase -i
-    gist                                ; Gist frontend
-    ;; Helm – Interactive search and narrowing
-    helm                                ; Powerful search and narrowing
-    helm-projectile                     ; Helm + Projectile
     ;; Utilities
     projectile                          ; Project interaction
     google-this                         ; Google from Emacs
@@ -1402,26 +1392,6 @@ window."
 (stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 
 
-;;; Clojure
-
-(stante-after clojure-mode
-  (--each '(subword-word                ; Handle camelCaseIdentifiers
-            clojure-test-mode)          ; Support unit tests
-    (add-hook 'clojure-mode-hook it)))
-
-(stante-after cider-repl-mode
-  ;; Standard Lisp/Clojure goodies for the Cider Repl
-  (add-hook 'cider-repl-mode-hook #'subword-mode))
-
-(stante-after cider-mode
-  ;; Eldoc for Cider
-  (add-hook 'cider-mode-hook #'cider-turn-on-eldoc-mode))
-
-(stante-after nrepl-client
-  ;; Hide Nrepl connection buffers from the buffer list
-  (setq nrepl-hide-special-buffers t))
-
-
 ;;; Python
 
 (stante-after python
@@ -1540,11 +1510,6 @@ window."
 (stante-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
-(stante-after shm
-  (setq shm-use-presentation-mode t     ; Don't clutter the each area
-        shm-auto-insert-skeletons t
-        shm-auto-insert-bangs t))
-
 
 ;;; OCaml
 
@@ -1637,30 +1602,8 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
   (magit-auto-revert-mode)
   (setq magit-auto-revert-mode-lighter ""))
 
-(stante-after gist
-  (setq gist-view-gist t))              ; View Gists in browser after creation
-
-(defvar stante-gist-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "c") #'gist-region-or-buffer)
-    (define-key map (kbd "l") #'gist-list)
-    map)
-  "Keymap for Gist operations.")
-
 
 ;;; Tools and utilities
-
-;; Powerful search and narrowing framework
-;; Set the prefix key before loading to prevent Helm from ever claiming "C-x c"
-(defvar helm-command-prefix-key)
-(setq helm-command-prefix-key nil)
-(require 'helm-config)
-
-;; Some custom helm bindings
-(define-key helm-command-map (kbd "A") #'helm-apropos)
-(define-key helm-command-map (kbd "g") #'helm-do-grep)
-(define-key helm-command-map (kbd "o") #'helm-occur)
-(define-key helm-command-map (kbd "p") #'helm-projectile)
 
 ;; Powerful file and code search
 (stante-after ag
@@ -1735,43 +1678,6 @@ Create a new ielm process if required."
 ;; Google from Emacs, under C-c /
 (google-this-mode)
 (stante-after google-this (diminish 'google-this-mode))
-
-
-;;; Org mode
-;; Tell Org where our files are located.  We keep them in Dropbox for easy
-;; synchronization.
-(stante-after org
-  (setq org-directory (expand-file-name "~/Dropbox/Org")
-        org-agenda-files (list org-directory)
-        org-default-notes-file (expand-file-name "notes.org" org-directory)
-        org-completion-use-ido t        ; Complete with IDO in Org
-        org-yank-adjusted-subtrees t)   ; Adjust level when yanking entire trees
-
-  (make-directory org-directory :with-parents)
-
-  ;; Plug windmove into Org
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right)
-
-  ;; Disable long lines highlighting in Org.  Org changes the visual appearance
-  ;; of buffer text (e.g. link collapsing), thus text may appear shorter than
-  ;; the fill column while it is not.  The whitespace mode highlighting is very
-  ;; irritating in such cases.
-  (stante-after whitespace
-    (add-hook 'org-mode-hook #'stante-whitespace-style-no-long-lines)))
-
-(stante-after ox-latex
-  ;; Teach Org LaTeX exporter about KOMA script
-  (add-to-list 'org-latex-classes
-               '("scrartcl"
-                 "\\documentclass{scrartcl}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 
 ;;; Calendar
@@ -1859,12 +1765,10 @@ Create a new ielm process if required."
 ;; User key bindings in the C-c space.
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-c a") stante-ag-map)
-(global-set-key (kbd "C-c b") #'ace-jump-buffer)
 (global-set-key (kbd "C-c B") #'browse-url)
 (global-set-key (kbd "C-c C") #'org-capture)
 (global-set-key (kbd "C-c c") 'helm-command-prefix)
 (global-set-key (kbd "C-c f") stante-files-map)
-(global-set-key (kbd "C-c G") stante-gist-map)
 (global-set-key (kbd "C-c g") #'magit-status)
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
@@ -1918,10 +1822,6 @@ Create a new ielm process if required."
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
   (define-key emacs-lisp-mode-map (kbd "C-c f c") #'stante-find-cask-file))
 
-(stante-after sgml-mode
-  (define-key html-mode-map (kbd "C-c e") #'simplezen-expand)
-  (define-key html-mode-map (kbd "TAB") #'simplezen-expand-or-indent-for-tab))
-
 (stante-after yaml-mode
   (define-key yaml-mode-map (kbd "C-c h a") #'stante-ansible-doc))
 
@@ -1929,8 +1829,7 @@ Create a new ielm process if required."
   (define-key markdown-mode-map (kbd "C-c C-s C")
     #'markdown-insert-gfm-code-block)
   (define-key markdown-mode-map (kbd "C-c C-s P")
-    #'markdown-insert-gfm-code-block)
-  (define-key markdown-mode-map (kbd "C-c e") #'simplezen-expand))
+    #'markdown-insert-gfm-code-block))
 
 (stante-after haskell-mode
   (let ((map haskell-mode-map))
