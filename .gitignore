@@ -33,6 +33,7 @@
 /tramp-auto-save
 /url/
 /var/
+/abbrev_defs
 
 # Private files
 /stante-ical-urls
