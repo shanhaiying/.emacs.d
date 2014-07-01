@@ -1392,6 +1392,28 @@ window."
 (stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 
 
+;;; Clojure
+
+(stante-after clojure-mode
+  ;; Extra font-locking for Clojure
+  (require 'clojure-mode-extra-font-locking)
+
+  (add-hook 'clojure-mode-hook #'smartparens-strict-mode))
+
+(stante-after cider-mode
+  (add-hook 'cider-mode-hook #'cider-turn-on-eldoc-mode))
+
+(stante-after nrepl-client
+  (setq nrepl-hide-special-buffers t))
+
+(stante-after cider-repl
+  (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+
+  ;; Increase the history size and make it permanent
+  (setq cider-repl-history-size 1000
+        cider-repl-history-file (locate-user-emacs-file "cider-repl-history")))
+
+
 ;;; Python
 
 (stante-after python
