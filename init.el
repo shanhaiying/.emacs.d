@@ -72,6 +72,8 @@
     anzu                                ; Mode line indicators for isearch
     browse-kill-ring                    ; Kill ring browser
     smex                                ; Improved M-x
+    ;; Buffer management
+    ibuffer-vc                         ; Group and sort buffers by VC state
     ;; File handling
     ignoramus                           ; Ignore uninteresting files
     hardhat                             ; Protect user-writable files
@@ -488,6 +490,27 @@ Add this to `kill-buffer-query-functions'."
     nil))
 
 (add-hook 'kill-buffer-query-functions #'stante-do-not-kill-important-buffers)
+
+(stante-after ibuffer
+  ;; Group ibuffer by VC status
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic))))
+
+  ;; Show VC Status in ibuffer
+  (setq ibuffer-formats
+        '((mark modified read-only vc-status-mini " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " "
+                (vc-status 16 16 :left)
+                " "
+                filename-and-process))))
 
 ;; Move between windows with Shift + Arrow keys
 (windmove-default-keybindings)
