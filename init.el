@@ -1879,6 +1879,7 @@ Create a new ielm process if required."
 (stante-after haskell-mode
   (let ((map haskell-mode-map))
     (define-key map (kbd "C-c h") #'haskell-hoogle)
+    (define-key map (kbd "C-c d") #'haskell-describe)
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
     ;; Replace Inferior Haskell Mode with Interactive Haskell Mode
     (define-key map (kbd "C-c C-l") #'haskell-process-load-or-reload)
