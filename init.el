@@ -1,9 +1,9 @@
-;;; init.el --- Stante Pede: Instantly awesome Emacs -*- lexical-binding: t; -*-
+;;; init.el --- Emacs configuration of Sebastian Wiesner -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2012-2014 Sebastian Wiesner <swiesner@lunaryorn.com>
 ;;
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
-;; URL: https://gihub.com/lunaryorn/stante-pede
+;; URL: https://gihub.com/lunaryorn/.emacs.d
 ;; Keywords: convenience
 
 ;; This file is not part of GNU Emacs.
@@ -25,14 +25,15 @@
 
 ;;; Commentary:
 
-;; My personal Emacs configuration.
+;; Emacs configuration of Sebastian Wiesner, functional programmer and Flycheck
+;; maintainer.
 
 ;;; Code:
 
 
 ;;; Initialization
 (when (version< emacs-version "24.3.50")
-  (error "Stante Pede needs Emacs trunk, but this is %s!" emacs-version))
+  (error "This configuration needs Emacs trunk, but this is %s!" emacs-version))
 
 ;; And disable the site default settings
 (setq inhibit-default-init t)
@@ -57,7 +58,7 @@
 (package-initialize)
 
 ;; Install all required packages if absent
-(defconst stante-packages
+(defconst lunaryorn-packages
   '(
     ;; Basic libraries
     dash s f
@@ -159,16 +160,16 @@
     )
   "Packages needed by Stante Pede.")
 
-(defun stante-ensure-packages ()
+(defun lunaryorn-ensure-packages ()
   "Install all Stante packages."
   (interactive)
   (unless package-archive-contents
     (package-refresh-contents))
-  (dolist (package stante-packages)
+  (dolist (package lunaryorn-packages)
     (unless (package-installed-p package)
       (package-install package))))
 
-(stante-ensure-packages)
+(lunaryorn-ensure-packages)
 
 
 ;;; Requires
@@ -182,7 +183,7 @@
 
 ;;; Package configuration and initialization
 
-(defmacro stante-after (feature &rest forms)
+(defmacro lunaryorn-after (feature &rest forms)
   "After FEATURE is loaded, evaluate FORMS.
 
 FORMS is byte compiled.
@@ -202,7 +203,7 @@ FEATURE may be a named feature or a file name, see
      ;; Register FORMS to be eval'ed after FEATURE
      (with-eval-after-load ',feature ,@forms)))
 
-(defun stante-auto-modes (&rest modes-and-patterns)
+(defun lunaryorn-auto-modes (&rest modes-and-patterns)
   "Add MODES-AND-PATTERNS to `auto-mode-alist'.
 
 MODES-AND-PATTERNS is of the form `(mode1 pattern1 pattern2 …
@@ -214,9 +215,9 @@ mode symbol."
       (--each patterns
         (add-to-list 'auto-mode-alist (cons it mode))))))
 
-(defconst stante-font-lock-keywords
+(defconst lunaryorn-font-lock-keywords
   `((,(rx "(" symbol-start
-          (group (or "stante-after" "stante-auto-modes"))
+          (group (or "lunaryorn-after" "lunaryorn-auto-modes"))
           symbol-end
           (optional (one-or-more (syntax whitespace))
                     symbol-start
@@ -227,17 +228,17 @@ mode symbol."
   "Our font lock keywords for Lisp modes.")
 
 ;; Teach Emacs Lisp modes about our keywords
-(stante-after lisp-mode
+(lunaryorn-after lisp-mode
   (--each '(emacs-lisp-mode lisp-interaction-mode)
-    (font-lock-add-keywords it stante-font-lock-keywords :append)))
+    (font-lock-add-keywords it lunaryorn-font-lock-keywords :append)))
 
-(stante-after ielm
+(lunaryorn-after ielm
   (font-lock-add-keywords 'inferior-emacs-lisp-mode
-                          stante-font-lock-keywords :append))
+                          lunaryorn-font-lock-keywords :append))
 
 
 ;;; Environment fixup
-(stante-after exec-path-from-shell
+(lunaryorn-after exec-path-from-shell
   (--each '("EMAIL" "PYTHONPATH")
     (add-to-list 'exec-path-from-shell-variables it)))
 
@@ -248,18 +249,18 @@ mode symbol."
 
 
 ;;; Customization interface
-(defconst stante-custom-file (locate-user-emacs-file "custom.el")
+(defconst lunaryorn-custom-file (locate-user-emacs-file "custom.el")
   "File used to store settings from Customization UI.")
 
-(stante-after cus-edit
-  (setq custom-file stante-custom-file))
+(lunaryorn-after cus-edit
+  (setq custom-file lunaryorn-custom-file))
 
-(load stante-custom-file :no-error :no-message)
+(load lunaryorn-custom-file :no-error :no-message)
 
 
 ;;; OS X support
 
-(stante-after ns-win
+(lunaryorn-after ns-win
   (setq ns-pop-up-frames nil            ; Don't pop up new frames from the
                                         ; workspace
         mac-option-modifier 'meta       ; Option is simply the natural Meta
@@ -271,32 +272,32 @@ mode symbol."
 
 ;; Prefer GNU utilities over the BSD variants in Emacs, because the GNU tools
 ;; integrate better with Emacs
-(defconst stante-gnu-ls (and (eq system-type 'darwin) (executable-find "gls"))
+(defconst lunaryorn-gnu-ls (and (eq system-type 'darwin) (executable-find "gls"))
   "Path to GNU ls on OS X.")
 
-(stante-after files
-  (when stante-gnu-ls
+(lunaryorn-after files
+  (when lunaryorn-gnu-ls
     ;; Use GNU ls if available
-    (setq insert-directory-program stante-gnu-ls)))
+    (setq insert-directory-program lunaryorn-gnu-ls)))
 
-(stante-after dired
-  (when (and (eq system-type 'darwin) (not stante-gnu-ls))
+(lunaryorn-after dired
+  (when (and (eq system-type 'darwin) (not lunaryorn-gnu-ls))
     ;; Don't probe for --dired flag in Dired, because we already know that GNU
     ;; ls is missing!
     (setq dired-use-ls-dired nil)))
 
-(stante-after grep
+(lunaryorn-after grep
   ;; Use GNU find on OS X, if possible
   (-when-let (gfind (and (eq system-type 'darwin) (executable-find "gfind")))
     (setq find-program gfind)))
 
-(stante-after locate
+(lunaryorn-after locate
   ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
   (-when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
     (setq locate-command mdfind)))
 
 ;; Utility functions for OS X
-(defun stante-id-of-bundle (bundle)
+(defun lunaryorn-id-of-bundle (bundle)
   "Get the ID of a BUNDLE.
 
 BUNDLE is the user-visible name of the bundle as string.  Return
@@ -308,15 +309,15 @@ code."
   (let ((script (format "id of app \"%s\"" bundle)))
     (car (process-lines "osascript" "-e" script))))
 
-(defun stante-path-of-bundle (id)
+(defun lunaryorn-path-of-bundle (id)
   "Get the path of a bundle with ID.
 
-ID is the bundle ID (see `stante-id-of-bundle' as string.  Return
+ID is the bundle ID (see `lunaryorn-id-of-bundle' as string.  Return
 the directory path of the bundle as string."
   (let ((query (format "kMDItemCFBundleIdentifier == '%s'" id)))
     (car (process-lines "mdfind" query))))
 
-(defun stante-homebrew-prefix (&optional formula)
+(defun lunaryorn-homebrew-prefix (&optional formula)
   "Get the homebrew prefix for FORMULA.
 
 Without FORMULA, get the homebrew prefix itself.
@@ -330,20 +331,20 @@ directory does not exist."
     (when (and prefix (file-directory-p prefix))
       prefix)))
 
-(defun stante-homebrew-installed-p (&optional formula)
+(defun lunaryorn-homebrew-installed-p (&optional formula)
   "Determine whether a homebrew FORMULA is installed.
 
 Without FORMULA determine whether Homebrew itself is available."
   (if formula
-      (when (stante-homebrew-prefix formula) t)
+      (when (lunaryorn-homebrew-prefix formula) t)
     (when (executable-find "brew") t)))
 
-(defconst stante-darwin-trash-tool "trash"
+(defconst lunaryorn-darwin-trash-tool "trash"
   "A CLI tool to trash files.")
 
-(defun stante-darwin-move-file-to-trash (file)
+(defun lunaryorn-darwin-move-file-to-trash (file)
   "Move FILE to trash on OS X."
-  (call-process stante-darwin-trash-tool nil nil nil (expand-file-name file)))
+  (call-process lunaryorn-darwin-trash-tool nil nil nil (expand-file-name file)))
 
 
 ;;; User interface
@@ -369,7 +370,7 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; Google Webfont directory).  On OS X, we need to give these fonts a larger
 ;; size.  If neither is available, we fall back to the standard faces of OS X
 ;; (Menlo), Linux (DejaVu Sans Mono) or Windows (Consolas, Courier New)
-(defconst stante-preferred-monospace-fonts
+(defconst lunaryorn-preferred-monospace-fonts
   `(("Source Code Pro" . ,(if (eq system-type 'darwin) 130 100))
     ("Anonymous Pro" . ,(if (eq system-type 'darwin) 140 110))
     ("Anonymous Pro Minus" . ,(if (eq system-type 'darwin) 140 110))
@@ -382,31 +383,31 @@ Without FORMULA determine whether Homebrew itself is available."
 
 The `car' of each item is the font family, the `cdr' the preferred font size.")
 
-(defconst stante-preferred-proportional-fonts
+(defconst lunaryorn-preferred-proportional-fonts
   '(("Lucida Grande" . 120)
     ("DejaVu Sans" . 110))
   "Preferred proportional fonts for Stante.
 
 The `car' of each item is the font family, the `cdr' the preferred font size.")
 
-(defun stante-first-existing-font (fonts)
+(defun lunaryorn-first-existing-font (fonts)
   "Get the first existing font from FONTS."
   (--first (x-family-fonts (car it)) fonts))
 
-(defun stante-choose-best-fonts ()
+(defun lunaryorn-choose-best-fonts ()
   "Choose the best fonts."
   (interactive)
-  (-when-let (font  (stante-first-existing-font stante-preferred-monospace-fonts))
+  (-when-let (font  (lunaryorn-first-existing-font lunaryorn-preferred-monospace-fonts))
     (--each '(default fixed-pitch)
       (set-face-attribute it nil
                           :family (car font) :height (cdr font))))
-  (-when-let (font (stante-first-existing-font stante-preferred-proportional-fonts))
+  (-when-let (font (lunaryorn-first-existing-font lunaryorn-preferred-proportional-fonts))
     (set-face-attribute 'variable-pitch nil
                         :family (car font) :height (cdr font))))
 
-(stante-choose-best-fonts)
+(lunaryorn-choose-best-fonts)
 
-(stante-after solarized
+(lunaryorn-after solarized
   ;; Disable variable pitch fonts in Solarized theme
   (setq solarized-use-variable-pitch nil))
 
@@ -422,11 +423,11 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (size-indication-mode t)
 
 ;; Indicate position/total matches for incremental searches in the mode line
-(stante-after anzu
+(lunaryorn-after anzu
   (diminish 'anzu-mode))
 (global-anzu-mode)
 
-(stante-after smart-mode-line
+(lunaryorn-after smart-mode-line
   ;; Don't ask me, please
   (setq sml/no-confirm-load-theme t)
   (sml/apply-theme 'respectful))
@@ -439,7 +440,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (setq history-length 1000)
 
 ;; Save a minibuffer input history
-(stante-after savehist
+(lunaryorn-after savehist
   (setq savehist-save-minibuffer-history t
         savehist-autosave-interval 180))
 (savehist-mode t)
@@ -447,7 +448,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; Boost file and buffer operations by flexible matching and the ability to
 ;; perform operations like deleting files or killing buffers directly from the
 ;; minibuffer
-(stante-after ido
+(lunaryorn-after ido
   (setq ido-enable-flex-matching t      ; Match characters if string doesn't
                                         ; match
         ido-create-new-buffer 'always   ; Create a new buffer if nothing matches
@@ -462,36 +463,36 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (ido-vertical-mode)                     ; Show IDO completions vertically
 
 ;; Configure Smex
-(stante-after smex
+(lunaryorn-after smex
   (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 
 
 ;;; Buffer, Windows and Frames
 
 ;; Make uniquify rename buffers like in path name notation
-(stante-after uniquify
+(lunaryorn-after uniquify
   (setq uniquify-buffer-name-style 'forward))
 
 ;; Clean stale buffers
 (require 'midnight)
 
 ;; Don't kill the important buffers
-(defconst stante-do-not-kill-buffer-names '("*scratch*" "*Messages*")
+(defconst lunaryorn-do-not-kill-buffer-names '("*scratch*" "*Messages*")
   "Names of buffers that should not be killed.")
 
-(defun stante-do-not-kill-important-buffers ()
+(defun lunaryorn-do-not-kill-important-buffers ()
   "Inhibit killing of important buffers.
 
 Add this to `kill-buffer-query-functions'."
-  (if (not (member (buffer-name) stante-do-not-kill-buffer-names))
+  (if (not (member (buffer-name) lunaryorn-do-not-kill-buffer-names))
       t
     (message "Not allowed to kill %s, burying instead" (buffer-name))
     (bury-buffer)
     nil))
 
-(add-hook 'kill-buffer-query-functions #'stante-do-not-kill-important-buffers)
+(add-hook 'kill-buffer-query-functions #'lunaryorn-do-not-kill-important-buffers)
 
-(stante-after ibuffer
+(lunaryorn-after ibuffer
   ;; Group ibuffer by VC status
   (add-hook 'ibuffer-hook
             (lambda ()
@@ -519,7 +520,7 @@ Add this to `kill-buffer-query-functions'."
 (winner-mode)
 
 ;; Prevent Ediff from spamming the frame
-(stante-after ediff-wind
+(lunaryorn-after ediff-wind
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (setq frame-title-format
@@ -527,7 +528,7 @@ Add this to `kill-buffer-query-functions'."
                   (abbreviate-file-name (buffer-file-name)) "%b")))
 
 ;; Save buffers, windows and frames
-(stante-after desktop
+(lunaryorn-after desktop
   ;; Don't autosave desktops, it's too expensive.  Desktops aren't that
   ;; precious, and Emacs will save the desktop on exit anyway.
   (setq desktop-auto-save-timeout nil))
@@ -542,10 +543,10 @@ Add this to `kill-buffer-query-functions'."
 
 ;; Autosave buffers when focus is lost, see
 ;; http://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
-(defun stante-force-save-some-buffers ()
+(defun lunaryorn-force-save-some-buffers ()
   "Save all modified buffers, without prompts."
   (save-some-buffers 'dont-ask))
-(add-hook 'focus-out-hook #'stante-force-save-some-buffers)
+(add-hook 'focus-out-hook #'lunaryorn-force-save-some-buffers)
 
 ;; Delete files to trash
 (setq delete-by-moving-to-trash t)
@@ -554,8 +555,8 @@ Add this to `kill-buffer-query-functions'."
 ;; around it by providing our own trashing function.  If that fails, disable
 ;; trashing and warn!
 (when (and (eq system-type 'darwin) (not (fboundp 'system-move-file-to-trash)))
-  (if (executable-find stante-darwin-trash-tool)
-      (defalias 'system-move-file-to-trash 'stante-darwin-move-file-to-trash)
+  (if (executable-find lunaryorn-darwin-trash-tool)
+      (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
     (message "WARNING: Trash support not available!
 Install Trash from https://github.com/ali-rantakari/trash!
 Homebrew: brew install trash")))
@@ -565,10 +566,10 @@ Homebrew: brew install trash")))
   (setq delete-by-moving-to-trash t))
 
 ;; Store Tramp auto save files locally
-(stante-after tramp
+(lunaryorn-after tramp
   (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
 
-(stante-after dired
+(lunaryorn-after dired
   ;; Power up dired
   (require 'dired-x)
 
@@ -577,7 +578,7 @@ Homebrew: brew install trash")))
         dired-listing-switches "-alh"  ; Human-readable sizes by default
         ))
 
-(stante-after dired-x
+(lunaryorn-after dired-x
   (when (eq system-type 'darwin)
     ;; OS X bsdtar is mostly compatible with GNU Tar
     (setq dired-guess-shell-gnutar "tar")))
@@ -589,20 +590,20 @@ Homebrew: brew install trash")))
 (ignoramus-setup)
 
 ;; Do not clobber user writeable files
-(stante-after hardhat
+(lunaryorn-after hardhat
   ;; Add local homebrew prefix to the list of protected directories.  Hardhat
   ;; itself only handles /usr/local/
   (when (eq system-type 'darwin)
-    (-when-let (prefix (stante-homebrew-prefix))
+    (-when-let (prefix (lunaryorn-homebrew-prefix))
       (add-to-list 'hardhat-fullpath-protected-regexps prefix))))
 (global-hardhat-mode)
 
 ;; Save bookmarks immediately after a bookmark was added
-(stante-after bookmark
+(lunaryorn-after bookmark
   (setq bookmark-save-flag 1))
 
 ;; Track recent files
-(stante-after recentf
+(lunaryorn-after recentf
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15
         ;; Cleanup recent files only when Emacs is idle, but not when the mode
@@ -613,8 +614,8 @@ Homebrew: brew install trash")))
 
 ;; Open recent files with IDO, see
 ;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
-(stante-after recentf
-  (defun stante-ido-find-recentf ()
+(lunaryorn-after recentf
+  (defun lunaryorn-ido-find-recentf ()
     "Find a recent file with IDO."
     (interactive)
     (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
@@ -634,7 +635,7 @@ Homebrew: brew install trash")))
 ;; Open files in external programs
 (global-launch-mode)
 
-(defun stante-launch-dired-dwim ()
+(defun lunaryorn-launch-dired-dwim ()
   "Open the marked files externally.
 
 If no files are marked, open the current directory instead."
@@ -643,11 +644,11 @@ If no files are marked, open the current directory instead."
         (launch-files marked-files :confirm)
       (launch-directory (dired-current-directory)))))
 
-(defun stante-launch-dwim ()
+(defun lunaryorn-launch-dwim ()
   "Open the current file externally."
   (interactive)
   (if (eq major-mode 'dired-mode)
-      (stante-launch-dired-dwim)
+      (lunaryorn-launch-dired-dwim)
     (if (buffer-file-name)
         (launch-file (buffer-file-name))
       (user-error "The current buffer is not visiting a file"))))
@@ -657,7 +658,7 @@ If no files are marked, open the current directory instead."
 ;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
 ;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
 ;; https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
-(defun stante-current-file ()
+(defun lunaryorn-current-file ()
   "Gets the \"file\" of the current buffer.
 
 The file is the buffer's file name, or the `default-directory' in
@@ -666,7 +667,7 @@ The file is the buffer's file name, or the `default-directory' in
       default-directory
     (buffer-file-name)))
 
-(defun stante-copy-filename-as-kill (&optional arg)
+(defun lunaryorn-copy-filename-as-kill (&optional arg)
   "Copy the name of the currently visited file to kill ring.
 
 With a zero prefix arg, copy the absolute file name.  With
@@ -674,7 +675,7 @@ With a zero prefix arg, copy the absolute file name.  With
 current buffer's `default-directory'.  Otherwise copy the
 non-directory part only."
   (interactive "P")
-  (-if-let* ((filename (stante-current-file))
+  (-if-let* ((filename (lunaryorn-current-file))
              (name-to-copy (cond ((zerop (prefix-numeric-value arg)) filename)
                                  ((consp arg) (file-relative-name filename))
                                  (:else (file-name-nondirectory filename)))))
@@ -683,7 +684,7 @@ non-directory part only."
       (message "%s" name-to-copy))
     (user-error "This buffer is not visiting a file")))
 
-(defun stante-rename-file-and-buffer ()
+(defun lunaryorn-rename-file-and-buffer ()
   "Rename the current file and buffer."
   (interactive)
   (let* ((filename (buffer-file-name))
@@ -698,7 +699,7 @@ non-directory part only."
       (rename-file filename new-name :force-overwrite)
       (set-visited-file-name new-name :no-query :along-with-file)))))
 
-(defun stante-delete-file-and-buffer ()
+(defun lunaryorn-delete-file-and-buffer ()
   "Delete the current file and kill the buffer."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -710,19 +711,19 @@ non-directory part only."
       (kill-buffer)))))
 
 ;; Quickly edit init.el
-(defun stante-find-user-init-file-other-window ()
+(defun lunaryorn-find-user-init-file-other-window ()
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file-other-window user-init-file))
 
-(defvar stante-files-map
+(defvar lunaryorn-files-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "r") #'stante-ido-find-recentf)
-    (define-key map (kbd "o") #'stante-launch-dwim)
-    (define-key map (kbd "R") #'stante-rename-file-and-buffer)
-    (define-key map (kbd "D") #'stante-delete-file-and-buffer)
-    (define-key map (kbd "w") #'stante-copy-filename-as-kill)
-    (define-key map (kbd "i") #'stante-find-user-init-file-other-window)
+    (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
+    (define-key map (kbd "o") #'lunaryorn-launch-dwim)
+    (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
+    (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
+    (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill)
+    (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
     map)
   "Keymap for file operations.")
 
@@ -733,7 +734,7 @@ non-directory part only."
 (set-language-environment "UTF-8")
 
 ;; Drag stuff around with Meta-Shift-Arrows
-(stante-after drag-stuff
+(lunaryorn-after drag-stuff
   (setq drag-stuff-modifier '(meta shift))
 
   ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
@@ -744,7 +745,7 @@ non-directory part only."
 (drag-stuff-global-mode)
 
 ;; Make `kill-whole-line' indentation aware
-(defun stante-smart-kill-whole-line (&optional arg)
+(defun lunaryorn-smart-kill-whole-line (&optional arg)
   "Kill whole line and move back to indentation.
 
 Kill the whole line with function `kill-whole-line' and then move
@@ -754,20 +755,20 @@ Kill the whole line with function `kill-whole-line' and then move
   (back-to-indentation))
 
 ;; Some other utilities
-(defun stante-smart-backward-kill-line ()
+(defun lunaryorn-smart-backward-kill-line ()
   "Kill line backwards and re-indent."
   (interactive)
   (kill-line 0)
   (indent-according-to-mode))
 
-(defun stante-smart-open-line ()
+(defun lunaryorn-smart-open-line ()
   "Insert empty line after the current line."
   (interactive)
   (move-end-of-line nil)
   (newline-and-indent))
 
 ;; Make C-a toggle between beginning of line and indentation
-(defun stante-back-to-indentation-or-beginning-of-line (arg)
+(defun lunaryorn-back-to-indentation-or-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 
 Move point to the first non-whitespace character on this line.
@@ -807,7 +808,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq indicate-empty-lines t)
 
 ;; Highlight bad whitespace
-(stante-after whitespace
+(lunaryorn-after whitespace
   (diminish 'whitespace-mode)
 
   ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
@@ -817,8 +818,8 @@ point reaches the beginning or end of the buffer, stop there."
         whitespace-line-column nil))    ; Use `fill-column' for overlong lines
 
 ;; A function to disable highlighting of long lines in modes
-(stante-after whitespace
-  (defun stante-whitespace-style-no-long-lines ()
+(lunaryorn-after whitespace
+  (defun lunaryorn-whitespace-style-no-long-lines ()
     "Configure `whitespace-mode' for Org.
 
 Disable the highlighting of overlong lines."
@@ -849,18 +850,18 @@ Disable the highlighting of overlong lines."
   (add-hook it 'fci-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-(define-minor-mode stante-auto-fill-comments-mode
+(define-minor-mode lunaryorn-auto-fill-comments-mode
   "Minor mode to auto-fill comments only."
   :lighter nil
   :keymap nil
   (cond
-   (stante-auto-fill-comments-mode
+   (lunaryorn-auto-fill-comments-mode
     (setq-local comment-auto-fill-only-comments t)
     (auto-fill-mode 1))
    (:else
     (kill-local-variable 'comment-auto-fill-only-comments)
     (auto-fill-mode -1))))
-(add-hook 'prog-mode-hook 'stante-auto-fill-comments-mode)
+(add-hook 'prog-mode-hook 'lunaryorn-auto-fill-comments-mode)
 
 ;; Choose wrap prefix automatically
 (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
@@ -892,20 +893,20 @@ Disable the highlighting of overlong lines."
 (volatile-highlights-mode t)
 
 ;; Jump to characters in buffers
-(stante-after ace-jump-mode
+(lunaryorn-after ace-jump-mode
   ;; Sync marks with Emacs built-in commands
   (ace-jump-mode-enable-mark-sync))
 
 ;; Power up undo
-(stante-after undo-tree (diminish 'undo-tree-mode))
+(lunaryorn-after undo-tree (diminish 'undo-tree-mode))
 (global-undo-tree-mode)
 
 ;; Nicify page breaks
-(stante-after page-break-lines (diminish 'page-break-lines-mode))
+(lunaryorn-after page-break-lines (diminish 'page-break-lines-mode))
 (global-page-break-lines-mode)
 
 ;; On the fly syntax checking
-(stante-after flycheck
+(lunaryorn-after flycheck
   (setq flycheck-completion-system 'ido))
 (global-flycheck-mode)
 
@@ -915,7 +916,7 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Multiple cursors
-(defvar stante-multiple-cursors-map
+(defvar lunaryorn-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
     (define-key map (kbd "h") #'mc/mark-all-like-this-dwim)
@@ -932,12 +933,12 @@ Disable the highlighting of overlong lines."
 ;;; Smartparens
 (require 'smartparens-config)
 
-(stante-after smartparens
+(lunaryorn-after smartparens
   (setq sp-autoskip-closing-pair 'always
         ;; Don't kill the entire symbol on C-k
         sp-hybrid-kill-entire-symbol nil))
 
-(stante-after smartparens
+(lunaryorn-after smartparens
   (setq sp-autoskip-closing-pair 'always
         ;; Don't kill the entire symbol on C-k
         sp-hybrid-kill-entire-symbol nil))
@@ -949,7 +950,7 @@ Disable the highlighting of overlong lines."
 ;;; Completion and expansion
 
 ;; Configure hippie-expand reasonably
-(stante-after hippie-exp
+(lunaryorn-after hippie-exp
   (setq hippie-expand-try-functions-list
         '(try-expand-dabbrev
           try-expand-dabbrev-all-buffers
@@ -966,7 +967,7 @@ Disable the highlighting of overlong lines."
 (setq completion-cycle-threshold 5)
 
 ;; Enable auto-completion
-(stante-after company
+(lunaryorn-after company
   (diminish 'company-mode)
 
   ;; Make auto completion a little less aggressive.
@@ -983,7 +984,7 @@ Disable the highlighting of overlong lines."
 (unless (executable-find "hunspell")
   (message "Hunspell not found.  Spell checking may not be available!"))
 
-(stante-after ispell
+(lunaryorn-after ispell
   (setq ispell-program-name "hunspell"  ; Force hunspell
         ispell-dictionary "en_GB"       ; Default dictionary
         ispell-silently-savep t         ; Don't ask when saving the private dict
@@ -991,7 +992,7 @@ Disable the highlighting of overlong lines."
         ;; into account.
         ispell-choices-win-default-height 5))
 
-(stante-after flyspell
+(lunaryorn-after flyspell
   ;; Free M-Tab and C-M-i, and never take it again!
   (define-key flyspell-mode-map "\M-\t" nil)
   (setq flyspell-use-meta-tab nil
@@ -1009,7 +1010,7 @@ Disable the highlighting of overlong lines."
 (require 'tex-site nil :no-error)
 
 ;; Some standard defaults
-(stante-after tex
+(lunaryorn-after tex
   (setq TeX-parse-self t                ; Parse documents to provide completion
                                         ; for packages, etc.
         TeX-auto-save t                 ; Automatically save
@@ -1025,7 +1026,7 @@ Disable the highlighting of overlong lines."
   ;; Replace the rotten Lacheck with Chktex
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
 
-(stante-after latex
+(lunaryorn-after latex
   (--each '(LaTeX-math-mode             ; Easy math input
             LaTeX-preview-setup         ; Setup LaTeX preview
             reftex-mode)                ; Cross references on steroids
@@ -1035,23 +1036,23 @@ Disable the highlighting of overlong lines."
   (auctex-latexmk-setup))
 
 ;; Find Skim.app on OS X, for Sycntex support, which Preview.app lacks.
-(defun stante-find-skim-bundle ()
+(defun lunaryorn-find-skim-bundle ()
     "Return the location of the Skim bundle, or nil if Skim is not installed.
 
 Skim is an advanced PDF viewer for OS X with SyncTex support.
 See http://skim-app.sourceforge.net/ for more information."
-    (stante-path-of-bundle "net.sourceforge.skim-app.skim"))
+    (lunaryorn-path-of-bundle "net.sourceforge.skim-app.skim"))
 
-(defun stante-find-skim-displayline ()
+(defun lunaryorn-find-skim-displayline ()
   "Return the path of the displayline frontend of Skim.
 
-Return nil if Skim is not installed.  See `stante-find-skim-bundle'."
-  (-when-let (skim-bundle (stante-find-skim-bundle))
+Return nil if Skim is not installed.  See `lunaryorn-find-skim-bundle'."
+  (-when-let (skim-bundle (lunaryorn-find-skim-bundle))
     (executable-find (expand-file-name "Contents/SharedSupport/displayline"
                                        skim-bundle))))
 
-(stante-after tex
-  (defun stante-TeX-find-view-programs-os-x ()
+(lunaryorn-after tex
+  (defun lunaryorn-TeX-find-view-programs-os-x ()
     "Find TeX view programs on OS X.
 
 Populate `TeX-view-program-list' with installed viewers."
@@ -1059,16 +1060,16 @@ Populate `TeX-view-program-list' with installed viewers."
     (add-to-list 'TeX-view-program-list
                  '("Default application" "open %o"))
     ;; Skim if installed
-    (-when-let (skim-displayline (stante-find-skim-displayline))
+    (-when-let (skim-displayline (lunaryorn-find-skim-displayline))
       (add-to-list 'TeX-view-program-list
                    `("Skim" (,skim-displayline " -b -r %n %o %b")))))
 
-  (defun stante-TeX-select-view-programs-os-x ()
+  (defun lunaryorn-TeX-select-view-programs-os-x ()
     "Select the best view programs on OS X.
 
 Choose Skim if available, or fall back to the default application."
     ;; Find view programs
-    (stante-TeX-find-view-programs-os-x)
+    (lunaryorn-TeX-find-view-programs-os-x)
     (setq TeX-view-program-selection
           `((output-dvi "Default application")
             (output-html "Default application")
@@ -1076,16 +1077,16 @@ Choose Skim if available, or fall back to the default application."
             (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
                              "Skim" "Default application")))))
 
-  (defun stante-TeX-select-view-programs ()
+  (defun lunaryorn-TeX-select-view-programs ()
     "Select the best view programs for the current platform."
     (when (eq system-type 'darwin)
-      (stante-TeX-select-view-programs-os-x)))
+      (lunaryorn-TeX-select-view-programs-os-x)))
 
   ;; Select best viewing programs
-  (stante-TeX-select-view-programs))
+  (lunaryorn-TeX-select-view-programs))
 
 ;; Configure BibTeX
-(stante-after bibtex
+(lunaryorn-after bibtex
   (bibtex-set-dialect 'biblatex)        ; Use a modern dialect
   ;; Exhaustive cleanup and reformatting of entries, to keep Bibtex files in
   ;; good shape
@@ -1101,7 +1102,7 @@ Choose Skim if available, or fall back to the default application."
                               sort-fields)))
 
 ;; Configure RefTeX
-(stante-after reftex
+(lunaryorn-after reftex
   (setq reftex-plug-into-AUCTeX t       ; Plug into AUCTeX
         ;; Recommended optimizations
         reftex-enable-partial-scans t
@@ -1123,12 +1124,12 @@ Choose Skim if available, or fall back to the default application."
     (setq reftex-cite-format 'biblatex)))
 
 ;; Plug reftex into bib-cite
-(stante-after bib-cite
+(lunaryorn-after bib-cite
   (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
 
 
 ;;; ReStructuredText editing
-(stante-after rst
+(lunaryorn-after rst
   ;; Indent with 3 spaces after all kinds of literal blocks
   (setq rst-indent-literal-minimized 3
         rst-indent-literal-normal 3)
@@ -1150,9 +1151,9 @@ Choose Skim if available, or fall back to the default application."
 ;;; Markdown editing
 
 ;; Why doesn't Markdown Mode do this itself?!
-(stante-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
+(lunaryorn-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
 
-(stante-after markdown-mode
+(lunaryorn-after markdown-mode
   (sp-with-modes '(markdown-mode gfm-mode)
     (sp-local-pair "*" "*")
     (sp-local-pair "`" "`")
@@ -1173,16 +1174,16 @@ Choose Skim if available, or fall back to the default application."
   (--each '(turn-off-fci-mode turn-off-auto-fill visual-line-mode)
     (add-hook 'gfm-mode-hook it))
 
-  (stante-after whitespace
-    (add-hook 'gfm-mode-hook #'stante-whitespace-style-no-long-lines)))
+  (lunaryorn-after whitespace
+    (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)))
 
 
 ;;; YAML
 
-(defconst stante-ansible-doc-buffer " *Ansible Doc*"
+(defconst lunaryorn-ansible-doc-buffer " *Ansible Doc*"
   "The Ansible Doc buffer.")
 
-(defun stante-ansible-doc (module)
+(defun lunaryorn-ansible-doc (module)
   "Show ansible doc for MODULE."
   (interactive
    (let* ((default-module (thing-at-point 'symbol 'no-properties))
@@ -1195,7 +1196,7 @@ Choose Skim if available, or fall back to the default application."
        ;; Lord, praise the fancy semantics of `read-from-minibuffer'
        (setq module default-module))
      (list module)))
-  (let ((buffer (get-buffer-create stante-ansible-doc-buffer)))
+  (let ((buffer (get-buffer-create lunaryorn-ansible-doc-buffer)))
     (with-current-buffer buffer
       (setq buffer-read-only t)
       (view-mode)
@@ -1205,20 +1206,20 @@ Choose Skim if available, or fall back to the default application."
       (goto-char (point-min)))
     (display-buffer buffer)))
 
-(stante-after yaml-mode
+(lunaryorn-after yaml-mode
   ;; YAML is kind of a mixture between text and programming language, and hence
   ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
   ;; explicitly
   (--each '(whitespace-mode
             whitespace-cleanup-mode
-            stante-auto-fill-comments-mode
+            lunaryorn-auto-fill-comments-mode
             fci-mode
             flyspell-prog-mode)
     (add-hook 'yaml-mode-hook it)))
 
 
 ;;; Configuration languages
-(stante-after puppet-mode
+(lunaryorn-after puppet-mode
   ;; Fontify variables in Puppet comments
   (setq puppet-fontify-variables-in-comments t))
 
@@ -1229,14 +1230,14 @@ Choose Skim if available, or fall back to the default application."
 (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
 
 ;; Highlight the symbol under point
-(stante-after highlight-symbol
+(lunaryorn-after highlight-symbol
   (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
         highlight-symbol-on-navigation-p t) ; Highlight immediately after
                                             ; navigation
   (diminish 'highlight-symbol-mode))
 (add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
-(defvar stante-symbols-map
+(defvar lunaryorn-symbols-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "o") #'highlight-symbol-occur)
     (define-key map (kbd "%") #'highlight-symbol-query-replace)
@@ -1249,7 +1250,7 @@ Choose Skim if available, or fall back to the default application."
 ;;; Programming utilities
 
 ;; Colorize parenthesis
-(stante-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
+(lunaryorn-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; Folding and heading navigation
@@ -1257,7 +1258,7 @@ Choose Skim if available, or fall back to the default application."
 
 ;; Show the current function name in the header line
 (which-function-mode)
-(stante-after which-func
+(lunaryorn-after which-func
   (setq which-func-unknown "⊤"))
 (setq-default header-line-format
               '((which-func-mode ("" which-func-format " "))))
@@ -1267,7 +1268,7 @@ Choose Skim if available, or fall back to the default application."
       (assq-delete-all 'which-func-mode mode-line-misc-info))
 
 ;; Compilation from Emacs
-(defun stante-colorize-compilation-buffer ()
+(defun lunaryorn-colorize-compilation-buffer ()
   "Colorize a compilation mode buffer.
 
 Taken from http://stackoverflow.com/a/3072831/355252."
@@ -1276,7 +1277,7 @@ Taken from http://stackoverflow.com/a/3072831/355252."
     (let ((inhibit-read-only t))
       (ansi-color-apply-on-region (point-min) (point-max)))))
 
-(stante-after compile
+(lunaryorn-after compile
   (setq compilation-ask-about-save nil  ; Just save before compiling
         compilation-always-kill t       ; Just kill old compile processes before
                                         ; starting the new one
@@ -1287,7 +1288,7 @@ Taken from http://stackoverflow.com/a/3072831/355252."
   ;; Colorize output of Compilation Mode, see
   ;; http://stackoverflow.com/a/3072831/355252
   (require 'ansi-color)
-  (add-hook 'compilation-filter-hook #'stante-colorize-compilation-buffer))
+  (add-hook 'compilation-filter-hook #'lunaryorn-colorize-compilation-buffer))
 
 ;; Font lock for numeric literals
 (add-hook 'prog-mode-hook #'number-font-lock-mode)
@@ -1296,7 +1297,7 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 ;;; Emacs Lisp
 
 ;; Utility functions
-(defun stante-find-cask-file (other-window)
+(defun lunaryorn-find-cask-file (other-window)
     "Find the Cask file for this buffer.
 
 When OTHER-WINDOW is non-nil, find the Cask file in another
@@ -1310,14 +1311,14 @@ window."
       (funcall (if other-window #'find-file-other-window #'find-file)
                (expand-file-name "Cask" directory))))
 
-(defconst stante-imenu-generic-expression
+(defconst lunaryorn-imenu-generic-expression
   `(("Stante packages" ,(rx line-start (zero-or-more (syntax whitespace))
-                            "(stante-after" (one-or-more (syntax whitespace))
+                            "(lunaryorn-after" (one-or-more (syntax whitespace))
                             (group-n 1 (one-or-more (or (syntax word)
                                                         (syntax symbol))))) 1))
   "IMenu index expression for Stante Pede.")
 
-(defun stante-emacs-lisp-current-feature ()
+(defun lunaryorn-emacs-lisp-current-feature ()
   "Return the feature provided by the current buffer."
   (save-excursion
     (goto-char (point-min))
@@ -1326,17 +1327,17 @@ window."
 
 ;; Teach Emacs about Emacs scripts and Cask/Carton files
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
-(stante-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
+(lunaryorn-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
 
 ;; Enable some common Emacs Lisp helper modes
-(defvar stante-emacs-lisp-common-modes
+(defvar lunaryorn-emacs-lisp-common-modes
   '(smartparens-strict-mode
     turn-on-eldoc-mode                  ; Show function signatures in echo area
     elisp-slime-nav-mode)               ; Navigate to symbol definitions
   "Common modes for Emacs Lisp editing.")
 
-(stante-after lisp-mode
-  (--each stante-emacs-lisp-common-modes
+(lunaryorn-after lisp-mode
+  (--each lunaryorn-emacs-lisp-common-modes
     (add-hook 'emacs-lisp-mode-hook it)
     (add-hook 'lisp-interaction-mode-hook it))
 
@@ -1347,12 +1348,12 @@ window."
   (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
 
   ;; Add our IMenu index keywords
-  (defun stante-emacs-lisp-setup-imenu ()
+  (defun lunaryorn-emacs-lisp-setup-imenu ()
     "Add Stante Pede IMenu index keywords."
     (setq imenu-generic-expression
-          (append imenu-generic-expression stante-imenu-generic-expression)))
+          (append imenu-generic-expression lunaryorn-imenu-generic-expression)))
 
-  (add-hook 'emacs-lisp-mode-hook #'stante-emacs-lisp-setup-imenu)
+  (add-hook 'emacs-lisp-mode-hook #'lunaryorn-emacs-lisp-setup-imenu)
 
   ;; Load ERT to support unit test writing and running
   (require 'ert)
@@ -1366,23 +1367,23 @@ window."
                                         ; functions for regular expressions in
                                         ; the C-c / map
 
-(stante-after flycheck
+(lunaryorn-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
 
-(stante-after ielm
-  (--each stante-emacs-lisp-common-modes
+(lunaryorn-after ielm
+  (--each lunaryorn-emacs-lisp-common-modes
     (add-hook 'ielm-mode-hook it))
 
   (sp-local-pair 'inferior-emacs-lisp-mode "(" nil :bind "M-("))
 
 ;; Hippie expand for Emacs Lisp
-(stante-after hippie-exp
-  (defun stante-try-complete-lisp-symbol-without-namespace (old)
+(lunaryorn-after hippie-exp
+  (defun lunaryorn-try-complete-lisp-symbol-without-namespace (old)
     "Hippie expand \"try\" function which expands \"-foo\" to \"modname-foo\" in elisp."
     (unless old
       (he-init-string (he-lisp-symbol-beg) (point))
       (when (string-prefix-p "-" he-search-string)
-        (let ((mod-name (stante-emacs-lisp-current-feature)))
+        (let ((mod-name (lunaryorn-emacs-lisp-current-feature)))
           (when mod-name
             (setq he-expand-list (list (concat mod-name he-search-string)))))))
 
@@ -1391,39 +1392,39 @@ window."
       (setq he-expand-list nil)
       t))
 
-  (defun stante-emacs-lisp-setup-hippie-expand ()
+  (defun lunaryorn-emacs-lisp-setup-hippie-expand ()
     (setq-local hippie-expand-try-functions-list
                 (append hippie-expand-try-functions-list
-                        '(stante-try-complete-lisp-symbol-without-namespace))))
+                        '(lunaryorn-try-complete-lisp-symbol-without-namespace))))
 
-  (stante-after lisp-mode
+  (lunaryorn-after lisp-mode
     (--each '(emacs-lisp-mode-hook lisp-interaction-mode-hook)
-      (add-hook it #'stante-emacs-lisp-setup-hippie-expand)))
+      (add-hook it #'lunaryorn-emacs-lisp-setup-hippie-expand)))
 
-  (stante-after ielm
-    (add-hook 'ielm-mode-hook #'stante-emacs-lisp-setup-hippie-expand)))
+  (lunaryorn-after ielm
+    (add-hook 'ielm-mode-hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
 
 ;; Now de-clutter the mode line
-(stante-after eldoc (diminish 'eldoc-mode))
-(stante-after checkdoc (diminish 'checkdoc-minor-mode))
-(stante-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
+(lunaryorn-after eldoc (diminish 'eldoc-mode))
+(lunaryorn-after checkdoc (diminish 'checkdoc-minor-mode))
+(lunaryorn-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 
 
 ;;; Clojure
 
-(stante-after clojure-mode
+(lunaryorn-after clojure-mode
   ;; Extra font-locking for Clojure
   (require 'clojure-mode-extra-font-locking)
 
   (add-hook 'clojure-mode-hook #'smartparens-strict-mode))
 
-(stante-after cider-mode
+(lunaryorn-after cider-mode
   (add-hook 'cider-mode-hook #'cider-turn-on-eldoc-mode))
 
-(stante-after nrepl-client
+(lunaryorn-after nrepl-client
   (setq nrepl-hide-special-buffers t))
 
-(stante-after cider-repl
+(lunaryorn-after cider-repl
   (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
 
   ;; Increase the history size and make it permanent
@@ -1433,16 +1434,16 @@ window."
 
 ;;; Python
 
-(stante-after python
-  (--each '(stante-python-filling       ; PEP 8 compliant filling rules
+(lunaryorn-after python
+  (--each '(lunaryorn-python-filling       ; PEP 8 compliant filling rules
             subword-mode                ; Word commands on parts of ClassNames
             anaconda-mode               ; Lookup, navigation and completion
             eldoc-mode                  ; Inline documentation
-            stante-flycheck-setup-python)
+            lunaryorn-flycheck-setup-python)
     (add-hook 'python-mode-hook it))
 
   ;; Fill according to PEP 8
-  (defun stante-python-filling ()
+  (defun lunaryorn-python-filling ()
     "Configure filling for Python."
     ;; PEP 8 recommends a maximum of 79 characters
     (setq fill-column 79))
@@ -1462,19 +1463,19 @@ window."
         python-shell-completion-string-code
         "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
-  (stante-after flycheck
-    (defun stante-flycheck-setup-python-executables ()
+  (lunaryorn-after flycheck
+    (defun lunaryorn-flycheck-setup-python-executables ()
       "Setup Python executables based on the current virtualenv."
       (let ((exec-path (python-shell-calculate-exec-path)))
         (setq flycheck-python-pylint-executable
               (executable-find "pylint"))))
 
-    (defun stante-flycheck-setup-python ()
+    (defun lunaryorn-flycheck-setup-python ()
       "Setup Flycheck in Python buffers."
       (add-hook 'hack-local-variables-hook
-                #'stante-flycheck-setup-python-executables 'local))))
+                #'lunaryorn-flycheck-setup-python-executables 'local))))
 
-(stante-after company
+(lunaryorn-after company
   (add-to-list 'company-backends 'company-anaconda)
 
   ;; Remove redundant company-ropemacs backend.  company-anaconda is superior.
@@ -1482,7 +1483,7 @@ window."
 
 
 ;;; Ruby
-(stante-after ruby-mode
+(lunaryorn-after ruby-mode
   ;; Setup inf-ruby and Robe
   (--each '(robe-mode inf-ruby-minor-mode)
     (add-hook 'ruby-mode-hook it))
@@ -1490,12 +1491,12 @@ window."
   ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
   (inf-ruby-switch-setup))
 
-(stante-after company
+(lunaryorn-after company
   (add-to-list 'company-backends 'company-robe))
 
 
 ;;; Haskell
-(stante-after haskell-mode
+(lunaryorn-after haskell-mode
   ;; We need the following tools for our Haskell setup:
   ;;
   ;; cabal install hasktags hoogle shm
@@ -1521,7 +1522,7 @@ window."
 
   (setq haskell-tags-on-save t))
 
-(stante-after inf-haskell
+(lunaryorn-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
             subword-mode)               ; Subword navigation
@@ -1529,7 +1530,7 @@ window."
 
   (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
 
-(stante-after haskell-interactive-mode
+(lunaryorn-after haskell-interactive-mode
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
             subword-mode)               ; Subword navigation
@@ -1537,7 +1538,7 @@ window."
 
   (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
 
-(stante-after haskell-process
+(lunaryorn-after haskell-process
   ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI loaded
   ;; modules respectively
   (setq haskell-process-suggest-remove-import-lines t
@@ -1548,13 +1549,13 @@ window."
         haskell-process-log t           ; Log debugging information
         haskell-process-type 'cabal-repl))
 
-(stante-after flycheck
+(lunaryorn-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
 ;;; OCaml
 
-(stante-after tuareg
+(lunaryorn-after tuareg
   ;; Disable SMIE indentation in Tuareg.  It's just broken currently…
   (setq tuareg-use-smie nil)
 
@@ -1565,10 +1566,10 @@ window."
 ;;; Shell scripting
 
 ;; Teach Emacs about Zsh scripts
-(stante-auto-modes 'sh-mode (rx ".zsh" string-end))
+(lunaryorn-auto-modes 'sh-mode (rx ".zsh" string-end))
 
 ;; Shell script indentation styles
-(stante-after sh-script
+(lunaryorn-after sh-script
   ;; Use two spaces in shell scripts.
   (setq sh-indentation 2                ; The basic indentation
         sh-basic-offset 2               ; The offset for nested indentation
@@ -1578,18 +1579,18 @@ window."
 ;;; Misc programming languages
 
 ;; Javascript: Indentation
-(stante-after js2-mode
+(lunaryorn-after js2-mode
   (setq-default js2-basic-offset 2))
 
-(stante-auto-modes 'js2-mode (rx "." (or "js" "json") string-end))
+(lunaryorn-auto-modes 'js2-mode (rx "." (or "js" "json") string-end))
 
 ;; XML: Complete closing tags, and insert XML declarations into empty files
-(stante-after nxml-mode
+(lunaryorn-after nxml-mode
   (setq nxml-slash-auto-complete-flag t
         nxml-auto-insert-xml-declaration-flag t))
 
 ;; Feature Mode
-(stante-after feature-mode
+(lunaryorn-after feature-mode
   ;; Add standard hooks for Feature Mode, since it is no derived mode
   (--each '(whitespace-mode whitespace-cleanup-mode flyspell-mode)
     (add-hook 'feature-mode it)))
@@ -1601,7 +1602,7 @@ window."
 
 ;;; General version control
 
-(stante-after vc-hooks
+(lunaryorn-after vc-hooks
   ;; Always follow symlinks to files in VCS repos
   (setq vc-follow-symlinks t))
 
@@ -1618,7 +1619,7 @@ window."
 ;;; Git support
 
 ;; The one and only Git frontend
-(defun stante-magit-default-tracking-name-origin-branch-only (remote branch)
+(defun lunaryorn-magit-default-tracking-name-origin-branch-only (remote branch)
   "Get the name of the tracking branch for REMOTE and BRANCH.
 
 Use REMOTE-BRANCH, except when REMOTE is origin."
@@ -1626,7 +1627,7 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
     (if (string= remote "origin") branch
       (concat remote "-" branch))))
 
-(stante-after magit
+(lunaryorn-after magit
   ;; Shut up, Magit!
   (setq magit-save-some-buffers 'dontask
         magit-stage-all-confirm nil
@@ -1636,7 +1637,7 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
         ;; Use IDO for completion
         magit-completing-read-function #'magit-ido-completing-read
         ;; Don't include origin in the name of tracking branches
-        magit-default-tracking-name-function #'stante-magit-default-tracking-name-origin-branch-only
+        magit-default-tracking-name-function #'lunaryorn-magit-default-tracking-name-origin-branch-only
         )
 
   ;; Auto-revert files after Magit operations
@@ -1647,14 +1648,14 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
 ;;; Tools and utilities
 
 ;; Powerful file and code search
-(stante-after ag
+(lunaryorn-after ag
   (setq ag-reuse-buffers t              ; Don't spam buffer list with ag buffers
         ag-highlight-search t           ; A little fanciness
         ;; Use Projectile to find the project root
         ag-project-root-function (lambda (d) (let ((default-directory d))
                                                (projectile-project-root)))))
 
-(defvar stante-ag-map
+(defvar lunaryorn-ag-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a") #'ag-regexp)
     (define-key map (kbd "A") #'ag)
@@ -1666,21 +1667,21 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
     map)
   "Keymap for Ack and a Half.")
 
-(defvar stante-ag-project-map
+(defvar lunaryorn-ag-project-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a") #'ag-project-regexp)
     (define-key map (kbd "A") #'ag-project)
     (define-key map (kbd "d") #'ag-project-dired-regexp)
     (define-key map (kbd "D") #'ag-project-dired)
     (define-key map (kbd "f") #'ag-project-files)
-    ;; For symmetry with `stante-ag-map'
+    ;; For symmetry with `lunaryorn-ag-map'
     (define-key map (kbd "k") #'ag-kill-other-buffers)
     (define-key map (kbd "K") #'ag-kill-buffers)
     map)
   "Keymap for Ag's project commands.")
 
 ;; Project interaction
-(stante-after projectile
+(lunaryorn-after projectile
   (diminish 'projectile-mode)
 
   (setq projectile-completion-system 'ido
@@ -1694,12 +1695,12 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
   ;; Use our custom Ag bindings in Projectile.  We use functions from ag here,
   ;; because they are way more powerful
   (let ((prefix-map (lookup-key projectile-mode-map projectile-keymap-prefix)))
-    (define-key prefix-map "a" stante-ag-project-map))
+    (define-key prefix-map "a" lunaryorn-ag-project-map))
   (define-key projectile-mode-map [remap projectile-ag] nil))
 (projectile-global-mode)
 
 ;; Quickly switch to IELM
-(defun stante-switch-to-ielm ()
+(defun lunaryorn-switch-to-ielm ()
   "Switch to an ielm window.
 
 Create a new ielm process if required."
@@ -1707,22 +1708,22 @@ Create a new ielm process if required."
   (pop-to-buffer (get-buffer-create "*ielm*"))
   (ielm))
 
-(defvar stante-utilities-map
+(defvar lunaryorn-utilities-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a") #'align-current)
     (define-key map (kbd "r") #'align-region)
     (define-key map (kbd "A") #'align-regexp)
-    (define-key map (kbd "z") #'stante-switch-to-ielm)
+    (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
     map)
   "Key map for various utilities.")
 
 ;; Google from Emacs, under C-c /
 (google-this-mode)
-(stante-after google-this (diminish 'google-this-mode))
+(lunaryorn-after google-this (diminish 'google-this-mode))
 
 
 ;;; Calendar
-(stante-after calendar
+(lunaryorn-after calendar
   ;; In Europe we start on Monday
   (setq calendar-week-start-day 1))
 
@@ -1730,14 +1731,14 @@ Create a new ielm process if required."
 ;;; E-Mail
 
 ;; Settings for sending mail via GMail
-(stante-after sendmail
+(lunaryorn-after sendmail
   (setq send-mail-function 'smtpmail-send-it))
 
-(stante-after message
+(lunaryorn-after message
   (setq message-send-mail-function 'smtpmail-send-it
         message-kill-buffer-on-exit t)) ; Don't keep message buffers around
 
-(stante-after smtpmail
+(lunaryorn-after smtpmail
   (setq smtpmail-smtp-server "vega.uberspace.de"
         smtpmail-smtp-service 587
         smtpmail-stream-type 'starttls
@@ -1746,7 +1747,7 @@ Create a new ielm process if required."
 
 ;;; IRC
 
-(stante-after erc
+(lunaryorn-after erc
   ;; Default server and nick
   (setq erc-server "chat.freenode.net"
         erc-port 7000
@@ -1759,11 +1760,11 @@ Create a new ielm process if required."
   (add-to-list 'erc-modules 'spelling)
   (erc-update-modules))
 
-(stante-after erc-join
+(lunaryorn-after erc-join
   ;; Standard channels on Freenode
   (setq erc-autojoin-channels-alist '(("\\.freenode\\.net" . ("#emacs")))))
 
-(stante-after erc-track
+(lunaryorn-after erc-track
   ;; Switch to newest buffer by default, and don't ask before rebinding the keys
   (setq erc-track-switch-direction 'newest
         erc-track-enable-keybindings t))
@@ -1780,9 +1781,9 @@ Create a new ielm process if required."
 ;; Improve standard bindings
 (global-set-key [remap execute-extended-command] #'smex)
 (global-set-key [remap list-buffers] #'ibuffer)
-(global-set-key [remap kill-whole-line] #'stante-smart-kill-whole-line)
+(global-set-key [remap kill-whole-line] #'lunaryorn-smart-kill-whole-line)
 (global-set-key [remap move-beginning-of-line]
-                #'stante-back-to-indentation-or-beginning-of-line)
+                #'lunaryorn-back-to-indentation-or-beginning-of-line)
 (global-set-key [remap dabbrev-expand] #'hippie-expand)
 (global-set-key [remap isearch-forward] #'isearch-forward-regexp)
 (global-set-key [remap isearch-backward] #'isearch-backward-regexp)
@@ -1792,8 +1793,8 @@ Create a new ielm process if required."
 (global-set-key [remap mark-sexp] 'easy-mark)
 ;; Complement standard bindings (the comments indicate the related bindings)
 (global-set-key (kbd "M-X") #'smex-major-mode-commands)                  ; M-x
-(global-set-key (kbd "C-<backspace>") #'stante-smart-backward-kill-line) ; C-S-backspace
-(global-set-key (kbd "C-S-j") #'stante-smart-open-line)                  ; C-j
+(global-set-key (kbd "C-<backspace>") #'lunaryorn-smart-backward-kill-line) ; C-S-backspace
+(global-set-key (kbd "C-S-j") #'lunaryorn-smart-open-line)                  ; C-j
 (global-set-key (kbd "M-Z") #'zap-up-to-char)                            ; M-z
 (global-set-key (kbd "C-h A") #'apropos)                                 ; C-h a
 (global-set-key (kbd "C-x p") #'proced)                                  ; C-x p
@@ -1805,25 +1806,25 @@ Create a new ielm process if required."
 
 ;; User key bindings in the C-c space.
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-(global-set-key (kbd "C-c a") stante-ag-map)
+(global-set-key (kbd "C-c a") lunaryorn-ag-map)
 (global-set-key (kbd "C-c B") #'browse-url)
 (global-set-key (kbd "C-c C") #'org-capture)
 (global-set-key (kbd "C-c c") 'helm-command-prefix)
-(global-set-key (kbd "C-c f") stante-files-map)
+(global-set-key (kbd "C-c f") lunaryorn-files-map)
 (global-set-key (kbd "C-c g") #'magit-status)
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
 (global-set-key (kbd "C-c J") #'ace-jump-mode-pop-mark)
 (global-set-key (kbd "C-C M") #'recompile)
-(global-set-key (kbd "C-c m") stante-multiple-cursors-map)
+(global-set-key (kbd "C-c m") lunaryorn-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
 (global-set-key (kbd "C-c R") #'vr/replace)
-(global-set-key (kbd "C-c s") stante-symbols-map)
-(global-set-key (kbd "C-c u") stante-utilities-map)
+(global-set-key (kbd "C-c s") lunaryorn-symbols-map)
+(global-set-key (kbd "C-c u") lunaryorn-utilities-map)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 
-(stante-after smartparens
+(lunaryorn-after smartparens
   (let ((map smartparens-mode-map))
     ;; Movement and navigation
     (define-key map (kbd "C-M-f") #'sp-forward-sexp)
@@ -1859,20 +1860,20 @@ Create a new ielm process if required."
     (define-key map (kbd "M-q") #'sp-indent-defun)
     (define-key map (kbd "C-j") #'sp-newline)))
 
-(stante-after lisp-mode
+(lunaryorn-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
-  (define-key emacs-lisp-mode-map (kbd "C-c f c") #'stante-find-cask-file))
+  (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file))
 
-(stante-after yaml-mode
-  (define-key yaml-mode-map (kbd "C-c h a") #'stante-ansible-doc))
+(lunaryorn-after yaml-mode
+  (define-key yaml-mode-map (kbd "C-c h a") #'lunaryorn-ansible-doc))
 
-(stante-after markdown-mode
+(lunaryorn-after markdown-mode
   (define-key markdown-mode-map (kbd "C-c C-s C")
     #'markdown-insert-gfm-code-block)
   (define-key markdown-mode-map (kbd "C-c C-s P")
     #'markdown-insert-gfm-code-block))
 
-(stante-after haskell-mode
+(lunaryorn-after haskell-mode
   (let ((map haskell-mode-map))
     (define-key map (kbd "C-c h") #'haskell-hoogle)
     (define-key map (kbd "C-c d") #'haskell-describe)
@@ -1891,14 +1892,14 @@ Create a new ielm process if required."
     (define-key map (kbd "C-c I") #'haskell-navigate-imports)
     (define-key map (kbd "M-.") #'haskell-mode-tag-find)))
 
-(stante-after haskell-cabal
+(lunaryorn-after haskell-cabal
   (let ((map haskell-cabal-mode-map))
     (define-key map (kbd "C-`") #'haskell-interactive-bring)
     (define-key map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
     (define-key map (kbd "C-c C-c") #'haskell-process-cabal-build)
     (define-key map (kbd "C-c c") #'haskell-process-cabal)))
 
-(stante-after tuareg
+(lunaryorn-after tuareg
   ;; Please, Tuareg, don't kill my imenu
   (define-key tuareg-mode-map [?\C-c ?i] nil))
 

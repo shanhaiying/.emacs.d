@@ -1,5 +1,5 @@
-Stante Pede
-===========
+.emacs.d
+========
 
 Emacs configuration of [Sebastian Wiesner](http://www.lunaryorn.com/about)
 
@@ -15,7 +15,7 @@ Setup
 Clone the repo, and install all Emacs packages:
 
 ```console
-$ git clone --recursive https://github.com/lunaryorn/stante-pede.git ~/.emacs.d
+$ git clone --recursive https://github.com/lunaryorn/.emacs.d.git ~/.emacs.d
 $ cd ~/.emacs.d
 $ cask install
 ```
