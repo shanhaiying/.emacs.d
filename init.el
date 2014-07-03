@@ -1493,9 +1493,8 @@ window."
   ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
   (inf-ruby-switch-setup))
 
-(stante-after robe
-  (stante-after company
-    (push 'company-robe company-backends)))
+(stante-after company
+  (add-to-list 'company-backends 'company-robe))
 
 
 ;;; Haskell
