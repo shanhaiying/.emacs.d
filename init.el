@@ -1177,12 +1177,6 @@ Choose Skim if available, or fall back to the default application."
     (add-hook 'gfm-mode-hook #'stante-whitespace-style-no-long-lines)))
 
 
-;;; HTML editing
-
-(stante-after sgml-mode
-  (require 'simplezen))
-
-
 ;;; YAML
 
 (defconst stante-ansible-doc-buffer " *Ansible Doc*"
