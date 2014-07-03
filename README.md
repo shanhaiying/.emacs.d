@@ -16,8 +16,6 @@ Clone the repo, and install all Emacs packages:
 
 ```console
 $ git clone --recursive https://github.com/lunaryorn/.emacs.d.git ~/.emacs.d
-$ cd ~/.emacs.d
-$ cask install
 ```
 
 ### OS X support ###
@@ -74,9 +72,6 @@ Usage
 
 The entire configuration is in `init.el`.  The key bindings are at the end of
 the file.
-
-For details, read the source, and the documentation of the corresponding
-packages.  See `Cask` for a list of all installed packages.
 
 Notable packages
 ----------------
