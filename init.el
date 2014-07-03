@@ -1481,7 +1481,10 @@ window."
                 #'stante-flycheck-setup-python-executables 'local))))
 
 (stante-after company
-  (add-to-list 'company-backends 'company-anaconda))
+  (add-to-list 'company-backends 'company-anaconda)
+
+  ;; Remove redundant company-ropemacs backend.  company-anaconda is superior.
+  (setq company-backends (delq 'company-ropemacs company-backends)))
 
 
 ;;; Ruby
