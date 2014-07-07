@@ -1527,6 +1527,10 @@ window."
 
   (setq haskell-tags-on-save t))
 
+(lunaryorn-after hi2
+  ;; Avoid conflicts with Fill Column indicator
+  (setq hi2-show-indentations-after-eol nil))
+
 (lunaryorn-after inf-haskell
   (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
             haskell-doc-mode            ; Eldoc for Haskell
