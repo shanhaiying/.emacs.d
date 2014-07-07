@@ -1504,7 +1504,7 @@ window."
 (lunaryorn-after haskell-mode
   ;; We need the following tools for our Haskell setup:
   ;;
-  ;; cabal install hasktags hoogle shm
+  ;; cabal install hasktags hoogle
   ;;
   ;; Much of this Haskell Mode setup is taken from
   ;; https://github.com/chrisdone/chrisdone-emacs
