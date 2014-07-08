@@ -1520,7 +1520,7 @@ window."
   (--each '(haskell-doc-mode            ; Eldoc for Haskell
             subword-mode                ; Subword navigation
             haskell-decl-scan-mode      ; Scan and navigate declarations
-            haskell-simple-indent-mode  ; Simple and predictable indentation
+            hi2-mode                    ; Acceptable Haskell indentation
             haskell-auto-insert-module-template ; Insert module templates
             )
     (add-hook 'haskell-mode-hook it))
