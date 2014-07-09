@@ -991,7 +991,6 @@ Disable the highlighting of overlong lines."
 
 (lunaryorn-after ispell
   (setq ispell-program-name "hunspell"  ; Force hunspell
-        ispell-dictionary "en_GB"       ; Default dictionary
         ispell-silently-savep t         ; Don't ask when saving the private dict
         ;; Increase the height of the choices window to take our header line
         ;; into account.
