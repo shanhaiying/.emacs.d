@@ -134,6 +134,7 @@
     haskell-mode                        ; Haskell major modes
     ghci-completion                     ; Complete GHCI commands
     flycheck-haskell                    ; Improve Haskell syntax checking
+    hi2                                 ; Indentation
     ;; Ocaml support
     tuareg                              ; OCaml major mode
     merlin                              ; OCaml completion engine
@@ -978,7 +979,7 @@ Disable the highlighting of overlong lines."
   ;; Make auto completion a little less aggressive.
   (setq company-idle-delay 1.0
         company-begin-commands '(self-insert-command)
-        company-show-numbers t))        ; Easy navigation to candidates with
+        company-show-numbers t))        ; Eausy navigation to candidates with
                                         ; M-<n>
 (global-company-mode)
 
