@@ -118,7 +118,7 @@
     ;; General programming utilities
     highlight-symbol                    ; Symbol awareness
     pcre2el                             ; Regular expression utilities
-    number-font-lock-mode               ; Syntax highlighting for numeric
+    highlight-numbers                   ; Syntax highlighting for numeric
                                         ; literals
     ;; Programming languages
     js2-mode                            ; Powerful Javascript mode
@@ -1297,7 +1297,7 @@ Taken from http://stackoverflow.com/a/3072831/355252."
   (add-hook 'compilation-filter-hook #'lunaryorn-colorize-compilation-buffer))
 
 ;; Font lock for numeric literals
-(add-hook 'prog-mode-hook #'number-font-lock-mode)
+(add-hook 'prog-mode-hook #'highlight-numbers-mode)
 
 
 ;;; Emacs Lisp
