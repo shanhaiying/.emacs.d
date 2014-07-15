@@ -146,6 +146,7 @@
     flycheck-cask                       ; Cask support for Flycheck
     ;; Clojure
     cider                               ; Clojure IDE
+    clojure-mode-extra-font-locking
     ;; General Version Control
     diff-hl                             ; Highlight VCS diffs in the fringe
     ;; Git and Gist integration
