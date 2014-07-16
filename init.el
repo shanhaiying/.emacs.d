@@ -914,7 +914,8 @@ Disable the highlighting of overlong lines."
 
 ;; On the fly syntax checking
 (lunaryorn-after flycheck
-  (setq flycheck-completion-system 'ido))
+  (setq flycheck-completion-system 'ido
+        flycheck-highlighting-mode 'sexps))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
