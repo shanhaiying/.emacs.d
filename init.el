@@ -180,6 +180,7 @@
 (require 's)
 (require 'f)
 
+(require 'subr-x)
 (require 'rx)
 
 
@@ -212,10 +213,10 @@ MODES-AND-PATTERNS is of the form `(mode1 pattern1 pattern2 …
 mode2 pattern3 pattern4)'.  For each major mode symbol, add auto
 mode entries for all subsequent patterns until the next major
 mode symbol."
-  (--each (-partition-by-header #'symbolp modes-and-patterns)
-    (pcase-let ((`(,mode . ,patterns) it))
-      (--each patterns
-        (add-to-list 'auto-mode-alist (cons it mode))))))
+  (dolist (cell (-partition-by-header #'symbolp modes-and-patterns))
+    (pcase-let ((`(,mode . ,patterns) cell))
+      (dolist (pattern patterns)
+        (add-to-list 'auto-mode-alist (cons pattern mode))))))
 
 (defconst lunaryorn-font-lock-keywords
   `((,(rx "(" symbol-start
@@ -231,12 +232,12 @@ mode symbol."
 
 ;; Teach Emacs Lisp modes about our keywords
 (lunaryorn-after lisp-mode
-  (--each '(emacs-lisp-mode lisp-interaction-mode)
-    (font-lock-add-keywords it lunaryorn-font-lock-keywords :append)))
+  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+    (font-lock-add-keywords mode lunaryorn-font-lock-keywords 'append)))
 
 (lunaryorn-after ielm
   (font-lock-add-keywords 'inferior-emacs-lisp-mode
-                          lunaryorn-font-lock-keywords :append))
+                          lunaryorn-font-lock-keywords 'append))
 
 
 ;;; Environment fixup
@@ -246,8 +247,9 @@ mode symbol."
     ;; our variables in place.
     (setq exec-path-from-shell-arguments nil))
 
-  (--each '("EMAIL" "PYTHONPATH" "CAML_LD_LIBRARY_PATH" "OCAML_TOPLEVEL_PATH")
-    (add-to-list 'exec-path-from-shell-variables it)))
+  (dolist (var '("EMAIL" "PYTHONPATH"
+                 "CAML_LD_LIBRARY_PATH" "OCAML_TOPLEVEL_PATH"))
+    (add-to-list 'exec-path-from-shell-variables var)))
 
 (when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
   (exec-path-from-shell-initialize)
@@ -295,12 +297,12 @@ mode symbol."
 
 (lunaryorn-after grep
   ;; Use GNU find on OS X, if possible
-  (-when-let (gfind (and (eq system-type 'darwin) (executable-find "gfind")))
+  (when-let (gfind (and (eq system-type 'darwin) (executable-find "gfind")))
     (setq find-program gfind)))
 
 (lunaryorn-after locate
   ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
-  (-when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
+  (when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
     (setq locate-command mdfind)))
 
 ;; Utility functions for OS X
@@ -399,16 +401,18 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 (defun lunaryorn-first-existing-font (fonts)
   "Get the first existing font from FONTS."
-  (--first (x-family-fonts (car it)) fonts))
+  (let (font)
+    (while (not (setq font (when (x-family-fonts (caar fonts)) (car fonts))))
+      (setq fonts (cdr fonts)))
+    font))
 
 (defun lunaryorn-choose-best-fonts ()
   "Choose the best fonts."
   (interactive)
-  (-when-let (font  (lunaryorn-first-existing-font lunaryorn-preferred-monospace-fonts))
-    (--each '(default fixed-pitch)
-      (set-face-attribute it nil
-                          :family (car font) :height (cdr font))))
-  (-when-let (font (lunaryorn-first-existing-font lunaryorn-preferred-proportional-fonts))
+  (when-let (font (lunaryorn-first-existing-font lunaryorn-preferred-monospace-fonts))
+    (dolist (face '(default fixed-pitch))
+      (set-face-attribute face nil :family (car font) :height (cdr font))))
+  (when-let (font (lunaryorn-first-existing-font lunaryorn-preferred-proportional-fonts))
     (set-face-attribute 'variable-pitch nil
                         :family (car font) :height (cdr font))))
 
@@ -601,7 +605,7 @@ Homebrew: brew install trash")))
   ;; Add local homebrew prefix to the list of protected directories.  Hardhat
   ;; itself only handles /usr/local/
   (when (eq system-type 'darwin)
-    (-when-let (prefix (lunaryorn-homebrew-prefix))
+    (when-let (prefix (lunaryorn-homebrew-prefix))
       (add-to-list 'hardhat-fullpath-protected-regexps prefix))))
 (global-hardhat-mode)
 
@@ -837,9 +841,9 @@ Disable the highlighting of overlong lines."
       (whitespace-mode 1))))
 
 ;; Clean up whitespace
-(--each '(prog-mode-hook text-mode-hook conf-mode-hook)
-  (add-hook it #'whitespace-mode)
-  (add-hook it #'whitespace-cleanup-mode))
+(dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
+  (dolist (mode (list #'whitespace-mode #'whitespace-cleanup-mode))
+    (add-hook hook mode)))
 
 ;; Require a final new line in every file
 (setq require-final-newline t)
@@ -853,8 +857,8 @@ Disable the highlighting of overlong lines."
 ;; Configure a reasonable fill column, indicate it in the buffer and enable
 ;; automatic filling
 (setq-default fill-column 80)
-(--each '(prog-mode-hook text-mode-hook)
-  (add-hook it 'fci-mode))
+(dolist (hook '(prog-mode-hook text-mode-hook))
+  (add-hook hook 'fci-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (define-minor-mode lunaryorn-auto-fill-comments-mode
@@ -1008,8 +1012,8 @@ Disable the highlighting of overlong lines."
         flyspell-issue-welcome-flag nil
         flyspell-issue-message-flag nil))
 
-(--each '(text-mode-hook message-mode-hook)
-  (add-hook it 'turn-on-flyspell))
+(dolist (hook '(text-mode-hook message-mode-hook))
+  (add-hook hook 'turn-on-flyspell))
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 
@@ -1035,10 +1039,10 @@ Disable the highlighting of overlong lines."
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
 
 (lunaryorn-after latex
-  (--each '(LaTeX-math-mode             ; Easy math input
-            LaTeX-preview-setup         ; Setup LaTeX preview
-            reftex-mode)                ; Cross references on steroids
-    (add-hook 'LaTeX-mode-hook it))
+  (dolist (mode '(LaTeX-math-mode       ; Easy math input
+                  LaTeX-preview-setup   ; Setup LaTeX preview
+                  reftex-mode))         ; Cross references on steroids
+    (add-hook 'LaTeX-mode-hook mode))
 
   ;; Add support for latexmk
   (auctex-latexmk-setup))
@@ -1055,7 +1059,7 @@ See http://skim-app.sourceforge.net/ for more information."
   "Return the path of the displayline frontend of Skim.
 
 Return nil if Skim is not installed.  See `lunaryorn-find-skim-bundle'."
-  (-when-let (skim-bundle (lunaryorn-find-skim-bundle))
+  (when-let (skim-bundle (lunaryorn-find-skim-bundle))
     (executable-find (expand-file-name "Contents/SharedSupport/displayline"
                                        skim-bundle))))
 
@@ -1068,7 +1072,7 @@ Populate `TeX-view-program-list' with installed viewers."
     (add-to-list 'TeX-view-program-list
                  '("Default application" "open %o"))
     ;; Skim if installed
-    (-when-let (skim-displayline (lunaryorn-find-skim-displayline))
+    (when-let (skim-displayline (lunaryorn-find-skim-displayline))
       (add-to-list 'TeX-view-program-list
                    `("Skim" (,skim-displayline " -b -r %n %o %b")))))
 
@@ -1171,16 +1175,16 @@ Choose Skim if available, or fall back to the default application."
                   :transform 'sp-match-sgml-tags
                   :post-handlers '(sp-html-post-handler)))
 
-  (--each '(markdown-mode gfm-mode)
-    (add-to-list 'sp-navigate-consider-sgml-tags it))
+  (dolist (mode '(markdown-mode gfm-mode))
+    (add-to-list 'sp-navigate-consider-sgml-tags mode))
 
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
 
   ;; Don't do filling in GFM mode, where line breaks are significant, and do not
   ;; highlight overlong lines.  Instead enable visual lines.
-  (--each '(turn-off-fci-mode turn-off-auto-fill visual-line-mode)
-    (add-hook 'gfm-mode-hook it))
+  (dolist (mode '(turn-off-fci-mode turn-off-auto-fill visual-line-mode))
+    (add-hook 'gfm-mode-hook mode))
 
   (lunaryorn-after whitespace
     (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)))
@@ -1218,12 +1222,12 @@ Choose Skim if available, or fall back to the default application."
   ;; YAML is kind of a mixture between text and programming language, and hence
   ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
   ;; explicitly
-  (--each '(whitespace-mode
-            whitespace-cleanup-mode
-            lunaryorn-auto-fill-comments-mode
-            fci-mode
-            flyspell-prog-mode)
-    (add-hook 'yaml-mode-hook it)))
+  (dolist (mode '(whitespace-mode
+                  whitespace-cleanup-mode
+                  lunaryorn-auto-fill-comments-mode
+                  fci-mode
+                  flyspell-prog-mode))
+    (add-hook 'yaml-mode-hook mode)))
 
 
 ;;; Configuration languages
@@ -1345,9 +1349,9 @@ window."
   "Common modes for Emacs Lisp editing.")
 
 (lunaryorn-after lisp-mode
-  (--each lunaryorn-emacs-lisp-common-modes
-    (add-hook 'emacs-lisp-mode-hook it)
-    (add-hook 'lisp-interaction-mode-hook it))
+  (dolist (mode lunaryorn-emacs-lisp-common-modes)
+    (dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook))
+      (add-hook hook mode)))
 
   (sp-local-pair '(emacs-lisp-mode lisp-interaction-mode)
                  "(" nil :bind "M-(")
@@ -1379,8 +1383,8 @@ window."
   (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
 
 (lunaryorn-after ielm
-  (--each lunaryorn-emacs-lisp-common-modes
-    (add-hook 'ielm-mode-hook it))
+  (dolist (mode lunaryorn-emacs-lisp-common-modes)
+    (add-hook 'ielm-mode-hook mode))
 
   (sp-local-pair 'inferior-emacs-lisp-mode "(" nil :bind "M-("))
 
@@ -1406,8 +1410,8 @@ window."
                         '(lunaryorn-try-complete-lisp-symbol-without-namespace))))
 
   (lunaryorn-after lisp-mode
-    (--each '(emacs-lisp-mode-hook lisp-interaction-mode-hook)
-      (add-hook it #'lunaryorn-emacs-lisp-setup-hippie-expand)))
+    (dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook))
+      (add-hook hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
 
   (lunaryorn-after ielm
     (add-hook 'ielm-mode-hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
@@ -1443,12 +1447,12 @@ window."
 ;;; Python
 
 (lunaryorn-after python
-  (--each '(lunaryorn-python-filling       ; PEP 8 compliant filling rules
-            subword-mode                ; Word commands on parts of ClassNames
-            anaconda-mode               ; Lookup, navigation and completion
-            eldoc-mode                  ; Inline documentation
-            lunaryorn-flycheck-setup-python)
-    (add-hook 'python-mode-hook it))
+  (dolist (fun '(lunaryorn-python-filling ; PEP 8 compliant filling rules
+                 subword-mode             ; Word commands on parts of ClassNames
+                 anaconda-mode            ; Lookup, navigation and completion
+                 eldoc-mode               ; Inline documentation
+                 lunaryorn-flycheck-setup-python))
+    (add-hook 'python-mode-hook fun))
 
   ;; Fill according to PEP 8
   (defun lunaryorn-python-filling ()
@@ -1493,8 +1497,8 @@ window."
 ;;; Ruby
 (lunaryorn-after ruby-mode
   ;; Setup inf-ruby and Robe
-  (--each '(robe-mode inf-ruby-minor-mode)
-    (add-hook 'ruby-mode-hook it))
+  (dolist (mode '(robe-mode inf-ruby-minor-mode))
+    (add-hook 'ruby-mode-hook mode))
 
   ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
   (inf-ruby-switch-setup))
@@ -1520,13 +1524,13 @@ window."
     ;; Explicit parenthesis wrapping
     (sp-local-pair "(" nil :bind "M-("))
 
-  (--each '(haskell-doc-mode            ; Eldoc for Haskell
-            subword-mode                ; Subword navigation
-            haskell-decl-scan-mode      ; Scan and navigate declarations
-            hi2-mode                    ; Acceptable Haskell indentation
-            haskell-auto-insert-module-template ; Insert module templates
-            )
-    (add-hook 'haskell-mode-hook it))
+  (dolist (fun '(haskell-doc-mode        ; Eldoc for Haskell
+                 subword-mode            ; Subword navigation
+                 haskell-decl-scan-mode  ; Scan and navigate declarations
+                 hi2-mode                ; Acceptable Haskell indentation
+                 haskell-auto-insert-module-template ; Insert module templates
+                 ))
+    (add-hook 'haskell-mode-hook fun))
 
   (setq haskell-tags-on-save t))
 
@@ -1535,18 +1539,18 @@ window."
   (setq hi2-show-indentations-after-eol nil))
 
 (lunaryorn-after inf-haskell
-  (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
-            haskell-doc-mode            ; Eldoc for Haskell
-            subword-mode)               ; Subword navigation
-    (add-hook 'inferior-haskell-mode-hook it))
+  (dolist (fun '(turn-on-ghci-completion ; Completion for GHCI commands
+                 haskell-doc-mode        ; Eldoc for Haskell
+                 subword-mode))          ; Subword navigation
+    (add-hook 'inferior-haskell-mode-hook fun))
 
   (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
 
 (lunaryorn-after haskell-interactive-mode
-  (--each '(turn-on-ghci-completion     ; Completion for GHCI commands
-            haskell-doc-mode            ; Eldoc for Haskell
-            subword-mode)               ; Subword navigation
-    (add-hook 'haskell-interactive-mode-hook it))
+  (dolist (fun '(turn-on-ghci-completion ; Completion for GHCI commands
+                 haskell-doc-mode        ; Eldoc for Haskell
+                 subword-mode))          ; Subword navigation
+    (add-hook 'haskell-interactive-mode-hook fun))
 
   (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
 
@@ -1604,8 +1608,8 @@ window."
 ;; Feature Mode
 (lunaryorn-after feature-mode
   ;; Add standard hooks for Feature Mode, since it is no derived mode
-  (--each '(whitespace-mode whitespace-cleanup-mode flyspell-mode)
-    (add-hook 'feature-mode it)))
+  (dolist (mode '(whitespace-mode whitespace-cleanup-mode flyspell-mode))
+    (add-hook 'feature-mode mode)))
 
 
 ;;; Special modes
