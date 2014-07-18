@@ -1193,19 +1193,26 @@ Choose Skim if available, or fall back to the default application."
 (defconst lunaryorn-ansible-doc-buffer " *Ansible Doc*"
   "The Ansible Doc buffer.")
 
+(defvar lunaryorn-ansible-modules nil
+  "List of all known Ansible modules.")
+
+(defun lunaryorn-ansible-modules ()
+  "Get a list of all known Ansible modules."
+  (unless lunaryorn-ansible-modules
+    (let ((lines (ignore-errors (process-lines "ansible-doc" "--list")))
+          modules)
+      (dolist (line lines)
+        (push (car (split-string line (rx (one-or-more space)))) modules))
+      (setq lunaryorn-ansible-modules (sort modules #'string<))))
+  lunaryorn-ansible-modules)
+
 (defun lunaryorn-ansible-doc (module)
   "Show ansible doc for MODULE."
   (interactive
-   (let* ((default-module (thing-at-point 'symbol 'no-properties))
-          (prompt (if default-module
-                      (format "Ansible Module [default %s]: " default-module)
-                    "Ansible Module: "))
-          (module (read-from-minibuffer prompt nil nil nil nil
-                                        default-module)))
-     (when (string= module "")
-       ;; Lord, praise the fancy semantics of `read-from-minibuffer'
-       (setq module default-module))
-     (list module)))
+   (list (ido-completing-read "Ansible Module: "
+                              (lunaryorn-ansible-modules)
+                              nil nil nil nil
+                              (thing-at-point 'symbol 'no-properties))))
   (let ((buffer (get-buffer-create lunaryorn-ansible-doc-buffer)))
     (with-current-buffer buffer
       (setq buffer-read-only t)
