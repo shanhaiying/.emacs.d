@@ -61,7 +61,7 @@
 (defconst lunaryorn-packages
   '(
     ;; Basic libraries
-    dash s f
+    dash                                ; List processing
     epl                                 ; Package environment
     exec-path-from-shell                ; Environment fixup
     ;; Color theme
@@ -177,8 +177,6 @@
 ;;; Requires
 
 (require 'dash)
-(require 's)
-(require 'f)
 
 (require 'subr-x)
 (require 'rx)
