@@ -246,7 +246,7 @@ mode symbol."
     ;; our variables in place.
     (setq exec-path-from-shell-arguments nil))
 
-  (--each '("EMAIL" "PYTHONPATH")
+  (--each '("EMAIL" "PYTHONPATH" "CAML_LD_LIBRARY_PATH" "OCAML_TOPLEVEL_PATH")
     (add-to-list 'exec-path-from-shell-variables it)))
 
 (when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
