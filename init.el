@@ -1391,6 +1391,9 @@ window."
   (dolist (mode lunaryorn-emacs-lisp-common-modes)
     (add-hook 'ielm-mode-hook mode))
 
+  ;; Enable lexical binding in IELM
+  (add-hook 'ielm-mode-hook (lambda () (setq lexical-binding t)))
+
   (sp-local-pair 'inferior-emacs-lisp-mode "(" nil :bind "M-("))
 
 ;; Hippie expand for Emacs Lisp
