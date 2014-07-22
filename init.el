@@ -739,9 +739,6 @@ non-directory part only."
 
 ;;; Basic editing
 
-;; Prefer UTF-8
-(set-language-environment "UTF-8")
-
 ;; Drag stuff around with Meta-Shift-Arrows
 (lunaryorn-after drag-stuff
   (setq drag-stuff-modifier '(meta shift))
