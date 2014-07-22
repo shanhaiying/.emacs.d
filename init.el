@@ -1621,6 +1621,14 @@ window."
 (auto-image-file-mode)                  ; Visit images as images
 
 
+;;; Documentation
+
+(lunaryorn-after info
+  ;; Fix the stupid `Info-quoted' face.  Courier is an abysmal face, so go back
+  ;; to the default face.
+  (set-face-attribute 'Info-quoted nil :family 'unspecified :inherit 'default))
+
+
 ;;; General version control
 
 (lunaryorn-after vc-hooks
