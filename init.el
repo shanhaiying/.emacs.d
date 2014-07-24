@@ -400,7 +400,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (defun lunaryorn-first-existing-font (fonts)
   "Get the first existing font from FONTS."
   (let (font)
-    (while (not (setq font (when (x-family-fonts (caar fonts)) (car fonts))))
+    (while (and fonts
+                (not (setq font (when (x-family-fonts (caar fonts))
+                                  (car fonts)))))
       (setq fonts (cdr fonts)))
     font))
 
