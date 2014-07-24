@@ -68,7 +68,6 @@
     solarized-theme
     zenburn-theme
     ;; UI improvements
-    smart-mode-line                     ; …and make it fancy
     anzu                                ; Mode line indicators for isearch
     browse-kill-ring                    ; Kill ring browser
     smex                                ; Improved M-x
@@ -435,11 +434,28 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; Indicate position/total matches for incremental searches in the mode line
 (global-anzu-mode)
 
-(lunaryorn-after smart-mode-line
-  ;; Don't ask me, please
-  (setq sml/no-confirm-load-theme t)
-  (sml/apply-theme 'respectful))
-(sml/setup)
+(setq-default mode-line-format
+              '("%e" mode-line-front-space
+                ;; Standard info about the current buffer
+                mode-line-mule-info
+                mode-line-client
+                mode-line-modified
+                mode-line-remote
+                mode-line-frame-identification
+                mode-line-buffer-identification " " mode-line-position
+                ;; Some specific information about the current buffer:
+                ;; The name of the current project, if any
+                (:eval (when (ignore-errors (projectile-project-root))
+                         (concat (projectile-project-name) " ")))
+                ;; The revision of the current file, if any
+                (vc-mode (:eval (vc-working-revision (buffer-file-name))))
+                ;; The Flycheck status
+                (flycheck-mode flycheck-mode-line)
+                ;; Misc information, notably battery state
+                " "
+                mode-line-misc-info
+                ;; And the modes, which we don't really care for anyway
+                " " mode-line-modes mode-line-end-spaces))
 
 
 ;;; The minibuffer
