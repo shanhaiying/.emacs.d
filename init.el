@@ -68,7 +68,6 @@
     solarized-theme
     zenburn-theme
     ;; UI improvements
-    diminish                            ; De-clutter the mode line…
     smart-mode-line                     ; …and make it fancy
     anzu                                ; Mode line indicators for isearch
     browse-kill-ring                    ; Kill ring browser
@@ -434,8 +433,6 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (size-indication-mode t)
 
 ;; Indicate position/total matches for incremental searches in the mode line
-(lunaryorn-after anzu
-  (diminish 'anzu-mode))
 (global-anzu-mode)
 
 (lunaryorn-after smart-mode-line
@@ -748,8 +745,7 @@ non-directory part only."
   ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
   ;; bindings.  This doesn't do much harm, because Org has its own structural
   ;; movement commands
-  (add-to-list 'drag-stuff-except-modes 'org-mode)
-  (diminish 'drag-stuff-mode))
+  (add-to-list 'drag-stuff-except-modes 'org-mode))
 (drag-stuff-global-mode)
 
 ;; Make `kill-whole-line' indentation aware
@@ -817,8 +813,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Highlight bad whitespace
 (lunaryorn-after whitespace
-  (diminish 'whitespace-mode)
-
   ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
   ;; portions of lines via faces.  Also indicate tabs via characters
   (setq whitespace-style '(face indentation space-after-tab space-before-tab
@@ -897,7 +891,6 @@ Disable the highlighting of overlong lines."
 ;; buffer
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
-(diminish 'volatile-highlights-mode)
 (volatile-highlights-mode t)
 
 ;; Jump to characters in buffers
@@ -906,11 +899,9 @@ Disable the highlighting of overlong lines."
   (ace-jump-mode-enable-mark-sync))
 
 ;; Power up undo
-(lunaryorn-after undo-tree (diminish 'undo-tree-mode))
 (global-undo-tree-mode)
 
 ;; Nicify page breaks
-(lunaryorn-after page-break-lines (diminish 'page-break-lines-mode))
 (global-page-break-lines-mode)
 
 ;; On the fly syntax checking
@@ -977,8 +968,6 @@ Disable the highlighting of overlong lines."
 
 ;; Enable auto-completion
 (lunaryorn-after company
-  (diminish 'company-mode)
-
   ;; Make auto completion a little less aggressive.
   (setq company-idle-delay 1.0
         company-begin-commands '(self-insert-command)
@@ -1250,7 +1239,7 @@ Choose Skim if available, or fall back to the default application."
   (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
         highlight-symbol-on-navigation-p t) ; Highlight immediately after
                                             ; navigation
-  (diminish 'highlight-symbol-mode))
+  )
 (add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
 (defvar lunaryorn-symbols-map
@@ -1266,7 +1255,6 @@ Choose Skim if available, or fall back to the default application."
 ;;; Programming utilities
 
 ;; Colorize parenthesis
-(lunaryorn-after rainbow-delimiters (diminish 'rainbow-delimiters-mode))
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; Folding and heading navigation
@@ -1422,11 +1410,6 @@ window."
 
   (lunaryorn-after ielm
     (add-hook 'ielm-mode-hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
-
-;; Now de-clutter the mode line
-(lunaryorn-after eldoc (diminish 'eldoc-mode))
-(lunaryorn-after checkdoc (diminish 'checkdoc-minor-mode))
-(lunaryorn-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
 
 
 ;;; Clojure
@@ -1713,8 +1696,6 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
 
 ;; Project interaction
 (lunaryorn-after projectile
-  (diminish 'projectile-mode)
-
   (setq projectile-completion-system 'ido
         projectile-find-dir-includes-top-level t)
 
@@ -1750,7 +1731,6 @@ Create a new ielm process if required."
 
 ;; Google from Emacs, under C-c /
 (google-this-mode)
-(lunaryorn-after google-this (diminish 'google-this-mode))
 
 
 ;;; Calendar
