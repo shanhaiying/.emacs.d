@@ -427,10 +427,10 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 
 ;;; The mode line
-
-(line-number-mode t)
-(column-number-mode t)
-(size-indication-mode t)
+(line-number-mode)
+(column-number-mode)
+(size-indication-mode)
+(display-battery-mode)
 
 ;; Indicate position/total matches for incremental searches in the mode line
 (global-anzu-mode)
