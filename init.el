@@ -455,7 +455,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                           face font-lock-variable-name-face))
                 ;; The Flycheck status
                 (flycheck-mode flycheck-mode-line)
-                ;; Misc information, notably battery state
+                ;; Whether multiple cursors are active
+                (multiple-cursors-mode mc/mode-line)
+                ;; Misc information, notably battery state and function name
                 " "
                 mode-line-misc-info
                 ;; And the modes, which we don't really care for anyway
@@ -936,6 +938,12 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Multiple cursors
+(lunaryorn-after multiple-cursors-core
+  (setq mc/mode-line
+        ;; Simplify the MC mode line indicator
+        '(:propertize (:eval (concat " " (number-to-string (mc/num-cursors))))
+                      face font-lock-warning-face)))
+
 (defvar lunaryorn-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
