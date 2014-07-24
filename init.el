@@ -1893,7 +1893,9 @@ Create a new ielm process if required."
 
 (lunaryorn-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
-  (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file))
+  (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file)
+
+  (define-key lisp-interaction-mode-map (kbd "C-c e") #'macrostep-expand))
 
 (lunaryorn-after yaml-mode
   (define-key yaml-mode-map (kbd "C-c h a") #'lunaryorn-ansible-doc))
