@@ -445,10 +445,14 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                 mode-line-buffer-identification " " mode-line-position
                 ;; Some specific information about the current buffer:
                 ;; The name of the current project, if any
-                (:eval (when (ignore-errors (projectile-project-root))
-                         (concat (projectile-project-name) " ")))
+                (:propertize
+                 (:eval (when (ignore-errors (projectile-project-root))
+                          (concat (projectile-project-name) " ")))
+                 face font-lock-constant-face)
                 ;; The revision of the current file, if any
-                (vc-mode (:eval (vc-working-revision (buffer-file-name))))
+                (vc-mode (:propertize
+                          (:eval (vc-working-revision (buffer-file-name)))
+                          face font-lock-variable-name-face))
                 ;; The Flycheck status
                 (flycheck-mode flycheck-mode-line)
                 ;; Misc information, notably battery state
