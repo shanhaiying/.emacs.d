@@ -90,7 +90,6 @@
     flycheck                            ; and syntax errors
     ;; Editing helpers
     whitespace-cleanup-mode             ; Cleanup whitespace on save
-    drag-stuff                          ; Drag stuff around
     undo-tree                           ; Undo reloaded
     adaptive-wrap                       ; Automatic wrap prefix
     expand-region                       ; Expand region by semantic units
@@ -759,17 +758,6 @@ non-directory part only."
 
 
 ;;; Basic editing
-
-;; Drag stuff around with Meta-Shift-Arrows
-(lunaryorn-after drag-stuff
-  (setq drag-stuff-modifier '(meta shift))
-
-  ;; Drag Stuff is incompatible with Org, because it shadows many useful Org
-  ;; bindings.  This doesn't do much harm, because Org has its own structural
-  ;; movement commands
-  (add-to-list 'drag-stuff-except-modes 'org-mode))
-(drag-stuff-global-mode)
-
 ;; Make `kill-whole-line' indentation aware
 (defun lunaryorn-smart-kill-whole-line (&optional arg)
   "Kill whole line and move back to indentation.
