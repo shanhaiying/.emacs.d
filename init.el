@@ -433,6 +433,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 ;; Indicate position/total matches for incremental searches in the mode line
 (global-anzu-mode)
 
+;; Improve our mode line
 (setq-default mode-line-format
               '("%e" mode-line-front-space
                 ;; Standard info about the current buffer
@@ -460,7 +461,13 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                 " "
                 mode-line-misc-info
                 ;; And the modes, which we don't really care for anyway
-                " " mode-line-modes mode-line-end-spaces))
+                " " mode-line-modes mode-line-end-spaces)
+              mode-line-position
+              '((-3 "%p") (size-indication-mode ("/" (-4 "%I")))
+                " "
+                (line-number-mode
+                 ("%l" (column-number-mode ":%c")))
+                " "))
 
 
 ;;; The minibuffer
