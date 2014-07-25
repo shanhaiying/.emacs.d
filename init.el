@@ -917,7 +917,25 @@ Disable the highlighting of overlong lines."
 ;; On the fly syntax checking
 (lunaryorn-after flycheck
   (setq flycheck-completion-system 'ido
-        flycheck-highlighting-mode 'sexps))
+        flycheck-highlighting-mode 'sexps
+        flycheck-mode-line
+        '(" "
+          (:eval (pcase flycheck-last-status-change
+                   (`not-checked nil)
+                   (`no-checker '(:propertize "-" face warning))
+                   (`running '(:propertize "✷" face success))
+                   (`errored '(:propertize "!" face error))
+                   (`finished
+                    (cond
+                     ((not flycheck-current-errors)
+                      '(:propertize "✔" face success))
+                     ((flycheck-has-errors-p flycheck-current-errors 'error)
+                      '(:propertize "✘" face error))
+                     ((flycheck-has-errors-p flycheck-current-errors 'warning)
+                      '(:propertize "✘" face warning))
+                     (t '(:propertize "✘" face success))))
+                   (`interrupted "-")
+                   (`suspicious '(:propertize "?" face warning)))))))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
