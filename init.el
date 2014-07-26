@@ -938,14 +938,14 @@ Disable the highlighting of overlong lines."
       (`running (propertize "✷" 'face 'success))
       (`errored (propertize "!" 'face 'error))
       (`finished
-       (cond
-        ((not flycheck-current-errors)
-         (propertize "✔" 'face 'success))
-        ((flycheck-has-errors-p flycheck-current-errors 'error)
-         (propertize "✘" 'face 'error))
-        ((flycheck-has-errors-p flycheck-current-errors 'warning)
-         (propertize "✘" 'face 'warning))
-        (t '(propertize "✘" 'face 'success))))
+       (let* ((error-counts (flycheck-count-errors flycheck-current-errors))
+              (no-errors (cdr (assq 'error error-counts)))
+              (no-warnings (cdr (assq 'warning error-counts)))
+              (face (cond (no-errors 'error)
+                          (no-warnings 'warning)
+                          (t 'success))))
+         (propertize (format "%s/%s" (or no-errors 0) (or no-warnings 0))
+                     'face face)))
       (`interrupted "-")
       (`suspicious '(propertize "?" 'face 'warning))))
 
