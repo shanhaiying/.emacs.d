@@ -930,26 +930,29 @@ Disable the highlighting of overlong lines."
 
 ;; On the fly syntax checking
 (lunaryorn-after flycheck
+  (defun lunaryorn-flycheck-mode-line-status ()
+    "Create a mode line status text for Flycheck."
+    (pcase flycheck-last-status-change
+      (`not-checked nil)
+      (`no-checker (propertize "-" 'face 'warning))
+      (`running (propertize "✷" 'face 'success))
+      (`errored (propertize "!" 'face 'error))
+      (`finished
+       (cond
+        ((not flycheck-current-errors)
+         (propertize "✔" 'face 'success))
+        ((flycheck-has-errors-p flycheck-current-errors 'error)
+         (propertize "✘" 'face 'error))
+        ((flycheck-has-errors-p flycheck-current-errors 'warning)
+         (propertize "✘" 'face 'warning))
+        (t '(propertize "✘" 'face 'success))))
+      (`interrupted "-")
+      (`suspicious '(propertize "?" 'face 'warning))))
+
   (setq flycheck-completion-system 'ido
         flycheck-highlighting-mode 'sexps
         flycheck-mode-line
-        '(" "
-          (:eval (pcase flycheck-last-status-change
-                   (`not-checked nil)
-                   (`no-checker '(:propertize "-" face warning))
-                   (`running '(:propertize "✷" face success))
-                   (`errored '(:propertize "!" face error))
-                   (`finished
-                    (cond
-                     ((not flycheck-current-errors)
-                      '(:propertize "✔" face success))
-                     ((flycheck-has-errors-p flycheck-current-errors 'error)
-                      '(:propertize "✘" face error))
-                     ((flycheck-has-errors-p flycheck-current-errors 'warning)
-                      '(:propertize "✘" face warning))
-                     (t '(:propertize "✘" face success))))
-                   (`interrupted "-")
-                   (`suspicious '(:propertize "?" face warning)))))))
+        '(" " (:eval (lunaryorn-flycheck-mode-line-status)))))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
