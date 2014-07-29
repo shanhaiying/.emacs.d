@@ -71,6 +71,7 @@
     anzu                                ; Mode line indicators for isearch
     browse-kill-ring                    ; Kill ring browser
     smex                                ; Improved M-x
+    fancy-battery                       ; Nice battery display
     ;; Buffer management
     ibuffer-vc                         ; Group and sort buffers by VC state
     ;; File handling
@@ -430,11 +431,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (line-number-mode)
 (column-number-mode)
 (size-indication-mode)
-
-;; Battery status, if available
-(require 'battery)
-(when battery-status-function
-  (display-battery-mode))
+(fancy-battery-mode)                    ; Battery status
 
 ;; Indicate position/total matches for incremental searches in the mode line
 (global-anzu-mode)
