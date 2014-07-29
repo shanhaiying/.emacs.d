@@ -437,14 +437,6 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 (global-anzu-mode)
 
 ;; Improve our mode line
-(defvar lunaryorn-projectile-mode-line
-  '(:propertize
-    (:eval (when (ignore-errors (projectile-project-root))
-             (concat " " (projectile-project-name))))
-    face font-lock-constant-face)
-  "Mode line format for Projectile.")
-(put 'lunaryorn-projectile-mode-line 'risky-local-variable t)
-
 (defvar lunaryorn-vc-mode-line
   '(" " (:propertize
          ;; Strip the backend name from the VC status information
@@ -464,9 +456,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                 mode-line-frame-identification
                 mode-line-buffer-identification " " mode-line-position
                 ;; Some specific information about the current buffer:
-                lunaryorn-projectile-mode-line ; Project information
-                (vc-mode lunaryorn-vc-mode-line) ; VC information
-                (flycheck-mode flycheck-mode-line) ; Flycheck status
+                (projectile-mode projectile-mode-line)
+                (vc-mode lunaryorn-vc-mode-line)     ; VC information
+                (flycheck-mode flycheck-mode-line)   ; Flycheck status
                 (multiple-cursors-mode mc/mode-line) ; Number of cursors
                 ;; Misc information, notably battery state and function name
                 " "
@@ -1746,7 +1738,10 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
 ;; Project interaction
 (lunaryorn-after projectile
   (setq projectile-completion-system 'ido
-        projectile-find-dir-includes-top-level t)
+        projectile-find-dir-includes-top-level t
+        projectile-mode-line '(" " (:propertize
+                                    (:eval (projectile-project-name))
+                                    face font-lock-constant-face)))
 
   ;; Replace Ack with Ag in Projectile commander
   (def-projectile-commander-method ?a
