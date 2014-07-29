@@ -1663,7 +1663,7 @@ window."
   ;; Fix the stupid `Info-quoted' face.  Courier is an abysmal face, so go back
   ;; to the default face.
   (set-face-attribute 'Info-quoted nil :family 'unspecified
-                      :inherit font-lock-string-face))
+                      :inherit font-lock-constant-face))
 
 
 ;;; General version control
