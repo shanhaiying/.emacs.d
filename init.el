@@ -915,6 +915,9 @@ Disable the highlighting of overlong lines."
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (volatile-highlights-mode t)
 
+;; Add custom highlights to buffers
+(global-hi-lock-mode 1)
+
 ;; Jump to characters in buffers
 (lunaryorn-after ace-jump-mode
   ;; Sync marks with Emacs built-in commands
