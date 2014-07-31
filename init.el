@@ -756,12 +756,12 @@ non-directory part only."
 
 (defvar lunaryorn-files-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
+    (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
+    (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
     (define-key map (kbd "o") #'lunaryorn-launch-dwim)
     (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
-    (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
+    (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
     (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill)
-    (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
     map)
   "Keymap for file operations.")
 
