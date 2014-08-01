@@ -1362,11 +1362,12 @@ window."
                (expand-file-name "Cask" directory))))
 
 (defconst lunaryorn-imenu-generic-expression
-  `(("Stante packages" ,(rx line-start (zero-or-more (syntax whitespace))
-                            "(lunaryorn-after" (one-or-more (syntax whitespace))
-                            (group-n 1 (one-or-more (or (syntax word)
-                                                        (syntax symbol))))) 1))
-  "IMenu index expression for Stante Pede.")
+  `(("Lunaryorn packages"
+     ,(rx line-start (zero-or-more (syntax whitespace))
+          "(lunaryorn-after" (one-or-more (syntax whitespace))
+          (group-n 1 (one-or-more (or (syntax word)
+                                      (syntax symbol))))) 1))
+  "IMenu index expression for my config.")
 
 (defun lunaryorn-emacs-lisp-current-feature ()
   "Return the feature provided by the current buffer."
