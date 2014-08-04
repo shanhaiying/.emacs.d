@@ -158,10 +158,10 @@
     projectile                          ; Project interaction
     google-this                         ; Google from Emacs
     )
-  "Packages needed by Stante Pede.")
+  "Packages needed by my configuration.")
 
 (defun lunaryorn-ensure-packages ()
-  "Install all Stante packages."
+  "Install all required packages."
   (interactive)
   (unless package-archive-contents
     (package-refresh-contents))
@@ -384,14 +384,14 @@ Without FORMULA determine whether Homebrew itself is available."
     ("Consolas" . 130)
     ("DejaVu Sans Mono" 110)
     ("Courier New" . 130))
-  "Preferred monospace fonts for Stante.
+  "My preferred monospace fonts.
 
 The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 (defconst lunaryorn-preferred-proportional-fonts
   '(("Lucida Grande" . 120)
     ("DejaVu Sans" . 110))
-  "Preferred proportional fonts for Stante.
+  "My preferred proportional fonts.
 
 The `car' of each item is the font family, the `cdr' the preferred font size.")
 
@@ -1400,7 +1400,7 @@ window."
 
   ;; Add our IMenu index keywords
   (defun lunaryorn-emacs-lisp-setup-imenu ()
-    "Add Stante Pede IMenu index keywords."
+    "Add my IMenu index keywords."
     (setq imenu-generic-expression
           (append imenu-generic-expression lunaryorn-imenu-generic-expression)))
 
