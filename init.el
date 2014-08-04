@@ -951,7 +951,6 @@ Disable the highlighting of overlong lines."
       (`suspicious '(propertize "?" 'face 'warning))))
 
   (setq flycheck-completion-system 'ido
-        flycheck-highlighting-mode 'sexps
         flycheck-mode-line
         '(" " (:eval (lunaryorn-flycheck-mode-line-status)))))
 (global-flycheck-mode)
