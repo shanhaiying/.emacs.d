@@ -85,6 +85,7 @@
     ido-vertical-mode                   ; Show IDO vertically
     ace-jump-mode                       ; Fast jump within the buffer
     ;; Editing indicators
+    nlinum                              ; Line numbers in display margin
     fill-column-indicator               ; Indicate fill column,
     page-break-lines                    ; page breaks
     volatile-highlights                 ; certain editing operations,
@@ -1876,6 +1877,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
 (global-set-key (kbd "C-c J") #'ace-jump-mode-pop-mark)
+(global-set-key (kbd "C-c l") #'nlinum-mode)
 (global-set-key (kbd "C-C M") #'recompile)
 (global-set-key (kbd "C-c m") lunaryorn-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
