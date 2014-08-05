@@ -240,9 +240,9 @@ mode symbol."
 ;;; Environment fixup
 (lunaryorn-after exec-path-from-shell
   (when (string-match-p "/zsh$" (getenv "SHELL"))
-    ;; With Zsh, use a non-interactive, non-login shell.  Our .zshenv has all
-    ;; our variables in place.
-    (setq exec-path-from-shell-arguments nil))
+    ;; Use a non-interactive shell.  zprofile contains all variables that are
+    ;; needed.
+    (setq exec-path-from-shell-arguments '("-l")))
 
   (dolist (var '("EMAIL" "PYTHONPATH"
                  "CAML_LD_LIBRARY_PATH" "OCAML_TOPLEVEL_PATH"))
