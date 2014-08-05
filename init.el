@@ -1871,7 +1871,6 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c a") lunaryorn-ag-map)
 (global-set-key (kbd "C-c B") #'browse-url)
 (global-set-key (kbd "C-c C") #'org-capture)
-(global-set-key (kbd "C-c c") 'helm-command-prefix)
 (global-set-key (kbd "C-c f") lunaryorn-files-map)
 (global-set-key (kbd "C-c g") #'magit-status)
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
