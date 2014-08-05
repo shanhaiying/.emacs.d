@@ -755,20 +755,6 @@ non-directory part only."
   (interactive)
   (find-file-other-window user-init-file))
 
-(defvar lunaryorn-files-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
-    (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
-    (define-key map (kbd "L") #'add-dir-local-variable)
-    (define-key map (kbd "l") #'add-file-local-variable)
-    (define-key map (kbd "o") #'lunaryorn-launch-dwim)
-    (define-key map (kbd "p") #'add-file-local-variable-prop-line)
-    (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
-    (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
-    (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill)
-    map)
-  "Keymap for file operations.")
-
 
 ;;; Basic editing
 ;; Make `kill-whole-line' indentation aware
@@ -967,19 +953,6 @@ Disable the highlighting of overlong lines."
         ;; Simplify the MC mode line indicator
         '(:propertize (:eval (concat " " (number-to-string (mc/num-cursors))))
                       face font-lock-warning-face)))
-
-(defvar lunaryorn-multiple-cursors-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
-    (define-key map (kbd "h") #'mc/mark-all-like-this-dwim)
-    (define-key map (kbd "l") #'mc/edit-lines)
-    (define-key map (kbd "n") #'mc/mark-next-like-this)
-    (define-key map (kbd "p") #'mc/mark-previous-like-this)
-    (define-key map (kbd "r") #'vr/mc-mark)
-    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
-    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
-    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
-    map))
 
 
 ;;; Smartparens
@@ -1293,15 +1266,6 @@ Choose Skim if available, or fall back to the default application."
                                             ; navigation
   )
 (add-hook 'prog-mode-hook #'highlight-symbol-mode)
-
-(defvar lunaryorn-symbols-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "o") #'highlight-symbol-occur)
-    (define-key map (kbd "%") #'highlight-symbol-query-replace)
-    (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
-    (define-key map (kbd "p") #'highlight-symbol-prev-in-defun)
-    map)
-  "Keymap for symbol operations.")
 
 
 ;;; Programming utilities
@@ -1717,18 +1681,6 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
         ag-project-root-function (lambda (d) (let ((default-directory d))
                                                (projectile-project-root)))))
 
-(defvar lunaryorn-ag-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'ag-regexp)
-    (define-key map (kbd "A") #'ag)
-    (define-key map (kbd "d") #'ag-dired-regexp)
-    (define-key map (kbd "D") #'ag-dired)
-    (define-key map (kbd "f") #'ag-files)
-    (define-key map (kbd "k") #'ag-kill-other-buffers)
-    (define-key map (kbd "K") #'ag-kill-buffers)
-    map)
-  "Keymap for Ack and a Half.")
-
 (defvar lunaryorn-ag-project-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a") #'ag-project-regexp)
@@ -1770,15 +1722,6 @@ Create a new ielm process if required."
   (interactive)
   (pop-to-buffer (get-buffer-create "*ielm*"))
   (ielm))
-
-(defvar lunaryorn-utilities-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'align-current)
-    (define-key map (kbd "r") #'align-region)
-    (define-key map (kbd "A") #'align-regexp)
-    (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
-    map)
-  "Key map for various utilities.")
 
 ;; Google from Emacs, under C-c /
 (google-this-mode)
@@ -1866,6 +1809,71 @@ Create a new ielm process if required."
 ;; Key bindings for extension packages
 (global-set-key (kbd "C-=") #'er/expand-region)
 
+;; Personal keymaps
+(defvar lunaryorn-ag-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a") #'ag-regexp)
+    (define-key map (kbd "A") #'ag)
+    (define-key map (kbd "d") #'ag-dired-regexp)
+    (define-key map (kbd "D") #'ag-dired)
+    (define-key map (kbd "f") #'ag-files)
+    (define-key map (kbd "k") #'ag-kill-other-buffers)
+    (define-key map (kbd "K") #'ag-kill-buffers)
+    map)
+  "Keymap for Ag.")
+
+(defvar lunaryorn-files-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
+    (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
+    (define-key map (kbd "L") #'add-dir-local-variable)
+    (define-key map (kbd "l") #'add-file-local-variable)
+    (define-key map (kbd "o") #'lunaryorn-launch-dwim)
+    (define-key map (kbd "p") #'add-file-local-variable-prop-line)
+    (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
+    (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
+    (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill)
+    map)
+  "Keymap for file operations.")
+
+(defvar lunaryorn-multiple-cursors-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
+    (define-key map (kbd "h") #'mc/mark-all-like-this-dwim)
+    (define-key map (kbd "l") #'mc/edit-lines)
+    (define-key map (kbd "n") #'mc/mark-next-like-this)
+    (define-key map (kbd "p") #'mc/mark-previous-like-this)
+    (define-key map (kbd "r") #'vr/mc-mark)
+    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
+    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
+    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
+    map))
+
+(defvar lunaryorn-symbols-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "o") #'highlight-symbol-occur)
+    (define-key map (kbd "%") #'highlight-symbol-query-replace)
+    (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
+    (define-key map (kbd "p") #'highlight-symbol-prev-in-defun)
+    map)
+  "Keymap for symbol operations.")
+
+(defvar lunaryorn-toggle-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "f") #'flycheck-mode) ; Syntax checking
+    (define-key map (kbd "l") #'nlinum-mode)   ; Line numbers in margin
+    map)
+  "Keymap to toggle buffer local settings.")
+
+(defvar lunaryorn-utilities-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a") #'align-current)
+    (define-key map (kbd "r") #'align-region)
+    (define-key map (kbd "A") #'align-regexp)
+    (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
+    map)
+  "Keymap for various utilities.")
+
 ;; User key bindings in the C-c space.
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-c a") lunaryorn-ag-map)
@@ -1876,13 +1884,14 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
 (global-set-key (kbd "C-c J") #'ace-jump-mode-pop-mark)
-(global-set-key (kbd "C-c l") #'nlinum-mode)
+(global-set-key (kbd "C-c l") lunaryorn-toggle-map)
 (global-set-key (kbd "C-C M") #'recompile)
 (global-set-key (kbd "C-c m") lunaryorn-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
 (global-set-key (kbd "C-c R") #'vr/replace)
 (global-set-key (kbd "C-c s") lunaryorn-symbols-map)
+(global-set-key (kbd "C-c t") lunaryorn-toggle-map)
 (global-set-key (kbd "C-c u") lunaryorn-utilities-map)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 
