@@ -1836,6 +1836,17 @@ Create a new ielm process if required."
     map)
   "Keymap for file operations.")
 
+(defvar lunaryorn-list-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "b") #'list-bookmarks)
+    (define-key map (kbd "e") #'list-flycheck-errors)
+    (define-key map (kbd "p") #'list-packages)
+    (define-key map (kbd "P") #'package-list-packages-no-fetch)
+    (define-key map (kbd "r") #'list-register)
+    (define-key map (kbd "t") #'list-tags)
+    map)
+  "Keymap to list things.")
+
 (defvar lunaryorn-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
@@ -1884,7 +1895,7 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
 (global-set-key (kbd "C-c J") #'ace-jump-mode-pop-mark)
-(global-set-key (kbd "C-c l") lunaryorn-toggle-map)
+(global-set-key (kbd "C-c l") lunaryorn-list-map)
 (global-set-key (kbd "C-C M") #'recompile)
 (global-set-key (kbd "C-c m") lunaryorn-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
