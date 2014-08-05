@@ -363,13 +363,16 @@ Without FORMULA determine whether Homebrew itself is available."
   (when (fboundp 'menu-bar-mode)
     (menu-bar-mode -1)))
 
-;; No blinking and beeping, no startup screen and short Yes/No questions
+;; No blinking and beeping, no startup screen, no scratch message and short
+;; Yes/No questions
 (blink-cursor-mode -1)
 (setq ring-bell-function 'ignore
-      inhibit-startup-screen t)
-;; Shut the fuck up, Emacs, I don't care about GNU
-(fset 'display-startup-echo-area-message 'ignore)
+      inhibit-startup-screen t
+      initial-scratch-message nil)
 (fset 'yes-or-no-p 'y-or-n-p)
+;; Opt out from the startup message in the echo area by simply disabling this
+;; ridiculously bizarre thing entirely.
+(fset 'display-startup-echo-area-message 'ignore)
 
 ;; Choose Font and color theme.  We try to use Anonymous Pro from
 ;; http://www.marksimonson.com/fonts/view/anonymous-pro or Inconsolata (from the
