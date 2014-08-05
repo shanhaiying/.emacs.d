@@ -1940,8 +1940,7 @@ Create a new ielm process if required."
     (define-key map (kbd "C-M-t") #'sp-transpose-sexp))
 
   (let ((map smartparens-strict-mode-map))
-    (define-key map (kbd "M-q") #'sp-indent-defun)
-    (define-key map (kbd "C-j") #'sp-newline)))
+    (define-key map (kbd "M-q") #'sp-indent-defun)))
 
 (lunaryorn-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
