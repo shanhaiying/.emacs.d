@@ -1988,6 +1988,9 @@ Create a new ielm process if required."
   ;; Please, Tuareg, don't kill my imenu
   (define-key tuareg-mode-map [?\C-c ?i] nil))
 
+(lunaryorn-after merlin
+  (define-key merlin-mode-map (kbd "C-c t e") #'merlin-toggle-view-errors))
+
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
