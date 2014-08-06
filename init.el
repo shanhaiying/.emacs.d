@@ -110,7 +110,6 @@
     company-auctex                      ; Company support for AUCTeX
     ;; Markup languages
     markdown-mode                       ; Markdown major mode
-    bbcode-mode                         ; BBCode major mode
     yaml-mode                           ; YAML major mode
     graphviz-dot-mode                   ; Graphviz mode
     ;; Configuration languages
@@ -120,10 +119,12 @@
     pcre2el                             ; Regular expression utilities
     highlight-numbers                   ; Syntax highlighting for numeric
                                         ; literals
+    rainbow-mode                        ; Show colours as they are
     ;; Programming languages
     js2-mode                            ; Powerful Javascript mode
     feature-mode                        ; Cucumber major mode
     rust-mode                           ; Rust major mode
+    cmake-mode                          ; CMake files
     ;; Python
     anaconda-mode                       ; Documentation, lookup and navigation
     company-anaconda                    ; Company integration for Anaconda
