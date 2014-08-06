@@ -107,6 +107,7 @@
     ;; LaTeX/AUCTeX
     auctex                              ; The one and only LaTeX environment
     auctex-latexmk                      ; latexmk support for AUCTeX
+    company-auctex                      ; Company support for AUCTeX
     ;; Markup languages
     markdown-mode                       ; Markdown major mode
     bbcode-mode                         ; BBCode major mode
@@ -1059,7 +1060,10 @@ Disable the highlighting of overlong lines."
     (add-hook 'LaTeX-mode-hook mode))
 
   ;; Add support for latexmk
-  (auctex-latexmk-setup))
+  (auctex-latexmk-setup)
+
+  ;; Company
+  (company-auctex-init))
 
 ;; Find Skim.app on OS X, for Sycntex support, which Preview.app lacks.
 (defun lunaryorn-find-skim-bundle ()
