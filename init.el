@@ -927,9 +927,9 @@ Disable the highlighting of overlong lines."
     "Create a mode line status text for Flycheck."
     (pcase flycheck-last-status-change
       (`not-checked nil)
-      (`no-checker (propertize "-" 'face 'warning))
-      (`running (propertize "✷" 'face 'success))
-      (`errored (propertize "!" 'face 'error))
+      (`no-checker (propertize " -" 'face 'warning))
+      (`running (propertize " ✷" 'face 'success))
+      (`errored (propertize " !" 'face 'error))
       (`finished
        (let* ((error-counts (flycheck-count-errors flycheck-current-errors))
               (no-errors (cdr (assq 'error error-counts)))
@@ -937,14 +937,14 @@ Disable the highlighting of overlong lines."
               (face (cond (no-errors 'error)
                           (no-warnings 'warning)
                           (t 'success))))
-         (propertize (format "%s/%s" (or no-errors 0) (or no-warnings 0))
+         (propertize (format " %s/%s" (or no-errors 0) (or no-warnings 0))
                      'face face)))
-      (`interrupted "-")
-      (`suspicious '(propertize "?" 'face 'warning))))
+      (`interrupted " -")
+      (`suspicious '(propertize " ?" 'face 'warning))))
 
   (setq flycheck-completion-system 'ido
         flycheck-mode-line
-        '(" " (:eval (lunaryorn-flycheck-mode-line-status)))))
+        '(:eval (lunaryorn-flycheck-mode-line-status))))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
