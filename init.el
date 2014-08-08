@@ -603,7 +603,8 @@ Add this to `kill-buffer-query-functions'."
       (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
     (message "WARNING: Trash support not available!
 Install Trash from https://github.com/ali-rantakari/trash!
-Homebrew: brew install trash")))
+Homebrew: brew install trash")
+    (setq delete-by-moving-to-trash nil)))
 
 ;; Store Tramp auto save files locally
 (lunaryorn-after tramp
