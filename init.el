@@ -1779,6 +1779,19 @@ Create a new ielm process if required."
   (setq erc-track-switch-direction 'newest
         erc-track-enable-keybindings t))
 
+(lunaryorn-after rcirc
+  (setq rcirc-default-full-name (format "%s (http://www.lunaryorn.com)"
+                                        user-full-name)
+        rcirc-default-nick "lunaryorn"
+        rcirc-time-format "%Y-%m-%d %H:%M "
+        rcirc-server-alist
+        '(("chat.freenode.not" :port 7000 :user-name "lunaryorn"
+           :encryption tls :channels ("#emacs" "#haskell" "#hakyll" "#zsh"))))
+
+  (add-hook 'rcirc-mode-hook #'flyspell-mode)
+
+  (rcirc-track-minor-mode))
+
 
 ;;; Key bindings
 
