@@ -605,10 +605,6 @@ Add this to `kill-buffer-query-functions'."
 Install Trash from https://github.com/ali-rantakari/trash!
 Homebrew: brew install trash")))
 
-(unless (and (eq system-type 'darwin) )
-  ;; Delete to Trash, except on OS X, where it's broken…
-  (setq delete-by-moving-to-trash t))
-
 ;; Store Tramp auto save files locally
 (lunaryorn-after tramp
   (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
