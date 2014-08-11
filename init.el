@@ -601,7 +601,7 @@ Add this to `kill-buffer-query-functions'."
 (when (and (eq system-type 'darwin) (not (fboundp 'system-move-file-to-trash)))
   (if (executable-find lunaryorn-darwin-trash-tool)
       (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
-    (message "WARNING: Trash support not available!
+    (warn "Trash support not available!
 Install Trash from https://github.com/ali-rantakari/trash!
 Homebrew: brew install trash")
     (setq delete-by-moving-to-trash nil)))
@@ -1007,7 +1007,7 @@ Disable the highlighting of overlong lines."
 
 ;; Warn if the spell checker is missing
 (unless (executable-find "hunspell")
-  (message "Hunspell not found.  Spell checking may not be available!"))
+  (warn "Hunspell not found.  Spell checking may not be available!"))
 
 (lunaryorn-after ispell
   (setq ispell-program-name "hunspell"  ; Force hunspell
