@@ -133,6 +133,7 @@
     ;; Rust
     rust-mode
     toml-mode                           ; For Cargo.toml
+    flycheck-rust                       ; Better Rust support for Flycheck
     ;; Haskell support
     haskell-mode                        ; Haskell major modes
     ghci-completion                     ; Complete GHCI commands
@@ -1513,6 +1514,11 @@ window."
 
 (lunaryorn-after company
   (add-to-list 'company-backends 'company-robe))
+
+
+;;; Rust
+(lunaryorn-after flycheck
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 
 ;;; Haskell
