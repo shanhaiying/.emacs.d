@@ -123,7 +123,6 @@
     ;; Programming languages
     js2-mode                            ; Powerful Javascript mode
     feature-mode                        ; Cucumber major mode
-    rust-mode                           ; Rust major mode
     cmake-mode                          ; CMake files
     ;; Python
     anaconda-mode                       ; Documentation, lookup and navigation
@@ -131,6 +130,9 @@
     ;; Ruby support
     inf-ruby                            ; Ruby interpreter in Emacs
     robe                                ; Code navigation, docs and completion
+    ;; Rust
+    rust-mode
+    toml-mode                           ; For Cargo.toml
     ;; Haskell support
     haskell-mode                        ; Haskell major modes
     ghci-completion                     ; Complete GHCI commands
