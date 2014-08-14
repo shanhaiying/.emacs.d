@@ -1626,6 +1626,63 @@ window."
     (add-hook 'feature-mode mode)))
 
 
+;;; Proof General
+(defconst lunaryorn-proof-general-version "ProofGeneral-4.3pre131011"
+  "ProofGeneral version to install.")
+
+(defconst lunaryorn-proof-general-url
+  "http://proofgeneral.inf.ed.ac.uk/releases/%s.tgz"
+  "The URL from which to obtain ProofGeneral.")
+
+(defconst lunaryorn-proof-general-directory
+  (file-name-as-directory
+   (expand-file-name lunaryorn-proof-general-version
+                     (locate-user-emacs-file "vendor/")))
+  "The directory of ProofGeneral.")
+
+(defun lunaryorn-install-proof-general ()
+  "Install Proof General for this Emacs."
+  (interactive)
+  (let* ((buffer-name "*ProofGeneral Installation*")
+         (url lunaryorn-proof-general-url)
+         (version lunaryorn-proof-general-version)
+         (pg-dir lunaryorn-proof-general-directory)
+         (vendor-dir (locate-user-emacs-file "vendor/"))
+         (pg-archive (expand-file-name (concat version ".tgz") vendor-dir)))
+    (make-directory vendor-dir 'parents)
+    (when (file-directory-p pg-dir)
+      (if (not (yes-or-no-p "ProofGeneral already installed. Delete? "))
+          (user-error "ProofGeneral already installed"))
+      ;; Delete the symlink and the package directory
+      (ignore-errors (delete-file (expand-file-name "ProofGeneral" vendor-dir)))
+      (with-demoted-errors "Error while deleting PG: %S"
+        (delete-directory pg-dir 'recurse 'trash)))
+    ;; Download ProofGeneral
+    (url-copy-file (format url version) pg-archive 'ok-if-already-exists)l
+    (with-current-buffer (get-buffer-create buffer-name)
+      (pop-to-buffer (current-buffer))
+      (setq buffer-read-only t)
+      (let ((default-directory vendor-dir)
+            (inhibit-read-only t))
+        (erase-buffer)
+        (unless (equal 0 (call-process "tar" nil t nil "-xf" pg-archive))
+          (error "Failed to extract ProofGeneral"))))
+    (let ((default-directory pg-dir)
+          (emacs (expand-file-name (invocation-name) (invocation-directory))))
+      (compilation-start (format "make EMACS=%s clean compile scripts"
+                                 (shell-quote-argument emacs)) nil
+                         (lambda (_) buffer-name)))
+    (lunaryorn-load-proof-general)))
+
+(defun lunaryorn-load-proof-general ()
+  "Load ProofGeneral."
+  (let ((default-directory lunaryorn-proof-general-directory))
+    (add-to-list 'Info-directory-list (expand-file-name "doc/"))
+    (load (expand-file-name "generic/proof-site.el") 'no-error)))
+
+(lunaryorn-load-proof-general)
+
+
 ;;; Special modes
 (auto-image-file-mode)                  ; Visit images as images
 

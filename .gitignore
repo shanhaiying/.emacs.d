@@ -3,6 +3,7 @@
 
 # Installed packages
 /elpa/
+/vendor/ProofGeneral*
 
 # Cask directory
 /.cask/
