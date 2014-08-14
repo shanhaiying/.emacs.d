@@ -1682,6 +1682,9 @@ window."
 
 (lunaryorn-load-proof-general)
 
+(lunaryorn-after proof-useropts
+  (setq proof-three-window-enable nil))
+
 
 ;;; Special modes
 (auto-image-file-mode)                  ; Visit images as images
