@@ -476,7 +476,12 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
               '((-3 "%p") (size-indication-mode ("/" (-4 "%I")))
                 " "
                 (line-number-mode
-                 ("%l" (column-number-mode ":%c")))))
+                 ("%l" (column-number-mode ":%c"))))
+              mode-line-remote
+              '(:eval
+                (-when-let (host (file-remote-p default-directory 'host))
+                  (propertize (concat "@" host) 'face
+                              '(italic warning)))))
 
 
 ;;; The minibuffer
