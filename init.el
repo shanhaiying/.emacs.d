@@ -481,7 +481,12 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
               '(:eval
                 (-when-let (host (file-remote-p default-directory 'host))
                   (propertize (concat "@" host) 'face
-                              '(italic warning)))))
+                              '(italic warning))))
+              mode-line-modified
+              '(:eval
+                (cond (buffer-read-only (propertize "X" 'face 'warning))
+                      ((buffer-modified-p) (propertize "✸" 'face 'error))
+                      (t (propertize "⛃" 'face 'success)))))
 
 
 ;;; The minibuffer
