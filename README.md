@@ -120,3 +120,4 @@ Notable packages
 - **Rust**: [Flycheck Rust](https://github.com/flycheck/flycheck-rust)
 - **OCaml**: [Tuareg](https://github.com/ocaml/tuareg/) and
   [Merlin](https://github.com/the-lambda-church/merlin)
+- **Theorem proovers**: [Proof General](http://proofgeneral.inf.ed.ac.uk/)
