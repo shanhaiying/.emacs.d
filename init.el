@@ -467,6 +467,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                 (vc-mode lunaryorn-vc-mode-line)     ; VC information
                 (flycheck-mode flycheck-mode-line)   ; Flycheck status
                 (multiple-cursors-mode mc/mode-line) ; Number of cursors
+                (smartparens-strict-mode (:propertize " ()" face bold))
                 ;; Misc information, notably battery state and function name
                 " "
                 mode-line-misc-info
