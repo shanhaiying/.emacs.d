@@ -926,7 +926,7 @@ Disable the highlighting of overlong lines."
     (pcase flycheck-last-status-change
       (`not-checked nil)
       (`no-checker (propertize " -" 'face 'warning))
-      (`running (propertize " ✷" 'face 'success))
+      (`running (propertize " ✸" 'face 'success))
       (`errored (propertize " !" 'face 'error))
       (`finished
        (let* ((error-counts (flycheck-count-errors flycheck-current-errors))
