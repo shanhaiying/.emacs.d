@@ -442,6 +442,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 ;; Indicate position/total matches for incremental searches in the mode line
 (global-anzu-mode)
+(lunaryorn-after anzu
+  ;; Please don't mess with my mode line
+  (setq anzu-cons-mode-line-p nil))
 
 ;; Improve our mode line
 (defvar lunaryorn-vc-mode-line
@@ -463,11 +466,14 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                 mode-line-frame-identification
                 mode-line-buffer-identification " " mode-line-position
                 ;; Some specific information about the current buffer:
+                (smartparens-strict-mode (:propertize " ()" face bold))
                 (projectile-mode projectile-mode-line)
                 (vc-mode lunaryorn-vc-mode-line)     ; VC information
                 (flycheck-mode flycheck-mode-line)   ; Flycheck status
+                (anzu-mode (:eval                    ; isearch pos/matches
+                            (when (> anzu--total-matched 0)
+                              (concat " " (anzu--update-mode-line)))))
                 (multiple-cursors-mode mc/mode-line) ; Number of cursors
-                (smartparens-strict-mode (:propertize " ()" face bold))
                 ;; Misc information, notably battery state and function name
                 " "
                 mode-line-misc-info
