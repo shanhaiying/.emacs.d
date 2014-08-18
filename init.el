@@ -1791,9 +1791,9 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
 (lunaryorn-after projectile
   (setq projectile-completion-system 'ido
         projectile-find-dir-includes-top-level t
-        projectile-mode-line '(" " (:propertize
-                                    (:eval (projectile-project-name))
-                                    face font-lock-constant-face)))
+        projectile-mode-line '(:propertize
+                               (:eval (concat " " (projectile-project-name)))
+                               face font-lock-constant-face))
 
   ;; Replace Ack with Ag in Projectile commander
   (def-projectile-commander-method ?a
