@@ -81,8 +81,9 @@ Notable packages
 - **Color theme**:
   [Solarized Light](https://github.com/bbatsov/solarized-emacs), with the
   [Source Code Pro](https://github.com/adobe/source-code-pro) font
-- **Mode line**: [Anzu](https://github.com/syohex/emacs-anzu) and
-  [Fancy Battery](https://github.com/lunaryorn/fancy-battery.el)
+- **Mode line**: [Anzu](https://github.com/syohex/emacs-anzu),
+  [Fancy Battery](https://github.com/lunaryorn/fancy-battery.el), and
+  [Nyan Mode](https://github.com/TeMPOraL/nyan-mode) for a better world!
 - **Buffers**: [ibuffer-vc](https://github.com/purcell/ibuffer-vc)
 - **Minibuffer**: [SMex](https://github.com/nonsequitur/smex),
   [Ido Ubiquituous](https://github.com/DarwinAwardWinner/ido-ubiquitous),

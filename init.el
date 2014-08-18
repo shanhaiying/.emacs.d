@@ -72,6 +72,7 @@
     browse-kill-ring                    ; Kill ring browser
     smex                                ; Improved M-x
     fancy-battery                       ; Nice battery display
+    nyan-mode                           ; Most awesome mode line extension evar
     ;; Buffer management
     ibuffer-vc                         ; Group and sort buffers by VC state
     ;; File handling
@@ -446,6 +447,11 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   ;; Please don't mess with my mode line
   (setq anzu-cons-mode-line-p nil))
 
+(lunaryorn-after nyan-mode
+  ;; Reduce size of nyan bar.  My mode line is too small for the whole thing in
+  ;; its unshortened awesomeness!
+  (setq nyan-bar-length 16))
+
 ;; Improve our mode line
 (defvar lunaryorn-vc-mode-line
   '(" " (:propertize
@@ -480,7 +486,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                 ;; And the modes, which we don't really care for anyway
                 " " mode-line-modes mode-line-end-spaces)
               mode-line-position
-              '((-3 "%p") (size-indication-mode ("/" (-4 "%I")))
+              '((:eval (nyan-create))
                 " "
                 (line-number-mode
                  ("%l" (column-number-mode ":%c"))))
