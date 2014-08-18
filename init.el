@@ -107,7 +107,6 @@
     ;; LaTeX/AUCTeX
     auctex                              ; The one and only LaTeX environment
     auctex-latexmk                      ; latexmk support for AUCTeX
-    company-auctex                      ; Company support for AUCTeX
     ;; Markup languages
     markdown-mode                       ; Markdown major mode
     yaml-mode                           ; YAML major mode
@@ -119,6 +118,7 @@
     pcre2el                             ; Regular expression utilities
     highlight-numbers                   ; Syntax highlighting for numeric
                                         ; literals
+    rainbow-delimiters                  ; Color delimiters by level
     rainbow-mode                        ; Show colours as they are
     ;; Programming languages
     js2-mode                            ; Powerful Javascript mode
@@ -142,8 +142,6 @@
     ;; Ocaml support
     tuareg                              ; OCaml major mode
     merlin                              ; OCaml completion engine
-    ;; Basic Lisp utility modes
-    rainbow-delimiters                  ; Color parenthesis by level
     ;; Emacs Lisp utility modes and libraries
     elisp-slime-nav                     ; Navigate to symbol definitions
     macrostep                           ; Interactively expand macros
@@ -1061,12 +1059,9 @@ Disable the highlighting of overlong lines."
     (add-hook 'LaTeX-mode-hook mode))
 
   ;; Add support for latexmk
-  (auctex-latexmk-setup)
+  (auctex-latexmk-setup))
 
-  ;; Company
-  (company-auctex-init))
-
-;; Find Skim.app on OS X, for Sycntex support, which Preview.app lacks.
+;; find Skim.app on OS X, for Sycntex support, which Preview.app lacks.
 (defun lunaryorn-find-skim-bundle ()
     "Return the location of the Skim bundle, or nil if Skim is not installed.
 
