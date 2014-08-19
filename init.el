@@ -1712,6 +1712,9 @@ On OS X, install the Isabelle bundle, and run
 (lunaryorn-after proof-useropts
   (setq proof-three-window-enable nil))
 
+(lunaryorn-after proof-script
+  (add-hook 'proof-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
+
 
 ;;; Special modes
 (auto-image-file-mode)                  ; Visit images as images
