@@ -1689,7 +1689,7 @@ window."
       (with-demoted-errors "Error while deleting PG: %S"
         (delete-directory pg-dir 'recurse 'trash)))
     ;; Download ProofGeneral
-    (url-copy-file (format url version) pg-archive 'ok-if-already-exists)l
+    (url-copy-file (format url version) pg-archive 'ok-if-already-exists)
     (with-current-buffer (get-buffer-create buffer-name)
       (pop-to-buffer (current-buffer))
       (setq buffer-read-only t)
