@@ -159,6 +159,7 @@
     gitignore-mode                      ; .gitignore mode
     gitattributes-mode                  ; Git attributes mode
     git-rebase-mode                     ; Mode for git rebase -i
+    git-timemachine                     ; Go back in (Git) time
     ;; Utilities
     projectile                          ; Project interaction
     google-this                         ; Google from Emacs
