@@ -451,6 +451,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   ;; Reduce size of nyan bar.  My mode line is too small for the whole thing in
   ;; its unshortened awesomeness!
   (setq nyan-bar-length 16))
+(autoload 'nyan-create "nyan-mode")
 
 ;; Improve our mode line
 (defvar lunaryorn-vc-mode-line
