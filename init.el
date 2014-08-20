@@ -1702,9 +1702,10 @@ window."
   (let ((default-directory lunaryorn-proof-general-directory))
     (add-to-list 'Info-directory-list (expand-file-name "doc/"))
     (load (expand-file-name "generic/proof-site.el") 'no-error))
-  (unless (executable-find "isabelle-process")
-    (warn "Isabelle not found in `exec-path'. Run \"isabelle install\".
-On OS X, install the Isabelle bundle, and run
+  (when (and (eq system-type 'darwin)
+             (lunaryorn-path-of-bundle "de.tum.in.isabelle")
+             (not (executable-find "isabelle-process")))
+    (warn "Isabelle not in `exec-path'. Run the following command:
 /Applications/Isabelle2013-2.app/Isabelle/bin/isabelle install /usr/local/bin")))
 
 (lunaryorn-load-proof-general)
