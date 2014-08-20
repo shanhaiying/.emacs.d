@@ -1710,7 +1710,14 @@ On OS X, install the Isabelle bundle, and run
 (lunaryorn-load-proof-general)
 
 (lunaryorn-after proof-useropts
-  (setq proof-three-window-enable nil))
+  (setq proof-three-window-enable nil   ; More predictable window management
+        ;; Automatically process the script up to point when inserting a
+        ;; terminator.  Really handy in Coq.
+        proof-electric-terminator-enable t))
+
+(lunaryorn-after pg-custom
+  ;; Don't insert newline after electric terminator in Coq
+  (setq coq-one-command-per-line nil))
 
 (lunaryorn-after proof-script
   (add-hook 'proof-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
