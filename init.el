@@ -1726,7 +1726,7 @@ window."
 (lunaryorn-after isar
   ;; Don't highlight overlong lines in Isar, since Unicode Tokens conceal the
   ;; true line length
-  (add-hook 'isar-mode-hook #'lunaryorn-whitespace-style-no-long-lines))
+  (add-hook 'isar-mode-hook #'lunaryorn-whitespace-style-no-long-lines 'append))
 
 
 ;;; Special modes
