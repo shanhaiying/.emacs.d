@@ -1723,6 +1723,11 @@ window."
 (lunaryorn-after proof-script
   (add-hook 'proof-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
 
+(lunaryorn-after isar
+  ;; Don't highlight overlong lines in Isar, since Unicode Tokens conceal the
+  ;; true line length
+  (add-hook 'isar-mode-hook #'lunaryorn-whitespace-style-no-long-lines))
+
 
 ;;; Special modes
 (auto-image-file-mode)                  ; Visit images as images
