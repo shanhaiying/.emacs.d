@@ -427,7 +427,15 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
 
 (lunaryorn-after solarized
   ;; Disable variable pitch fonts in Solarized theme
-  (setq solarized-use-variable-pitch nil))
+  (setq solarized-use-variable-pitch nil
+        ;; Don't add too much colours to the fringe
+        solarized-emphasize-indicators nil
+        ;; I find different font sizes irritating.
+        solarized-height-minus-1 1.0
+        solarized-height-plus-1 1.0
+        solarized-height-plus-2 1.0
+        solarized-height-plus-3 1.0
+        solarized-height-plus-4 1.0))
 
 (load-theme 'solarized-light 'no-confirm)
 ;; (load-theme 'solarized-dark 'no-confirm)
