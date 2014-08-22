@@ -484,9 +484,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                 ;; Some specific information about the current buffer:
                 (smartparens-strict-mode (:propertize " ()" face bold))
                 (projectile-mode projectile-mode-line)
-                (vc-mode lunaryorn-vc-mode-line)     ; VC information
-                (flycheck-mode flycheck-mode-line)   ; Flycheck status
-                (anzu-mode (:eval                    ; isearch pos/matches
+                (vc-mode lunaryorn-vc-mode-line)   ; VC information
+                (flycheck-mode flycheck-mode-line) ; Flycheck status
+                (anzu-mode (:eval                  ; isearch pos/matches
                             (when (> anzu--total-matched 0)
                               (concat " " (anzu--update-mode-line)))))
                 (multiple-cursors-mode mc/mode-line) ; Number of cursors
