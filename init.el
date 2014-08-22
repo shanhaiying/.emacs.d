@@ -1055,8 +1055,8 @@ Disable the highlighting of overlong lines."
   (warn "Hunspell not found.  Spell checking may not be available!"))
 
 (lunaryorn-after ispell
-  (setq ispell-program-name "hunspell"  ; Force hunspell
-        ispell-dictionary "en_GB"       ; Default dictionary
+  (setq ispell-program-name (executable-find "hunspell") ; Force hunspell
+        ispell-dictionary "en_GB"       ; Default dictionnary
         ispell-silently-savep t         ; Don't ask when saving the private dict
         ;; Increase the height of the choices window to take our header line
         ;; into account.
