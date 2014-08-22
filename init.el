@@ -502,7 +502,7 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                  ("%l" (column-number-mode ":%c"))))
               mode-line-remote
               '(:eval
-                (-when-let (host (file-remote-p default-directory 'host))
+                (when-let (host (file-remote-p default-directory 'host))
                   (propertize (concat "@" host) 'face
                               '(italic warning))))
               mode-line-modified
