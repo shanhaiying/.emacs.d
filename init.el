@@ -140,7 +140,7 @@
     ghci-completion                     ; Complete GHCI commands
     flycheck-haskell                    ; Improve Haskell syntax checking
     hi2                                 ; Indentation
-    ;; Ocaml support
+    ;; OCaml support
     tuareg                              ; OCaml major mode
     merlin                              ; OCaml completion engine
     ;; Emacs Lisp utility modes and libraries
@@ -249,8 +249,7 @@ mode symbol."
     ;; needed.
     (setq exec-path-from-shell-arguments '("-l")))
 
-  (dolist (var '("EMAIL" "PYTHONPATH"
-                 "CAML_LD_LIBRARY_PATH" "OCAML_TOPLEVEL_PATH"))
+  (dolist (var '("EMAIL" "PYTHONPATH"))
     (add-to-list 'exec-path-from-shell-variables var)))
 
 (when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
@@ -1615,6 +1614,29 @@ window."
 
 
 ;;; OCaml
+(defun lunaryorn-opam-init ()
+  "Initialize OPAM in this Emacs."
+  (with-temp-buffer
+    (when-let (opam (executable-find "opam"))
+      (let ((exit-code (call-process "opam" nil t nil "config" "env" "--sexp")))
+        (if (not (equal exit-code 0))
+            (warn "opam config env failed with exit code %S and output:
+%s" exit-code (buffer-substring-no-properties (point-min) (point-max)))
+          (goto-char (point-min))
+          (let ((sexps (read (current-buffer))))
+            (skip-chars-forward "[:space:]")
+            (unless (eobp)
+              (warn "Trailing text in opam config env:\n%S"
+                    (buffer-substring-no-properties (point) (point-max))))
+            (pcase-dolist (`(,var ,value) sexps)
+              (setenv var value)))))))
+  ;; Now update `exec-path' and `load-path'
+  (setq exec-path (append (parse-colon-path (getenv "PATH"))
+                          (list exec-directory)))
+  (add-to-list 'load-path (expand-file-name "../../share/emacs/site-lisp"
+                                            (getenv "OCAML_TOPLEVEL_PATH"))))
+
+(lunaryorn-opam-init)
 
 (lunaryorn-after tuareg
   ;; Disable SMIE indentation in Tuareg.  It's just broken currently…
