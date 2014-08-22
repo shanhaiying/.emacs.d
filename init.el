@@ -1632,9 +1632,7 @@ window."
               (setenv var value)))))))
   ;; Now update `exec-path' and `load-path'
   (setq exec-path (append (parse-colon-path (getenv "PATH"))
-                          (list exec-directory)))
-  (add-to-list 'load-path (expand-file-name "../../share/emacs/site-lisp"
-                                            (getenv "OCAML_TOPLEVEL_PATH"))))
+                          (list exec-directory))))
 
 (lunaryorn-opam-init)
 
