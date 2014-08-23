@@ -1678,65 +1678,19 @@ window."
 
 
 ;;; Proof General
-(defconst lunaryorn-proof-general-version "ProofGeneral-4.3pre131011"
-  "ProofGeneral version to install.")
+(eval-and-compile
+  ;; Load ProofGeneral if present
+  (load (locate-user-emacs-file "vendor/ProofGeneral/generic/proof-site")
+        'no-error))
 
-(defconst lunaryorn-proof-general-url
-  "http://proofgeneral.inf.ed.ac.uk/releases/%s.tgz"
-  "The URL from which to obtain ProofGeneral.")
-
-(defconst lunaryorn-proof-general-directory
-  (file-name-as-directory
-   (expand-file-name lunaryorn-proof-general-version
-                     (locate-user-emacs-file "vendor/")))
-  "The directory of ProofGeneral.")
-
-(defun lunaryorn-install-proof-general ()
-  "Install Proof General for this Emacs."
-  (interactive)
-  (let* ((buffer-name "*ProofGeneral Installation*")
-         (url lunaryorn-proof-general-url)
-         (version lunaryorn-proof-general-version)
-         (pg-dir lunaryorn-proof-general-directory)
-         (vendor-dir (locate-user-emacs-file "vendor/"))
-         (pg-archive (expand-file-name (concat version ".tgz") vendor-dir)))
-    (make-directory vendor-dir 'parents)
-    (when (file-directory-p pg-dir)
-      (if (not (yes-or-no-p "ProofGeneral already installed. Delete? "))
-          (user-error "ProofGeneral already installed"))
-      ;; Delete the symlink and the package directory
-      (ignore-errors (delete-file (expand-file-name "ProofGeneral" vendor-dir)))
-      (with-demoted-errors "Error while deleting PG: %S"
-        (delete-directory pg-dir 'recurse 'trash)))
-    ;; Download ProofGeneral
-    (url-copy-file (format url version) pg-archive 'ok-if-already-exists)
-    (with-current-buffer (get-buffer-create buffer-name)
-      (pop-to-buffer (current-buffer))
-      (setq buffer-read-only t)
-      (let ((default-directory vendor-dir)
-            (inhibit-read-only t))
-        (erase-buffer)
-        (unless (equal 0 (call-process "tar" nil t nil "-xf" pg-archive))
-          (error "Failed to extract ProofGeneral"))))
-    (let ((default-directory pg-dir)
-          (emacs (expand-file-name (invocation-name) (invocation-directory))))
-      (compilation-start (format "make EMACS=%s clean compile scripts"
-                                 (shell-quote-argument emacs)) nil
-                         (lambda (_) buffer-name)))
-    (lunaryorn-load-proof-general)))
-
-(defun lunaryorn-load-proof-general ()
-  "Load ProofGeneral."
-  (let ((default-directory lunaryorn-proof-general-directory))
-    (add-to-list 'Info-directory-list (expand-file-name "doc/"))
-    (load (expand-file-name "generic/proof-site.el") 'no-error))
+(when (boundp 'proof-general-version)
+  ;; If Proof General is loaded, do some additional setup
+  (add-to-list 'Info-directory-list (expand-file-name "doc/"))
   (when (and (eq system-type 'darwin)
              (lunaryorn-path-of-bundle "de.tum.in.isabelle")
              (not (executable-find "isabelle-process")))
     (warn "Isabelle not in `exec-path'. Run the following command:
 /Applications/Isabelle2013-2.app/Isabelle/bin/isabelle install /usr/local/bin")))
-
-(lunaryorn-load-proof-general)
 
 (lunaryorn-after proof-useropts
   (setq proof-three-window-enable nil   ; More predictable window management
@@ -1744,9 +1698,9 @@ window."
         ;; terminator.  Really handy in Coq.
         proof-electric-terminator-enable t))
 
-(lunaryorn-after pg-custom
-  ;; Don't insert newline after electric terminator in Coq
-  (setq coq-one-command-per-line nil))
+;; Proof General has a rather strange way of creating this variable
+(defvar coq-one-command-per-line)
+(setq coq-one-command-per-line nil)
 
 (lunaryorn-after proof-script
   (add-hook 'proof-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
