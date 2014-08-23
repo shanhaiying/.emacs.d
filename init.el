@@ -1924,42 +1924,48 @@ Create a new ielm process if required."
 (global-set-key (kbd "C-=") #'er/expand-region)
 
 ;; Personal keymaps
-(defvar lunaryorn-ag-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'ag-regexp)
-    (define-key map (kbd "A") #'ag)
-    (define-key map (kbd "d") #'ag-dired-regexp)
-    (define-key map (kbd "D") #'ag-dired)
-    (define-key map (kbd "f") #'ag-files)
-    (define-key map (kbd "k") #'ag-kill-other-buffers)
-    (define-key map (kbd "K") #'ag-kill-buffers)
-    map)
+(defvar lunaryorn-ag-map nil
   "Keymap for Ag.")
 
-(defvar lunaryorn-files-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
-    (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
-    (define-key map (kbd "L") #'add-dir-local-variable)
-    (define-key map (kbd "l") #'add-file-local-variable)
-    (define-key map (kbd "o") #'lunaryorn-launch-dwim)
-    (define-key map (kbd "p") #'add-file-local-variable-prop-line)
-    (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
-    (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
-    (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill)
-    map)
+(define-prefix-command 'lunaryorn-ag 'lunaryorn-ag-map)
+(let ((map lunaryorn-ag-map))
+  (define-key map (kbd "a") #'ag-regexp)
+  (define-key map (kbd "A") #'ag)
+  (define-key map (kbd "d") #'ag-dired-regexp)
+  (define-key map (kbd "D") #'ag-dired)
+  (define-key map (kbd "f") #'ag-files)
+  (define-key map (kbd "k") #'ag-kill-other-buffers)
+  (define-key map (kbd "K") #'ag-kill-buffers)
+  map)
+
+(defvar lunaryorn-files-map nil
   "Keymap for file operations.")
 
-(defvar lunaryorn-list-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "b") #'list-bookmarks)
-    (define-key map (kbd "e") #'list-flycheck-errors)
-    (define-key map (kbd "p") #'list-packages)
-    (define-key map (kbd "P") #'package-list-packages-no-fetch)
-    (define-key map (kbd "r") #'list-register)
-    (define-key map (kbd "t") #'list-tags)
-    map)
+(define-prefix-command 'lunaryorn-file 'lunaryorn-files-map)
+(let ((map lunaryorn-files-map))
+  (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
+  (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
+  (define-key map (kbd "L") #'add-dir-local-variable)
+  (define-key map (kbd "l") #'add-file-local-variable)
+  (define-key map (kbd "o") #'lunaryorn-launch-dwim)
+  (define-key map (kbd "p") #'add-file-local-variable-prop-line)
+  (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
+  (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
+  (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill)
+  map)
+
+(defvar lunaryorn-list-map nil
   "Keymap to list things.")
+
+(define-prefix-command 'lunaryorn-list 'lunaryorn-list-map)
+(let ((map lunaryorn-list-map))
+  (define-key map (kbd "b") #'list-bookmarks)
+  (define-key map (kbd "e") #'list-flycheck-errors)
+  (define-key map (kbd "p") #'list-packages)
+  (define-key map (kbd "P") #'package-list-packages-no-fetch)
+  (define-key map (kbd "r") #'list-register)
+  (define-key map (kbd "t") #'list-tags)
+  map)
 
 (defvar lunaryorn-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
@@ -1974,53 +1980,59 @@ Create a new ielm process if required."
     (define-key map (kbd "C-s") #'mc/mark-all-in-region)
     map))
 
-(defvar lunaryorn-symbols-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "o") #'highlight-symbol-occur)
-    (define-key map (kbd "%") #'highlight-symbol-query-replace)
-    (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
-    (define-key map (kbd "p") #'highlight-symbol-prev-in-defun)
-    map)
+(defvar lunaryorn-symbols-map nil
   "Keymap for symbol operations.")
 
-(defvar lunaryorn-toggle-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "f") #'flycheck-mode) ; Syntax checking
-    (define-key map (kbd "l") #'nlinum-mode)   ; Line numbers in margin
-    (define-key map (kbd "w") #'whitespace-mode) ; Whitespace highlighting…
-    (define-key map (kbd "W") #'whitespace-cleanup-mode) ; …and cleanup
-    map)
+(define-prefix-command 'lunaryorn-symbol 'lunaryorn-symbols-map)
+(let ((map lunaryorn-symbols-map))
+  (define-key map (kbd "o") #'highlight-symbol-occur)
+  (define-key map (kbd "%") #'highlight-symbol-query-replace)
+  (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
+  (define-key map (kbd "p") #'highlight-symbol-prev-in-defun)
+  map)
+
+(defvar lunaryorn-toggle-map nil
   "Keymap to toggle buffer local settings.")
 
-(defvar lunaryorn-utilities-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'align-current)
-    (define-key map (kbd "r") #'align-region)
-    (define-key map (kbd "A") #'align-regexp)
-    (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
-    map)
+(define-prefix-command 'lunaryorn-toggle 'lunaryorn-toggle-map)
+(let ((map lunaryorn-toggle-map))
+  (define-key map (kbd "f") #'flycheck-mode)     ; Syntax checking
+  (define-key map (kbd "l") #'nlinum-mode)       ; Line numbers in margin
+  (define-key map (kbd "w") #'whitespace-mode)   ; Whitespace highlighting…
+  (define-key map (kbd "W") #'whitespace-cleanup-mode) ; …and cleanup
+  map)
+
+(defvar lunaryorn-utilities-map nil
   "Keymap for various utilities.")
 
+(define-prefix-command 'lunaryorn-utility 'lunaryorn-utilities-map)
+(let ((map lunaryorn-utilities-map))
+  (define-key map (kbd "a") #'align-current)
+  (define-key map (kbd "r") #'align-region)
+  (define-key map (kbd "A") #'align-regexp)
+  (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
+  map)
+
 ;; User key bindings in the C-c space.
-(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-(global-set-key (kbd "C-c a") lunaryorn-ag-map)
+(global-set-key (kbd "C-c SPC") #'ace-jump-mode)
+(global-set-key (kbd "C-c a") #'lunaryorn-ag)
 (global-set-key (kbd "C-c B") #'browse-url)
 (global-set-key (kbd "C-c c") #'compile)
 (global-set-key (kbd "C-c C") #'recompile)
-(global-set-key (kbd "C-c f") lunaryorn-files-map)
+(global-set-key (kbd "C-c f") #'lunaryorn-file)
 (global-set-key (kbd "C-c g") #'magit-status)
 (global-set-key (kbd "C-c i") #'imenu-anywhere)
 (global-set-key (kbd "C-c j") #'ace-jump-mode)
 (global-set-key (kbd "C-c J") #'ace-jump-mode-pop-mark)
-(global-set-key (kbd "C-c l") lunaryorn-list-map)
+(global-set-key (kbd "C-c l") #'lunaryorn-list)
 (global-set-key (kbd "C-C M") #'recompile)
 (global-set-key (kbd "C-c m") lunaryorn-multiple-cursors-map)
 (global-set-key (kbd "C-c o") #'occur)
 (global-set-key (kbd "C-c r") #'vr/query-replace)
 (global-set-key (kbd "C-c R") #'vr/replace)
-(global-set-key (kbd "C-c s") lunaryorn-symbols-map)
-(global-set-key (kbd "C-c t") lunaryorn-toggle-map)
-(global-set-key (kbd "C-c u") lunaryorn-utilities-map)
+(global-set-key (kbd "C-c s") #'lunaryorn-symbol)
+(global-set-key (kbd "C-c t") #'lunaryorn-toggle)
+(global-set-key (kbd "C-c u") #'lunaryorn-utility)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 
 (lunaryorn-after smartparens
