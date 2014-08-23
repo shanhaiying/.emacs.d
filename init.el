@@ -1643,6 +1643,9 @@ window."
   ;; Enable advanced completion engine for OCaml
   (add-hook 'tuareg-mode-hook #'merlin-mode))
 
+(lunaryorn-after merlin
+  (setq merlin-command 'opam))          ; Use Merlin from current OPAM env
+
 
 ;;; Shell scripting
 
