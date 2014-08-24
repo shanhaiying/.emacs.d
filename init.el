@@ -985,7 +985,9 @@ Disable the highlighting of overlong lines."
 
   (setq flycheck-completion-system 'ido
         flycheck-mode-line
-        '(:eval (lunaryorn-flycheck-mode-line-status))))
+        '(:eval (lunaryorn-flycheck-mode-line-status))
+        flycheck-display-errors-function
+        #'flycheck-display-error-messages-unless-error-list))
 (global-flycheck-mode)
 
 ;; An Emacs server for `emacsclient'
