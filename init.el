@@ -1998,6 +1998,7 @@ Create a new ielm process if required."
 
 (define-prefix-command 'lunaryorn-toggle 'lunaryorn-toggle-map)
 (let ((map lunaryorn-toggle-map))
+  (define-key map (kbd "d") #'toggle-debug-on-error) ; Debugging
   (define-key map (kbd "f") #'flycheck-mode)     ; Syntax checking
   (define-key map (kbd "l") #'nlinum-mode)       ; Line numbers in margin
   (define-key map (kbd "s") #'flyspell-mode)     ; Spell checking
