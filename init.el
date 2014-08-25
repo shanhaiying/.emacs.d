@@ -2000,6 +2000,7 @@ Create a new ielm process if required."
 (let ((map lunaryorn-toggle-map))
   (define-key map (kbd "f") #'flycheck-mode)     ; Syntax checking
   (define-key map (kbd "l") #'nlinum-mode)       ; Line numbers in margin
+  (define-key map (kbd "s") #'flyspell-mode)     ; Spell checking
   (define-key map (kbd "w") #'whitespace-mode)   ; Whitespace highlighting…
   (define-key map (kbd "W") #'whitespace-cleanup-mode) ; …and cleanup
   map)
