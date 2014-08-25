@@ -139,7 +139,7 @@
     haskell-mode                        ; Haskell major modes
     ghci-completion                     ; Complete GHCI commands
     flycheck-haskell                    ; Improve Haskell syntax checking
-    hi2                                 ; Indentation
+    shm                                 ; Structured Haskell editing
     ;; OCaml support
     tuareg                              ; OCaml major mode
     merlin                              ; OCaml completion engine
@@ -1573,16 +1573,15 @@ window."
   (dolist (fun '(haskell-doc-mode        ; Eldoc for Haskell
                  subword-mode            ; Subword navigation
                  haskell-decl-scan-mode  ; Scan and navigate declarations
-                 hi2-mode                ; Acceptable Haskell indentation
+                 structured-haskell-mode ; Acceptable Haskell indentation
                  haskell-auto-insert-module-template ; Insert module templates
                  ))
     (add-hook 'haskell-mode-hook fun))
 
   (setq haskell-tags-on-save t))
 
-(lunaryorn-after hi2
-  ;; Avoid conflicts with Fill Column indicator
-  (setq hi2-show-indentations-after-eol nil))
+(lunaryorn-after shm
+  (require 'shm-case-split))
 
 (lunaryorn-after inf-haskell
   (dolist (fun '(turn-on-ghci-completion ; Completion for GHCI commands
@@ -2121,6 +2120,12 @@ Create a new ielm process if required."
 
 (lunaryorn-after merlin
   (define-key merlin-mode-map (kbd "C-c t e") #'merlin-toggle-view-errors))
+
+(lunaryorn-after shm
+  (define-key shm-map (kbd "C-c C-s") 'shm/case-split)
+  ;; Fix SHM keybindings to follow Electric Indent Mode
+  (define-key shm-map (kbd "RET") #'shm/newline-indent)
+  (define-key shm-map (kbd "C-j") #'shm/simple-indent-newline-same-col))
 
 ;; Local Variables:
 ;; coding: utf-8
