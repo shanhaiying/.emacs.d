@@ -1158,19 +1158,10 @@ Choose Skim if available, or fall back to the default application."
 
 ;; Configure BibTeX
 (lunaryorn-after bibtex
-  (bibtex-set-dialect 'biblatex)        ; Use a modern dialect
-  ;; Exhaustive cleanup and reformatting of entries, to keep Bibtex files in
-  ;; good shape
-  (setq bibtex-entry-format '(opts-or-alts
-                              required-fields
-                              numerical-fields
-                              whitespace
-                              realign
-                              last-comma
-                              delimiters
-                              unify-case
-                              strings
-                              sort-fields)))
+  (add-hook 'bibtex-mode-hook (lambda () (run-hooks 'prog-mode-hook)))
+
+  ;; Use a modern BibTeX dialect
+  (bibtex-set-dialect 'biblatex))
 
 ;; Configure RefTeX
 (lunaryorn-after reftex
