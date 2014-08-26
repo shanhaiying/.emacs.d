@@ -2122,10 +2122,7 @@ Create a new ielm process if required."
   (define-key merlin-mode-map (kbd "C-c t e") #'merlin-toggle-view-errors))
 
 (lunaryorn-after shm
-  (define-key shm-map (kbd "C-c C-s") 'shm/case-split)
-  ;; Fix SHM keybindings to follow Electric Indent Mode
-  (define-key shm-map (kbd "RET") #'shm/newline-indent)
-  (define-key shm-map (kbd "C-j") #'shm/simple-indent-newline-same-col))
+  (define-key shm-map (kbd "C-c C-s") 'shm/case-split))
 
 ;; Local Variables:
 ;; coding: utf-8
