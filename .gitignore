@@ -15,7 +15,7 @@
 # Tutorial states
 /tutorial/
 
-# Various caches
+# Various caches and settings
 /.emacs.desktop*
 /.mc-lists.el
 /.org-id-locations
@@ -37,3 +37,4 @@
 /abbrev_defs
 /cider-repl-history
 /marmalade-upload.json
+/eww-bookmarks
