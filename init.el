@@ -530,7 +530,9 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
                                         ; match
         ido-create-new-buffer 'always   ; Create a new buffer if nothing matches
         ido-use-filename-at-point 'guess
+        ;; Visit buffers and files in the selected window
         ido-default-file-method 'selected-window
+        ido-default-buffer-method 'selected-window
         ido-use-faces nil))             ; Prefer flx ido faces
 
 (ido-mode t)                            ; Enable IDO,…
