@@ -1082,7 +1082,18 @@ Disable the highlighting of overlong lines."
 
 (require 'tex-site nil :no-error)
 
-;; Some standard defaults
+;;;; TeX editing
+(lunaryorn-after tex
+  ;; Automatically insert braces after sub- and superscripts in math mode
+  (setq TeX-electric-sub-and-superscript t))
+
+(lunaryorn-after latex
+  (dolist (mode '(LaTeX-math-mode       ; Easy math input
+                  LaTeX-preview-setup   ; Setup LaTeX preview
+                  reftex-mode))         ; Cross references on steroids
+    (add-hook 'LaTeX-mode-hook mode)))
+
+;;;; TeX processing settings
 (lunaryorn-after tex
   (setq TeX-parse-self t                ; Parse documents to provide completion
                                         ; for packages, etc.
@@ -1100,11 +1111,6 @@ Disable the highlighting of overlong lines."
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
 
 (lunaryorn-after latex
-  (dolist (mode '(LaTeX-math-mode       ; Easy math input
-                  LaTeX-preview-setup   ; Setup LaTeX preview
-                  reftex-mode))         ; Cross references on steroids
-    (add-hook 'LaTeX-mode-hook mode))
-
   ;; Add support for latexmk
   (auctex-latexmk-setup))
 
