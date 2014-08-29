@@ -269,7 +269,7 @@ mode symbol."
 (lunaryorn-after cus-edit
   (setq custom-file lunaryorn-custom-file))
 
-(load lunaryorn-custom-file :no-error :no-message)
+(load lunaryorn-custom-file 'no-error 'no-message)
 
 
 ;;; OS X support
