@@ -44,6 +44,9 @@
     (unless (yes-or-no-p "Your Emacs build is more than a week old! Continue anyway? ")
       (kill-emacs))))
 
+;; Debugging
+(setq message-log-max 10000)
+
 
 ;;; Package management
 
