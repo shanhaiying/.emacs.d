@@ -200,17 +200,12 @@ FORMS is byte compiled.
 FEATURE may be a named feature or a file name, see
 `eval-after-load' for details."
   (declare (indent 1) (debug t))
-  `(progn
-     (eval-when-compile
-       ;; Require the feature during compilation to avoid compiler
-       ;; errors/warnings. Since `eval-when-compile' also evaluated during macro
-       ;; expansion we check whether the current file is really being compiled
-       (when (bound-and-true-p byte-compile-current-file)
-         ,(if (stringp feature)
-              `(load ,feature :no-message :no-error)
-            `(require ',feature nil :no-error))))
-     ;; Register FORMS to be eval'ed after FEATURE
-     (with-eval-after-load ',feature ,@forms)))
+  (when (bound-and-true-p byte-compile-current-file)
+    (message "LOADING")
+    (if (stringp feature)
+        (load feature nil 'no-error)
+      (require feature nil 'no-error)))
+  `(with-eval-after-load ',feature ,@forms))
 
 (defun lunaryorn-auto-modes (&rest modes-and-patterns)
   "Add MODES-AND-PATTERNS to `auto-mode-alist'.
