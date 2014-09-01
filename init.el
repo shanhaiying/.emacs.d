@@ -1110,6 +1110,12 @@ Disable the highlighting of overlong lines."
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
 
 (lunaryorn-after latex
+  ;; Cleanup files from unusual packages
+  (dolist (ext '("\\.lox"               ; Lists from the fixme package
+                 "\\.cb" "\\.cb2"       ; Locations from the changebar package
+                 ))
+    (add-to-list 'LaTeX-clean-intermediate-suffixes ext))
+
   ;; Add support for latexmk
   (auctex-latexmk-setup))
 
