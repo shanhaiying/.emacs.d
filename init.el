@@ -1299,6 +1299,13 @@ Choose Skim if available, or fall back to the default application."
     (add-hook 'yaml-mode-hook mode)))
 
 
+;;; Graphviz
+
+(lunaryorn-after graphviz-dot-mode
+  (setq graphviz-dot-indent-width 4     ; Reduce indentation
+        ))
+
+
 ;;; Configuration languages
 (lunaryorn-after puppet-mode
   ;; Fontify variables in Puppet comments
