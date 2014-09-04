@@ -244,14 +244,13 @@ mode symbol."
 ;;; Environment fixup
 (lunaryorn-after exec-path-from-shell
   (when (string-match-p "/zsh$" (getenv "SHELL"))
-    ;; Use a non-interactive shell.  zprofile contains all variables that are
-    ;; needed.
-    (setq exec-path-from-shell-arguments '("-l")))
+    ;; Use a non-interactive, non-login shell. We have it all setup in .zshenv!
+    (setq exec-path-from-shell-arguments nil))
 
   (dolist (var '("EMAIL" "PYTHONPATH"))
     (add-to-list 'exec-path-from-shell-variables var)))
 
-(when (and (not (eq system-type 'windows-nt)) (display-graphic-p))
+(when (and (eq system-type 'darwin) (display-graphic-p))
   (exec-path-from-shell-initialize)
 
   (setq user-mail-address (getenv "EMAIL")))
