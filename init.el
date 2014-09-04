@@ -247,13 +247,20 @@ mode symbol."
     ;; Use a non-interactive, non-login shell. We have it all setup in .zshenv!
     (setq exec-path-from-shell-arguments nil))
 
-  (dolist (var '("EMAIL" "PYTHONPATH"))
+  (dolist (var '("EMAIL" "PYTHONPATH" "INFOPATH"))
     (add-to-list 'exec-path-from-shell-variables var)))
 
 (when (and (eq system-type 'darwin) (display-graphic-p))
   (exec-path-from-shell-initialize)
 
-  (setq user-mail-address (getenv "EMAIL")))
+  (setq user-mail-address (getenv "EMAIL"))
+
+  ;; Re-initialize the `Info-directory-list' from $INFOPATH.  Since package.el
+  ;; already initializes info, we need to explicitly add the $INFOPATH
+  ;; directories to `Info-directory-list'.
+  (dolist (dir (parse-colon-path (getenv "INFOPATH")))
+    (when dir
+      (add-to-list 'Info-directory-list dir))))
 
 
 ;;; Customization interface
