@@ -459,11 +459,13 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   ;; Please don't mess with my mode line
   (setq anzu-cons-mode-line-p nil))
 
+;; Use an awesome cat to indicate the buffer position in the mode line!
 (lunaryorn-after nyan-mode
   ;; Reduce size of nyan bar.  My mode line is too small for the whole thing in
   ;; its unshortened awesomeness!
   (setq nyan-bar-length 16))
-(autoload 'nyan-create "nyan-mode")
+(autoload 'nyan-create "nyan-mode")     ; Nyan is missing autoloads
+
 
 ;; Improve our mode line
 (defvar lunaryorn-vc-mode-line
