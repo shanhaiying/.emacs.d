@@ -466,6 +466,44 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
   (setq nyan-bar-length 16))
 (autoload 'nyan-create "nyan-mode")     ; Nyan is missing autoloads
 
+;; Show the current function name in the mode line
+(lunaryorn-after which-func
+  (setq which-func-unknown "⊥" ; The default is really boring…
+        which-func-format
+        `("["
+          (:propertize (:eval (lunaryorn-which-func-current))
+                       local-map ,which-func-keymap
+                       face which-func
+                       mouse-face mode-line-highlight
+                       help-echo "mouse-1: go to beginning\n\
+mouse-2: toggle rest visibility\n\
+mouse-3: go to end")
+          "]")
+        ))
+
+(defun lunaryorn-current-namespace ()
+  "Determine the namespace of the current file."
+  (when-let (filename (buffer-file-name))
+    (if (string= (file-truename filename) (file-truename user-init-file))
+        "lunaryorn"                       ; The “namespace” of my init
+      (file-name-base filename))))
+
+(defun lunaryorn-which-func-current ()
+  "Determine the name of the current function."
+  (if-let (current (or (gethash (selected-window) which-func-table)))
+      (progn
+        ;; Strip the file name from the symbol name, in a poor attempt to
+        ;; account for Emacs Lisp namespacing practices
+        (when (and current
+                   (eq major-mode 'emacs-lisp-mode))
+          (let ((namespace (lunaryorn-current-namespace)))
+            (when (and namespace
+                       (string-prefix-p namespace current 'ignore-case))
+              (setq current (substring current (length namespace))))))
+        (truncate-string-to-width current 20 nil nil "…"))
+    which-func-unknown))
+
+(which-function-mode)
 
 ;; Improve our mode line
 (defvar lunaryorn-vc-mode-line
@@ -1347,11 +1385,6 @@ Choose Skim if available, or fall back to the default application."
 
 ;; Folding and heading navigation
 (add-hook 'prog-mode-hook #'outline-minor-mode)
-
-;; Show the current function name in the header line
-(which-function-mode)
-(lunaryorn-after which-func
-  (setq which-func-unknown "⊤"))
 
 ;; Compilation from Emacs
 (defun lunaryorn-colorize-compilation-buffer ()
