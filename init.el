@@ -201,7 +201,6 @@ FEATURE may be a named feature or a file name, see
 `eval-after-load' for details."
   (declare (indent 1) (debug t))
   (when (bound-and-true-p byte-compile-current-file)
-    (message "LOADING")
     (if (stringp feature)
         (load feature nil 'no-error)
       (require feature nil 'no-error)))
