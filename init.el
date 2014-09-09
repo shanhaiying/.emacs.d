@@ -1058,6 +1058,10 @@ Disable the highlighting of overlong lines."
         ;; Don't kill the entire symbol on C-k
         sp-hybrid-kill-entire-symbol nil))
 
+(lunaryorn-after smartparens-latex
+  ;; Leave my quotes alone, will you
+  (sp-local-pair 'latex-mode "``" "''" :actions :rem))
+
 (smartparens-global-mode)
 (show-smartparens-global-mode)          ; Show parenthesis
 
