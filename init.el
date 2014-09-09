@@ -1124,12 +1124,6 @@ Disable the highlighting of overlong lines."
 
 ;;; LaTeX with AUCTeX
 
-;; Add TexLive docs
-(let ((texmf-dist "/usr/local/texlive/2014/texmf-dist"))
-  (when (file-exists-p texmf-dist)
-    (add-to-list Info-directory-list (expand-file-name "doc/info/"
-                                                       texmf-dist))))
-
 (require 'tex-site nil :no-error)
 
 ;;;; TeX editing
