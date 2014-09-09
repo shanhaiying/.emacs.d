@@ -499,7 +499,8 @@ mouse-3: go to end")
           (let ((namespace (lunaryorn-current-namespace)))
             (when (and namespace
                        (string-prefix-p namespace current 'ignore-case))
-              (setq current (substring current (length namespace))))))
+              (setq current (concat "…"
+                                    (substring current (length namespace)))))))
         (truncate-string-to-width current 20 nil nil "…"))
     which-func-unknown))
 
