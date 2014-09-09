@@ -1058,11 +1058,6 @@ Disable the highlighting of overlong lines."
         ;; Don't kill the entire symbol on C-k
         sp-hybrid-kill-entire-symbol nil))
 
-(lunaryorn-after smartparens
-  (setq sp-autoskip-closing-pair 'always
-        ;; Don't kill the entire symbol on C-k
-        sp-hybrid-kill-entire-symbol nil))
-
 (smartparens-global-mode)
 (show-smartparens-global-mode)          ; Show parenthesis
 
