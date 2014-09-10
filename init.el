@@ -1150,6 +1150,14 @@ Disable the highlighting of overlong lines."
                   reftex-mode))         ; Cross references on steroids
     (add-hook 'LaTeX-mode-hook mode)))
 
+(lunaryorn-after tex-mode
+  (font-lock-add-keywords 'latex-mode
+                          `((,(rx "\\"
+                                  symbol-start
+                                  "fx" (1+ (or (syntax word) (syntax symbol)))
+                                  symbol-end)
+                             . font-lock-warning-face))))
+
 ;;;; TeX processing settings
 (lunaryorn-after tex
   (setq TeX-parse-self t                ; Parse documents to provide completion
