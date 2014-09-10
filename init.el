@@ -1037,6 +1037,10 @@ Disable the highlighting of overlong lines."
         #'flycheck-display-error-messages-unless-error-list))
 (global-flycheck-mode)
 
+;; Outline commands
+(dolist (hook '(text-mode-hook prog-mode-hook))
+  (add-hook hook #'outline-minor-mode))
+
 ;; An Emacs server for `emacsclient'
 (require 'server)
 (unless (server-running-p) (server-start))
@@ -1376,9 +1380,6 @@ Choose Skim if available, or fall back to the default application."
 
 ;; Colorize parenthesis
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-
-;; Folding and heading navigation
-(add-hook 'prog-mode-hook #'outline-minor-mode)
 
 ;; Compilation from Emacs
 (defun lunaryorn-colorize-compilation-buffer ()
