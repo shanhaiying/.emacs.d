@@ -1133,12 +1133,18 @@ Disable the highlighting of overlong lines."
 
 (require 'tex-site nil :no-error)
 
-;;;; TeX editing
+;; TeX editing
 (lunaryorn-after tex
   ;; Automatically insert braces after sub- and superscripts in math mode
   (setq TeX-electric-sub-and-superscript t))
 
 (lunaryorn-after latex
+  ;; Teach TeX folding about KOMA script sections
+  (setq TeX-outline-extra `((,(rx (0+ space) "\\section*{") 2)
+                            (,(rx (0+ space) "\\subsection*{") 3)
+                            (,(rx (0+ space) "\\subsubsection*{") 4)
+                            (,(rx (0+ space) "\\minisec{") 5)))
+
   (dolist (mode '(LaTeX-math-mode       ; Easy math input
                   LaTeX-preview-setup   ; Setup LaTeX preview
                   reftex-mode))         ; Cross references on steroids
