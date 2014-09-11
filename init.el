@@ -114,10 +114,12 @@
     auctex-latexmk                      ; latexmk support for AUCTeX
     ;; Markup languages
     markdown-mode                       ; Markdown major mode
-    yaml-mode                           ; YAML major mode
     graphviz-dot-mode                   ; Graphviz mode
     ;; Configuration languages
     puppet-mode                         ; For Puppet files
+    ;; YAML
+    yaml-mode                           ; YAML major mode
+    ansible-doc                         ; Ansible documentation lookup
     ;; General programming utilities
     highlight-symbol                    ; Symbol awareness
     pcre2el                             ; Regular expression utilities
@@ -1321,55 +1323,17 @@ Choose Skim if available, or fall back to the default application."
 
 ;;; YAML
 
-(defconst lunaryorn-ansible-doc-buffer " *Ansible Doc*"
-  "The Ansible Doc buffer.")
-
-(defvar lunaryorn-ansible-modules nil
-  "List of all known Ansible modules.")
-
-(defun lunaryorn-ansible-modules ()
-  "Get a list of all known Ansible modules."
-  (unless lunaryorn-ansible-modules
-    (with-temp-buffer
-      (call-process "ansible-doc" nil '(t nil) nil "--list")
-      (goto-char (point-max))
-      (while (re-search-backward (rx line-start
-                                     (group (one-or-more (not (any space))))
-                                     (any space)
-                                     (one-or-more not-newline)
-                                     line-end)
-                                 nil 'noerror)
-        (push (match-string 1) lunaryorn-ansible-modules))))
-  lunaryorn-ansible-modules)
-
-(defun lunaryorn-ansible-doc (module)
-  "Show ansible doc for MODULE."
-  (interactive
-   (let* ((modules (lunaryorn-ansible-modules))
-          (symbol (thing-at-point 'symbol 'no-properties))
-          (default (if (member symbol modules) symbol nil)))
-     (list (ido-completing-read "Ansible Module: " modules
-                                nil 'require-match nil nil
-                                default))))
-  (let ((buffer (get-buffer-create lunaryorn-ansible-doc-buffer)))
-    (with-current-buffer buffer
-      (setq buffer-read-only t)
-      (view-mode)
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (call-process "ansible-doc" nil t t module))
-      (goto-char (point-min)))
-    (display-buffer buffer)))
-
 (lunaryorn-after yaml-mode
   ;; YAML is kind of a mixture between text and programming language, and hence
   ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
-  ;; explicitly
+  ;; explicitly.  We also add some special minor modes for YAML, notably
+  ;; `ansible-doc-mode' for Ansible documentation lookup
   (dolist (mode '(whitespace-mode
                   whitespace-cleanup-mode
                   lunaryorn-auto-fill-comments-mode
                   fci-mode
-                  flyspell-prog-mode))
+                  flyspell-prog-mode
+                  ansible-doc-mode))
     (add-hook 'yaml-mode-hook mode)))
 
 
@@ -2154,9 +2118,6 @@ Create a new ielm process if required."
   (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file)
 
   (define-key lisp-interaction-mode-map (kbd "C-c e") #'macrostep-expand))
-
-(lunaryorn-after yaml-mode
-  (define-key yaml-mode-map (kbd "C-c h a") #'lunaryorn-ansible-doc))
 
 (lunaryorn-after markdown-mode
   (define-key markdown-mode-map (kbd "C-c C-s C")
