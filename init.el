@@ -1345,10 +1345,12 @@ Choose Skim if available, or fall back to the default application."
 (defun lunaryorn-ansible-doc (module)
   "Show ansible doc for MODULE."
   (interactive
-   (list (ido-completing-read "Ansible Module: "
-                              (lunaryorn-ansible-modules)
-                              nil nil nil nil
-                              (thing-at-point 'symbol 'no-properties))))
+   (let* ((modules (lunaryorn-ansible-modules))
+          (symbol (thing-at-point 'symbol 'no-properties))
+          (default (if (member symbol modules) symbol nil)))
+     (list (ido-completing-read "Ansible Module: " modules
+                                nil 'require-match nil nil
+                                default))))
   (let ((buffer (get-buffer-create lunaryorn-ansible-doc-buffer)))
     (with-current-buffer buffer
       (setq buffer-read-only t)
