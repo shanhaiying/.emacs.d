@@ -657,7 +657,8 @@ Add this to `kill-buffer-query-functions'."
 (lunaryorn-after desktop
   ;; Don't autosave desktops, it's too expensive.  Desktops aren't that
   ;; precious, and Emacs will save the desktop on exit anyway.
-  (setq desktop-auto-save-timeout nil))
+  (setq desktop-auto-save-timeout nil
+        desktop-modes-not-to-save '(magit-mode)))
 (desktop-save-mode)
 
 
