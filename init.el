@@ -1330,11 +1330,16 @@ Choose Skim if available, or fall back to the default application."
 (defun lunaryorn-ansible-modules ()
   "Get a list of all known Ansible modules."
   (unless lunaryorn-ansible-modules
-    (let ((lines (ignore-errors (process-lines "ansible-doc" "--list")))
-          modules)
-      (dolist (line lines)
-        (push (car (split-string line (rx (one-or-more space)))) modules))
-      (setq lunaryorn-ansible-modules (sort modules #'string<))))
+    (with-temp-buffer
+      (call-process "ansible-doc" nil '(t nil) nil "--list")
+      (goto-char (point-max))
+      (while (re-search-backward (rx line-start
+                                     (group (one-or-more (not (any space))))
+                                     (any space)
+                                     (one-or-more not-newline)
+                                     line-end)
+                                 nil 'noerror)
+        (push (match-string 1) lunaryorn-ansible-modules))))
   lunaryorn-ansible-modules)
 
 (defun lunaryorn-ansible-doc (module)
