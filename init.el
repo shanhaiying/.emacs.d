@@ -1246,11 +1246,8 @@ Choose Skim if available, or fall back to the default application."
 
 ;; Configure RefTeX
 (lunaryorn-after reftex
-  (setq reftex-plug-into-AUCTeX t       ; Plug into AUCTeX
-        ;; Recommended optimizations
-        reftex-enable-partial-scans t
-        reftex-save-parse-info t
-        reftex-use-multiple-selection-buffers t)
+  ;; Plug into AUCTeX
+  (setq reftex-plug-into-AUCTeX t)
 
   ;; Provide basic RefTeX support for biblatex
   (unless (assq 'biblatex reftex-cite-format-builtin)
