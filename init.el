@@ -245,8 +245,10 @@ mode symbol."
 ;;; Environment fixup
 (lunaryorn-after exec-path-from-shell
   (when (string-match-p "/zsh$" (getenv "SHELL"))
-    ;; Use a non-interactive, non-login shell. We have it all setup in .zshenv!
-    (setq exec-path-from-shell-arguments nil))
+    ;; Use a non-interactive shell.  We use a login shell, even though we have
+    ;; our paths setup in .zshenv.  However, OS X adds global settings to the
+    ;; login profile.  Notably, this affects /usr/texbin from MacTeX
+    (setq exec-path-from-shell-arguments '("-l")))
 
   (dolist (var '("EMAIL" "PYTHONPATH" "INFOPATH"))
     (add-to-list 'exec-path-from-shell-variables var)))
