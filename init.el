@@ -1031,10 +1031,6 @@ Disable the highlighting of overlong lines."
         ;; Don't kill the entire symbol on C-k
         sp-hybrid-kill-entire-symbol nil))
 
-(lunaryorn-after smartparens-latex
-  ;; Leave my quotes alone, will you
-  (sp-local-pair 'latex-mode "``" "''" :actions :rem))
-
 (smartparens-global-mode)
 (show-smartparens-global-mode)          ; Show parenthesis
 
@@ -1165,6 +1161,24 @@ Install aspell or hunspell."))
                                   "fx" (1+ (or (syntax word) (syntax symbol)))
                                   symbol-end)
                              . font-lock-warning-face))))
+
+;; LaTeX pairs
+(lunaryorn-after smartparens-latex
+  (sp-with-modes 'latex-mode
+    ;; Leave my quotes alone, will you
+    (sp-local-pair "``" "''" :actions :rem)
+
+    ;; Force LaTeX math syntax
+    (sp-local-pair "$" "$" :actions :rem) ; Remove TeX syntax
+    (sp-local-pair "\\(" "\\)" :trigger "$")
+
+    ;; Additional parenthesis pairs
+    (sp-local-pair "\\llbracket" "\\rrbracket"
+                   :when '(sp-in-math-p)
+                   :post-handlers '(sp-latex-insert-spaces-inside-pair))
+    (sp-local-pair "\\lbrace" "\\rbrace"
+                   :when '(sp-in-math-p)
+                   :post-handlers '(sp-latex-insert-spaces-inside-pair))))
 
 ;;;; TeX processing settings
 (lunaryorn-after tex
