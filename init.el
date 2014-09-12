@@ -134,6 +134,7 @@
     ;; Python
     anaconda-mode                       ; Documentation, lookup and navigation
     company-anaconda                    ; Company integration for Anaconda
+    pip-requirements                    ; requirements.txt files
     ;; Ruby support
     inf-ruby                            ; Ruby interpreter in Emacs
     robe                                ; Code navigation, docs and completion
@@ -1571,6 +1572,9 @@ window."
 
   ;; Remove redundant company-ropemacs backend.  company-anaconda is superior.
   (setq company-backends (delq 'company-ropemacs company-backends)))
+
+;; Requirements files
+(add-to-list 'auto-mode-alist '("requirements\\.txt\\'" . pip-requirements-mode))
 
 
 ;;; Ruby
