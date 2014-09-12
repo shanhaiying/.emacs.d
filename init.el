@@ -70,7 +70,6 @@
     exec-path-from-shell                ; Environment fixup
     ;; Color theme
     solarized-theme
-    zenburn-theme
     ;; UI improvements
     anzu                                ; Mode line indicators for isearch
     browse-kill-ring                    ; Kill ring browser
@@ -444,8 +443,6 @@ The `car' of each item is the font family, the `cdr' the preferred font size.")
         solarized-height-plus-4 1.0))
 
 (load-theme 'solarized-light 'no-confirm)
-;; (load-theme 'solarized-dark 'no-confirm)
-;; (load-theme 'zenburn 'no-confirm)
 
 
 ;;; The mode line
