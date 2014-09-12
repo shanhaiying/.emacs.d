@@ -491,18 +491,16 @@ mouse-3: go to end")
 (defun lunaryorn-which-func-current ()
   "Determine the name of the current function."
   (if-let (current (or (gethash (selected-window) which-func-table)))
-      (progn
-        ;; Strip the file name from the symbol name, in a poor attempt to
-        ;; account for Emacs Lisp namespacing practices
-        (when (and current
-                   (eq major-mode 'emacs-lisp-mode))
+      (truncate-string-to-width
+       (pcase major-mode
+         (`emacs-lisp-mode
           (let ((namespace (lunaryorn-current-namespace)))
-            (when (and namespace
-                       (string-prefix-p namespace current 'ignore-case))
-              (setq current (concat "…"
-                                    (substring current (length namespace)))))))
-        (truncate-string-to-width current 20 nil nil "…"))
-    which-func-unknown))
+            (if (and namespace
+                     (string-prefix-p namespace current 'ignore-case))
+                (concat "…" (substring current (length namespace)))
+              current)))
+         (_ current))
+       20 nil nil "…")))
 
 (which-function-mode)
 
