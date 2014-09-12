@@ -499,6 +499,13 @@ mouse-3: go to end")
                      (string-prefix-p namespace current 'ignore-case))
                 (concat "…" (substring current (length namespace)))
               current)))
+         (`latex-mode
+          ;; In AUCTeX' LaTeX Mode, strip leading spaces from headings, and
+          ;; replace them with a number indicating the heading level
+          (if (string-match (rx string-start (group (1+ blank))) current)
+              (let ((level (length (match-string 1 current))))
+                (format "(%i)%s" level (substring current level)))
+            current))
          (_ current))
        20 nil nil "…")))
 
