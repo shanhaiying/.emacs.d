@@ -1066,12 +1066,12 @@ Disable the highlighting of overlong lines."
 ;;; Spell checking
 
 ;; Warn if the spell checker is missing
-(unless (executable-find "hunspell")
-  (warn "Hunspell not found.  Spell checking may not be available!"))
+(unless (or (executable-find "aspell") (executable-find "hunspell"))
+  (warn "No spell checker found.  Spell checking may not be available!
+Install aspell or hunspell."))
 
 (lunaryorn-after ispell
-  (setq ispell-program-name (executable-find "hunspell") ; Force hunspell
-        ispell-dictionary "en_GB"       ; Default dictionnary
+  (setq ispell-dictionary "en_GB"       ; Default dictionnary
         ispell-silently-savep t         ; Don't ask when saving the private dict
         ;; Increase the height of the choices window to take our header line
         ;; into account.
