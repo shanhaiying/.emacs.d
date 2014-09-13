@@ -509,7 +509,8 @@ mouse-3: go to end")
                 (format "(%i)%s" level (substring current level)))
             current))
          (_ current))
-       20 nil nil "…")))
+       20 nil nil "…")
+    which-func-unknown))
 
 (which-function-mode)
 
