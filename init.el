@@ -367,13 +367,15 @@ Without FORMULA determine whether Homebrew itself is available."
 
 ;;; User interface
 
-;; Get rid of tool bar and menu bar, except on OS X, where the menu bar is
-;; present anyway, so disabling it is pointless
+;; Get rid of tool bar, menu bar and scroll bars.  On OS X we preserve the menu
+;; bar, since the top menu bar is always visible anyway, and we'd just empty it
+;; which is rather pointless.
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
-(unless (eq system-type 'darwin)
-  (when (fboundp 'menu-bar-mode)
-    (menu-bar-mode -1)))
+(when (and (not (eq system-type 'darwin)) (fboundp 'menu-bar-mode))
+  (menu-bar-mode -1))
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
 
 ;; No blinking and beeping, no startup screen, no scratch message and short
 ;; Yes/No questions
