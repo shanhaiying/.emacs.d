@@ -1839,14 +1839,6 @@ window."
 ;;; Git support
 
 ;; The one and only Git frontend
-(defun lunaryorn-magit-default-tracking-name-origin-branch-only (remote branch)
-  "Get the name of the tracking branch for REMOTE and BRANCH.
-
-Use REMOTE-BRANCH, except when REMOTE is origin."
-  (let ((branch (magit-escape-branch-name branch)))
-    (if (string= remote "origin") branch
-      (concat remote "-" branch))))
-
 (lunaryorn-after magit
   ;; Shut up, Magit!
   (setq magit-save-some-buffers 'dontask
@@ -1855,10 +1847,7 @@ Use REMOTE-BRANCH, except when REMOTE is origin."
         ;; Except when you ask something useful…
         magit-set-upstream-on-push t
         ;; Use IDO for completion
-        magit-completing-read-function #'magit-ido-completing-read
-        ;; Don't include origin in the name of tracking branches
-        magit-default-tracking-name-function #'lunaryorn-magit-default-tracking-name-origin-branch-only
-        )
+        magit-completing-read-function #'magit-ido-completing-read)
 
   ;; Auto-revert files after Magit operations
   (magit-auto-revert-mode)
