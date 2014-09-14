@@ -1265,10 +1265,36 @@ Choose Skim if available, or fall back to the default application."
   ;; Use a modern BibTeX dialect
   (bibtex-set-dialect 'biblatex))
 
+(defun lunaryorn-reftex-find-ams-environment-caption (environment)
+  "Find the caption of an AMS ENVIRONMENT."
+  (let ((re (rx-to-string `(and "\\begin{" ,environment "}"))))
+    ;; Go to the beginning of the label first
+    (re-search-backward re)
+    (goto-char (match-end 0)))
+  (if (not (looking-at (rx (zero-or-more space) "[")))
+      (error "Environment %s has no title" environment)
+    (let ((beg (match-end 0)))
+      ;; Move point onto the title start bracket and move over to the end,
+      ;; skipping any other brackets in between, and eventually extract the text
+      ;; between the brackets
+      (goto-char (1- beg))
+      (forward-list)
+      (buffer-substring-no-properties beg (1- (point))))))
+
 ;; Configure RefTeX
 (lunaryorn-after reftex
   ;; Plug into AUCTeX
-  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-plug-into-AUCTeX t
+        ;; Automatically derive labels, and prompt for confirmation
+        reftex-insert-label-flags '(t t)
+        ;; Additional label definitions for RefTeX.
+        reftex-label-alist
+        '(("definition" ?d "def:" "~\\ref{%s}"
+           lunaryorn-reftex-find-ams-environment-caption
+           ("definition" "def.") -3)
+          ("theorem" ?h "thm:" "~\\ref{%s}"
+           lunaryorn-reftex-find-ams-environment-caption
+           ("theorem" "th.") -3)))
 
   ;; Provide basic RefTeX support for biblatex
   (unless (assq 'biblatex reftex-cite-format-builtin)
