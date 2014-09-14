@@ -378,12 +378,15 @@ Without FORMULA determine whether Homebrew itself is available."
   (scroll-bar-mode -1))
 
 ;; No blinking and beeping, no startup screen, no scratch message and short
-;; Yes/No questions
+;; Yes/No questions.  Also, get rid of the disgusting block cursor
 (blink-cursor-mode -1)
 (setq ring-bell-function 'ignore
       inhibit-startup-screen t
       initial-scratch-message nil)
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq-default cursor-type '(hbar . 1)
+              ;; No cursor in non-selected windows
+              cursor-in-non-selected-windows nil)
 ;; Opt out from the startup message in the echo area by simply disabling this
 ;; ridiculously bizarre thing entirely.
 (fset 'display-startup-echo-area-message 'ignore)
