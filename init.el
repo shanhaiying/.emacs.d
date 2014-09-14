@@ -1889,6 +1889,15 @@ Create a new ielm process if required."
 ;; Google from Emacs, under C-c /
 (google-this-mode)
 
+;; Insert date and time
+(defun lunaryorn-insert-current-date (iso)
+  "Insert the current date at point.
+
+When ISO is non-nil, insert the date in ISO 8601 format.
+Otherwise insert the date as Mar 04, 2014."
+  (interactive "P")
+  (insert (format-time-string (if iso "%F" "%b %d, %Y"))))
+
 
 ;;; Calendar
 (lunaryorn-after calendar
@@ -2075,6 +2084,7 @@ Create a new ielm process if required."
   (define-key map (kbd "r") #'align-region)
   (define-key map (kbd "A") #'align-regexp)
   (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
+  (define-key map (kbd "d") #'lunaryorn-insert-current-date)
   map)
 
 ;; User key bindings in the C-c space.
