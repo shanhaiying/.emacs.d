@@ -947,8 +947,9 @@ Disable the highlighting of overlong lines."
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
 
-;; Save the contents of the clipboard to kill ring before killing
-(setq save-interprogram-paste-before-kill t)
+(setq kill-ring-max 200                 ; More killed items
+      ;; Save the contents of the clipboard to kill ring before killing
+      save-interprogram-paste-before-kill t)
 
 ;; Configure a reasonable fill column, indicate it in the buffer and enable
 ;; automatic filling
