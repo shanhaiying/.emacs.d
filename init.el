@@ -1206,6 +1206,7 @@ Install aspell or hunspell."))
 (lunaryorn-after latex
   ;; Cleanup files from unusual packages
   (dolist (ext '("\\.lox"               ; Lists from the fixme package
+                 "\\.lol"               ; Lists from the listings package
                  "\\.cb" "\\.cb2"       ; Locations from the changebar package
                  ))
     (add-to-list 'LaTeX-clean-intermediate-suffixes ext))
