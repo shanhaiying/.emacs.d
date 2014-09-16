@@ -913,8 +913,10 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Electric pairing and code layout
 (electric-layout-mode)
 
-;; Indicate empty lines at the end of a buffer in the fringe
-(setq indicate-empty-lines t)
+;; Indicate empty lines at the end of a buffer in the fringe, but require a
+;; final new line
+(setq indicate-empty-lines t
+      require-final-newline t)
 
 ;; Highlight bad whitespace
 (lunaryorn-after whitespace
@@ -940,9 +942,6 @@ Disable the highlighting of overlong lines."
 (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
   (dolist (mode (list #'whitespace-mode #'whitespace-cleanup-mode))
     (add-hook hook mode)))
-
-;; Require a final new line in every file
-(setq require-final-newline t)
 
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
