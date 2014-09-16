@@ -1072,17 +1072,18 @@ Disable the highlighting of overlong lines."
 
 ;;; Spell checking
 
-;; Warn if the spell checker is missing
-(unless (or (executable-find "aspell") (executable-find "hunspell"))
-  (warn "No spell checker found.  Spell checking may not be available!
-Install aspell or hunspell."))
-
 (lunaryorn-after ispell
-  (setq ispell-dictionary "en_GB"       ; Default dictionnary
+  (setq ispell-program-name (if (eq system-type 'darwin)
+                                (executable-find "aspell")
+                              (executable-find "hunspell"))
+        ispell-dictionary "en_GB"       ; Default dictionnary
         ispell-silently-savep t         ; Don't ask when saving the private dict
         ;; Increase the height of the choices window to take our header line
         ;; into account.
-        ispell-choices-win-default-height 5))
+        ispell-choices-win-default-height 5)
+
+  (unless ispell-program-name
+    (warn "No spell checker available.  Install Hunspell or ASpell for OS X.")))
 
 (lunaryorn-after flyspell
   ;; Free M-Tab and C-M-i, and never take it again!
