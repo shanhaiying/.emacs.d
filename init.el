@@ -2079,7 +2079,8 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
   (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file)
 
-  (define-key lisp-interaction-mode-map (kbd "C-c e") #'macrostep-expand))
+  (define-key lisp-interaction-mode-map (kbd "C-c e") #'macrostep-expand)
+  (define-key lisp-interaction-mode-map (kbd "RET") #'eval-print-last-sexp))
 
 (lunaryorn-after markdown-mode
   (define-key markdown-mode-map (kbd "C-c C-s C")
