@@ -1149,7 +1149,9 @@ Disable the highlighting of overlong lines."
   ;; Automatically insert braces after sub- and superscripts in math mode
   (setq TeX-electric-sub-and-superscript t
         ;; Don't insert magic quotes right away.
-        TeX-quote-after-quote t))
+        TeX-quote-after-quote t)
+
+  (add-hook 'TeX-mode-hook #'TeX-fold-mode))
 
 (lunaryorn-after tex-style
   ;; Enable support for csquotes
@@ -1161,7 +1163,9 @@ Disable the highlighting of overlong lines."
   (setq TeX-outline-extra `((,(rx (0+ space) "\\section*{") 2)
                             (,(rx (0+ space) "\\subsection*{") 3)
                             (,(rx (0+ space) "\\subsubsection*{") 4)
-                            (,(rx (0+ space) "\\minisec{") 5)))
+                            (,(rx (0+ space) "\\minisec{") 5))
+        ;; No language-specific hyphens please
+        LaTeX-babel-hyphen nil)
 
   (dolist (mode '(LaTeX-math-mode       ; Easy math input
                   LaTeX-preview-setup   ; Setup LaTeX preview
@@ -1290,7 +1294,10 @@ Choose Skim if available, or fall back to the default application."
            ("definition" "def.") -3)
           ("theorem" ?h "thm:" "~\\ref{%s}"
            lunaryorn-reftex-find-ams-environment-caption
-           ("theorem" "th.") -3)))
+           ("theorem" "th.") -3)
+          ("example" ?x "ex:" "~\\ref{%s}"
+           lunaryorn-reftex-find-ams-environment-caption
+           ("example" "ex") -3)))
 
   ;; Provide basic RefTeX support for biblatex
   (unless (assq 'biblatex reftex-cite-format-builtin)
