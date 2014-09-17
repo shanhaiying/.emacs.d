@@ -101,7 +101,6 @@
     expand-region                       ; Expand region by semantic units
     multiple-cursors                    ; Multiple cursors
     easy-kill                           ; Killing and marking on steroids
-    smartparens                         ; Parenthesis balancing and pair editing
     ;; Search and replace
     ag                                  ; Code search
     wgrep wgrep-ag                      ; Edit ag results in-place
@@ -149,6 +148,8 @@
     ;; OCaml support
     tuareg                              ; OCaml major mode
     merlin                              ; OCaml completion engine
+    ;; Lisp tools
+    paredit                            ; Balanced parenthesis editing
     ;; Emacs Lisp utility modes and libraries
     elisp-slime-nav                     ; Navigate to symbol definitions
     macrostep                           ; Interactively expand macros
@@ -539,7 +540,7 @@ mouse-3: go to end")
                 mode-line-frame-identification
                 mode-line-buffer-identification " " mode-line-position
                 ;; Some specific information about the current buffer:
-                (smartparens-strict-mode (:propertize " ()" face bold))
+                (paredit-mode (:propertize " ()" face bold))
                 (projectile-mode projectile-mode-line)
                 (vc-mode lunaryorn-vc-mode-line)   ; VC information
                 (flycheck-mode flycheck-mode-line) ; Flycheck status
@@ -911,6 +912,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq tab-always-indent 'complete)
 
 ;; Electric pairing and code layout
+(electric-pair-mode)
 (electric-layout-mode)
 
 ;; Indicate empty lines at the end of a buffer in the fringe, but require a
@@ -998,8 +1000,11 @@ Disable the highlighting of overlong lines."
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (volatile-highlights-mode t)
 
-;; Highlight matching delimiters
-(global-rainbow-delimiters-mode)
+;; Highlight delimiters…
+(global-rainbow-delimiters-mode)        ; … by depth
+(show-paren-mode)                       ; … by matching delimiters
+(lunaryorn-after paren
+  (setq show-paren-style 'mixed))
 
 ;; Add custom highlights to buffers
 (global-hi-lock-mode 1)
@@ -1030,18 +1035,6 @@ Disable the highlighting of overlong lines."
         ;; Simplify the MC mode line indicator
         '(:propertize (:eval (concat " " (number-to-string (mc/num-cursors))))
                       face font-lock-warning-face)))
-
-
-;;; Smartparens
-(require 'smartparens-config)
-
-(lunaryorn-after smartparens
-  (setq sp-autoskip-closing-pair 'always
-        ;; Don't kill the entire symbol on C-k
-        sp-hybrid-kill-entire-symbol nil))
-
-(smartparens-global-mode)
-(show-smartparens-global-mode)          ; Show parenthesis
 
 
 ;;; Completion and expansion
@@ -1171,24 +1164,6 @@ Disable the highlighting of overlong lines."
                                   "fx" (1+ (or (syntax word) (syntax symbol)))
                                   symbol-end)
                              . font-lock-warning-face))))
-
-;; LaTeX pairs
-(lunaryorn-after smartparens-latex
-  (sp-with-modes 'latex-mode
-    ;; Leave my quotes alone, will you
-    (sp-local-pair "``" "''" :actions :rem)
-
-    ;; Force LaTeX math syntax
-    (sp-local-pair "$" "$" :actions :rem) ; Remove TeX syntax
-    (sp-local-pair "\\(" "\\)" :trigger "$")
-
-    ;; Additional parenthesis pairs
-    (sp-local-pair "\\llbracket" "\\rrbracket"
-                   :when '(sp-in-math-p)
-                   :post-handlers '(sp-latex-insert-spaces-inside-pair))
-    (sp-local-pair "\\lbrace" "\\rbrace"
-                   :when '(sp-in-math-p)
-                   :post-handlers '(sp-latex-insert-spaces-inside-pair))))
 
 ;;;; TeX processing settings
 (lunaryorn-after tex
@@ -1336,13 +1311,7 @@ Choose Skim if available, or fall back to the default application."
     ;; C-a C-a
     (define-key map (kbd "C-=") nil)
     ;; For similarity with AUCTeX
-    (define-key map (kbd "C-c C-j") #'rst-insert-list))
-
-  (sp-with-modes 'rst-mode
-    (sp-local-pair "*" "*")
-    (sp-local-pair "**" "**")
-    (sp-local-pair "`" "`")
-    (sp-local-pair "``" "``")))
+    (define-key map (kbd "C-c C-j") #'rst-insert-list)))
 
 
 ;;; Markdown editing
@@ -1351,18 +1320,6 @@ Choose Skim if available, or fall back to the default application."
 (lunaryorn-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
 
 (lunaryorn-after markdown-mode
-  (sp-with-modes '(markdown-mode gfm-mode)
-    (sp-local-pair "*" "*")
-    (sp-local-pair "`" "`")
-    (sp-local-pair "<" ">")
-    (sp-local-tag "s" "```scheme" "```")
-    (sp-local-tag "<" "<_>" "</_>"
-                  :transform 'sp-match-sgml-tags
-                  :post-handlers '(sp-html-post-handler)))
-
-  (dolist (mode '(markdown-mode gfm-mode))
-    (add-to-list 'sp-navigate-consider-sgml-tags mode))
-
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
 
@@ -1485,7 +1442,7 @@ window."
 
 ;; Enable some common Emacs Lisp helper modes
 (defvar lunaryorn-emacs-lisp-common-modes
-  '(smartparens-strict-mode
+  '(paredit-mode
     turn-on-eldoc-mode                  ; Show function signatures in echo area
     elisp-slime-nav-mode)               ; Navigate to symbol definitions
   "Common modes for Emacs Lisp editing.")
@@ -1494,9 +1451,6 @@ window."
   (dolist (mode lunaryorn-emacs-lisp-common-modes)
     (dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook))
       (add-hook hook mode)))
-
-  (sp-local-pair '(emacs-lisp-mode lisp-interaction-mode)
-                 "(" nil :bind "M-(")
 
   ;; Check doc conventions when eval'ing expressions
   (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
@@ -1529,9 +1483,7 @@ window."
     (add-hook 'ielm-mode-hook mode))
 
   ;; Enable lexical binding in IELM
-  (add-hook 'ielm-mode-hook (lambda () (setq lexical-binding t)))
-
-  (sp-local-pair 'inferior-emacs-lisp-mode "(" nil :bind "M-("))
+  (add-hook 'ielm-mode-hook (lambda () (setq lexical-binding t))))
 
 ;; Hippie expand for Emacs Lisp
 (lunaryorn-after hippie-exp
@@ -1568,7 +1520,7 @@ window."
   ;; Extra font-locking for Clojure
   (require 'clojure-mode-extra-font-locking)
 
-  (add-hook 'clojure-mode-hook #'smartparens-strict-mode))
+  (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (lunaryorn-after cider-mode
   (add-hook 'cider-mode-hook #'cider-turn-on-eldoc-mode))
@@ -1577,7 +1529,7 @@ window."
   (setq nrepl-hide-special-buffers t))
 
 (lunaryorn-after cider-repl
-  (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+  (add-hook 'cider-repl-mode-hook #'paredit-mode)
 
   ;; Increase the history size and make it permanent
   (setq cider-repl-history-size 1000
@@ -1656,14 +1608,6 @@ window."
   ;; Much of this Haskell Mode setup is taken from
   ;; https://github.com/chrisdone/chrisdone-emacs
 
-  (sp-with-modes 'haskell-mode
-    ;; Haddock markup
-    (sp-local-pair "@" "@" :when '(sp-in-comment-p))
-    (sp-local-pair "/" "/" :when '(sp-in-comment-p))
-    (sp-local-pair "'" "'" :when '(sp-in-comment-p))
-    ;; Explicit parenthesis wrapping
-    (sp-local-pair "(" nil :bind "M-("))
-
   (dolist (fun '(haskell-doc-mode        ; Eldoc for Haskell
                  subword-mode            ; Subword navigation
                  haskell-decl-scan-mode  ; Scan and navigate declarations
@@ -1681,17 +1625,13 @@ window."
   (dolist (fun '(turn-on-ghci-completion ; Completion for GHCI commands
                  haskell-doc-mode        ; Eldoc for Haskell
                  subword-mode))          ; Subword navigation
-    (add-hook 'inferior-haskell-mode-hook fun))
-
-  (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
+    (add-hook 'inferior-haskell-mode-hook fun)))
 
 (lunaryorn-after haskell-interactive-mode
   (dolist (fun '(turn-on-ghci-completion ; Completion for GHCI commands
                  haskell-doc-mode        ; Eldoc for Haskell
                  subword-mode))          ; Subword navigation
-    (add-hook 'haskell-interactive-mode-hook fun))
-
-  (sp-local-pair 'haskell-interactive-mode "(" nil :bind "M-("))
+    (add-hook 'haskell-interactive-mode-hook fun)))
 
 (lunaryorn-after haskell-process
   ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI loaded
@@ -2130,41 +2070,6 @@ Otherwise insert the date as Mar 04, 2014."
 (global-set-key (kbd "C-c t") #'lunaryorn-toggle)
 (global-set-key (kbd "C-c u") #'lunaryorn-utility)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
-
-(lunaryorn-after smartparens
-  (let ((map smartparens-mode-map))
-    ;; Movement and navigation
-    (define-key map (kbd "C-M-f") #'sp-forward-sexp)
-    (define-key map (kbd "C-M-b") #'sp-backward-sexp)
-    (define-key map (kbd "C-M-u") #'sp-backward-up-sexp)
-    (define-key map (kbd "C-M-d") #'sp-down-sexp)
-    (define-key map (kbd "C-M-p") #'sp-backward-down-sexp)
-    (define-key map (kbd "C-M-n") #'sp-up-sexp)
-    ;; Deleting and killing
-    (define-key map (kbd "C-M-k") #'sp-kill-sexp)
-    (define-key map (kbd "C-M-w") #'sp-copy-sexp)
-    ;; Depth changing
-    (define-key map (kbd "M-s") #'sp-splice-sexp)
-    (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
-    (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
-    (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
-    (define-key map (kbd "M-?") #'sp-convolute-sexp)
-    ;; Barfage & Slurpage
-    (define-key map (kbd "C-)")  #'sp-forward-slurp-sexp)
-    (define-key map (kbd "C-<right>") #'sp-forward-slurp-sexp)
-    (define-key map (kbd "C-}")  #'sp-forward-barf-sexp)
-    (define-key map (kbd "C-<left>") #'sp-forward-barf-sexp)
-    (define-key map (kbd "C-(")  #'sp-backward-slurp-sexp)
-    (define-key map (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
-    (define-key map (kbd "C-{")  #'sp-backward-barf-sexp)
-    (define-key map (kbd "C-M-<right>") #'sp-backward-barf-sexp)
-    ;; Miscellaneous commands
-    (define-key map (kbd "M-S") #'sp-split-sexp)
-    (define-key map (kbd "M-J") #'sp-join-sexp)
-    (define-key map (kbd "C-M-t") #'sp-transpose-sexp))
-
-  (let ((map smartparens-strict-mode-map))
-    (define-key map (kbd "M-q") #'sp-indent-defun)))
 
 (lunaryorn-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
