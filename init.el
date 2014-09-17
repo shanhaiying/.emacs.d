@@ -1834,7 +1834,7 @@ window."
 ;; Highlight changed files in the fringe of Dired
 (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 ;; Fall back to the display margin, if the fringe is unavailable
-(unless (window-system)
+(unless (display-graphic-p)
   (diff-hl-margin-mode))
 
 
