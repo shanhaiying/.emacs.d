@@ -998,6 +998,9 @@ Disable the highlighting of overlong lines."
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (volatile-highlights-mode t)
 
+;; Highlight matching delimiters
+(global-rainbow-delimiters-mode)
+
 ;; Add custom highlights to buffers
 (global-hi-lock-mode 1)
 
@@ -1416,9 +1419,6 @@ Choose Skim if available, or fall back to the default application."
 
 
 ;;; Programming utilities
-
-;; Colorize parenthesis
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; Compilation from Emacs
 (defun lunaryorn-colorize-compilation-buffer ()
