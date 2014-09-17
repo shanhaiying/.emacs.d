@@ -1147,7 +1147,14 @@ Disable the highlighting of overlong lines."
 ;; TeX editing
 (lunaryorn-after tex
   ;; Automatically insert braces after sub- and superscripts in math mode
-  (setq TeX-electric-sub-and-superscript t))
+  (setq TeX-electric-sub-and-superscript t
+        ;; Don't insert magic quotes right away.
+        TeX-quote-after-quote t))
+
+(lunaryorn-after tex-style
+  ;; Enable support for csquotes
+  (setq LaTeX-csquotes-close-quote "}"
+        LaTeX-csquotes-open-quote "\\enquote{"))
 
 (lunaryorn-after latex
   ;; Teach TeX folding about KOMA script sections
