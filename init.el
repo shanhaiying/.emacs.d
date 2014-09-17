@@ -1002,6 +1002,10 @@ Disable the highlighting of overlong lines."
 
 ;; Highlight delimiters…
 (global-rainbow-delimiters-mode)        ; … by depth
+(lunaryorn-after rainbow-delimiters
+  (dolist (mode '(completion-list-mode
+                  reftex-toc-mode))
+    (add-to-list 'rainbow-delimiters-ignore-modes mode)))
 (show-paren-mode)                       ; … by matching delimiters
 (lunaryorn-after paren
   (setq show-paren-style 'mixed))
