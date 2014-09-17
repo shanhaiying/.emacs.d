@@ -1984,6 +1984,12 @@ Otherwise insert the date as Mar 04, 2014."
 
 ;;; Key bindings
 
+;; Kill some useless bindings
+(when (display-graphic-p)
+  ;; `suspend-frame' is entirely useless in graphic displays
+  (global-set-key (kbd "C-z") nil)
+  (global-set-key (kbd "C-x C-z") nil))
+
 ;; Improve standard bindings
 (global-set-key [remap execute-extended-command] #'smex)
 (global-set-key [remap list-buffers] #'ibuffer)
