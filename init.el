@@ -1984,12 +1984,6 @@ Otherwise insert the date as Mar 04, 2014."
 
 ;;; Key bindings
 
-;; More standard mouse bindings
-(global-set-key (kbd "<mouse-3>") #'mouse-buffer-menu) ; Right click shows
-                                                       ; context menu
-(global-set-key (kbd "C-<mouse-1>") #'browse-url-at-mouse)
-(global-set-key (kbd "C-<down-mouse-1>") nil)
-
 ;; Improve standard bindings
 (global-set-key [remap execute-extended-command] #'smex)
 (global-set-key [remap list-buffers] #'ibuffer)
