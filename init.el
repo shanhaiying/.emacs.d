@@ -392,11 +392,11 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; ridiculously bizarre thing entirely.
 (fset 'display-startup-echo-area-message 'ignore)
 
-;; Choose Font and color theme.  We try to use Anonymous Pro from
-;; http://www.marksimonson.com/fonts/view/anonymous-pro or Inconsolata (from the
-;; Google Webfont directory).  On OS X, we need to give these fonts a larger
-;; size.  If neither is available, we fall back to the standard faces of OS X
-;; (Menlo), Linux (DejaVu Sans Mono) or Windows (Consolas, Courier New)
+;; Choose Font and color theme.  We prefer Source Code Pro, and then Anonymous
+;; Pro from http://www.marksimonson.com/fonts/view/anonymous-pro or Inconsolata
+;; (from the Google Webfont directory).  On OS X, we need to give these fonts a
+;; larger size.  If neither is available, we fall back to the standard faces of
+;; OS X (Menlo), Linux (DejaVu Sans Mono) or Windows (Consolas, Courier New)
 (defconst lunaryorn-preferred-monospace-fonts
   `(("Source Code Pro" . ,(if (eq system-type 'darwin) 130 100))
     ("Anonymous Pro" . ,(if (eq system-type 'darwin) 140 110))
