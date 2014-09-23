@@ -1001,15 +1001,11 @@ Disable the highlighting of overlong lines."
 (volatile-highlights-mode t)
 
 ;; Highlight delimiters…
-(global-rainbow-delimiters-mode)        ; … by depth
-(lunaryorn-after rainbow-delimiters
-  (dolist (mode '(completion-list-mode
-                  reftex-toc-mode))
-    (add-to-list 'rainbow-delimiters-ignore-modes mode)))
 (show-paren-mode)                       ; … by matching delimiters
 (lunaryorn-after paren
   (setq show-paren-style 'mixed))
-
+(dolist (hook '(text-mode-hook prog-mode-hook)) ; … by depth
+  (add-hook hook #'rainbow-delimiters-mode))
 ;; Add custom highlights to buffers
 (global-hi-lock-mode 1)
 
