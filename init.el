@@ -1142,8 +1142,11 @@ Disable the highlighting of overlong lines."
 
 ;; TeX editing
 (lunaryorn-after tex
-  ;; Automatically insert braces after sub- and superscripts in math mode
-  (setq TeX-electric-sub-and-superscript t
+  (setq TeX-parse-self t                ; Parse documents to provide completion
+                                        ; for packages, etc.
+        TeX-auto-save t                 ; Automatically save style information
+        TeX-electric-sub-and-superscript t ; Automatically insert braces after
+                                           ; sub- and superscripts in math mode
         ;; Don't insert magic quotes right away.
         TeX-quote-after-quote t)
 
@@ -1177,11 +1180,12 @@ Disable the highlighting of overlong lines."
                              . font-lock-warning-face))))
 
 ;;;; TeX processing settings
+(lunaryorn-after tex-buf
+  ;; Don't ask for confirmation when saving before processing
+  (setq TeX-save-query nil))
+
 (lunaryorn-after tex
-  (setq TeX-parse-self t                ; Parse documents to provide completion
-                                        ; for packages, etc.
-        TeX-auto-save t                 ; Automatically save
-        TeX-clean-confirm nil           ; Do not ask for confirmation when
+  (setq TeX-clean-confirm nil           ; Don't ask for confirmation when
                                         ; cleaning
         ;; Provide forward and inverse search with SyncTeX
         TeX-source-correlate-mode t
