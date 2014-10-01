@@ -1284,9 +1284,10 @@ Choose Skim if available, or fall back to the default application."
   (setq reftex-plug-into-AUCTeX t
         ;; Automatically derive labels, and prompt for confirmation
         reftex-insert-label-flags '(t t)
-        ;; Additional label definitions for RefTeX.
         reftex-label-alist
-        '(("definition" ?d "def:" "~\\ref{%s}"
+        '(
+          ;; Additional label definitions for RefTeX.
+          ("definition" ?d "def:" "~\\ref{%s}"
            lunaryorn-reftex-find-ams-environment-caption
            ("definition" "def.") -3)
           ("theorem" ?h "thm:" "~\\ref{%s}"
@@ -1294,7 +1295,10 @@ Choose Skim if available, or fall back to the default application."
            ("theorem" "th.") -3)
           ("example" ?x "ex:" "~\\ref{%s}"
            lunaryorn-reftex-find-ams-environment-caption
-           ("example" "ex") -3)))
+           ("example" "ex") -3)
+          ;; Algorithms package
+          ("algorithm" ?a "alg:" "~\\ref{%s}"
+           "\\\\caption[[{]" ("algorithm" "alg") -3)))
 
   ;; Provide basic RefTeX support for biblatex
   (unless (assq 'biblatex reftex-cite-format-builtin)
