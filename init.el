@@ -2090,11 +2090,6 @@ Otherwise insert the date as Mar 04, 2014."
 (global-set-key (kbd "C-c u") #'lunaryorn-utility)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 
-(lunaryorn-after paredit
-  ;; Make paredit play more nicely with Electric Indent Mode
-  (define-key paredit-mode-map (kbd "RET") #'paredit-newline)
-  (define-key paredit-mode-map (kbd "C-j") #'electric-newline-and-maybe-indent))
-
 (lunaryorn-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
   (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file)
