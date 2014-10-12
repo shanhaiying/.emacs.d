@@ -607,6 +607,10 @@ mouse-3: go to end")
 (lunaryorn-after smex
   (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 
+;; Tune `eval-expression'
+(dolist (fn '(eldoc-mode paredit-mode))
+  (add-hook 'eval-expression-minibuffer-setup-hook fn))
+
 
 ;;; Buffer, Windows and Frames
 
