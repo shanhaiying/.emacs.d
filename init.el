@@ -1101,7 +1101,7 @@ Disable the highlighting of overlong lines."
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 
-;;; Syntaax checking
+;;; Syntax checking
 
 ;; On the fly syntax checking
 (lunaryorn-after flycheck
@@ -1139,7 +1139,10 @@ Disable the highlighting of overlong lines."
         flycheck-mode-line
         '(:eval (lunaryorn-flycheck-mode-line-status))
         flycheck-display-errors-function
-        #'flycheck-display-error-messages-unless-error-list))
+        #'flycheck-display-error-messages-unless-error-list)
+
+  ;; Use italic face for checker name
+  (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic))
 (global-flycheck-mode)
 
 
