@@ -656,7 +656,17 @@ Add this to `kill-buffer-query-functions'."
                 " "
                 (vc-status 16 16 :left)
                 " "
-                filename-and-process))))
+                filename-and-process)
+          (mark modified read-only " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " " filename-and-process)
+          (mark " "
+                (name 16 -1)
+                " " filename))))
 
 ;; Move between windows with Shift + Arrow keys
 (windmove-default-keybindings)
