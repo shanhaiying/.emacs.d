@@ -315,6 +315,22 @@ mode symbol."
   (when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
     (setq locate-command mdfind)))
 
+;; Trash support for OS X.  On OS X, Emacs doesn't support the system trash
+;; properly, so we try to work around it by providing our own trashing function.
+;; If that fails, disable trashing and warn!
+(defconst lunaryorn-darwin-trash-tool "trash"
+  "A CLI tool to trash files.")
+
+(defun lunaryorn-darwin-move-file-to-trash (file)
+  "Move FILE to trash on OS X."
+  (call-process lunaryorn-darwin-trash-tool nil nil nil (expand-file-name file)))
+
+(if (executable-find lunaryorn-darwin-trash-tool)
+    (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
+  (warn "Trash support not available!
+Install Trash from https://github.com/ali-rantakari/trash!
+Homebrew: brew install trash"))
+
 ;; Utility functions for OS X
 (defun lunaryorn-id-of-bundle (bundle)
   "Get the ID of a BUNDLE.
@@ -357,13 +373,6 @@ Without FORMULA determine whether Homebrew itself is available."
   (if formula
       (when (lunaryorn-homebrew-prefix formula) t)
     (when (executable-find "brew") t)))
-
-(defconst lunaryorn-darwin-trash-tool "trash"
-  "A CLI tool to trash files.")
-
-(defun lunaryorn-darwin-move-file-to-trash (file)
-  "Move FILE to trash on OS X."
-  (call-process lunaryorn-darwin-trash-tool nil nil nil (expand-file-name file)))
 
 
 ;;; User interface
@@ -705,18 +714,10 @@ Add this to `kill-buffer-query-functions'."
 (add-hook 'focus-out-hook #'lunaryorn-force-save-some-buffers)
 
 ;; Delete files to trash
-(setq delete-by-moving-to-trash t)
-
-;; On OS X, Emacs doesn't support the system trash properly, so we try to work
-;; around it by providing our own trashing function.  If that fails, disable
-;; trashing and warn!
-(when (and (eq system-type 'darwin) (not (fboundp 'system-move-file-to-trash)))
-  (if (executable-find lunaryorn-darwin-trash-tool)
-      (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
-    (warn "Trash support not available!
-Install Trash from https://github.com/ali-rantakari/trash!
-Homebrew: brew install trash")
-    (setq delete-by-moving-to-trash nil)))
+(setq delete-by-moving-to-trash
+      (or (not (eq system-type 'darwin)) ; Trash is well supported on other
+                                        ; systems
+          (fboundp 'system-move-file-to-trash)))
 
 ;; Store Tramp auto save files locally
 (lunaryorn-after tramp
