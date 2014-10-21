@@ -1765,11 +1765,12 @@ window."
 (when (boundp 'proof-general-version)
   ;; If Proof General is loaded, do some additional setup
   (add-to-list 'Info-directory-list (expand-file-name "doc/"))
-  (when (and (eq system-type 'darwin)
-             (lunaryorn-path-of-bundle "de.tum.in.isabelle")
-             (not (executable-find "isabelle-process")))
-    (warn "Isabelle not in `exec-path'. Run the following command:
-/Applications/Isabelle2013-2.app/Isabelle/bin/isabelle install /usr/local/bin")))
+  (when (eq system-type 'darwin)
+    (let ((isabelle-bundle (lunaryorn-path-of-bundle "de.tum.in.isabelle")))
+      (when (and isabelle-bundle
+                 (not (executable-find "isabelle_process")))
+        (warn "Isabelle not in `exec-path'. Run the following command:
+%s/Isabelle/bin/isabelle install /usr/local/bin" isabelle-bundle)))))
 
 (lunaryorn-after proof-useropts
   (setq proof-three-window-enable nil   ; More predictable window management
