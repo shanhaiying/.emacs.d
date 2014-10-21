@@ -1486,7 +1486,6 @@ window."
 ;; Enable some common Emacs Lisp helper modes
 (defvar lunaryorn-emacs-lisp-common-modes
   '(paredit-mode
-    turn-on-eldoc-mode                  ; Show function signatures in echo area
     elisp-slime-nav-mode)               ; Navigate to symbol definitions
   "Common modes for Emacs Lisp editing.")
 
@@ -1585,7 +1584,6 @@ window."
   (dolist (fun '(lunaryorn-python-filling ; PEP 8 compliant filling rules
                  subword-mode             ; Word commands on parts of ClassNames
                  anaconda-mode            ; Lookup, navigation and completion
-                 eldoc-mode               ; Inline documentation
                  lunaryorn-flycheck-setup-python))
     (add-hook 'python-mode-hook fun))
 
