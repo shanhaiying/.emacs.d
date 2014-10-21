@@ -32,7 +32,7 @@
 
 
 ;;; Initialization
-(when (version< emacs-version "24.4.50")
+(when (version< emacs-version "25")
   (error "This configuration needs Emacs trunk, but this is %s!" emacs-version))
 
 ;; And disable the site default settings
