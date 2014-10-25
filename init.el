@@ -170,6 +170,7 @@
     ;; Utilities
     projectile                          ; Project interaction
     google-this                         ; Google from Emacs
+    paradox                             ; Better package menu
     )
   "Packages needed by my configuration.")
 
@@ -1902,6 +1903,10 @@ Otherwise insert the date as Mar 04, 2014."
   (interactive "P")
   (insert (format-time-string (if iso "%F" "%b %d, %Y"))))
 
+(lunaryorn-after paradox
+  ;; Don't ask for a token, please
+  (setq paradox-github-token t))
+
 
 ;;; Calendar
 (lunaryorn-after calendar
@@ -2036,7 +2041,7 @@ Otherwise insert the date as Mar 04, 2014."
 (let ((map lunaryorn-list-map))
   (define-key map (kbd "b") #'list-bookmarks)
   (define-key map (kbd "e") #'list-flycheck-errors)
-  (define-key map (kbd "p") #'list-packages)
+  (define-key map (kbd "p") #'paradox-list-packages)
   (define-key map (kbd "P") #'package-list-packages-no-fetch)
   (define-key map (kbd "r") #'list-register)
   (define-key map (kbd "t") #'list-tags)
