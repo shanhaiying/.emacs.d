@@ -1684,7 +1684,7 @@ window."
         haskell-process-use-presentation-mode t ; Don't clutter the echo area
         haskell-process-show-debug-tips nil ; Disable tips
         haskell-process-log t           ; Log debugging information
-        haskell-process-type 'cabal-repl))
+        ))
 
 (lunaryorn-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
