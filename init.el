@@ -1655,6 +1655,7 @@ window."
                  haskell-decl-scan-mode  ; Scan and navigate declarations
                  structured-haskell-mode ; Acceptable Haskell indentation
                  haskell-auto-insert-module-template ; Insert module templates
+                 interactive-haskell-mode
                  ))
     (add-hook 'haskell-mode-hook fun))
 
@@ -2136,19 +2137,9 @@ Otherwise insert the date as Mar 04, 2014."
     (define-key map (kbd "C-c h") #'haskell-hoogle)
     (define-key map (kbd "C-c d") #'haskell-describe)
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
-    ;; Replace Inferior Haskell Mode with Interactive Haskell Mode
-    (define-key map (kbd "C-c C-l") #'haskell-process-load-or-reload)
-    (define-key map (kbd "C-c C-z") #'haskell-interactive-bring)
-    (define-key map (kbd "C-c C-t") #'haskell-process-do-type)
-    (define-key map (kbd "C-c C-i") #'haskell-process-do-info)
-    (define-key map (kbd "C-c C-c") #'haskell-process-cabal-build)
-    (define-key map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
-    (define-key map (kbd "C-c c") #'haskell-process-cabal)
-    ;; Magic space
-    (define-key map (kbd "SPC") #'haskell-mode-contextual-space)
     ;; Some convenience bindings
     (define-key map (kbd "C-c I") #'haskell-navigate-imports)
-    (define-key map (kbd "M-.") #'haskell-mode-tag-find)))
+    (define-key map (kbd "M-.") #'haskell-mode-jump-to-def-or-tag)))
 
 (lunaryorn-after haskell-cabal
   (let ((map haskell-cabal-mode-map))
