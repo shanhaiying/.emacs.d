@@ -1645,11 +1645,7 @@ window."
 (lunaryorn-after haskell-mode
   ;; We need the following tools for our Haskell setup:
   ;;
-  ;; cabal install hasktags hoogle
-  ;;
-  ;; Much of this Haskell Mode setup is taken from
-  ;; https://github.com/chrisdone/chrisdone-emacs
-
+  ;; cabal install hasktags structured-haskell-mode haskell-stylish
   (dolist (fun '(haskell-doc-mode        ; Eldoc for Haskell
                  subword-mode            ; Subword navigation
                  haskell-decl-scan-mode  ; Scan and navigate declarations
@@ -1681,10 +1677,14 @@ window."
   ;; modules respectively
   (setq haskell-process-suggest-remove-import-lines t
         haskell-process-auto-import-loaded-modules t
-        haskell-process-suggest-hoogle-imports t
         haskell-process-use-presentation-mode t ; Don't clutter the echo area
         haskell-process-show-debug-tips nil ; Disable tips
         haskell-process-log t           ; Log debugging information
+        ;; Suggest imports automatically with Hayoo.  Hayoo is slower because
+        ;; it's networked, but it covers all of hackage, which is really an
+        ;; advantage.
+        haskell-process-suggest-hoogle-imports nil
+        haskell-process-suggest-hayoo-imports t
         ))
 
 (lunaryorn-after flycheck
@@ -2134,7 +2134,8 @@ Otherwise insert the date as Mar 04, 2014."
 
 (lunaryorn-after haskell-mode
   (let ((map haskell-mode-map))
-    (define-key map (kbd "C-c h") #'haskell-hoogle)
+    (define-key map (kbd "C-c h") #'haskell-hayoo)
+    (define-key map (kbd "C-c H") #'haskell-hoogle)
     (define-key map (kbd "C-c d") #'haskell-describe)
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
     ;; Some convenience bindings
