@@ -1638,7 +1638,6 @@ window."
   ;; We need the following tools for our Haskell setup:
   ;;
   ;; cabal install hasktags structured-haskell-mode haskell-stylish
-  (add-hook 'haskell-mode-hok #'haskell-doc-mode) ; Eldoc for Haskell
   (add-hook 'haskell-mode-hok #'subword-mode)     ; Subword navigation
   (add-hook 'haskell-mode-hok #'haskell-decl-scan-mode) ; Scan and navigate
                                         ; declarations
@@ -1660,12 +1659,10 @@ window."
 
 (lunaryorn-after inf-haskell
   (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion)
-  (add-hook 'inferior-haskell-mode-hook #'haskell-doc-mode)
   (add-hook 'inferior-haskell-mode-hook #'subword-mode))
 
 (lunaryorn-after haskell-interactive-mode
   (add-hook 'haskell-interactive-mode-hook #'turn-on-ghci-completion)
-  (add-hook 'haskell-interactive-mode-hook #'haskell-doc-mode)
   (add-hook 'haskell-interactive-mode-hook #'subword-mode))
 
 (lunaryorn-after haskell-process
