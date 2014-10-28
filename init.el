@@ -618,8 +618,8 @@ mouse-3: go to end")
   (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 
 ;; Tune `eval-expression'
-(dolist (fn '(eldoc-mode paredit-mode))
-  (add-hook 'eval-expression-minibuffer-setup-hook fn))
+(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
 
 
 ;;; Buffer, Windows and Frames
@@ -961,8 +961,8 @@ Disable the highlighting of overlong lines."
 
 ;; Clean up whitespace
 (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
-  (dolist (mode (list #'whitespace-mode #'whitespace-cleanup-mode))
-    (add-hook hook mode)))
+  (add-hook hook #'whitespace-mode)
+  (add-hook hook #'whitespace-cleanup-mode))
 
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
@@ -1188,10 +1188,10 @@ Disable the highlighting of overlong lines."
         ;; No language-specific hyphens please
         LaTeX-babel-hyphen nil)
 
-  (dolist (mode '(LaTeX-math-mode       ; Easy math input
-                  LaTeX-preview-setup   ; Setup LaTeX preview
-                  reftex-mode))         ; Cross references on steroids
-    (add-hook 'LaTeX-mode-hook mode)))
+  (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode) ; Easy math input
+  (add-hook 'LaTeX-math-mode #'LaTeX-preview-setup)  ; LaTeX in-buffer previews
+  (add-hook 'LaTeX-mode-hook #'reftex-mode) ; Cross-refs on steroids
+  )
 
 (lunaryorn-after tex-mode
   (font-lock-add-keywords 'latex-mode
@@ -1367,10 +1367,12 @@ Choose Skim if available, or fall back to the default application."
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
 
-  ;; Don't do filling in GFM mode, where line breaks are significant, and do not
-  ;; highlight overlong lines.  Instead enable visual lines.
-  (dolist (mode '(turn-off-fci-mode turn-off-auto-fill visual-line-mode))
-    (add-hook 'gfm-mode-hook mode))
+  ;; No filling and no indicator in GFM mode, because line breaks are
+  ;; significant
+  (add-hook 'gfm-mode-hook #'turn-off-fci-mode)
+  (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
+  ;; Use visual lines instead
+  (add-hook 'gfm-mode-hook #'visual-line-mode)
 
   (lunaryorn-after whitespace
     (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)))
@@ -1379,17 +1381,14 @@ Choose Skim if available, or fall back to the default application."
 ;;; YAML
 
 (lunaryorn-after yaml-mode
-  ;; YAML is kind of a mixture between text and programming language, and hence
-  ;; derives from `fundamental-mode', so we enable a good mixture of our hooking
-  ;; explicitly.  We also add some special minor modes for YAML, notably
-  ;; `ansible-doc-mode' for Ansible documentation lookup
-  (dolist (mode '(whitespace-mode
-                  whitespace-cleanup-mode
-                  lunaryorn-auto-fill-comments-mode
-                  fci-mode
-                  flyspell-prog-mode
-                  ansible-doc-mode))
-    (add-hook 'yaml-mode-hook mode)))
+  ;; Whitespace handling and filling
+  (add-hook 'yaml-mode-hook #'whitespace-mode)
+  (add-hook 'yaml-mode-hook #'whitespace-cleanup-mode)
+  (add-hook 'yaml-mode-hook #'lunaryorn-auto-fill-comments-mode)
+  (add-hook 'yaml-mode-hook #'fci-mode)
+  (add-hook 'yaml-mode-hook #'flyspell-prog-mode) ; Spell checking
+  (add-hook 'yaml-mode-hook #'ansible-doc-mode) ; Ansible documentation lookup
+  )
 
 
 ;;; Graphviz
@@ -1484,17 +1483,9 @@ window."
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
 (lunaryorn-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
 
-;; Enable some common Emacs Lisp helper modes
-(defvar lunaryorn-emacs-lisp-common-modes
-  '(paredit-mode
-    elisp-slime-nav-mode)               ; Navigate to symbol definitions
-  "Common modes for Emacs Lisp editing.")
-
 (lunaryorn-after lisp-mode
-  (dolist (mode lunaryorn-emacs-lisp-common-modes)
-    (dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook))
-      (add-hook hook mode)))
-
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
   ;; Check doc conventions when eval'ing expressions
   (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
 
@@ -1522,9 +1513,8 @@ window."
   (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
 
 (lunaryorn-after ielm
-  (dolist (mode lunaryorn-emacs-lisp-common-modes)
-    (add-hook 'ielm-mode-hook mode))
-
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
   ;; Enable lexical binding in IELM
   (add-hook 'ielm-mode-hook (lambda () (setq lexical-binding t))))
 
@@ -1581,18 +1571,20 @@ window."
 
 ;;; Python
 
-(lunaryorn-after python
-  (dolist (fun '(lunaryorn-python-filling ; PEP 8 compliant filling rules
-                 subword-mode             ; Word commands on parts of ClassNames
-                 anaconda-mode            ; Lookup, navigation and completion
-                 lunaryorn-flycheck-setup-python))
-    (add-hook 'python-mode-hook fun))
+;; Fill according to PEP 8
+(defun lunaryorn-python-filling ()
+  "Configure filling for Python."
+  ;; PEP 8 recommends a maximum of 79 characters
+  (setq fill-column 79))
 
-  ;; Fill according to PEP 8
-  (defun lunaryorn-python-filling ()
-    "Configure filling for Python."
-    ;; PEP 8 recommends a maximum of 79 characters
-    (setq fill-column 79))
+(lunaryorn-after python
+  ;; PEP 8 compliant filling rules
+  (add-hook 'python-mode-hook #'lunaryorn-python-filling)
+  (add-hook 'python-mode-hook #'subword-mode)
+  ;; Lookup, navigation and completion
+  (add-hook 'python-mode-hook #'anaconda-mode)
+  ;; Pick Flycheck executables from current virtualenv automatically
+  (add-hook 'python-mode-hook #'lunaryorn-flycheck-setup-python)
 
   ;; Use a decent syntax and style checker
   (setq python-check-command "pylint")
@@ -1626,8 +1618,8 @@ window."
 ;;; Ruby
 (lunaryorn-after ruby-mode
   ;; Setup inf-ruby and Robe
-  (dolist (mode '(robe-mode inf-ruby-minor-mode))
-    (add-hook 'ruby-mode-hook mode))
+  (add-hook 'ruby-mode-hook #'robe-mode)
+  (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode)
 
   ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
   (inf-ruby-switch-setup))
@@ -1646,15 +1638,18 @@ window."
   ;; We need the following tools for our Haskell setup:
   ;;
   ;; cabal install hasktags structured-haskell-mode haskell-stylish
-  (dolist (fun '(haskell-doc-mode        ; Eldoc for Haskell
-                 subword-mode            ; Subword navigation
-                 haskell-decl-scan-mode  ; Scan and navigate declarations
-                 structured-haskell-mode ; Acceptable Haskell indentation
-                 haskell-auto-insert-module-template ; Insert module templates
-                 interactive-haskell-mode
-                 ))
-    (add-hook 'haskell-mode-hook fun))
+  (add-hook 'haskell-mode-hok #'haskell-doc-mode) ; Eldoc for Haskell
+  (add-hook 'haskell-mode-hok #'subword-mode)     ; Subword navigation
+  (add-hook 'haskell-mode-hok #'haskell-decl-scan-mode) ; Scan and navigate
+                                        ; declarations
+  ;; Insert module templates into new buffers
+  (add-hook 'haskell-mode-hok #'haskell-auto-insert-module-template)
+  ;; Indentation and navigation on steroids
+  (add-hook 'haskell-mode-hok #'structured-haskell-mode)
+  ;; Better interactive repl, including Cabal project management
+  (add-hook 'haskell-mode-hok #'interactive-haskell-mode)
 
+  ;; Automatically run hasktags
   (setq haskell-tags-on-save t))
 
 (lunaryorn-after haskell-cabal
@@ -1664,16 +1659,14 @@ window."
   (require 'shm-case-split))
 
 (lunaryorn-after inf-haskell
-  (dolist (fun '(turn-on-ghci-completion ; Completion for GHCI commands
-                 haskell-doc-mode        ; Eldoc for Haskell
-                 subword-mode))          ; Subword navigation
-    (add-hook 'inferior-haskell-mode-hook fun)))
+  (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion)
+  (add-hook 'inferior-haskell-mode-hook #'haskell-doc-mode)
+  (add-hook 'inferior-haskell-mode-hook #'subword-mode))
 
 (lunaryorn-after haskell-interactive-mode
-  (dolist (fun '(turn-on-ghci-completion ; Completion for GHCI commands
-                 haskell-doc-mode        ; Eldoc for Haskell
-                 subword-mode))          ; Subword navigation
-    (add-hook 'haskell-interactive-mode-hook fun)))
+  (add-hook 'haskell-interactive-mode-hook #'turn-on-ghci-completion)
+  (add-hook 'haskell-interactive-mode-hook #'haskell-doc-mode)
+  (add-hook 'haskell-interactive-mode-hook #'subword-mode))
 
 (lunaryorn-after haskell-process
   ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI loaded
@@ -1757,8 +1750,9 @@ window."
 ;; Feature Mode
 (lunaryorn-after feature-mode
   ;; Add standard hooks for Feature Mode, since it is no derived mode
-  (dolist (mode '(whitespace-mode whitespace-cleanup-mode flyspell-mode))
-    (add-hook 'feature-mode mode)))
+  (add-hook 'feature-mode-hook #'whitespace-mode)
+  (add-hook 'feature-mode-hook #'whitespace-cleanup-mode)
+  (add-hook 'feature-mode-hook #'flyspell-mode))
 
 
 ;;; Proof General
