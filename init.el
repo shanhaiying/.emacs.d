@@ -1657,6 +1657,9 @@ window."
 
   (setq haskell-tags-on-save t))
 
+(lunaryorn-after haskell-cabal
+  (add-hook 'haskell-cabal-mode #'interactive-haskell-mode))
+
 (lunaryorn-after shm
   (require 'shm-case-split))
 
@@ -2141,13 +2144,6 @@ Otherwise insert the date as Mar 04, 2014."
     ;; Some convenience bindings
     (define-key map (kbd "C-c I") #'haskell-navigate-imports)
     (define-key map (kbd "M-.") #'haskell-mode-jump-to-def-or-tag)))
-
-(lunaryorn-after haskell-cabal
-  (let ((map haskell-cabal-mode-map))
-    (define-key map (kbd "C-`") #'haskell-interactive-bring)
-    (define-key map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
-    (define-key map (kbd "C-c C-c") #'haskell-process-cabal-build)
-    (define-key map (kbd "C-c c") #'haskell-process-cabal)))
 
 (lunaryorn-after tuareg
   ;; Please, Tuareg, don't kill my imenu
