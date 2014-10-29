@@ -1638,15 +1638,15 @@ window."
   ;; We need the following tools for our Haskell setup:
   ;;
   ;; cabal install hasktags structured-haskell-mode haskell-stylish
-  (add-hook 'haskell-mode-hok #'subword-mode)     ; Subword navigation
-  (add-hook 'haskell-mode-hok #'haskell-decl-scan-mode) ; Scan and navigate
+  (add-hook 'haskell-mode-hook #'subword-mode)     ; Subword navigation
+  (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode) ; Scan and navigate
                                         ; declarations
   ;; Insert module templates into new buffers
-  (add-hook 'haskell-mode-hok #'haskell-auto-insert-module-template)
+  (add-hook 'haskell-mode-hook #'haskell-auto-insert-module-template)
   ;; Indentation and navigation on steroids
-  (add-hook 'haskell-mode-hok #'structured-haskell-mode)
+  (add-hook 'haskell-mode-hook #'structured-haskell-mode)
   ;; Better interactive repl, including Cabal project management
-  (add-hook 'haskell-mode-hok #'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
 
   ;; Automatically run hasktags
   (setq haskell-tags-on-save t))
