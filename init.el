@@ -2013,6 +2013,15 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key map (kbd "K") #'ag-kill-buffers)
   map)
 
+(defvar lunaryorn-align-map nil
+  "Keymap for aligning text.")
+
+(define-prefix-command 'lunaryorn-align 'lunaryorn-align-map)
+(let ((map lunaryorn-align-map))
+  (define-key map (kbd "a") #'align)
+  (define-key map (kbd "c") #'align-current)
+  (define-key map (kbd "r") #'align-regexp))
+
 (defvar lunaryorn-files-map nil
   "Keymap for file operations.")
 
@@ -2084,9 +2093,6 @@ Otherwise insert the date as Mar 04, 2014."
 
 (define-prefix-command 'lunaryorn-utility 'lunaryorn-utilities-map)
 (let ((map lunaryorn-utilities-map))
-  (define-key map (kbd "a") #'align-current)
-  (define-key map (kbd "r") #'align-region)
-  (define-key map (kbd "A") #'align-regexp)
   (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
   (define-key map (kbd "d") #'lunaryorn-insert-current-date)
   map)
@@ -2094,6 +2100,7 @@ Otherwise insert the date as Mar 04, 2014."
 ;; User key bindings in the C-c space.
 (global-set-key (kbd "C-c SPC") #'ace-jump-mode)
 (global-set-key (kbd "C-c a") #'lunaryorn-ag)
+(global-set-key (kbd "C-c A") #'lunaryorn-align)
 (global-set-key (kbd "C-c B") #'browse-url)
 (global-set-key (kbd "C-c c") #'compile)
 (global-set-key (kbd "C-c C") #'recompile)
