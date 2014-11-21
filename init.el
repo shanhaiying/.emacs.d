@@ -107,6 +107,7 @@
     visual-regexp                       ; Regexp reloaded
     ;; Completion and expansion
     company                             ; Auto completion
+    company-math                        ; Math characters for completion
     ;; LaTeX/AUCTeX
     auctex                              ; The one and only LaTeX environment
     auctex-latexmk                      ; latexmk support for AUCTeX
@@ -1077,11 +1078,12 @@ Disable the highlighting of overlong lines."
 
 ;; Enable auto-completion
 (lunaryorn-after company
-  ;; Make auto completion a little less aggressive.
-  (setq company-idle-delay 1.0
-        company-begin-commands '(self-insert-command)
-        company-show-numbers t))        ; Eausy navigation to candidates with
-                                        ; M-<n>
+  (setq company-tooltip-align-annotations t
+        ;; Easy navigation to candidates with M-<n>
+        company-show-numbers t)
+
+  ;; Add backend for math characters
+  (add-to-list 'company-backend 'company-math-symbols-unicode))
 (global-company-mode)
 
 
@@ -1200,6 +1202,15 @@ Disable the highlighting of overlong lines."
                                   "fx" (1+ (or (syntax word) (syntax symbol)))
                                   symbol-end)
                              . font-lock-warning-face))))
+
+(lunaryorn-after company
+  (defun lunaryorn-add-latex-backends ()
+    "Add additional Company backends for LaTeX."
+    (setq-local company-backends
+                (cons #'company-math-symbols-latex
+                      (cons #'company-latex-commands company-backends))))
+
+  (add-hook 'LaTeX-mode-hook 'lunaryorn-add-latex-backends))
 
 ;;;; TeX processing settings
 (lunaryorn-after tex-buf
