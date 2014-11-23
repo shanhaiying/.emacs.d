@@ -426,12 +426,6 @@ Without FORMULA determine whether Homebrew itself is available."
 
 ;;; The mode line
 
-;; Reduce font size in mode line, to increase about of information fitting in
-(let* ((default-height (face-attribute 'default :height nil t))
-       (mode-line-height (- default-height 20)))
-  (dolist (face '(mode-line mode-line-inactive))
-    (set-face-attribute face nil :height mode-line-height)))
-
 ;; Standard stuff
 (line-number-mode)
 (column-number-mode)
