@@ -42,8 +42,7 @@
 (require 'time-date)
 (let ((time-since-build (time-subtract (current-time) emacs-build-time)))
   (when (> (time-to-number-of-days time-since-build) 7)
-    (unless (yes-or-no-p "Your Emacs build is more than a week old! Continue anyway? ")
-      (kill-emacs))))
+    (lwarn 'emacs :warning "Your Emacs build is more than a week old!")))
 
 ;; Debugging
 (setq message-log-max 10000)
