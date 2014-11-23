@@ -400,51 +400,14 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; ridiculously bizarre thing entirely.
 (fset 'display-startup-echo-area-message 'ignore)
 
-;; Choose Font and color theme.  We prefer Source Code Pro, and then Anonymous
-;; Pro from http://www.marksimonson.com/fonts/view/anonymous-pro or Inconsolata
-;; (from the Google Webfont directory).  On OS X, we need to give these fonts a
-;; larger size.  If neither is available, we fall back to the standard faces of
-;; OS X (Menlo), Linux (DejaVu Sans Mono) or Windows (Consolas, Courier New)
-(defconst lunaryorn-preferred-monospace-fonts
-  `(("Source Code Pro" . ,(if (eq system-type 'darwin) 130 100))
-    ("Anonymous Pro" . ,(if (eq system-type 'darwin) 140 110))
-    ("Anonymous Pro Minus" . ,(if (eq system-type 'darwin) 140 110))
-    ("Inconsolata" . ,(if (eq system-type 'darwin) 140 110))
-    ("Menlo" . 130)
-    ("Consolas" . 130)
-    ("DejaVu Sans Mono" 110)
-    ("Courier New" . 130))
-  "My preferred monospace fonts.
-
-The `car' of each item is the font family, the `cdr' the preferred font size.")
-
-(defconst lunaryorn-preferred-proportional-fonts
-  '(("Lucida Grande" . 120)
-    ("DejaVu Sans" . 110))
-  "My preferred proportional fonts.
-
-The `car' of each item is the font family, the `cdr' the preferred font size.")
-
-(defun lunaryorn-first-existing-font (fonts)
-  "Get the first existing font from FONTS."
-  (let (font)
-    (while (and fonts
-                (not (setq font (when (x-family-fonts (caar fonts))
-                                  (car fonts)))))
-      (setq fonts (cdr fonts)))
-    font))
-
-(defun lunaryorn-choose-best-fonts ()
-  "Choose the best fonts."
-  (interactive)
-  (when-let (font (lunaryorn-first-existing-font lunaryorn-preferred-monospace-fonts))
-    (dolist (face '(default fixed-pitch))
-      (set-face-attribute face nil :family (car font) :height (cdr font))))
-  (when-let (font (lunaryorn-first-existing-font lunaryorn-preferred-proportional-fonts))
-    (set-face-attribute 'variable-pitch nil
-                        :family (car font) :height (cdr font))))
-
-(lunaryorn-choose-best-fonts)
+;;; Font setup
+(let ((font "Source Code Pro")
+      (size (pcase system-type
+              (`darwin 13)
+              (_ 10))))
+  (if (x-family-fonts font)
+      (set-frame-font (format "%s-%s" font size) nil t)
+    (lwarn 'emacs :warning "%S font is missing!" font)))
 
 (lunaryorn-after solarized
   ;; Disable variable pitch fonts in Solarized theme
