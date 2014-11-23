@@ -981,7 +981,10 @@ Disable the highlighting of overlong lines."
 ;; Highlight delimiters…
 (show-paren-mode)                       ; … by matching delimiters
 (lunaryorn-after paren
-  (setq show-paren-style 'mixed))
+  ;; Show parenthesis more aggressively
+  (setq show-paren-style 'mixed
+        show-paren-when-point-inside-paren t
+        show-paren-when-point-in-periphery t))
 (dolist (hook '(text-mode-hook prog-mode-hook)) ; … by depth
   (add-hook hook #'rainbow-delimiters-mode))
 ;; Add custom highlights to buffers
