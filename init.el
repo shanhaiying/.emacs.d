@@ -91,7 +91,6 @@
     ace-jump-mode                       ; Fast jump within the buffer
     ;; Editing indicators
     nlinum                              ; Line numbers in display margin
-    fill-column-indicator               ; Indicate fill column,
     page-break-lines                    ; page breaks
     volatile-highlights                 ; certain editing operations,
     flycheck                            ; and syntax errors
@@ -933,8 +932,6 @@ Disable the highlighting of overlong lines."
 ;; Configure a reasonable fill column, indicate it in the buffer and enable
 ;; automatic filling
 (setq-default fill-column 80)
-(dolist (hook '(prog-mode-hook text-mode-hook))
-  (add-hook hook 'fci-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (define-minor-mode lunaryorn-auto-fill-comments-mode
