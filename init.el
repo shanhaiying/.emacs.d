@@ -77,6 +77,7 @@
     smex                                ; Improved M-x
     fancy-battery                       ; Nice battery display
     nyan-mode                           ; Most awesome mode line extension evar
+    diminish                            ; Keep mode line clean
     ;; Buffer management
     ibuffer-vc                         ; Group and sort buffers by VC state
     ;; File handling
@@ -436,7 +437,10 @@ Without FORMULA determine whether Homebrew itself is available."
 (global-anzu-mode)
 (lunaryorn-after anzu
   ;; Please don't mess with my mode line
-  (setq anzu-cons-mode-line-p nil))
+  (setq anzu-cons-mode-line-p nil)
+
+  ;; Don't show Anzu in the mode line
+  (diminish 'anzu-mode))
 
 ;; Use an awesome cat to indicate the buffer position in the mode line!
 (lunaryorn-after nyan-mode
@@ -950,6 +954,9 @@ Disable the highlighting of overlong lines."
 ;; Choose wrap prefix automatically
 (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
 
+;; Subword/superword editing
+(lunaryorn-after subword (diminish 'subword-mode))
+
 ;; Configure scrolling
 (setq scroll-margin 0                   ; Drag the point along while scrolling
       scroll-conservatively 1000        ; Never recenter the screen while scrolling
@@ -974,6 +981,7 @@ Disable the highlighting of overlong lines."
 (global-hl-line-mode 1)
 (require 'volatile-highlights)          ; Doesn't autoload :|
 (volatile-highlights-mode t)
+(diminish 'volatile-highlights-mode)
 
 ;; Highlight delimiters…
 (show-paren-mode)                       ; … by matching delimiters
@@ -994,13 +1002,16 @@ Disable the highlighting of overlong lines."
 
 ;; Power up undo
 (global-undo-tree-mode)
+(lunaryorn-after undo-tree (diminish 'undo-tree-mode))
 
 ;; Nicify page breaks
 (global-page-break-lines-mode)
+(lunaryorn-after page-break-lines (diminish 'page-break-lines-mode))
 
 ;; Outline commands
 (dolist (hook '(text-mode-hook prog-mode-hook))
   (add-hook hook #'outline-minor-mode))
+(lunaryorn-after outline (diminish 'outline-minor-mode))
 
 ;; An Emacs server for `emacsclient'
 (require 'server)
@@ -1041,7 +1052,9 @@ Disable the highlighting of overlong lines."
         company-show-numbers t)
 
   ;; Add backend for math characters
-  (add-to-list 'company-backend 'company-math-symbols-unicode))
+  (add-to-list 'company-backend 'company-math-symbols-unicode)
+
+  (diminish 'company-mode))
 (global-company-mode)
 
 
@@ -1066,7 +1079,9 @@ Disable the highlighting of overlong lines."
   (setq flyspell-use-meta-tab nil
         ;; Make Flyspell less chatty
         flyspell-issue-welcome-flag nil
-        flyspell-issue-message-flag nil))
+        flyspell-issue-message-flag nil)
+
+  (diminish 'flyspell-mode))
 
 (dolist (hook '(text-mode-hook message-mode-hook))
   (add-hook hook 'turn-on-flyspell))
@@ -1114,7 +1129,11 @@ Disable the highlighting of overlong lines."
         #'flycheck-display-error-messages-unless-error-list)
 
   ;; Use italic face for checker name
-  (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic))
+  (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic)
+
+  ;; Remove Flycheck from the mode line.  It has a prominent place in front of
+  ;; the mode list, we don't need it twice
+  (diminish 'flycheck-mode))
 (global-flycheck-mode)
 
 
@@ -1306,7 +1325,9 @@ Choose Skim if available, or fall back to the default application."
                              (?F . "\\fullcite[]{%l}")
                              (?x . "[]{%l}")
                              (?X . "{%l}"))))
-    (setq reftex-cite-format 'biblatex)))
+    (setq reftex-cite-format 'biblatex))
+
+  (diminish 'reftex-mode))
 
 ;; Plug reftex into bib-cite
 (lunaryorn-after bib-cite
@@ -1359,6 +1380,8 @@ Choose Skim if available, or fall back to the default application."
   (add-hook 'yaml-mode-hook #'ansible-doc-mode) ; Ansible documentation lookup
   )
 
+(lunaryorn-after ansible-doc (diminish 'ansible-doc-mode))
+
 
 ;;; Graphviz
 
@@ -1382,8 +1405,9 @@ Choose Skim if available, or fall back to the default application."
 (lunaryorn-after highlight-symbol
   (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
         highlight-symbol-on-navigation-p t) ; Highlight immediately after
-                                            ; navigation
-  )
+                                        ; navigation
+
+  (diminish 'highlight-symbol-mode))
 (add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
 
@@ -1515,6 +1539,10 @@ window."
   (lunaryorn-after ielm
     (add-hook 'ielm-mode-hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
 
+;;; Diminish minor modes
+(lunaryorn-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
+(lunaryorn-after checkdoc (diminish 'checkdoc-minor-mode))
+
 
 ;;; Clojure
 
@@ -1624,7 +1652,9 @@ window."
   (add-hook 'haskell-cabal-mode #'interactive-haskell-mode))
 
 (lunaryorn-after shm
-  (require 'shm-case-split))
+  (require 'shm-case-split)
+
+  (diminish 'structured-haskell-mode))
 
 (lunaryorn-after inf-haskell
   (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion)
@@ -1646,8 +1676,9 @@ window."
         ;; it's networked, but it covers all of hackage, which is really an
         ;; advantage.
         haskell-process-suggest-hoogle-imports nil
-        haskell-process-suggest-hayoo-imports t
-        ))
+        haskell-process-suggest-hayoo-imports t)
+
+  (diminish 'interactive-haskell-mode))
 
 (lunaryorn-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
@@ -1843,7 +1874,11 @@ window."
   ;; because they are way more powerful
   (let ((prefix-map (lookup-key projectile-mode-map projectile-keymap-prefix)))
     (define-key prefix-map "a" lunaryorn-ag-project-map))
-  (define-key projectile-mode-map [remap projectile-ag] nil))
+  (define-key projectile-mode-map [remap projectile-ag] nil)
+
+  ;; Remove Projectile from the minor mode list.  We already have it at a more
+  ;; prominent place, and don't need it twice
+  (diminish 'projectile-mode))
 (projectile-global-mode)
 
 ;; Quickly switch to IELM
@@ -1857,6 +1892,7 @@ Create a new ielm process if required."
 
 ;; Google from Emacs, under C-c /
 (google-this-mode)
+(lunaryorn-after google-this (diminish 'google-this-mode))
 
 ;; Insert date and time
 (defun lunaryorn-insert-current-date (iso)
