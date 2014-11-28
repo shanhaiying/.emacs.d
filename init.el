@@ -518,11 +518,12 @@ mouse-3: go to end")
                 (paredit-mode (:propertize " ()" face bold))
                 ;; Warn if whitespace isn't highlighted or cleaned in this
                 ;; buffer.
-                (:eval (cond
-                        ((not whitespace-mode)
-                         (propertize " SPACE" 'face '(bold error)))
-                        ((not whitespace-cleanup-mode)
-                         (propertize " WSC" 'face 'warning))))
+                (:eval (unless buffer-read-only
+                         (cond
+                          ((not whitespace-mode)
+                           (propertize " SPACE" 'face '(bold error)))
+                          ((not whitespace-cleanup-mode)
+                           (propertize " WSC" 'face 'warning)))))
                 (projectile-mode projectile-mode-line)
                 (vc-mode lunaryorn-vc-mode-line)   ; VC information
                 (flycheck-mode flycheck-mode-line) ; Flycheck status
