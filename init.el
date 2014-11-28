@@ -1486,6 +1486,8 @@ window."
 (add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
 (lunaryorn-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
 
+(lunaryorn-after paredit (diminish 'paredit-mode))
+
 (lunaryorn-after lisp-mode
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
   (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
