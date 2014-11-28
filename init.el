@@ -1375,7 +1375,6 @@ Choose Skim if available, or fall back to the default application."
   (add-hook 'yaml-mode-hook #'whitespace-mode)
   (add-hook 'yaml-mode-hook #'whitespace-cleanup-mode)
   (add-hook 'yaml-mode-hook #'lunaryorn-auto-fill-comments-mode)
-  (add-hook 'yaml-mode-hook #'fci-mode)
   (add-hook 'yaml-mode-hook #'flyspell-prog-mode) ; Spell checking
   (add-hook 'yaml-mode-hook #'ansible-doc-mode) ; Ansible documentation lookup
   )
