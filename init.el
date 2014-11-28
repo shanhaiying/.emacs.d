@@ -914,7 +914,9 @@ point reaches the beginning or end of the buffer, stop there."
   ;; portions of lines via faces.  Also indicate tabs via characters
   (setq whitespace-style '(face indentation space-after-tab space-before-tab
                                 tab-mark empty trailing lines-tail)
-        whitespace-line-column nil))    ; Use `fill-column' for overlong lines
+        whitespace-line-column nil)     ; Use `fill-column' for overlong lines
+
+  (diminish 'whitespace-mode))
 
 ;; A function to disable highlighting of long lines in modes
 (lunaryorn-after whitespace
@@ -932,6 +934,8 @@ Disable the highlighting of overlong lines."
 (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
   (add-hook hook #'whitespace-mode)
   (add-hook hook #'whitespace-cleanup-mode))
+
+(lunaryorn-after whitespace-cleanup-mode (diminish 'whitespace-cleanup-mode))
 
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
