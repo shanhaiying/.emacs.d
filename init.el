@@ -150,6 +150,7 @@
     ;; OCaml support
     tuareg                              ; OCaml major mode
     merlin                              ; OCaml completion engine
+    flycheck-ocaml                      ; Flycheck support for OCaml
     ;; Lisp tools
     paredit                            ; Balanced parenthesis editing
     ;; Emacs Lisp utility modes and libraries
@@ -1728,7 +1729,10 @@ window."
   (add-hook 'tuareg-mode-hook #'merlin-mode))
 
 (lunaryorn-after merlin
-  (setq merlin-command 'opam))          ; Use Merlin from current OPAM env
+  (setq merlin-command 'opam)           ; Use Merlin from current OPAM env
+
+  ;; Enable Flycheck support for Merlin
+  (flycheck-ocaml-setup))
 
 
 ;;; Shell scripting
