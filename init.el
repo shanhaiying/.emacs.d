@@ -521,9 +521,9 @@ mouse-3: go to end")
                 ;; buffer.
                 (:eval (unless buffer-read-only
                          (cond
-                          ((not whitespace-mode)
+                          ((not (bound-and-true-p whitespace-mode))
                            (propertize " SPACE" 'face '(bold error)))
-                          ((not whitespace-cleanup-mode)
+                          ((not (bound-and-true-p whitespace-cleanup-mode))
                            (propertize " WSC" 'face 'warning)))))
                 (projectile-mode projectile-mode-line)
                 (vc-mode lunaryorn-vc-mode-line)   ; VC information
