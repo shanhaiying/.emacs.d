@@ -395,13 +395,13 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; No blinking and beeping, no startup screen, no scratch message and short
 ;; Yes/No questions.
 (blink-cursor-mode -1)
-(setq ring-bell-function 'ignore
+(setq ring-bell-function #'ignore
       inhibit-startup-screen t
       initial-scratch-message nil)
-(fset 'yes-or-no-p 'y-or-n-p)
+(fset 'yes-or-no-p #'y-or-n-p)
 ;; Opt out from the startup message in the echo area by simply disabling this
 ;; ridiculously bizarre thing entirely.
-(fset 'display-startup-echo-area-message 'ignore)
+(fset 'display-startup-echo-area-message #'ignore)
 
 ;;; Font setup
 (let ((font "Source Code Pro")
