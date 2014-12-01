@@ -182,9 +182,10 @@
   (interactive)
   (unless package-archive-contents
     (package-refresh-contents))
-  (dolist (package lunaryorn-packages)
-    (unless (package-installed-p package)
-      (package-install package))))
+  (with-demoted-errors "Error while installing packages: %S"
+    (dolist (package lunaryorn-packages)
+      (unless (package-installed-p package)
+        (package-install package)))))
 
 (lunaryorn-ensure-packages)
 
