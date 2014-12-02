@@ -76,7 +76,6 @@
     browse-kill-ring                    ; Kill ring browser
     smex                                ; Improved M-x
     fancy-battery                       ; Nice battery display
-    nyan-mode                           ; Most awesome mode line extension evar
     diminish                            ; Keep mode line clean
     ;; Buffer management
     ibuffer-vc                         ; Group and sort buffers by VC state
@@ -444,13 +443,6 @@ Without FORMULA determine whether Homebrew itself is available."
   ;; Don't show Anzu in the mode line
   (diminish 'anzu-mode))
 
-;; Use an awesome cat to indicate the buffer position in the mode line!
-(lunaryorn-after nyan-mode
-  ;; Reduce size of nyan bar.  My mode line is too small for the whole thing in
-  ;; its unshortened awesomeness!
-  (setq nyan-bar-length 16))
-(autoload 'nyan-create "nyan-mode")     ; Nyan is missing autoloads
-
 ;; Show the current function name in the mode line
 (lunaryorn-after which-func
   (setq which-func-unknown "⊥" ; The default is really boring…
@@ -538,11 +530,6 @@ mouse-3: go to end")
                 mode-line-misc-info
                 ;; And the modes, which we don't really care for anyway
                 " " mode-line-modes mode-line-end-spaces)
-              mode-line-position
-              '((:eval (nyan-create))
-                " "
-                (line-number-mode
-                 ("%l" (column-number-mode ":%c"))))
               mode-line-remote
               '(:eval
                 (when-let (host (file-remote-p default-directory 'host))
