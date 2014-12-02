@@ -1001,8 +1001,7 @@ Disable the highlighting of overlong lines."
 (show-paren-mode)                       ; … by matching delimiters
 (lunaryorn-after paren
   ;; Show parenthesis more aggressively
-  (setq show-paren-style 'mixed
-        show-paren-when-point-inside-paren t
+  (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t))
 (dolist (hook '(text-mode-hook prog-mode-hook)) ; … by depth
   (add-hook hook #'rainbow-delimiters-mode))
