@@ -533,12 +533,7 @@ mouse-3: go to end")
               '(:eval
                 (when-let (host (file-remote-p default-directory 'host))
                   (propertize (concat "@" host) 'face
-                              '(italic warning))))
-              mode-line-modified
-              '(:eval
-                (cond (buffer-read-only (propertize "X" 'face 'warning))
-                      ((buffer-modified-p) (propertize "✸" 'face 'error))
-                      (t (propertize "⛃" 'face 'success)))))
+                              '(italic warning)))))
 
 
 ;;; The minibuffer
