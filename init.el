@@ -431,7 +431,6 @@ Without FORMULA determine whether Homebrew itself is available."
 ;; Standard stuff
 (line-number-mode)
 (column-number-mode)
-(size-indication-mode)
 (fancy-battery-mode)                    ; Battery status
 
 ;; Indicate position/total matches for incremental searches in the mode line
