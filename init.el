@@ -720,7 +720,12 @@ Add this to `kill-buffer-query-functions'."
         ;; Cleanup recent files only when Emacs is idle, but not when the mode
         ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
         ;; idles often enough to have the recent files list clean up regularly
-        recentf-auto-cleanup 300))
+        recentf-auto-cleanup 300
+        ;; Don't track files from Git repositories, from ELPA and Cask package
+        ;; directories, and any boring files
+        recentf-exclude (list "/\\.git/.*\\'"
+                              "/elpa/.*\\'"
+                              #'ignoramus-boring-p)))
 (recentf-mode t)
 
 ;; Open recent files with IDO, see
