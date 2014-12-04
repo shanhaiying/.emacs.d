@@ -1710,7 +1710,9 @@ window."
   (add-hook 'tuareg-mode-hook #'merlin-mode))
 
 (lunaryorn-after merlin
-  (setq merlin-command 'opam)           ; Use Merlin from current OPAM env
+  (setq merlin-command 'opam            ; Use Merlin from current OPAM env
+        ;; Disable Merlin's own error checking in favour of Flycheck
+        merlin-error-after-save nil)
 
   ;; Enable Flycheck support for Merlin
   (flycheck-ocaml-setup))
