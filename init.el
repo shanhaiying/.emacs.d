@@ -69,8 +69,9 @@
     dash                                ; List processing
     epl                                 ; Package environment
     exec-path-from-shell                ; Environment fixup
-    ;; Color theme
+    ;; Color theme and fonts
     solarized-theme
+    unicode-fonts                       ; Unicode font setup
     ;; UI improvements
     anzu                                ; Mode line indicators for isearch
     browse-kill-ring                    ; Kill ring browser
@@ -410,6 +411,8 @@ Without FORMULA determine whether Homebrew itself is available."
   (if (x-family-fonts font)
       (set-frame-font (format "%s-%s" font size) nil t)
     (lwarn 'emacs :warning "%S font is missing!" font)))
+
+(unicode-fonts-setup)
 
 (lunaryorn-after solarized
   ;; Disable variable pitch fonts in Solarized theme
