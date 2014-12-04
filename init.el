@@ -721,10 +721,10 @@ Add this to `kill-buffer-query-functions'."
         ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
         ;; idles often enough to have the recent files list clean up regularly
         recentf-auto-cleanup 300
-        ;; Don't track files from Git repositories, from ELPA and Cask package
-        ;; directories, and any boring files
-        recentf-exclude (list "/\\.git/.*\\'"
-                              "/elpa/.*\\'"
+        recentf-exclude (list "/\\.git/.*\\'" ; Git contents
+                              "/elpa/.*\\'" ; Package files
+                              "/itsalltext/" ; It's all text temp files
+                              ;; And all other kinds of boring files
                               #'ignoramus-boring-p)))
 (recentf-mode t)
 
