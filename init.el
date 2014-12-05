@@ -1366,6 +1366,11 @@ Choose Skim if available, or fall back to the default application."
   ;; Use visual lines instead
   (add-hook 'gfm-mode-hook #'visual-line-mode)
 
+  ;; Fight my habit of constantly pressing M-q
+  (define-key gfm-mode-map (kbd "M-q") (lambda ()
+                                         (interactive)
+                                         (message "Don't fill, boy!")))
+
   (lunaryorn-after whitespace
     (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)))
 
