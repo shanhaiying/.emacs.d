@@ -1359,9 +1359,7 @@ Choose Skim if available, or fall back to the default application."
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
 
-  ;; No filling and no indicator in GFM mode, because line breaks are
-  ;; significant
-  (add-hook 'gfm-mode-hook #'turn-off-fci-mode)
+  ;; No filling in GFM, because line breaks are significant.
   (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
   ;; Use visual lines instead
   (add-hook 'gfm-mode-hook #'visual-line-mode)
