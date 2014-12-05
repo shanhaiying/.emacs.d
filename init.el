@@ -1352,9 +1352,6 @@ Choose Skim if available, or fall back to the default application."
 
 ;;; Markdown editing
 
-;; Why doesn't Markdown Mode do this itself?!
-(lunaryorn-auto-modes 'markdown-mode (rx "." (or "md" "markdown") string-end))
-
 (lunaryorn-after markdown-mode
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
