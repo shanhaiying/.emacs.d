@@ -1076,8 +1076,7 @@ Disable the highlighting of overlong lines."
     (warn "No spell checker available.  Install Hunspell or ASpell for OS X.")))
 
 (lunaryorn-after flyspell
-  ;; Free M-Tab and C-M-i, and never take it again!
-  (define-key flyspell-mode-map "\M-\t" nil)
+  ;; Don't take M-Tab, please
   (setq flyspell-use-meta-tab nil
         ;; Make Flyspell less chatty
         flyspell-issue-welcome-flag nil
@@ -1340,14 +1339,7 @@ Choose Skim if available, or fall back to the default application."
 (lunaryorn-after rst
   ;; Indent with 3 spaces after all kinds of literal blocks
   (setq rst-indent-literal-minimized 3
-        rst-indent-literal-normal 3)
-
-  (let ((map rst-mode-map))
-    ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c
-    ;; C-a C-a
-    (define-key map (kbd "C-=") nil)
-    ;; For similarity with AUCTeX
-    (define-key map (kbd "C-c C-j") #'rst-insert-list)))
+        rst-indent-literal-normal 3))
 
 
 ;;; Markdown editing
@@ -1365,11 +1357,6 @@ Choose Skim if available, or fall back to the default application."
   (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
   ;; Use visual lines instead
   (add-hook 'gfm-mode-hook #'visual-line-mode)
-
-  ;; Fight my habit of constantly pressing M-q
-  (define-key gfm-mode-map (kbd "M-q") (lambda ()
-                                         (interactive)
-                                         (message "Don't fill, boy!")))
 
   (lunaryorn-after whitespace
     (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)))
@@ -2138,6 +2125,10 @@ Otherwise insert the date as Mar 04, 2014."
 (global-set-key (kbd "C-c u") #'lunaryorn-utility)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 
+(lunaryorn-after flyspell
+  ;; Free M-t in Flyspell Mode
+  (define-key flyspell-mode-map "\M-\t" nil))
+
 (lunaryorn-after lisp-mode
   (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
   (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file)
@@ -2149,7 +2140,20 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key markdown-mode-map (kbd "C-c C-s C")
     #'markdown-insert-gfm-code-block)
   (define-key markdown-mode-map (kbd "C-c C-s P")
-    #'markdown-insert-gfm-code-block))
+    #'markdown-insert-gfm-code-block)
+
+  ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM Mode.
+  (define-key gfm-mode-map (kbd "M-q") (lambda ()
+                                         (interactive)
+                                         (message "Don't fill, boy!"))))
+
+(lunaryorn-after rst
+  (let ((map rst-mode-map))
+    ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c
+    ;; C-a C-a
+    (define-key map (kbd "C-=") nil)
+    ;; For similarity with AUCTeX
+    (define-key map (kbd "C-c C-j") #'rst-insert-list)))
 
 (lunaryorn-after haskell-mode
   (let ((map haskell-mode-map))
