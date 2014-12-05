@@ -119,6 +119,7 @@ Notable packages
   [Hi2](https://github.com/errge/hi2) and
   [Flycheck Haskell](https://github.com/flycheck/flycheck-haskell)
 - **Rust**: [Flycheck Rust](https://github.com/flycheck/flycheck-rust)
-- **OCaml**: [Tuareg](https://github.com/ocaml/tuareg/) and
-  [Merlin](https://github.com/the-lambda-church/merlin)
+- **OCaml**: [Tuareg](https://github.com/ocaml/tuareg/),
+  [Merlin](https://github.com/the-lambda-church/merlin) and
+  [Flycheck OCaml](https://github.com/flycheck/flycheck-ocaml)
 - **Theorem proovers**: [Proof General](http://proofgeneral.inf.ed.ac.uk/)
