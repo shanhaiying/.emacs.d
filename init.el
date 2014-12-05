@@ -1352,6 +1352,11 @@ Choose Skim if available, or fall back to the default application."
 
 ;;; Markdown editing
 
+;; Use GFM Mode for Markdown files from It's All Text.  It's better for most
+;; sites to not add hard line breaks to content.
+(lunaryorn-auto-modes 'gfm-mode (rx "/itsalltext/" (one-or-more not-newline)
+                                    ".md" string-end))
+
 (lunaryorn-after markdown-mode
   ;; Use Pandoc to process Markdown
   (setq markdown-command "pandoc -s -f markdown -t html5")
