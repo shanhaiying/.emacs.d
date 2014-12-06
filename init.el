@@ -1751,6 +1751,23 @@ window."
   (add-hook 'feature-mode-hook #'whitespace-cleanup-mode)
   (add-hook 'feature-mode-hook #'flyspell-mode))
 
+(lunaryorn-after flycheck
+  (defun lunaryorn-discard-undesired-html-tidy-error (err)
+    "Discard ERR if it is undesired.
+
+Tidy is very verbose, so we prevent Flycheck from highlighting
+most errors from HTML Tidy."
+    ;; A non-nil result means to inhibit further processing (i.e. highlighting)
+    ;; of the error
+    (and (eq (flycheck-error-checker err) 'html-tidy)
+         ;; Only allow warnings about missing tags, or unexpected end tags being
+         ;; discarded
+         (not (string-match-p (rx (or "missing" "discarding"))
+                              (flycheck-error-message err)))))
+
+  (add-hook 'flycheck-process-error-functions
+            #'lunaryorn-discard-undesired-html-tidy-error))
+
 
 ;;; Proof General
 (eval-and-compile
