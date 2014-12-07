@@ -2203,9 +2203,6 @@ Otherwise insert the date as Mar 04, 2014."
   ;; Please, Tuareg, don't kill my imenu
   (define-key tuareg-mode-map [?\C-c ?i] nil))
 
-(lunaryorn-after merlin
-  (define-key merlin-mode-map (kbd "C-c t e") #'merlin-toggle-view-errors))
-
 (lunaryorn-after shm
   (define-key shm-map (kbd "C-c e s") 'shm/case-split))
 
