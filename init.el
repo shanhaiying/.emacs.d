@@ -1626,11 +1626,18 @@ window."
 
 
 ;;; Haskell
+
+;; This Haskell setup needs:
+;;
+;; cabal install hasktags haskell-docs hoogle haskell-stylish
+;;
+;; Additionally, to be installed from source:
+;;
+;; - https://github.com/chrisdone/ghci-ng
+;; - https://github.com/chrisdone/structured-haskell-mode
+
 (lunaryorn-after haskell-mode
-  ;; We need the following tools for our Haskell setup:
-  ;;
-  ;; cabal install hasktags structured-haskell-mode haskell-stylish
-  (add-hook 'haskell-mode-hook #'subword-mode)     ; Subword navigation
+   (add-hook 'haskell-mode-hook #'subword-mode)     ; Subword navigation
   (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode) ; Scan and navigate
                                         ; declarations
   ;; Insert module templates into new buffers
@@ -1672,6 +1679,10 @@ window."
         ;; advantage.
         haskell-process-suggest-hoogle-imports nil
         haskell-process-suggest-hayoo-imports t)
+
+  ;; Use GHCI NG from https://github.com/chrisdone/ghci-ng
+  (setq haskell-process-path-ghci "ghci-ng")
+  (add-to-list 'haskell-process-args-cabal-repl "--with-ghc=ghci-ng")
 
   (diminish 'interactive-haskell-mode))
 
