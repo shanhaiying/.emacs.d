@@ -2130,7 +2130,9 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key map (kbd "d") #'lunaryorn-insert-current-date)
   map)
 
-;; User key bindings in the C-c space.
+;; User key bindings in the C-c space.  Do NOT bind C-c e here, because we leave
+;; that for mode-specific “edit” commands, i.e. key bindings specific to
+;; particular major modes.
 (global-set-key (kbd "C-c SPC") #'ace-jump-mode)
 (global-set-key (kbd "C-c a") #'lunaryorn-ag)
 (global-set-key (kbd "C-c A") #'lunaryorn-align)
@@ -2158,11 +2160,10 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key flyspell-mode-map "\M-\t" nil))
 
 (lunaryorn-after lisp-mode
-  (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand)
+  (define-key emacs-lisp-mode-map (kbd "C-c e e") #'macrostep-expand)
   (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file)
 
-  (define-key lisp-interaction-mode-map (kbd "C-c e") #'macrostep-expand)
-  (define-key lisp-interaction-mode-map (kbd "C-j") #'eval-print-last-sexp))
+  (define-key lisp-interaction-mode-map (kbd "C-c e e") #'macrostep-expand))
 
 (lunaryorn-after markdown-mode
   (define-key markdown-mode-map (kbd "C-c C-s C")
@@ -2185,18 +2186,18 @@ Otherwise insert the date as Mar 04, 2014."
 
 (lunaryorn-after haskell-mode
   (let ((map haskell-mode-map))
-    (define-key map (kbd "C-c h") #'haskell-hayoo)
-    (define-key map (kbd "C-c H") #'haskell-hoogle)
-    (define-key map (kbd "C-c d") #'haskell-describe)
+    (define-key map (kbd "C-c e h") #'haskell-hayoo)
+    (define-key map (kbd "C-c e H") #'haskell-hoogle)
+    (define-key map (kbd "C-c e d") #'haskell-describe)
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
     ;; Some convenience bindings
-    (define-key map (kbd "C-c I") #'haskell-navigate-imports)))
+    (define-key map (kbd "C-c e i") #'haskell-navigate-imports)))
 
 (lunaryorn-after haskell-process
   (let ((map interactive-haskell-mode-map))
     (define-key map (kbd "C-c C-t") #'haskell-mode-show-type-at)
     (define-key map (kbd "M-.") #'haskell-mode-goto-loc)
-    (define-key map (kbd "C-c C-r") #'haskell-mode-find-uses)))
+    (define-key map (kbd "C-c e u") #'haskell-mode-find-uses)))
 
 (lunaryorn-after tuareg
   ;; Please, Tuareg, don't kill my imenu
@@ -2206,7 +2207,7 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key merlin-mode-map (kbd "C-c t e") #'merlin-toggle-view-errors))
 
 (lunaryorn-after shm
-  (define-key shm-map (kbd "C-c C-s") 'shm/case-split))
+  (define-key shm-map (kbd "C-c e s") 'shm/case-split))
 
 ;; Local Variables:
 ;; coding: utf-8
