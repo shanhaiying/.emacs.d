@@ -2190,8 +2190,13 @@ Otherwise insert the date as Mar 04, 2014."
     (define-key map (kbd "C-c d") #'haskell-describe)
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
     ;; Some convenience bindings
-    (define-key map (kbd "C-c I") #'haskell-navigate-imports)
-    (define-key map (kbd "M-.") #'haskell-mode-jump-to-def-or-tag)))
+    (define-key map (kbd "C-c I") #'haskell-navigate-imports)))
+
+(lunaryorn-after haskell-process
+  (let ((map interactive-haskell-mode-map))
+    (define-key map (kbd "C-c C-t") #'haskell-mode-show-type-at)
+    (define-key map (kbd "M-.") #'haskell-mode-goto-loc)
+    (define-key map (kbd "C-c C-r") #'haskell-mode-find-uses)))
 
 (lunaryorn-after tuareg
   ;; Please, Tuareg, don't kill my imenu
