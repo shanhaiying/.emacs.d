@@ -449,45 +449,13 @@ Without FORMULA determine whether Homebrew itself is available."
 (lunaryorn-after which-func
   (setq which-func-unknown "⊥" ; The default is really boring…
         which-func-format
-        `("["
-          (:propertize (:eval (lunaryorn-which-func-current))
+        `((:propertize (" ➤ " which-func-current)
                        local-map ,which-func-keymap
                        face which-func
                        mouse-face mode-line-highlight
                        help-echo "mouse-1: go to beginning\n\
 mouse-2: toggle rest visibility\n\
-mouse-3: go to end")
-          "]")
-        ))
-
-(defun lunaryorn-current-namespace ()
-  "Determine the namespace of the current file."
-  (when-let (filename (buffer-file-name))
-    (if (string= (file-truename filename) (file-truename user-init-file))
-        "lunaryorn"                       ; The “namespace” of my init
-      (file-name-base filename))))
-
-(defun lunaryorn-which-func-current ()
-  "Determine the name of the current function."
-  (if-let (current (or (gethash (selected-window) which-func-table)))
-      (truncate-string-to-width
-       (pcase major-mode
-         (`emacs-lisp-mode
-          (let ((namespace (lunaryorn-current-namespace)))
-            (if (and namespace
-                     (string-prefix-p namespace current 'ignore-case))
-                (concat "…" (substring current (length namespace)))
-              current)))
-         (`latex-mode
-          ;; In AUCTeX' LaTeX Mode, strip leading spaces from headings, and
-          ;; replace them with a number indicating the heading level
-          (if (string-match (rx string-start (group (1+ blank))) current)
-              (let ((level (length (match-string 1 current))))
-                (format "(%i)%s" level (substring current level)))
-            current))
-         (_ current))
-       20 nil nil "…")
-    which-func-unknown))
+mouse-3: go to end"))))
 
 (which-function-mode)
 
@@ -501,7 +469,9 @@ mouse-3: go to end")
   "Mode line format for VC Mode.")
 (put 'lunaryorn-vc-mode-line 'risky-local-variable t)
 
-(setq-default mode-line-format
+(setq-default header-line-format
+              '(which-func-mode ("" which-func-format " "))
+              mode-line-format
               '("%e" mode-line-front-space
                 ;; Standard info about the current buffer
                 mode-line-mule-info
@@ -531,16 +501,17 @@ mouse-3: go to end")
                             (when (> anzu--total-matched 0)
                               (concat " " (anzu--update-mode-line)))))
                 (multiple-cursors-mode mc/mode-line) ; Number of cursors
-                ;; Misc information, notably battery state and function name
-                " "
-                mode-line-misc-info
                 ;; And the modes, which we don't really care for anyway
                 " " mode-line-modes mode-line-end-spaces)
               mode-line-remote
               '(:eval
                 (when-let (host (file-remote-p default-directory 'host))
                   (propertize (concat "@" host) 'face
-                              '(italic warning)))))
+                              '(italic warning))))
+              ;; Remove which func from the mode line, since we have it in the
+              ;; header line
+              mode-line-misc-info
+              (assq-delete-all 'which-func-mode mode-line-misc-info))
 
 
 ;;; The minibuffer
