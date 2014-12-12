@@ -1637,7 +1637,7 @@ window."
 ;; - https://github.com/chrisdone/structured-haskell-mode
 
 (lunaryorn-after haskell-mode
-   (add-hook 'haskell-mode-hook #'subword-mode)     ; Subword navigation
+  (add-hook 'haskell-mode-hook #'subword-mode)     ; Subword navigation
   (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode) ; Scan and navigate
                                         ; declarations
   ;; Insert module templates into new buffers
@@ -1650,23 +1650,8 @@ window."
   ;; Automatically run hasktags
   (setq haskell-tags-on-save t))
 
-(lunaryorn-after haskell-cabal
-  (add-hook 'haskell-cabal-mode #'interactive-haskell-mode))
-
-(lunaryorn-after shm
-  (require 'shm-case-split)
-
-  (diminish 'structured-haskell-mode))
-
-(lunaryorn-after inf-haskell
-  (add-hook 'inferior-haskell-mode-hook #'turn-on-ghci-completion)
-  (add-hook 'inferior-haskell-mode-hook #'subword-mode))
-
-(lunaryorn-after haskell-interactive-mode
-  (add-hook 'haskell-interactive-mode-hook #'turn-on-ghci-completion)
-  (add-hook 'haskell-interactive-mode-hook #'subword-mode))
-
-(lunaryorn-after haskell-process
+;; Haskell settings
+(lunaryorn-after haskell-customize
   ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI loaded
   ;; modules respectively
   (setq haskell-process-suggest-remove-import-lines t
@@ -1682,9 +1667,21 @@ window."
 
   ;; Use GHCI NG from https://github.com/chrisdone/ghci-ng
   (setq haskell-process-path-ghci "ghci-ng")
-  (add-to-list 'haskell-process-args-cabal-repl "--with-ghc=ghci-ng")
+  (add-to-list 'haskell-process-args-cabal-repl "--with-ghc=ghci-ng"))
 
-  (diminish 'interactive-haskell-mode))
+(lunaryorn-after haskell-cabal
+  ;; Enable interactive Haskell for Cabal files, too
+  (add-hook 'haskell-cabal-mode #'interactive-haskell-mode))
+
+(lunaryorn-after shm
+  (require 'shm-case-split)
+  (diminish 'structured-haskell-mode))
+
+(lunaryorn-after haskell-interactive-mode
+  (add-hook 'haskell-interactive-mode-hook #'turn-on-ghci-completion)
+  (add-hook 'haskell-interactive-mode-hook #'subword-mode)
+  ;; Structured editing for the REPL
+  (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode))
 
 (lunaryorn-after flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
@@ -2191,7 +2188,7 @@ Otherwise insert the date as Mar 04, 2014."
     ;; Some convenience bindings
     (define-key map (kbd "C-c e i") #'haskell-navigate-imports)))
 
-(lunaryorn-after haskell-process
+(lunaryorn-after haskell
   (let ((map interactive-haskell-mode-map))
     (define-key map (kbd "C-c C-t") #'haskell-mode-show-type-at)
     (define-key map (kbd "M-.") #'haskell-mode-goto-loc)
