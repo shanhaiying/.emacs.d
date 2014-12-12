@@ -510,8 +510,12 @@ mouse-3: go to end")
                 mode-line-remote
                 mode-line-frame-identification
                 mode-line-buffer-identification " " mode-line-position
-                ;; Some specific information about the current buffer:
+                ;; Some specific information about the current buffer:  Indicate
+                ;; the presence of structured editing, with Paredit or SHM
                 (paredit-mode (:propertize " ()" face bold))
+                (structured-haskell-mode (:propertize shm-lighter face bold))
+                (structured-haskell-repl-mode (:propertize shm-lighter
+                                                           face bold))
                 ;; Warn if whitespace isn't highlighted or cleaned in this
                 ;; buffer.
                 (:eval (unless buffer-read-only
