@@ -2012,8 +2012,6 @@ Otherwise insert the date as Mar 04, 2014."
 (global-set-key [remap move-beginning-of-line]
                 #'lunaryorn-back-to-indentation-or-beginning-of-line)
 (global-set-key [remap dabbrev-expand] #'hippie-expand)
-(global-set-key [remap isearch-forward] #'isearch-forward-regexp)
-(global-set-key [remap isearch-backward] #'isearch-backward-regexp)
 (global-set-key [remap just-one-space] #'cycle-spacing)
 ;;; Killing and marking on steroids
 (global-set-key [remap kill-ring-save] #'easy-kill)
