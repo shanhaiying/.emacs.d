@@ -1917,9 +1917,9 @@ Otherwise insert the date as Mar 04, 2014."
   (setq calendar-week-start-day 1))
 
 
-;;; E-Mail
+;;; Net & Web
 
-;; Settings for sending mail via GMail
+;; Settings for sending mail via my mail server
 (lunaryorn-after sendmail
   (setq send-mail-function 'smtpmail-send-it))
 
@@ -1933,9 +1933,7 @@ Otherwise insert the date as Mar 04, 2014."
         smtpmail-stream-type 'starttls
         smtpmail-smtp-user user-login-name))
 
-
-;;; IRC
-
+;; IRC with ERC or rcirc
 (lunaryorn-after erc
   ;; Default server and nick
   (setq erc-server "chat.freenode.net"
@@ -1970,6 +1968,12 @@ Otherwise insert the date as Mar 04, 2014."
   (add-hook 'rcirc-mode-hook #'flyspell-mode)
 
   (rcirc-track-minor-mode))
+
+;; EWW
+(defun lunaryorn-eww-or-search ()
+  "Search the current region, or browse."
+  (interactive)
+  (call-interactively (if (region-active-p) #'eww-search-words #'eww)))
 
 
 ;;; Key bindings
