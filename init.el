@@ -1919,6 +1919,15 @@ Otherwise insert the date as Mar 04, 2014."
 
 ;;; Net & Web
 
+;; Web browsing
+(lunaryorn-after browse-url
+  (setq browse-url-browser-function #'eww-browse-url))
+
+(defun lunaryorn-eww-or-search ()
+  "Search the current region, or browse."
+  (interactive)
+  (call-interactively (if (region-active-p) #'eww-search-words #'eww)))
+
 ;; Settings for sending mail via my mail server
 (lunaryorn-after sendmail
   (setq send-mail-function 'smtpmail-send-it))
@@ -1968,12 +1977,6 @@ Otherwise insert the date as Mar 04, 2014."
   (add-hook 'rcirc-mode-hook #'flyspell-mode)
 
   (rcirc-track-minor-mode))
-
-;; EWW
-(defun lunaryorn-eww-or-search ()
-  "Search the current region, or browse."
-  (interactive)
-  (call-interactively (if (region-active-p) #'eww-search-words #'eww)))
 
 
 ;;; Key bindings
