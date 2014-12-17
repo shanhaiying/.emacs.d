@@ -1565,8 +1565,10 @@ window."
     (defun lunaryorn-flycheck-setup-python-executables ()
       "Setup Python executables based on the current virtualenv."
       (let ((exec-path (python-shell-calculate-exec-path)))
-        (setq flycheck-python-pylint-executable
-              (executable-find "pylint"))))
+        (setq-local flycheck-python-pylint-executable
+                    (executable-find "pylint"))
+        (setq-local flycheck-python-flake8-executable
+                    (executable-find "flake8"))))
 
     (defun lunaryorn-flycheck-setup-python ()
       "Setup Flycheck in Python buffers."
