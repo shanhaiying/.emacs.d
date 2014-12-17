@@ -2102,6 +2102,16 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
   (define-key map (kbd "d") #'lunaryorn-insert-current-date))
 
+(defvar lunaryorn-web-map nil
+  "Keymap for the web!")
+
+(define-prefix-command 'lunaryorn-web 'lunaryorn-web-map)
+(let ((map lunaryorn-web-map))
+  (define-key map (kbd "w") #'lunaryorn-eww-or-search)
+  (define-key map (kbd "b") #'eww-list-buffers)
+  (define-key map (kbd "s") #'sx-tab-frontpage)
+  (define-key map (kbd "S") #'sx-tab-newest))
+
 ;; User key bindings in the C-c space.  Do NOT bind C-c e here, because we leave
 ;; that for mode-specific “edit” commands, i.e. key bindings specific to
 ;; particular major modes.
@@ -2125,6 +2135,7 @@ Otherwise insert the date as Mar 04, 2014."
 (global-set-key (kbd "C-c s") #'lunaryorn-symbol)
 (global-set-key (kbd "C-c t") #'lunaryorn-toggle)
 (global-set-key (kbd "C-c u") #'lunaryorn-utility)
+(global-set-key (kbd "C-c w") #'lunaryorn-web)
 (global-set-key (kbd "C-c y") #'browse-kill-ring)
 
 (lunaryorn-after flyspell
