@@ -174,6 +174,7 @@
     projectile                          ; Project interaction
     google-this                         ; Google from Emacs
     paradox                             ; Better package menu
+    sx                                  ; Stack Overflow from Emacs
     )
   "Packages needed by my configuration.")
 
