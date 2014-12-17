@@ -2039,8 +2039,7 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key map (kbd "p") #'add-file-local-variable-prop-line)
   (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
   (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
-  (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill)
-  map)
+  (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill))
 
 (defvar lunaryorn-list-map nil
   "Keymap to list things.")
@@ -2052,8 +2051,7 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key map (kbd "p") #'paradox-list-packages)
   (define-key map (kbd "P") #'package-list-packages-no-fetch)
   (define-key map (kbd "r") #'list-register)
-  (define-key map (kbd "t") #'list-tags)
-  map)
+  (define-key map (kbd "t") #'list-tags))
 
 (defvar lunaryorn-multiple-cursors-map
   (let ((map (make-sparse-keymap)))
@@ -2065,8 +2063,7 @@ Otherwise insert the date as Mar 04, 2014."
     (define-key map (kbd "r") #'vr/mc-mark)
     (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
     (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
-    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
-    map))
+    (define-key map (kbd "C-s") #'mc/mark-all-in-region)))
 
 (defvar lunaryorn-symbols-map nil
   "Keymap for symbol operations.")
@@ -2076,8 +2073,7 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key map (kbd "o") #'highlight-symbol-occur)
   (define-key map (kbd "%") #'highlight-symbol-query-replace)
   (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
-  (define-key map (kbd "p") #'highlight-symbol-prev-in-defun)
-  map)
+  (define-key map (kbd "p") #'highlight-symbol-prev-in-defun))
 
 (defvar lunaryorn-toggle-map nil
   "Keymap to toggle buffer local settings.")
@@ -2090,7 +2086,7 @@ Otherwise insert the date as Mar 04, 2014."
   (define-key map (kbd "s") #'flyspell-mode)     ; Spell checking
   (define-key map (kbd "w") #'whitespace-mode)   ; Whitespace highlighting…
   (define-key map (kbd "W") #'whitespace-cleanup-mode) ; …and cleanup
-  map)
+  )
 
 (defvar lunaryorn-utilities-map nil
   "Keymap for various utilities.")
@@ -2098,8 +2094,7 @@ Otherwise insert the date as Mar 04, 2014."
 (define-prefix-command 'lunaryorn-utility 'lunaryorn-utilities-map)
 (let ((map lunaryorn-utilities-map))
   (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
-  (define-key map (kbd "d") #'lunaryorn-insert-current-date)
-  map)
+  (define-key map (kbd "d") #'lunaryorn-insert-current-date))
 
 ;; User key bindings in the C-c space.  Do NOT bind C-c e here, because we leave
 ;; that for mode-specific “edit” commands, i.e. key bindings specific to
