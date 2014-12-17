@@ -2108,7 +2108,7 @@ Otherwise insert the date as Mar 04, 2014."
 (define-prefix-command 'lunaryorn-web 'lunaryorn-web-map)
 (let ((map lunaryorn-web-map))
   (define-key map (kbd "w") #'lunaryorn-eww-or-search)
-  (define-key map (kbd "b") #'eww-list-buffers)
+  (define-key map (kbd "b") #'eww-list-bookmarks)
   (define-key map (kbd "s") #'sx-tab-frontpage)
   (define-key map (kbd "S") #'sx-tab-newest))
 
