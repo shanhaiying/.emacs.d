@@ -2118,7 +2118,6 @@ Otherwise insert the date as Mar 04, 2014."
 (global-set-key (kbd "C-c SPC") #'ace-jump-mode)
 (global-set-key (kbd "C-c a") #'lunaryorn-ag)
 (global-set-key (kbd "C-c A") #'lunaryorn-align)
-(global-set-key (kbd "C-c B") #'browse-url)
 (global-set-key (kbd "C-c c") #'compile)
 (global-set-key (kbd "C-c C") #'recompile)
 (global-set-key (kbd "C-c f") #'lunaryorn-file)
