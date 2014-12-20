@@ -2010,6 +2010,7 @@ Otherwise insert the date as Mar 04, 2014."
 
 ;; Key bindings for extension packages
 (global-set-key (kbd "C-=") #'er/expand-region)
+(global-set-key [remap completion-at-point] #'company-complete)
 
 ;; Personal keymaps
 (defvar lunaryorn-ag-map nil
