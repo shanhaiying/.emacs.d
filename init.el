@@ -2072,7 +2072,9 @@ Otherwise insert the date as Mar 04, 2014."
     (define-key map (kbd "r") #'vr/mc-mark)
     (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
     (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
-    (define-key map (kbd "C-s") #'mc/mark-all-in-region)))
+    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
+    map)
+  "Keymap for multiple cursors.")
 
 (defvar lunaryorn-symbols-map nil
   "Keymap for symbol operations.")
