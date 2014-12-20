@@ -1030,7 +1030,7 @@ Disable the highlighting of overlong lines."
         company-show-numbers t)
 
   ;; Add backend for math characters
-  (add-to-list 'company-backend 'company-math-symbols-unicode)
+  (add-to-list 'company-backends 'company-math-symbols-unicode)
 
   (diminish 'company-mode))
 (global-company-mode)
