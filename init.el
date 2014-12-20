@@ -1379,6 +1379,18 @@ Choose Skim if available, or fall back to the default application."
   (diminish 'highlight-symbol-mode))
 (add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
+(defun highlight-symbol-ag ()
+  "Call `ag-project-regexp' with the symbol at point.
+
+Needs ag.el from URL `https://github.com/Wilfred/ag.el'."
+  (interactive)
+  (unless (fboundp 'ag-project)
+    (error "Please install ag.el from https://github.com/Wilfred/ag.el"))
+  (if (thing-at-point 'symbol)
+      (let ((highlight-symbol-border-pattern '("\\b" . "\\b")))
+        (ag-project-regexp (highlight-symbol-get-symbol)))
+    (error "No symbol at point")))
+
 
 ;;; Programming utilities
 
@@ -2083,6 +2095,7 @@ Otherwise insert the date as Mar 04, 2014."
 (define-prefix-command 'lunaryorn-symbol 'lunaryorn-symbols-map)
 (let ((map lunaryorn-symbols-map))
   (define-key map (kbd "o") #'highlight-symbol-occur)
+  (define-key map (kbd "a") #'highlight-symbol-ag)
   (define-key map (kbd "%") #'highlight-symbol-query-replace)
   (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
   (define-key map (kbd "p") #'highlight-symbol-prev-in-defun))
