@@ -157,6 +157,7 @@
     elisp-slime-nav                     ; Navigate to symbol definitions
     macrostep                           ; Interactively expand macros
     flycheck-cask                       ; Cask support for Flycheck
+    flycheck-package                    ; Package linting with Flycheck
     ;; Clojure
     cider                               ; Clojure IDE
     clojure-mode-extra-font-locking
@@ -1490,7 +1491,8 @@ window."
                                         ; the C-c / map
 
 (lunaryorn-after flycheck
-  (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
+  (add-hook 'flycheck-mode-hook #'flycheck-cask-setup)
+  (flycheck-package-setup))
 
 (lunaryorn-after ielm
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
