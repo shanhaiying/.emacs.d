@@ -503,7 +503,7 @@ mouse-3: go to end"))))
                               (concat " " (anzu--update-mode-line)))))
                 (multiple-cursors-mode mc/mode-line) ; Number of cursors
                 ;; And the modes, which we don't really care for anyway
-                " " mode-line-modes mode-line-end-spaces)
+                " " mode-line-misc-info mode-line-modes mode-line-end-spaces)
               mode-line-remote
               '(:eval
                 (when-let (host (file-remote-p default-directory 'host))
