@@ -991,6 +991,10 @@ Disable the highlighting of overlong lines."
   (add-hook hook #'outline-minor-mode))
 (lunaryorn-after outline (diminish 'outline-minor-mode))
 
+;; Bug references
+(add-hook 'prog-mode-hook #'bug-reference-prog-mode)
+(add-hook 'text-mode-hook #'bug-reference-mode)
+
 ;; An Emacs server for `emacsclient'
 (require 'server)
 (unless (server-running-p) (server-start))
