@@ -1108,7 +1108,7 @@ Disable the highlighting of overlong lines."
         flycheck-mode-line
         '(:eval (lunaryorn-flycheck-mode-line-status))
         flycheck-display-errors-function
-        #'flycheck-display-error-messages-unless-error-list)
+        #'flycheck-pos-tip-error-messages)
 
   ;; Use italic face for checker name
   (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic)
