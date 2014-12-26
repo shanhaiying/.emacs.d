@@ -1539,10 +1539,8 @@ window."
   ;; Extra font-locking for Clojure
   (require 'clojure-mode-extra-font-locking)
 
-  (add-hook 'clojure-mode-hook #'paredit-mode))
-
-(lunaryorn-after cider-mode
-  (add-hook 'cider-mode-hook #'cider-turn-on-eldoc-mode))
+  (add-hook 'clojure-mode-hook #'paredit-mode)
+  (add-hook 'clojure-mode-hook #'cider-mode))
 
 (lunaryorn-after nrepl-client
   (setq nrepl-hide-special-buffers t))
