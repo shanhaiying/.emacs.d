@@ -2023,7 +2023,7 @@ Otherwise insert the date as Mar 04, 2014."
 (global-set-key (kbd "M-Z") #'zap-up-to-char)                            ; M-z
 (global-set-key (kbd "C-h A") #'apropos)                                 ; C-h a
 (global-set-key (kbd "C-x p") #'proced)                                  ; C-x p
-;; Find definition sources fast
+;; Find definition sources fast with C-x F and C-x V
 (find-function-setup-keys)
 
 ;; Key bindings for extension packages
