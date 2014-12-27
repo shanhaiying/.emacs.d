@@ -2011,6 +2011,8 @@ Otherwise insert the date as Mar 04, 2014."
                 #'lunaryorn-back-to-indentation-or-beginning-of-line)
 (global-set-key [remap dabbrev-expand] #'hippie-expand)
 (global-set-key [remap just-one-space] #'cycle-spacing)
+(global-set-key [remap completion-at-point] #'company-complete)
+(define-key minibuffer-local-map (kbd "C-M-i") #'complete-symbol)
 ;; Killing and marking on steroids
 (global-set-key [remap kill-ring-save] #'easy-kill)
 (global-set-key [remap mark-sexp] 'easy-mark)
@@ -2026,7 +2028,6 @@ Otherwise insert the date as Mar 04, 2014."
 
 ;; Key bindings for extension packages
 (global-set-key (kbd "C-=") #'er/expand-region)
-(global-set-key [remap completion-at-point] #'company-complete)
 
 ;; Personal keymaps
 (defvar lunaryorn-ag-map nil
