@@ -338,28 +338,25 @@ mouse-3: go to end"))))
 (global-set-key (kbd "C-z") nil)
 (global-set-key (kbd "C-x C-z") nil)
 
+(use-package lunaryorn-buffers
+  :load-path "lisp/"
+  :commands (lunaryorn-force-save-some-buffers
+             lunaryorn-do-not-kill-important-buffers)
+  :init
+  (progn
+    (add-hook 'kill-buffer-query-functions
+              #'lunaryorn-do-not-kill-important-buffers)
+
+    ;; Autosave buffers when focus is lost, see
+    ;; http://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
+    (add-hook 'focus-out-hook #'lunaryorn-force-save-some-buffers)))
+
 ;; Make uniquify rename buffers like in path name notation
 (use-package uniquify
   :config (setq uniquify-buffer-name-style 'forward))
 
 ;; Clean stale buffers
 (use-package midnight)
-
-;; Don't kill the important buffers
-(defconst lunaryorn-do-not-kill-buffer-names '("*scratch*" "*Messages*")
-  "Names of buffers that should not be killed.")
-
-(defun lunaryorn-do-not-kill-important-buffers ()
-  "Inhibit killing of important buffers.
-
-Add this to `kill-buffer-query-functions'."
-  (if (not (member (buffer-name) lunaryorn-do-not-kill-buffer-names))
-      t
-    (message "Not allowed to kill %s, burying instead" (buffer-name))
-    (bury-buffer)
-    nil))
-
-(add-hook 'kill-buffer-query-functions #'lunaryorn-do-not-kill-important-buffers)
 
 (use-package ibuffer
   :bind (([remap list-buffers] . ibuffer))
@@ -430,13 +427,6 @@ Add this to `kill-buffer-query-functions'."
 ;; Keep backup and auto save files out of the way
 (setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-
-;; Autosave buffers when focus is lost, see
-;; http://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
-(defun lunaryorn-force-save-some-buffers ()
-  "Save all modified buffers, without prompts."
-  (save-some-buffers 'dont-ask))
-(add-hook 'focus-out-hook #'lunaryorn-force-save-some-buffers)
 
 ;; Delete files to trash
 (setq delete-by-moving-to-trash
