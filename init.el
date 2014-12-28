@@ -81,9 +81,18 @@
 ;;; Environment fixup
 (use-package exec-path-from-shell
   :ensure t
-  :defer t
+  :if (and (eq system-type 'darwin) (display-graphic-p))
   :init
-  (when (and (eq system-type 'darwin) (display-graphic-p))
+  (progn
+    (when (string-match-p "/zsh$" (getenv "SHELL"))
+      ;; Use a non-interactive shell.  We use a login shell, even though we have
+      ;; our paths setup in .zshenv.  However, OS X adds global settings to the
+      ;; login profile.  Notably, this affects /usr/texbin from MacTeX
+      (setq exec-path-from-shell-arguments '("-l")))
+
+    (dolist (var '("EMAIL" "PYTHONPATH" "INFOPATH"))
+      (add-to-list 'exec-path-from-shell-variables var))
+
     (exec-path-from-shell-initialize)
 
     (setq user-mail-address (getenv "EMAIL"))
@@ -93,17 +102,7 @@
     ;; directories to `Info-directory-list'.
     (dolist (dir (parse-colon-path (getenv "INFOPATH")))
       (when dir
-        (add-to-list 'Info-directory-list dir))))
-  :config
-  (progn
-    (when (string-match-p "/zsh$" (getenv "SHELL"))
-      ;; Use a non-interactive shell.  We use a login shell, even though we have
-      ;; our paths setup in .zshenv.  However, OS X adds global settings to the
-      ;; login profile.  Notably, this affects /usr/texbin from MacTeX
-      (setq exec-path-from-shell-arguments '("-l")))
-
-    (dolist (var '("EMAIL" "PYTHONPATH" "INFOPATH"))
-      (add-to-list 'exec-path-from-shell-variables var))))
+        (add-to-list 'Info-directory-list dir)))))
 
 
 ;;; Customization interface
