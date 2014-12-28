@@ -356,9 +356,6 @@ mouse-3: go to end"))))
 (use-package uniquify
   :config (setq uniquify-buffer-name-style 'forward))
 
-;; Clean stale buffers
-(use-package midnight)
-
 (use-package ibuffer
   :bind (([remap list-buffers] . ibuffer))
   ;; Show VC Status in ibuffer
