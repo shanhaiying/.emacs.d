@@ -840,7 +840,9 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package server
   :init (unless (server-running-p) (server-start)))
 
+;; Additional keybindings
 (bind-key [remap just-one-space] #'cycle-spacing)
+(bind-key "M-Z" #'zap-up-to-char)
 
 
 ;;; Navigation and scrolling
@@ -1739,8 +1741,12 @@ window."
   :ensure t
   :defer t
   :config
-  ;; Disable SMIE indentation in Tuareg.  It's just broken currently…
-  (setq tuareg-use-smie nil))
+  (progn
+    ;; Disable SMIE indentation in Tuareg.  It's just broken currently…
+    (setq tuareg-use-smie nil)
+
+    ;; Please, Tuareg, don't kill my imenu
+    (define-key tuareg-mode-map [?\C-c ?i] nil)))
 
 ;; Advanced completion engine for OCaml
 (use-package merlin
@@ -1910,7 +1916,6 @@ window."
 
 
 ;;; Tools and utilities
-
 (use-package locate
   :defer t
   :config
@@ -2001,6 +2006,7 @@ Otherwise insert the date as Mar 04, 2014."
   (setq paradox-github-token t))
 
 (bind-key "C-c o" #'occur)
+(bind-key "C-x p" #'proced)
 
 
 ;;; Calendar
@@ -2093,6 +2099,15 @@ Otherwise insert the date as Mar 04, 2014."
     (rcirc-track-minor-mode)))
 
 
+;;; Online Help
+(use-package find-func
+  :defer t
+  ;; Find function and variable definitions
+  :idle (find-function-setup-keys))
+
+(bind-key "C-h A" #'apropos)
+
+
 ;;; Key bindings
 
 ;; Improve standard bindings
@@ -2104,9 +2119,7 @@ Otherwise insert the date as Mar 04, 2014."
 
 (global-set-key (kbd "C-<backspace>") #'lunaryorn-smart-backward-kill-line) ; C-S-backspace
 (global-set-key (kbd "C-S-j") #'lunaryorn-smart-open-line)                  ; C-j
-(global-set-key (kbd "M-Z") #'zap-up-to-char)                            ; M-z
-(global-set-key (kbd "C-h A") #'apropos)                                 ; C-h a
-(global-set-key (kbd "C-x p") #'proced)                                  ; C-x p
+
 ;; Find definition sources fast with C-x F and C-x V
 (find-function-setup-keys)
 
@@ -2136,11 +2149,6 @@ Otherwise insert the date as Mar 04, 2014."
 
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
         ))
-
-(lunaryorn-after 'tuareg
-  ;; Please, Tuareg, don't kill my imenu
-  (define-key tuareg-mode-map [?\C-c ?i] nil))
-
 
 ;; Local Variables:
 ;; coding: utf-8
