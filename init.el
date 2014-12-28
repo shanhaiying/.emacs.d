@@ -219,7 +219,8 @@ Homebrew: brew install trash")))
 
 ;; Show the current function name in the mode line
 (use-package which-func
-  :init (which-function-mode)
+  :defer t
+  :idle (which-function-mode)
   :config
   (setq which-func-unknown "⊥" ; The default is really boring…
         which-func-format
