@@ -536,55 +536,6 @@ mouse-3: go to end"))))
 
 ;;; Basic editing
 ;; Make `kill-whole-line' indentation aware
-(defun lunaryorn-smart-kill-whole-line (&optional arg)
-  "Kill whole line and move back to indentation.
-
-Kill the whole line with function `kill-whole-line' and then move
-`back-to-indentation'."
-  (interactive "p")
-  (kill-whole-line arg)
-  (back-to-indentation))
-
-;; Some other utilities
-(defun lunaryorn-smart-backward-kill-line ()
-  "Kill line backwards and re-indent."
-  (interactive)
-  (kill-line 0)
-  (indent-according-to-mode))
-
-(defun lunaryorn-smart-open-line ()
-  "Insert empty line after the current line."
-  (interactive)
-  (move-end-of-line nil)
-  (newline-and-indent))
-
-;; Make C-a toggle between beginning of line and indentation
-(defun lunaryorn-back-to-indentation-or-beginning-of-line (arg)
-  "Move point back to indentation of beginning of line.
-
-Move point to the first non-whitespace character on this line.
-If point is already there, move to the beginning of the line.
-Effectively toggle between the first non-whitespace character and
-the beginning of the line.
-
-If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-point reaches the beginning or end of the buffer, stop there."
-  (interactive "^p")
-  (setq arg (or arg 1))
-
-  ;; Move lines first
-  (when (/= arg 1)
-    (let ((line-move-visual nil))
-      (forward-line (1- arg))))
-
-  (let ((orig-point (point)))
-    (back-to-indentation)
-    (when (= orig-point (point))
-      (move-beginning-of-line 1))))
-
-;; A missing autoload
-(autoload 'zap-up-to-char "misc"
-  "Kill up to, but not including ARGth occurrence of CHAR.")
 
 ;; Disable tabs, but given them proper width
 (setq-default indent-tabs-mode nil
@@ -601,13 +552,6 @@ point reaches the beginning or end of the buffer, stop there."
 (setq indicate-empty-lines t
       require-final-newline t)
 
-(use-package whitespace-cleanup-mode
-  :ensure t
-  :bind (("C-c t W" . whitespace-cleanup-mode))
-  :init (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
-          (add-hook hook #'whitespace-cleanup-mode))
-  :diminish whitespace-cleanup-mode)
-
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
 
@@ -618,20 +562,26 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Configure a reasonable fill column, indicate it in the buffer and enable
 ;; automatic filling
 (setq-default fill-column 80)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook #'auto-fill-mode)
 
-(define-minor-mode lunaryorn-auto-fill-comments-mode
-  "Minor mode to auto-fill comments only."
-  :lighter nil
-  :keymap nil
-  (cond
-   (lunaryorn-auto-fill-comments-mode
-    (setq-local comment-auto-fill-only-comments t)
-    (auto-fill-mode 1))
-   (:else
-    (kill-local-variable 'comment-auto-fill-only-comments)
-    (auto-fill-mode -1))))
-(add-hook 'prog-mode-hook 'lunaryorn-auto-fill-comments-mode)
+(use-package lunaryorn-simple
+  :bind (([remap kill-whole-line]        . lunaryorn-smart-kill-whole-line)
+         ([remap move-beginning-of-line] . lunaryorn-back-to-indentation-or-beginning-of-line)
+         ("C-<backspace>"                . lunaryorn-smart-backward-kill-line)
+         ("C-S-j"                        . lunaryorn-smart-open-line))
+  :commands (lunaryorn-auto-fill-comments-mode)
+  ;; Auto-fill comments in programming modes
+  :init (add-hook 'prog-mode-hook #'lunaryorn-auto-fill-comments-mode))
+
+(use-package misc
+  :bind (("M-Z" . zap-up-to-char)))
+
+(use-package whitespace-cleanup-mode
+  :ensure t
+  :bind (("C-c t W" . whitespace-cleanup-mode))
+  :init (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
+          (add-hook hook #'whitespace-cleanup-mode))
+  :diminish whitespace-cleanup-mode)
 
 ;; Subword/superword editing
 (use-package subword
@@ -1977,16 +1927,6 @@ Otherwise insert the date as Mar 04, 2014."
 
 
 ;;; Key bindings
-
-;; Improve standard bindings
-(global-set-key [remap kill-whole-line] #'lunaryorn-smart-kill-whole-line)
-(global-set-key [remap move-beginning-of-line]
-                #'lunaryorn-back-to-indentation-or-beginning-of-line)
-
-;; Complement standard bindings (the comments indicate the related bindings)
-
-(global-set-key (kbd "C-<backspace>") #'lunaryorn-smart-backward-kill-line) ; C-S-backspace
-(global-set-key (kbd "C-S-j") #'lunaryorn-smart-open-line)                  ; C-j
 
 (defvar lunaryorn-utilities-map nil
   "Keymap for various utilities.")
