@@ -484,6 +484,7 @@ mouse-3: go to end"))))
 
 ;; Save bookmarks immediately after a bookmark was added
 (use-package bookmark
+  :defer t
   :bind (("C-c l b" . list-bookmarks))
   :config (setq bookmark-save-flag 1))
 
