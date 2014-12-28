@@ -856,7 +856,7 @@ Disable the highlighting of overlong lines."
   :defer t
   :commands (lunaryorn-discard-undesired-html-tidy-error
              lunaryorn-flycheck-mode-line-status)
-  :init (progn
+  :init (with-eval-after-load 'flycheck
           ;; Don't highlight undesired errors from html tidy
           (add-hook 'flycheck-process-error-functions
                     #'lunaryorn-discard-undesired-html-tidy-error)
