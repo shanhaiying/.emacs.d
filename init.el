@@ -133,6 +133,7 @@
 (use-package lunaryorn-osx
   :if (eq system-type 'darwin)
   :load-path "lisp/"
+  :defines (lunaryorn-darwin-trash-tool)
   :init
   (if (executable-find lunaryorn-darwin-trash-tool)
       (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
@@ -465,11 +466,15 @@ mouse-3: go to end"))))
 ;; Ignore uninteresting files
 (use-package ignoramus
   :ensure t
-  :init (ignoramus-setup))
+  :defer t
+  :idle (ignoramus-setup)
+  :idle-priority 10)
 
 (use-package hardhat
   :ensure t
-  :init (global-hardhat-mode)
+  :defer t
+  :idle (global-hardhat-mode)
+  :idle-priority 10
   :config
   ;; Add local homebrew prefix to the list of protected directories.  Hardhat
   ;; itself only handles /usr/local/
