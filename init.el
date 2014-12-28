@@ -837,12 +837,17 @@ Disable the highlighting of overlong lines."
   :idle (global-flycheck-mode)
   :config
   (progn
-    (setq flycheck-completion-system 'ido
-          flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+    (setq flycheck-completion-system 'ido)
 
     ;; Use italic face for checker name
     (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic))
   :diminish flycheck-mode)
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :defer t
+  :init
+  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 (use-package lunaryorn-flycheck
   :defer t
