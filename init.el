@@ -347,8 +347,9 @@ mouse-3: go to end"))))
                 savehist-autosave-interval 180))
 
 (use-package ido
-  :init (progn (ido-mode)
-               (ido-everywhere))
+  :init (progn
+          (ido-mode)
+          (ido-everywhere))
   :config
   (setq ido-enable-flex-matching t      ; Match characters if string doesn't
                                         ; match
@@ -1341,7 +1342,7 @@ Choose Skim if available, or fall back to the default application."
   :ensure t
   :defer t
   :config
-  (setq graphviz-dot-indent-width 4 ))
+  (setq graphviz-dot-indent-width 4))
 
 
 ;;; Symbol “awareness”
