@@ -652,7 +652,7 @@ mouse-3: go to end"))))
 ;; An Emacs server for `emacsclient'
 (use-package server
   :defer t
-  :idle (unless (server-running-p) (server-start)))
+  :idle (server-start))
 
 ;; Additional keybindings
 (bind-key [remap just-one-space] #'cycle-spacing)
