@@ -723,11 +723,6 @@ Disable the highlighting of overlong lines."
 (use-package hl-line                    ; Current line
   :init (global-hl-line-mode 1))
 
-(use-package volatile-highlights        ; Buffer operations
-  :ensure t
-  :init (volatile-highlights-mode t)
-  :diminish volatile-highlights-mode)
-
 (use-package paren                      ; Paired delimiters
   :defer t
   :idle (show-paren-mode)
