@@ -838,61 +838,23 @@ Disable the highlighting of overlong lines."
   :config
   (progn
     (setq flycheck-completion-system 'ido
-          flycheck-mode-line
-          '(:eval (lunaryorn-flycheck-mode-line-status))
-          flycheck-display-errors-function
-          #'flycheck-pos-tip-error-messages)
+          flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
 
     ;; Use italic face for checker name
-    (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic)
-
-    ;; Don't highlight undesired errors from html tidy
-    (add-hook 'flycheck-process-error-functions
-            #'lunaryorn-discard-undesired-html-tidy-error))
+    (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic))
   :diminish flycheck-mode)
 
-(defun lunaryorn-discard-undesired-html-tidy-error (err)
-  "Discard ERR if it is undesired.
+(use-package lunaryorn-flycheck
+  :defer t
+  :commands (lunaryorn-discard-undesired-html-tidy-error
+             lunaryorn-flycheck-mode-line-status)
+  :init (progn
+          ;; Don't highlight undesired errors from html tidy
+          (add-hook 'flycheck-process-error-functions
+                    #'lunaryorn-discard-undesired-html-tidy-error)
 
-Tidy is very verbose, so we prevent Flycheck from highlighting
-most errors from HTML Tidy."
-  ;; A non-nil result means to inhibit further processing (i.e. highlighting)
-  ;; of the error
-  (and (eq (flycheck-error-checker err) 'html-tidy)
-       ;; Only allow warnings about missing tags, or unexpected end tags being
-       ;; discarded
-       (not (string-match-p (rx (or "missing" "discarding"))
-                            (flycheck-error-message err)))))
-
-(defun lunaryorn-flycheck-mode-line-status ()
-  "Create a mode line status text for Flycheck."
-  (let* ((menu (mouse-menu-non-singleton flycheck-mode-menu-map))
-         (map (make-mode-line-mouse-map 'mouse-1
-                                        (lambda ()
-                                          (interactive)
-                                          (popup-menu menu))))
-         (text-and-face
-          (pcase flycheck-last-status-change
-            (`not-checked nil)
-            (`no-checker '(" -" . warning))
-            (`running '( " ✸" . success))
-            (`errored '( " !" . error))
-            (`finished
-             (let* ((error-counts (flycheck-count-errors
-                                   flycheck-current-errors))
-                    (no-errors (cdr (assq 'error error-counts)))
-                    (no-warnings (cdr (assq 'warning error-counts)))
-                    (face (cond (no-errors 'error)
-                                (no-warnings 'warning)
-                                (t 'success))))
-               (cons (format " %s/%s" (or no-errors 0) (or no-warnings 0))
-                     face)))
-            (`interrupted (cons " -" nil))
-            (`suspicious '(" ?" . warning)))))
-    (when text-and-face
-      (propertize (car text-and-face) 'face (cdr text-and-face)
-                  'mouse-face 'mode-line-highlight
-                  'local-map map))))
+          (setq flycheck-mode-line
+                '(:eval (lunaryorn-flycheck-mode-line-status)))))
 
 
 ;;; LaTeX with AUCTeX
