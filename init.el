@@ -57,236 +57,71 @@
 
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
 (package-initialize)
 
-;; Install all required packages if absent
-(defconst lunaryorn-packages
-  '(
-    ;; Basic libraries
-    dash                                ; List processing
-    epl                                 ; Package environment
-    exec-path-from-shell                ; Environment fixup
-    ;; Color theme and fonts
-    solarized-theme
-    unicode-fonts                       ; Unicode font setup
-    ;; UI improvements
-    anzu                                ; Mode line indicators for isearch
-    browse-kill-ring                    ; Kill ring browser
-    smex                                ; Improved M-x
-    fancy-battery                       ; Nice battery display
-    diminish                            ; Keep mode line clean
-    ;; Buffer management
-    ibuffer-vc                         ; Group and sort buffers by VC state
-    ;; File handling
-    ignoramus                           ; Ignore uninteresting files
-    hardhat                             ; Protect user-writable files
-    launch                              ; Open files externally
-    ;; Navigation tools
-    ido-ubiquitous                      ; Use IDO everywhere
-    flx-ido                             ; Powerful flex matching for IDO
-    imenu-anywhere                      ; imenu with IDO and for all buffers
-    ido-vertical-mode                   ; Show IDO vertically
-    ace-jump-mode                       ; Fast jump within the buffer
-    ;; Editing indicators
-    nlinum                              ; Line numbers in display margin
-    page-break-lines                    ; page breaks
-    volatile-highlights                 ; certain editing operations,
-    flycheck                            ; and syntax errors
-    ;; Editing helpers
-    whitespace-cleanup-mode             ; Cleanup whitespace on save
-    undo-tree                           ; Undo reloaded
-    adaptive-wrap                       ; Automatic wrap prefix
-    expand-region                       ; Expand region by semantic units
-    multiple-cursors                    ; Multiple cursors
-    easy-kill                           ; Killing and marking on steroids
-    ;; Search and replace
-    ag                                  ; Code search
-    wgrep wgrep-ag                      ; Edit ag results in-place
-    visual-regexp                       ; Regexp reloaded
-    ;; Completion and expansion
-    company                             ; Auto completion
-    company-math                        ; Math characters for completion
-    ;; LaTeX/AUCTeX
-    auctex                              ; The one and only LaTeX environment
-    auctex-latexmk                      ; latexmk support for AUCTeX
-    ;; Markup languages
-    markdown-mode                       ; Markdown major mode
-    graphviz-dot-mode                   ; Graphviz mode
-    ;; Configuration languages
-    puppet-mode                         ; For Puppet files
-    ;; YAML
-    yaml-mode                           ; YAML major mode
-    ansible-doc                         ; Ansible documentation lookup
-    ;; General programming utilities
-    highlight-symbol                    ; Symbol awareness
-    pcre2el                             ; Regular expression utilities
-    highlight-numbers                   ; Syntax highlighting for numeric
-                                        ; literals
-    rainbow-delimiters                  ; Color delimiters by level
-    rainbow-mode                        ; Show colours as they are
-    ;; Programming languages
-    js2-mode                            ; Powerful Javascript mode
-    feature-mode                        ; Cucumber major mode
-    cmake-mode                          ; CMake files
-    ;; Python
-    anaconda-mode                       ; Documentation, lookup and navigation
-    company-anaconda                    ; Company integration for Anaconda
-    pip-requirements                    ; requirements.txt files
-    ;; Ruby support
-    inf-ruby                            ; Ruby interpreter in Emacs
-    robe                                ; Code navigation, docs and completion
-    ;; Rust
-    rust-mode
-    toml-mode                           ; For Cargo.toml
-    flycheck-rust                       ; Better Rust support for Flycheck
-    ;; Haskell support
-    haskell-mode                        ; Haskell major modes
-    ghci-completion                     ; Complete GHCI commands
-    flycheck-haskell                    ; Improve Haskell syntax checking
-    shm                                 ; Structured Haskell editing
-    ;; OCaml support
-    tuareg                              ; OCaml major mode
-    merlin                              ; OCaml completion engine
-    flycheck-ocaml                      ; Flycheck support for OCaml
-    ;; Lisp tools
-    paredit                            ; Balanced parenthesis editing
-    ;; Emacs Lisp utility modes and libraries
-    elisp-slime-nav                     ; Navigate to symbol definitions
-    macrostep                           ; Interactively expand macros
-    flycheck-cask                       ; Cask support for Flycheck
-    flycheck-package                    ; Package linting with Flycheck
-    ;; Clojure
-    cider                               ; Clojure IDE
-    clojure-mode-extra-font-locking
-    ;; General Version Control
-    diff-hl                             ; Highlight VCS diffs in the fringe
-    ;; Git and Gist integration
-    magit                               ; Git frontend
-    git-commit-mode                     ; Git commit message mode
-    gitconfig-mode                      ; Git configuration mode
-    gitignore-mode                      ; .gitignore mode
-    gitattributes-mode                  ; Git attributes mode
-    git-rebase-mode                     ; Mode for git rebase -i
-    git-timemachine                     ; Go back in (Git) time
-    ;; Utilities
-    projectile                          ; Project interaction
-    google-this                         ; Google from Emacs
-    paradox                             ; Better package menu
-    sx                                  ; Stack Overflow from Emacs
-    )
-  "Packages needed by my configuration.")
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-(defun lunaryorn-ensure-packages ()
-  "Install all required packages."
-  (interactive)
-  (unless package-archive-contents
-    (package-refresh-contents))
-  (with-demoted-errors "Error while installing packages: %S"
-    (dolist (package lunaryorn-packages)
-      (unless (package-installed-p package)
-        (package-install package)))))
+(require 'use-package)
+(setq use-package-verbose t)
 
-(lunaryorn-ensure-packages)
+(defalias 'lunaryorn-after 'with-eval-after-load)
 
 
 ;;; Requires
-
-(require 'dash)
 
 (require 'subr-x)
 (require 'rx)
 
 
-;;; Package configuration and initialization
-
-(defmacro lunaryorn-after (feature &rest forms)
-  "After FEATURE is loaded, evaluate FORMS.
-
-FORMS is byte compiled.
-
-FEATURE may be a named feature or a file name, see
-`eval-after-load' for details."
-  (declare (indent 1) (debug t))
-  (when (bound-and-true-p byte-compile-current-file)
-    (if (stringp feature)
-        (load feature nil 'no-error)
-      (require feature nil 'no-error)))
-  `(with-eval-after-load ',feature ,@forms))
-
-(defun lunaryorn-auto-modes (&rest modes-and-patterns)
-  "Add MODES-AND-PATTERNS to `auto-mode-alist'.
-
-MODES-AND-PATTERNS is of the form `(mode1 pattern1 pattern2 …
-mode2 pattern3 pattern4)'.  For each major mode symbol, add auto
-mode entries for all subsequent patterns until the next major
-mode symbol."
-  (dolist (cell (-partition-by-header #'symbolp modes-and-patterns))
-    (pcase-let ((`(,mode . ,patterns) cell))
-      (dolist (pattern patterns)
-        (add-to-list 'auto-mode-alist (cons pattern mode))))))
-
-(defconst lunaryorn-font-lock-keywords
-  `((,(rx "(" symbol-start
-          (group (or "lunaryorn-after" "lunaryorn-auto-modes"))
-          symbol-end
-          (optional (one-or-more (syntax whitespace))
-                    symbol-start
-                    (group (one-or-more (or (syntax word) (syntax symbol))))
-                    symbol-end))
-     (1 font-lock-keyword-face)
-     (2 font-lock-constant-face nil t)))
-  "Our font lock keywords for Lisp modes.")
-
-;; Teach Emacs Lisp modes about our keywords
-(lunaryorn-after lisp-mode
-  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-    (font-lock-add-keywords mode lunaryorn-font-lock-keywords 'append)))
-
-(lunaryorn-after ielm
-  (font-lock-add-keywords 'inferior-emacs-lisp-mode
-                          lunaryorn-font-lock-keywords 'append))
-
-
 ;;; Environment fixup
-(lunaryorn-after exec-path-from-shell
-  (when (string-match-p "/zsh$" (getenv "SHELL"))
-    ;; Use a non-interactive shell.  We use a login shell, even though we have
-    ;; our paths setup in .zshenv.  However, OS X adds global settings to the
-    ;; login profile.  Notably, this affects /usr/texbin from MacTeX
-    (setq exec-path-from-shell-arguments '("-l")))
+(use-package exec-path-from-shell
+  :ensure t
+  :defer t
+  :init
+  (when (and (eq system-type 'darwin) (display-graphic-p))
+    (exec-path-from-shell-initialize)
 
-  (dolist (var '("EMAIL" "PYTHONPATH" "INFOPATH"))
-    (add-to-list 'exec-path-from-shell-variables var)))
+    (setq user-mail-address (getenv "EMAIL"))
 
-(when (and (eq system-type 'darwin) (display-graphic-p))
-  (exec-path-from-shell-initialize)
+    ;; Re-initialize the `Info-directory-list' from $INFOPATH.  Since package.el
+    ;; already initializes info, we need to explicitly add the $INFOPATH
+    ;; directories to `Info-directory-list'.
+    (dolist (dir (parse-colon-path (getenv "INFOPATH")))
+      (when dir
+        (add-to-list 'Info-directory-list dir))))
+  :config
+  (progn
+    (when (string-match-p "/zsh$" (getenv "SHELL"))
+      ;; Use a non-interactive shell.  We use a login shell, even though we have
+      ;; our paths setup in .zshenv.  However, OS X adds global settings to the
+      ;; login profile.  Notably, this affects /usr/texbin from MacTeX
+      (setq exec-path-from-shell-arguments '("-l")))
 
-  (setq user-mail-address (getenv "EMAIL"))
-
-  ;; Re-initialize the `Info-directory-list' from $INFOPATH.  Since package.el
-  ;; already initializes info, we need to explicitly add the $INFOPATH
-  ;; directories to `Info-directory-list'.
-  (dolist (dir (parse-colon-path (getenv "INFOPATH")))
-    (when dir
-      (add-to-list 'Info-directory-list dir))))
+    (dolist (var '("EMAIL" "PYTHONPATH" "INFOPATH"))
+      (add-to-list 'exec-path-from-shell-variables var))))
 
 
 ;;; Customization interface
 (defconst lunaryorn-custom-file (locate-user-emacs-file "custom.el")
   "File used to store settings from Customization UI.")
 
-(lunaryorn-after cus-edit
-  (setq custom-file lunaryorn-custom-file))
+(use-package cus-edit
+  :defer t
+  :config (setq custom-file lunaryorn-custom-file))
 
 (load lunaryorn-custom-file 'no-error 'no-message)
 
 
 ;;; OS X support
-
-(lunaryorn-after ns-win
+(use-package ns-win
+  :defer t
+  :if (eq system-type 'darwin)
+  :config
   (setq ns-pop-up-frames nil            ; Don't pop up new frames from the
                                         ; workspace
         mac-option-modifier 'meta       ; Option is simply the natural Meta
@@ -295,32 +130,6 @@ mode symbol."
         mac-right-option-modifier 'none ; Keep right option for accented input
         ;; Just in case we ever need these keys
         mac-function-modifier 'hyper))
-
-;; Prefer GNU utilities over the BSD variants in Emacs, because the GNU tools
-;; integrate better with Emacs
-(defconst lunaryorn-gnu-ls (and (eq system-type 'darwin) (executable-find "gls"))
-  "Path to GNU ls on OS X.")
-
-(lunaryorn-after files
-  (when lunaryorn-gnu-ls
-    ;; Use GNU ls if available
-    (setq insert-directory-program lunaryorn-gnu-ls)))
-
-(lunaryorn-after dired
-  (when (and (eq system-type 'darwin) (not lunaryorn-gnu-ls))
-    ;; Don't probe for --dired flag in Dired, because we already know that GNU
-    ;; ls is missing!
-    (setq dired-use-ls-dired nil)))
-
-(lunaryorn-after grep
-  ;; Use GNU find on OS X, if possible
-  (when-let (gfind (and (eq system-type 'darwin) (executable-find "gfind")))
-    (setq find-program gfind)))
-
-(lunaryorn-after locate
-  ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
-  (when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
-    (setq locate-command mdfind)))
 
 ;; Trash support for OS X.  On OS X, Emacs doesn't support the system trash
 ;; properly, so we try to work around it by providing our own trashing function.
@@ -414,9 +223,15 @@ Without FORMULA determine whether Homebrew itself is available."
       (set-frame-font (format "%s-%s" font size) nil t)
     (lwarn 'emacs :warning "%S font is missing!" font)))
 
-(unicode-fonts-setup)
+(use-package unicode-fonts
+  :ensure t
+  :init (unicode-fonts-setup))
 
-(lunaryorn-after solarized
+(use-package solarized
+  :ensure solarized-theme
+  :defer t
+  :init (load-theme 'solarized-light 'no-confirm)
+  :config t
   ;; Disable variable pitch fonts in Solarized theme
   (setq solarized-use-variable-pitch nil
         ;; Don't add too much colours to the fringe
@@ -428,27 +243,33 @@ Without FORMULA determine whether Homebrew itself is available."
         solarized-height-plus-3 1.0
         solarized-height-plus-4 1.0))
 
-(load-theme 'solarized-light 'no-confirm)
-
 
 ;;; The mode line
+
+(use-package diminish
+  :ensure t
+  :defer t)
 
 ;; Standard stuff
 (line-number-mode)
 (column-number-mode)
-(fancy-battery-mode)                    ; Battery status
+
+(use-package fancy-battery
+  :ensure t
+  :init (fancy-battery-mode))
 
 ;; Indicate position/total matches for incremental searches in the mode line
-(global-anzu-mode)
-(lunaryorn-after anzu
+(use-package anzu
+  :ensure t
+  :init (global-anzu-mode)
   ;; Please don't mess with my mode line
-  (setq anzu-cons-mode-line-p nil)
-
-  ;; Don't show Anzu in the mode line
-  (diminish 'anzu-mode))
+  :config (setq anzu-cons-mode-line-p nil)
+  :diminish anzu-mode)
 
 ;; Show the current function name in the mode line
-(lunaryorn-after which-func
+(use-package which-func
+  :init (which-function-mode)
+  :config
   (setq which-func-unknown "⊥" ; The default is really boring…
         which-func-format
         `((:propertize (" ➤ " which-func-current)
@@ -458,8 +279,6 @@ Without FORMULA determine whether Homebrew itself is available."
                        help-echo "mouse-1: go to beginning\n\
 mouse-2: toggle rest visibility\n\
 mouse-3: go to end"))))
-
-(which-function-mode)
 
 ;; Improve our mode line
 (defvar lunaryorn-vc-mode-line
@@ -522,15 +341,15 @@ mouse-3: go to end"))))
 (setq history-length 1000)
 
 ;; Save a minibuffer input history
-(lunaryorn-after savehist
-  (setq savehist-save-minibuffer-history t
-        savehist-autosave-interval 180))
-(savehist-mode t)
+(use-package savehist
+  :init (savehist-mode t)
+  :config (setq savehist-save-minibuffer-history t
+                savehist-autosave-interval 180))
 
-;; Boost file and buffer operations by flexible matching and the ability to
-;; perform operations like deleting files or killing buffers directly from the
-;; minibuffer
-(lunaryorn-after ido
+(use-package ido
+  :init (progn (ido-mode)
+               (ido-everywhere))
+  :config
   (setq ido-enable-flex-matching t      ; Match characters if string doesn't
                                         ; match
         ido-create-new-buffer 'always   ; Create a new buffer if nothing matches
@@ -540,29 +359,40 @@ mouse-3: go to end"))))
         ido-default-buffer-method 'selected-window
         ido-use-faces nil))             ; Prefer flx ido faces
 
-(ido-mode t)                            ; Enable IDO,…
-(ido-everywhere)                        ; …everywhere…
-(ido-ubiquitous-mode)                   ; …really!
-(flx-ido-mode)                          ; Powerful IDO flex matching
-(ido-vertical-mode)                     ; Show IDO completions vertically
+(use-package ido-ubiquitous
+  :ensure t
+  :init (ido-ubiquitous-mode))
+
+(use-package flx-ido
+  :ensure t
+  :init (flx-ido-mode))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :init (ido-vertical-mode))
 
 ;; Configure Smex
-(lunaryorn-after smex
-  (setq smex-save-file (locate-user-emacs-file ".smex-items")))
+(use-package smex
+  :ensure t
+  :bind (([remap execute-extended-command] . smex)
+         ("M-X" . smex-major-mode-commands)))
 
 ;; Tune `eval-expression'
 (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
 
 
 ;;; Buffer, Windows and Frames
 
+;;; Kill `suspend-frame'
+(global-set-key (kbd "C-z") nil)
+(global-set-key (kbd "C-x C-z") nil)
+
 ;; Make uniquify rename buffers like in path name notation
-(lunaryorn-after uniquify
-  (setq uniquify-buffer-name-style 'forward))
+(use-package uniquify
+  :config (setq uniquify-buffer-name-style 'forward))
 
 ;; Clean stale buffers
-(require 'midnight)
+(use-package midnight)
 
 ;; Don't kill the important buffers
 (defconst lunaryorn-do-not-kill-buffer-names '("*scratch*" "*Messages*")
@@ -580,58 +410,68 @@ Add this to `kill-buffer-query-functions'."
 
 (add-hook 'kill-buffer-query-functions #'lunaryorn-do-not-kill-important-buffers)
 
-(lunaryorn-after ibuffer
-  ;; Group ibuffer by VC status
-  (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-vc-set-filter-groups-by-vc-root)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic))))
-
+(use-package ibuffer
+  :bind (([remap list-buffers] . ibuffer))
   ;; Show VC Status in ibuffer
-  (setq ibuffer-formats
-        '((mark modified read-only vc-status-mini " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " "
-                (vc-status 16 16 :left)
-                " "
-                filename-and-process)
-          (mark modified read-only " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " " filename-and-process)
-          (mark " "
-                (name 16 -1)
-                " " filename))))
+  :config (setq ibuffer-formats
+                '((mark modified read-only vc-status-mini " "
+                        (name 18 18 :left :elide)
+                        " "
+                        (size 9 -1 :right)
+                        " "
+                        (mode 16 16 :left :elide)
+                        " "
+                        (vc-status 16 16 :left)
+                        " "
+                        filename-and-process)
+                  (mark modified read-only " "
+                        (name 18 18 :left :elide)
+                        " "
+                        (size 9 -1 :right)
+                        " "
+                        (mode 16 16 :left :elide)
+                        " " filename-and-process)
+                  (mark " "
+                        (name 16 -1)
+                        " " filename))))
 
-;; Move between windows with Shift + Arrow keys
-(windmove-default-keybindings)
+(use-package ibuffer-vc
+  :ensure t
+  :defer t
+  ;; Group ibuffer by VC status
+  :init (add-hook 'ibuffer-hook
+                  (lambda ()
+                    (ibuffer-vc-set-filter-groups-by-vc-root)
+                    (unless (eq ibuffer-sorting-mode 'alphabetic)
+                      (ibuffer-do-sort-by-alphabetic)))))
 
-;; Undo and redo window configurations with C-c Left and C-c Right respectively
-(winner-mode)
+(use-package windmove
+  ;; Move between windows with Shift + Arrow keys
+  :init (windmove-default-keybindings))
+
+(use-package winner
+  ;; Undo and redo window configurations with C-c Left and C-c Right
+  ;; respectively
+  :init (winner-mode))
 
 ;; Prevent Ediff from spamming the frame
-(lunaryorn-after ediff-wind
+(use-package ediff-wind
+  :defer t
+  :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (setq frame-title-format
       '(:eval (if (buffer-file-name)
                   (abbreviate-file-name (buffer-file-name)) "%b")))
 
-;; Save buffers, windows and frames
-(lunaryorn-after desktop
-  ;; Don't autosave desktops, it's too expensive.  Desktops aren't that
-  ;; precious, and Emacs will save the desktop on exit anyway.
-  (setq desktop-auto-save-timeout nil
-        desktop-modes-not-to-save '(magit-mode)))
-(desktop-save-mode)
+(use-package desktop
+  ;; Save buffers, windows and frames
+  :init (desktop-save-mode)
+  :config (progn
+            ;; Don't autosave desktops, it's too expensive.  Desktops aren't
+            ;; that precious, and Emacs will save the desktop on exit anyway.
+            (setq desktop-auto-save-timeout nil)
+            (add-to-list 'desktop-modes-not-to-save 'magit-mode)))
 
 
 ;;; File handling
@@ -654,19 +494,26 @@ Add this to `kill-buffer-query-functions'."
           (fboundp 'system-move-file-to-trash)))
 
 ;; Store Tramp auto save files locally
-(lunaryorn-after tramp
+(use-package tramp
+  :defer t
+  :config
   (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
 
-(lunaryorn-after dired
-  ;; Power up dired
-  (require 'dired-x)
+(use-package dired
+  :defer t
+  :config
+  (progn
+    ;; Power up dired
+    (require 'dired-x)
 
-  ;; Always revert Dired buffers on revisiting
-  (setq dired-auto-revert-buffer t
-        dired-listing-switches "-alh"  ; Human-readable sizes by default
-        ))
+    ;; Always revert Dired buffers on revisiting
+    (setq dired-auto-revert-buffer t
+          dired-listing-switches "-alh" ; Human-readable sizes by default
+          )))
 
-(lunaryorn-after dired-x
+(use-package dired-x
+  :defer t
+  :config
   (when (eq system-type 'darwin)
     ;; OS X bsdtar is mostly compatible with GNU Tar
     (setq dired-guess-shell-gnutar "tar")))
@@ -675,23 +522,29 @@ Add this to `kill-buffer-query-functions'."
 (add-hook 'find-file-hook 'copyright-update)
 
 ;; Ignore uninteresting files
-(ignoramus-setup)
+(use-package ignoramus
+  :ensure t
+  :init (ignoramus-setup))
 
-;; Do not clobber user writeable files
-(lunaryorn-after hardhat
+(use-package hardhat
+  :ensure t
+  :init (global-hardhat-mode)
+  :config
   ;; Add local homebrew prefix to the list of protected directories.  Hardhat
   ;; itself only handles /usr/local/
   (when (eq system-type 'darwin)
     (when-let (prefix (lunaryorn-homebrew-prefix))
       (add-to-list 'hardhat-fullpath-protected-regexps prefix))))
-(global-hardhat-mode)
 
 ;; Save bookmarks immediately after a bookmark was added
-(lunaryorn-after bookmark
-  (setq bookmark-save-flag 1))
+(use-package bookmark
+  :bind (("C-c l b" . list-bookmarks))
+  :config (setq bookmark-save-flag 1))
 
 ;; Track recent files
-(lunaryorn-after recentf
+(use-package recentf
+  :init (recentf-mode)
+  :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15
         ;; Cleanup recent files only when Emacs is idle, but not when the mode
@@ -703,11 +556,10 @@ Add this to `kill-buffer-query-functions'."
                               "/itsalltext/" ; It's all text temp files
                               ;; And all other kinds of boring files
                               #'ignoramus-boring-p)))
-(recentf-mode t)
 
 ;; Open recent files with IDO, see
 ;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
-(lunaryorn-after recentf
+(lunaryorn-after 'recentf
   (defun lunaryorn-ido-find-recentf ()
     "Find a recent file with IDO."
     (interactive)
@@ -716,8 +568,8 @@ Add this to `kill-buffer-query-functions'."
         (find-file file)))))
 
 ;; Save position in files
-(require 'saveplace)
-(setq-default save-place t)
+(use-package saveplace
+  :config (setq-default save-place t))
 
 ;; View files read-only
 (setq view-read-only t)
@@ -726,25 +578,24 @@ Add this to `kill-buffer-query-functions'."
 (global-auto-revert-mode 1)
 
 ;; Open files in external programs
-(global-launch-mode)
+(use-package launch
+  :ensure t
+  :bind (("C-c f o" . lunaryorn-launch-dwim))
+  :init
+  (progn
+    (global-launch-mode)
 
-(defun lunaryorn-launch-dired-dwim ()
-  "Open the marked files externally.
-
-If no files are marked, open the current directory instead."
-  (let ((marked-files (dired-get-marked-files)))
-    (if marked-files
-        (launch-files marked-files :confirm)
-      (launch-directory (dired-current-directory)))))
-
-(defun lunaryorn-launch-dwim ()
-  "Open the current file externally."
-  (interactive)
-  (if (eq major-mode 'dired-mode)
-      (lunaryorn-launch-dired-dwim)
-    (if (buffer-file-name)
-        (launch-file (buffer-file-name))
-      (user-error "The current buffer is not visiting a file"))))
+    (defun lunaryorn-launch-dwim ()
+      "Open the current file externally."
+      (interactive)
+      (if (eq major-mode 'dired-mode)
+          (let ((marked-files (dired-get-marked-files)))
+            (if marked-files
+                (launch-files marked-files :confirm)
+              (launch-directory (dired-current-directory))))
+        (if (buffer-file-name)
+            (launch-file (buffer-file-name))
+          (user-error "The current buffer is not visiting a file"))))))
 
 ;; Utility commands for working with files, see:
 ;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
@@ -808,6 +659,11 @@ non-directory part only."
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file-other-window user-init-file))
+
+;;; Additional bindings for built-ins
+(bind-key "C-c f L" #'add-dir-local-variable)
+(bind-key "C-c f l" #'add-file-local-variable)
+(bind-key "C-c f p" #'add-file-local-variable-prop-line)
 
 
 ;;; Basic editing
@@ -877,34 +733,12 @@ point reaches the beginning or end of the buffer, stop there."
 (setq indicate-empty-lines t
       require-final-newline t)
 
-;; Highlight bad whitespace
-(lunaryorn-after whitespace
-  ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
-  ;; portions of lines via faces.  Also indicate tabs via characters
-  (setq whitespace-style '(face indentation space-after-tab space-before-tab
-                                tab-mark empty trailing lines-tail)
-        whitespace-line-column nil)     ; Use `fill-column' for overlong lines
-
-  (diminish 'whitespace-mode))
-
-;; A function to disable highlighting of long lines in modes
-(lunaryorn-after whitespace
-  (defun lunaryorn-whitespace-style-no-long-lines ()
-    "Configure `whitespace-mode' for Org.
-
-Disable the highlighting of overlong lines."
-    (setq-local whitespace-style (-difference whitespace-style
-                                              '(lines lines-tail)))
-    (when whitespace-mode
-      (whitespace-mode -1)
-      (whitespace-mode 1))))
-
-;; Clean up whitespace
-(dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
-  (add-hook hook #'whitespace-mode)
-  (add-hook hook #'whitespace-cleanup-mode))
-
-(lunaryorn-after whitespace-cleanup-mode (diminish 'whitespace-cleanup-mode))
+(use-package whitespace-cleanup-mode
+  :ensure t
+  :bind (("C-c t W" . whitespace-cleanup-mode))
+  :init (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
+          (add-hook hook #'whitespace-cleanup-mode))
+  :diminish whitespace-cleanup-mode)
 
 ;; Delete the selection instead of inserting
 (delete-selection-mode)
@@ -931,21 +765,67 @@ Disable the highlighting of overlong lines."
     (auto-fill-mode -1))))
 (add-hook 'prog-mode-hook 'lunaryorn-auto-fill-comments-mode)
 
-;; Choose wrap prefix automatically
-(add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
-
 ;; Subword/superword editing
-(lunaryorn-after subword (diminish 'subword-mode))
+(use-package subword
+  :defer t
+  :diminish subword-mode)
 
-;; Configure scrolling
-(setq scroll-margin 0                   ; Drag the point along while scrolling
-      scroll-conservatively 1000        ; Never recenter the screen while scrolling
-      scroll-error-top-bottom t         ; Move to beg/end of buffer before
-                                        ; signalling an error
-      ;; These settings make trackpad scrolling on OS X much more predictable
-      ;; and smooth
-      mouse-wheel-progressive-speed nil
-      mouse-wheel-scroll-amount '(1))
+;; Choose wrap prefix automatically
+(use-package adaptive-wrap
+  :ensure t
+  :defer t
+  :init (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode))
+
+(use-package visual-regexp
+  :ensure t
+  :bind (("C-c r" . vr/query-replace)
+         ("C-c R" . vr/replace)))
+
+(use-package browse-kill-ring
+  :ensure t
+  :bind (("C-c y" . browse-kill-ring)))
+
+(use-package easy-kill
+  :ensure t
+  :bind (([remap kill-ring-save] . easy-kill)
+         ([remap mark-sexp]      . easy-mark)))
+
+(use-package align
+  :bind (("C-c A a" . align)
+         ("C-c A c" . align-current)
+         ("C-c A r" . align-regexp)))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-c m e"   . mc/mark-more-like-this-extended)
+         ("C-c m h"   . mc/mark-all-like-this-dwim)
+         ("C-c m l"   . mc/edit-lines)
+         ("C-c m n"   . mc/mark-next-like-this)
+         ("C-c m p"   . mc/mark-previous-like-this)
+         ("C-c m r"   . vr/mc-mark)
+         ("C-c m C-a" . mc/edit-beginnings-of-lines)
+         ("C-c m C-e" . mc/edit-ends-of-lines)
+         ("C-c m C-s" . mc/mark-all-in-region))
+  :config
+  (setq mc/mode-line
+        ;; Simplify the MC mode line indicator
+        '(:propertize (:eval (concat " " (number-to-string (mc/num-cursors))))
+                      face font-lock-warning-face)))
+
+(use-package expand-region
+  :ensure t
+  :bind (("C-=" . er/expand-region)))
+
+;; Power up undo
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode)
+  :diminish undo-tree-mode)
+
+;; Line numbers
+(use-package nlinum
+  :ensure t
+  :bind (("C-c t l" . nlinum-mode)))
 
 ;; Give us narrowing back!
 (put 'narrow-to-region 'disabled nil)
@@ -956,63 +836,108 @@ Disable the highlighting of overlong lines."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-;; Highlight the current line, editing operations, and match parens in the
-;; buffer
-(global-hl-line-mode 1)
-(require 'volatile-highlights)          ; Doesn't autoload :|
-(volatile-highlights-mode t)
-(diminish 'volatile-highlights-mode)
+;; An Emacs server for `emacsclient'
+(use-package server
+  :init (unless (server-running-p) (server-start)))
 
-;; Highlight delimiters…
-(show-paren-mode)                       ; … by matching delimiters
-(lunaryorn-after paren
-  ;; Show parenthesis more aggressively
-  (setq show-paren-when-point-inside-paren t
-        show-paren-when-point-in-periphery t))
-(dolist (hook '(text-mode-hook prog-mode-hook)) ; … by depth
-  (add-hook hook #'rainbow-delimiters-mode))
-;; Add custom highlights to buffers
-(global-hi-lock-mode 1)
+(bind-key [remap just-one-space] #'cycle-spacing)
+
+
+;;; Navigation and scrolling
+(setq scroll-margin 0                   ; Drag the point along while scrolling
+      scroll-conservatively 1000        ; Never recenter the screen while scrolling
+      scroll-error-top-bottom t         ; Move to beg/end of buffer before
+                                        ; signalling an error
+      ;; These settings make trackpad scrolling on OS X much more predictable
+      ;; and smooth
+      mouse-wheel-progressive-speed nil
+      mouse-wheel-scroll-amount '(1))
 
 ;; Jump to characters in buffers
-(lunaryorn-after ace-jump-mode
+(use-package ace-jump-mode
+  :ensure t
+  :bind (("C-c SPC" . ace-jump-mode)
+         ("C-c j"   . ace-jump-mode)
+         ("C-c J"   . ace-jump-mode-pop-mark))
+  :config
   ;; Sync marks with Emacs built-in commands
   (ace-jump-mode-enable-mark-sync))
 
-;; Power up undo
-(global-undo-tree-mode)
-(lunaryorn-after undo-tree (diminish 'undo-tree-mode))
-
 ;; Nicify page breaks
-(global-page-break-lines-mode)
-(lunaryorn-after page-break-lines (diminish 'page-break-lines-mode))
+(use-package page-break-lines
+  :ensure t
+  :init (global-page-break-lines-mode)
+  :defer page-break-lines-modes)
 
 ;; Outline commands
-(dolist (hook '(text-mode-hook prog-mode-hook))
-  (add-hook hook #'outline-minor-mode))
-(lunaryorn-after outline (diminish 'outline-minor-mode))
+(use-package outline
+  :defer t
+  :init (dolist (hook '(text-mode-hook prog-mode-hook))
+          (add-hook hook #'outline-minor-mode))
+  :diminish outline-minor-mode)
 
-;; Bug references
-(add-hook 'prog-mode-hook #'bug-reference-prog-mode)
-(add-hook 'text-mode-hook #'bug-reference-mode)
-
-;; An Emacs server for `emacsclient'
-(require 'server)
-(unless (server-running-p) (server-start))
+(use-package imenu-anywhere
+  :bind (("C-c i" . imenu-anywhere)))
 
 
-;;; Multiple cursors
-(lunaryorn-after multiple-cursors-core
-  (setq mc/mode-line
-        ;; Simplify the MC mode line indicator
-        '(:propertize (:eval (concat " " (number-to-string (mc/num-cursors))))
-                      face font-lock-warning-face)))
+;;; Highlights
+(use-package whitespace                 ; Bad whitespace
+  :bind (("C-c t w" . whitespace-mode))
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
+    (add-hook hook #'whitespace-mode))
+  :config
+  ;; Highlight tabs, empty lines at beg/end, trailing whitespaces and overlong
+  ;; portions of lines via faces.  Also indicate tabs via characters
+  (setq whitespace-style '(face indentation space-after-tab space-before-tab
+                                tab-mark empty trailing lines-tail)
+        whitespace-line-column nil)     ; Use `fill-column' for overlong lines
+  :diminish whitespace-mode)
+
+;; A function to disable highlighting of long lines in modes
+(defun lunaryorn-whitespace-style-no-long-lines ()
+  "Configure `whitespace-mode' for Org.
+
+Disable the highlighting of overlong lines."
+  (setq-local whitespace-style (-difference whitespace-style
+                                            '(lines lines-tail)))
+  (when whitespace-mode
+    (whitespace-mode -1)
+    (whitespace-mode 1)))
+
+(use-package hl-line                    ; Current line
+  :init (global-hl-line-mode 1))
+
+(use-package volatile-highlights        ; Buffer operations
+  :ensure t
+  :init (volatile-highlights-mode t)
+  :diminish volatile-highlights-mode)
+
+(use-package paren                      ; Paired delimiters
+  :init (show-paren-mode)
+  :config (setq show-paren-when-point-inside-paren t
+                show-paren-when-point-in-periphery t))
+
+(use-package rainbow-delimiters         ; Delimiters by depth
+  :ensure t
+  :defer t
+  :init (dolist (hook '(text-mode-hook prog-mode-hook))
+          (add-hook hook #'rainbow-delimiters-mode)))
+
+(use-package hi-lock                    ; Custom regexp highlights
+  :init (global-hi-lock-mode))
 
 
 ;;; Completion and expansion
 
+;; In `completion-at-point', do not pop up silly completion buffers for less
+;; than five candidates.  Cycle instead.
+(setq completion-cycle-threshold 5)
+
 ;; Configure hippie-expand reasonably
-(lunaryorn-after hippie-exp
+(use-package hippie-exp
+  :bind (([remap dabbrev-expand] . hippie-expand))
+  :config
   (setq hippie-expand-try-functions-list
         '(try-expand-dabbrev
           try-expand-dabbrev-all-buffers
@@ -1024,137 +949,184 @@ Disable the highlighting of overlong lines."
           try-complete-lisp-symbol-partially
           try-complete-lisp-symbol)))
 
-;; In `completion-at-point', do not pop up silly completion buffers for less
-;; than five candidates.  Cycle instead.
-(setq completion-cycle-threshold 5)
-
 ;; Enable auto-completion
-(lunaryorn-after company
-  (setq company-tooltip-align-annotations t
-        ;; Easy navigation to candidates with M-<n>
-        company-show-numbers t)
+(use-package company
+  :ensure t
+  :diminish company-mode
+  :init (global-company-mode)
+  :config
+  (progn
+    ;; Use Company for completion
+    (bind-key [remap completion-at-point] #'company-complete company-mode-map)
 
+    (setq company-tooltip-align-annotations t
+          ;; Easy navigation to candidates with M-<n>
+          company-show-numbers t)))
+
+(use-package company-math
+  :ensure t
+  :defer t
+  :init
   ;; Add backend for math characters
-  (add-to-list 'company-backends 'company-math-symbols-unicode)
-
-  (diminish 'company-mode))
-(global-company-mode)
-
-
-;;; Spell checking
-
-(lunaryorn-after ispell
-  (setq ispell-program-name (if (eq system-type 'darwin)
-                                (executable-find "aspell")
-                              (executable-find "hunspell"))
-        ispell-dictionary "en_GB"       ; Default dictionnary
-        ispell-silently-savep t         ; Don't ask when saving the private dict
-        ;; Increase the height of the choices window to take our header line
-        ;; into account.
-        ispell-choices-win-default-height 5)
-
-  (unless ispell-program-name
-    (warn "No spell checker available.  Install Hunspell or ASpell for OS X.")))
-
-(lunaryorn-after flyspell
-  ;; Don't take M-Tab, please
-  (setq flyspell-use-meta-tab nil
-        ;; Make Flyspell less chatty
-        flyspell-issue-welcome-flag nil
-        flyspell-issue-message-flag nil)
-
-  (diminish 'flyspell-mode))
-
-(dolist (hook '(text-mode-hook message-mode-hook))
-  (add-hook hook 'turn-on-flyspell))
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  (progn
+    (add-to-list 'company-backends 'company-math-symbols-unicode)
+    (add-to-list 'company-backends 'company-math-symbols-latex)))
 
 
-;;; Syntax checking
+;;; Spelling and syntax checking
+(use-package ispell
+  :defer t
+  :config
+  (progn
+    (setq ispell-program-name (if (eq system-type 'darwin)
+                                  (executable-find "aspell")
+                                (executable-find "hunspell"))
+          ispell-dictionary "en_GB"     ; Default dictionnary
+          ispell-silently-savep t       ; Don't ask when saving the private dict
+          ;; Increase the height of the choices window to take our header line
+          ;; into account.
+          ispell-choices-win-default-height 5)
+
+    (unless ispell-program-name
+      (warn "No spell checker available.  Install Hunspell or ASpell for OS X."))))
+
+(use-package flyspell
+  :bind (("C-c t s" . flyspell-mode))
+  :init
+  (progn
+    (dolist (hook '(text-mode-hook message-mode-hook))
+      (add-hook hook 'turn-on-flyspell))
+    (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+  :config
+  (progn
+    (setq flyspell-use-meta-tab nil
+          ;; Make Flyspell less chatty
+          flyspell-issue-welcome-flag nil
+          flyspell-issue-message-flag nil)
+
+    ;; Free C-M-i for completion
+    (define-key flyspell-mode-map "\M-\t" nil))
+  :diminish flyspell-mode)
 
 ;; On the fly syntax checking
-(lunaryorn-after flycheck
-  (defun lunaryorn-flycheck-mode-line-status ()
-    "Create a mode line status text for Flycheck."
-    (let* ((menu (mouse-menu-non-singleton flycheck-mode-menu-map))
-           (map (make-mode-line-mouse-map 'mouse-1
-                                          (lambda ()
-                                            (interactive)
-                                            (popup-menu menu))))
-           (text-and-face
-            (pcase flycheck-last-status-change
-              (`not-checked nil)
-              (`no-checker '(" -" . warning))
-              (`running '( " ✸" . success))
-              (`errored '( " !" . error))
-              (`finished
-               (let* ((error-counts (flycheck-count-errors
-                                     flycheck-current-errors))
-                      (no-errors (cdr (assq 'error error-counts)))
-                      (no-warnings (cdr (assq 'warning error-counts)))
-                      (face (cond (no-errors 'error)
-                                  (no-warnings 'warning)
-                                  (t 'success))))
-                 (cons (format " %s/%s" (or no-errors 0) (or no-warnings 0))
-                       face)))
-              (`interrupted (cons " -" nil))
-              (`suspicious '(" ?" . warning)))))
-      (when text-and-face
-        (propertize (car text-and-face) 'face (cdr text-and-face)
-                    'mouse-face 'mode-line-highlight
-                    'local-map map))))
+(use-package flycheck
+  :ensure t
+  :bind (("C-c l e" . list-flycheck-errors)
+         ("C-c t f" . flycheck-mode))
+  :init (global-flycheck-mode)
+  :config
+  (progn
+    (setq flycheck-completion-system 'ido
+          flycheck-mode-line
+          '(:eval (lunaryorn-flycheck-mode-line-status))
+          flycheck-display-errors-function
+          #'flycheck-pos-tip-error-messages)
 
-  (setq flycheck-completion-system 'ido
-        flycheck-mode-line
-        '(:eval (lunaryorn-flycheck-mode-line-status))
-        flycheck-display-errors-function
-        #'flycheck-pos-tip-error-messages)
+    ;; Use italic face for checker name
+    (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic)
 
-  ;; Use italic face for checker name
-  (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic)
+    ;; Don't highlight undesired errors from html tidy
+    (add-hook 'flycheck-process-error-functions
+            #'lunaryorn-discard-undesired-html-tidy-error))
+  :diminish flycheck-mode)
 
-  ;; Remove Flycheck from the mode line.  It has a prominent place in front of
-  ;; the mode list, we don't need it twice
-  (diminish 'flycheck-mode))
-(global-flycheck-mode)
+(defun lunaryorn-discard-undesired-html-tidy-error (err)
+  "Discard ERR if it is undesired.
+
+Tidy is very verbose, so we prevent Flycheck from highlighting
+most errors from HTML Tidy."
+  ;; A non-nil result means to inhibit further processing (i.e. highlighting)
+  ;; of the error
+  (and (eq (flycheck-error-checker err) 'html-tidy)
+       ;; Only allow warnings about missing tags, or unexpected end tags being
+       ;; discarded
+       (not (string-match-p (rx (or "missing" "discarding"))
+                            (flycheck-error-message err)))))
+
+(defun lunaryorn-flycheck-mode-line-status ()
+  "Create a mode line status text for Flycheck."
+  (let* ((menu (mouse-menu-non-singleton flycheck-mode-menu-map))
+         (map (make-mode-line-mouse-map 'mouse-1
+                                        (lambda ()
+                                          (interactive)
+                                          (popup-menu menu))))
+         (text-and-face
+          (pcase flycheck-last-status-change
+            (`not-checked nil)
+            (`no-checker '(" -" . warning))
+            (`running '( " ✸" . success))
+            (`errored '( " !" . error))
+            (`finished
+             (let* ((error-counts (flycheck-count-errors
+                                   flycheck-current-errors))
+                    (no-errors (cdr (assq 'error error-counts)))
+                    (no-warnings (cdr (assq 'warning error-counts)))
+                    (face (cond (no-errors 'error)
+                                (no-warnings 'warning)
+                                (t 'success))))
+               (cons (format " %s/%s" (or no-errors 0) (or no-warnings 0))
+                     face)))
+            (`interrupted (cons " -" nil))
+            (`suspicious '(" ?" . warning)))))
+    (when text-and-face
+      (propertize (car text-and-face) 'face (cdr text-and-face)
+                  'mouse-face 'mode-line-highlight
+                  'local-map map))))
 
 
 ;;; LaTeX with AUCTeX
 
-(require 'tex-site nil :no-error)
+(use-package tex-site
+  :ensure auctex)
 
 ;; TeX editing
-(lunaryorn-after tex
-  (setq TeX-parse-self t                ; Parse documents to provide completion
+(use-package tex
+  :ensure auctex
+  :defer t
+  :config
+  (progn
+    (setq TeX-parse-self t              ; Parse documents to provide completion
                                         ; for packages, etc.
-        TeX-auto-save t                 ; Automatically save style information
-        TeX-electric-sub-and-superscript t ; Automatically insert braces after
-                                           ; sub- and superscripts in math mode
-        ;; Don't insert magic quotes right away.
-        TeX-quote-after-quote t)
+          TeX-auto-save t               ; Automatically save style information
+          TeX-electric-sub-and-superscript t ; Automatically insert braces after
+                                        ; sub- and superscripts in math mode
+          ;; Don't insert magic quotes right away.
+          TeX-quote-after-quote t
+          ;; Don't ask for confirmation when cleaning
+          TeX-clean-confirm nil
+          ;; Provide forward and inverse search with SyncTeX
+          TeX-source-correlate-mode t
+          TeX-source-correlate-method 'synctex)
+    (setq-default TeX-master nil        ; Ask for the master file
+                  TeX-engine 'luatex    ; Use a modern engine
+                  TeX-PDF-mode t)
 
-  (add-hook 'TeX-mode-hook #'TeX-fold-mode))
+    ;; Move to chktex
+    (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s")))
 
-(lunaryorn-after tex-style
+(use-package tex-buf
+  :ensure auctex
+  :defer t
+  ;; Don't ask for confirmation when saving before processing
+  :config (setq TeX-save-query nil))
+
+(use-package tex-style
+  :ensure auctex
+  :defer t
+  :config
   ;; Enable support for csquotes
   (setq LaTeX-csquotes-close-quote "}"
         LaTeX-csquotes-open-quote "\\enquote{"))
 
-(lunaryorn-after latex
-  ;; Teach TeX folding about KOMA script sections
-  (setq TeX-outline-extra `((,(rx (0+ space) "\\section*{") 2)
-                            (,(rx (0+ space) "\\subsection*{") 3)
-                            (,(rx (0+ space) "\\subsubsection*{") 4)
-                            (,(rx (0+ space) "\\minisec{") 5))
-        ;; No language-specific hyphens please
-        LaTeX-babel-hyphen nil)
+(use-package tex-fold
+  :ensure auctex
+  :defer t
+  :init (add-hook 'TeX-mode-hook #'TeX-fold-mode))
 
-  (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode) ; Easy math input
-  (add-hook 'LaTeX-math-mode #'LaTeX-preview-setup)  ; LaTeX in-buffer previews
-  (add-hook 'LaTeX-mode-hook #'reftex-mode) ; Cross-refs on steroids
-  )
-
-(lunaryorn-after tex-mode
+(use-package tex-mode
+  :ensure auctex
+  :defer t
+  :config
   (font-lock-add-keywords 'latex-mode
                           `((,(rx "\\"
                                   symbol-start
@@ -1162,43 +1134,26 @@ Disable the highlighting of overlong lines."
                                   symbol-end)
                              . font-lock-warning-face))))
 
-(lunaryorn-after company
-  (defun lunaryorn-add-latex-backends ()
-    "Add additional Company backends for LaTeX."
-    (setq-local company-backends
-                (cons #'company-math-symbols-latex
-                      (cons #'company-latex-commands company-backends))))
+(use-package latex
+  :ensure auctex
+  :defer t
+  :config
+  (progn
+    ;; Teach TeX folding about KOMA script sections
+    (setq TeX-outline-extra `((,(rx (0+ space) "\\section*{") 2)
+                              (,(rx (0+ space) "\\subsection*{") 3)
+                              (,(rx (0+ space) "\\subsubsection*{") 4)
+                              (,(rx (0+ space) "\\minisec{") 5))
+          ;; No language-specific hyphens please
+          LaTeX-babel-hyphen nil)
 
-  (add-hook 'LaTeX-mode-hook 'lunaryorn-add-latex-backends))
+    (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)))    ; Easy math input
 
-;;;; TeX processing settings
-(lunaryorn-after tex-buf
-  ;; Don't ask for confirmation when saving before processing
-  (setq TeX-save-query nil))
-
-(lunaryorn-after tex
-  (setq TeX-clean-confirm nil           ; Don't ask for confirmation when
-                                        ; cleaning
-        ;; Provide forward and inverse search with SyncTeX
-        TeX-source-correlate-mode t
-        TeX-source-correlate-method 'synctex)
-  (setq-default TeX-master nil          ; Ask for the master file
-                TeX-engine 'luatex      ; Use a modern engine
-                TeX-PDF-mode t)         ; Create PDFs by default
-
-  ;; Replace the rotten Lacheck with Chktex
-  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s"))
-
-(lunaryorn-after latex
-  ;; Cleanup files from unusual packages
-  (dolist (ext '("\\.lox"               ; Lists from the fixme package
-                 "\\.lol"               ; Lists from the listings package
-                 "\\.cb" "\\.cb2"       ; Locations from the changebar package
-                 ))
-    (add-to-list 'LaTeX-clean-intermediate-suffixes ext))
-
-  ;; Add support for latexmk
-  (auctex-latexmk-setup))
+(use-package auctex-latexmk
+  :ensure t
+  :defer t
+  :init (with-eval-after-load 'latex
+          (auctex-latexmk-setup)))
 
 ;; find Skim.app on OS X, for Sycntex support, which Preview.app lacks.
 (defun lunaryorn-find-skim-bundle ()
@@ -1216,7 +1171,7 @@ Return nil if Skim is not installed.  See `lunaryorn-find-skim-bundle'."
     (executable-find (expand-file-name "Contents/SharedSupport/displayline"
                                        skim-bundle))))
 
-(lunaryorn-after tex
+(lunaryorn-after 'tex
   (defun lunaryorn-TeX-find-view-programs-os-x ()
     "Find TeX view programs on OS X.
 
@@ -1250,12 +1205,15 @@ Choose Skim if available, or fall back to the default application."
   ;; Select best viewing programs
   (lunaryorn-TeX-select-view-programs))
 
-;; Configure BibTeX
-(lunaryorn-after bibtex
-  (add-hook 'bibtex-mode-hook (lambda () (run-hooks 'prog-mode-hook)))
+(use-package bibtex
+  :defer t
+  :config
+  (progn
+    ;; Run prog mode hooks for bibtex
+    (add-hook 'bibtex-mode-hook (lambda () (run-hooks 'prog-mode-hook)))
 
-  ;; Use a modern BibTeX dialect
-  (bibtex-set-dialect 'biblatex))
+    ;; Use a modern BibTeX dialect
+    (bibtex-set-dialect 'biblatex)))
 
 (defun lunaryorn-reftex-find-ams-environment-caption (environment)
   "Find the caption of an AMS ENVIRONMENT."
@@ -1274,116 +1232,116 @@ Choose Skim if available, or fall back to the default application."
       (buffer-substring-no-properties beg (1- (point))))))
 
 ;; Configure RefTeX
-(lunaryorn-after reftex
-  ;; Plug into AUCTeX
-  (setq reftex-plug-into-AUCTeX t
-        ;; Automatically derive labels, and prompt for confirmation
-        reftex-insert-label-flags '(t t)
-        reftex-label-alist
-        '(
-          ;; Additional label definitions for RefTeX.
-          ("definition" ?d "def:" "~\\ref{%s}"
-           lunaryorn-reftex-find-ams-environment-caption
-           ("definition" "def.") -3)
-          ("theorem" ?h "thm:" "~\\ref{%s}"
-           lunaryorn-reftex-find-ams-environment-caption
-           ("theorem" "th.") -3)
-          ("example" ?x "ex:" "~\\ref{%s}"
-           lunaryorn-reftex-find-ams-environment-caption
-           ("example" "ex") -3)
-          ;; Algorithms package
-          ("algorithm" ?a "alg:" "~\\ref{%s}"
-           "\\\\caption[[{]" ("algorithm" "alg") -3)))
+(use-package reftex
+  :defer t
+  :init (add-hook 'LaTeX-mode-hook #'reftex-mode)
+  :config
+  (progn
+    ;; Plug into AUCTeX
+    (setq reftex-plug-into-AUCTeX t
+          ;; Automatically derive labels, and prompt for confirmation
+          reftex-insert-label-flags '(t t)
+          reftex-label-alist
+          '(
+            ;; Additional label definitions for RefTeX.
+            ("definition" ?d "def:" "~\\ref{%s}"
+             lunaryorn-reftex-find-ams-environment-caption
+             ("definition" "def.") -3)
+            ("theorem" ?h "thm:" "~\\ref{%s}"
+             lunaryorn-reftex-find-ams-environment-caption
+             ("theorem" "th.") -3)
+            ("example" ?x "ex:" "~\\ref{%s}"
+             lunaryorn-reftex-find-ams-environment-caption
+             ("example" "ex") -3)
+            ;; Algorithms package
+            ("algorithm" ?a "alg:" "~\\ref{%s}"
+             "\\\\caption[[{]" ("algorithm" "alg") -3)))
 
-  ;; Provide basic RefTeX support for biblatex
-  (unless (assq 'biblatex reftex-cite-format-builtin)
-    (add-to-list 'reftex-cite-format-builtin
-                 '(biblatex "The biblatex package"
-                            ((?\C-m . "\\cite[]{%l}")
-                             (?t . "\\textcite{%l}")
-                             (?a . "\\autocite[]{%l}")
-                             (?p . "\\parencite{%l}")
-                             (?f . "\\footcite[][]{%l}")
-                             (?F . "\\fullcite[]{%l}")
-                             (?x . "[]{%l}")
-                             (?X . "{%l}"))))
-    (setq reftex-cite-format 'biblatex))
-
-  (diminish 'reftex-mode))
+    ;; Provide basic RefTeX support for biblatex
+    (unless (assq 'biblatex reftex-cite-format-builtin)
+      (add-to-list 'reftex-cite-format-builtin
+                   '(biblatex "The biblatex package"
+                              ((?\C-m . "\\cite[]{%l}")
+                               (?t . "\\textcite{%l}")
+                               (?a . "\\autocite[]{%l}")
+                               (?p . "\\parencite{%l}")
+                               (?f . "\\footcite[][]{%l}")
+                               (?F . "\\fullcite[]{%l}")
+                               (?x . "[]{%l}")
+                               (?X . "{%l}"))))
+      (setq reftex-cite-format 'biblatex)))
+  :diminish reftex-mode)
 
 ;; Plug reftex into bib-cite
-(lunaryorn-after bib-cite
-  (setq bib-cite-use-reftex-view-crossref t)) ; Plug into bibcite
+(use-package bib-cite
+  :defer t
+  :config (setq bib-cite-use-reftex-view-crossref t))
 
 
 ;;; ReStructuredText editing
-(lunaryorn-after rst
+(use-package rst
+  :defer t
+  :config
   ;; Indent with 3 spaces after all kinds of literal blocks
   (setq rst-indent-literal-minimized 3
-        rst-indent-literal-normal 3))
+        rst-indent-literal-normal 3)
+
+  (bind-key "C-=" nil rst-mode-map)
+  ;; For similarity with AUCTeX
+  (bind-key  "C-c C-j" #'rst-insert-list rst-mode-map))
 
 
 ;;; Markdown editing
+(use-package markdown-mode
+  :ensure t
+  ;; Use GFM Mode for Markdown files from It's All Text.  It's better for most
+  ;; sites to not add hard line breaks to content.
+  :mode ("/itsalltext/.*\\.md\\'" . gfm-mode)
+  :config
+  (progn
+    ;; Use Pandoc to process Markdown
+    (setq markdown-command "pandoc -s -f markdown -t html5")
 
-;; Use GFM Mode for Markdown files from It's All Text.  It's better for most
-;; sites to not add hard line breaks to content.
-(lunaryorn-auto-modes 'gfm-mode (rx "/itsalltext/" (one-or-more not-newline)
-                                    ".md" string-end))
+    ;; No filling in GFM, because line breaks are significant.
+    (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
+    ;; Use visual lines instead
+    (add-hook 'gfm-mode-hook #'visual-line-mode)
 
-(lunaryorn-after markdown-mode
-  ;; Use Pandoc to process Markdown
-  (setq markdown-command "pandoc -s -f markdown -t html5")
+    (bind-key "C-c C-s C" #'markdown-insert-gfm-code-block markdown-mode-map)
+    (bind-key "C-c C-s P" #'markdown-insert-gfm-code-block markdown-mode-map)
 
-  ;; No filling in GFM, because line breaks are significant.
-  (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
-  ;; Use visual lines instead
-  (add-hook 'gfm-mode-hook #'visual-line-mode)
-
-  (lunaryorn-after whitespace
-    (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)))
+    ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM Mode.
+    (bind-key "M-q" #'ignore gfm-mode-map)))
 
 
 ;;; YAML
+(use-package yaml-mode
+  :ensure t
+  :defer t
+  :config
+  (progn
+    ;; Whitespace handling and filling
+    (add-hook 'yaml-mode-hook #'whitespace-mode)
+    (add-hook 'yaml-mode-hook #'whitespace-cleanup-mode)
+    (add-hook 'yaml-mode-hook #'lunaryorn-auto-fill-comments-mode)
+    (add-hook 'yaml-mode-hook #'flyspell-prog-mode)))
 
-(lunaryorn-after yaml-mode
-  ;; Whitespace handling and filling
-  (add-hook 'yaml-mode-hook #'whitespace-mode)
-  (add-hook 'yaml-mode-hook #'whitespace-cleanup-mode)
-  (add-hook 'yaml-mode-hook #'lunaryorn-auto-fill-comments-mode)
-  (add-hook 'yaml-mode-hook #'flyspell-prog-mode) ; Spell checking
-  (add-hook 'yaml-mode-hook #'ansible-doc-mode) ; Ansible documentation lookup
-  )
-
-(lunaryorn-after ansible-doc (diminish 'ansible-doc-mode))
+(use-package ansible-doc
+  :ensure t
+  :defer t
+  :init (add-hook 'yaml-mode-hook #'ansible-doc-mode)
+  :diminish ansible-doc-mode)
 
 
 ;;; Graphviz
-
-(lunaryorn-after graphviz-dot-mode
-  (setq graphviz-dot-indent-width 4     ; Reduce indentation
-        ))
-
-
-;;; Configuration languages
-(lunaryorn-after puppet-mode
-  ;; Fontify variables in Puppet comments
-  (setq puppet-fontify-variables-in-comments t))
+(use-package graphviz-dot-mode
+  :ensure t
+  :defer t
+  :config
+  (setq graphviz-dot-indent-width 4 ))
 
 
 ;;; Symbol “awareness”
-
-;; Navigate occurrences of the symbol under point with M-n and M-p
-(add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
-
-;; Highlight the symbol under point
-(lunaryorn-after highlight-symbol
-  (setq highlight-symbol-idle-delay 0.4 ; Highlight almost immediately
-        highlight-symbol-on-navigation-p t) ; Highlight immediately after
-                                        ; navigation
-
-  (diminish 'highlight-symbol-mode))
-(add-hook 'prog-mode-hook #'highlight-symbol-mode)
-
 (defun highlight-symbol-ag ()
   "Call `ag-project-regexp' with the symbol at point.
 
@@ -1395,6 +1353,27 @@ Needs ag.el from URL `https://github.com/Wilfred/ag.el'."
       (let ((highlight-symbol-border-pattern '("\\b" . "\\b")))
         (ag-project-regexp (highlight-symbol-get-symbol)))
     (error "No symbol at point")))
+
+(use-package highlight-symbol
+  :ensure t
+  :defer t
+  :bind
+  (("C-c s %" . highlight-symbol-query-replace)
+   ("C-c s a" . highlight-symbol-ag)
+   ("C-c s n" . highlight-symbol-next-in-defun)
+   ("C-c s o" . highlight-symbol-occur)
+   ("C-c s p" . highlight-symbol-prev-in-defun))
+  :init
+  (progn
+    ;; Navigate occurrences of the symbol under point with M-n and M-p
+    (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
+    ;; Highlight symbol occurrences
+    (add-hook 'prog-mode-hook #'highlight-symbol-mode))
+  :config
+  (setq highlight-symbol-idle-delay 0.4     ; Highlight almost immediately
+        highlight-symbol-on-navigation-p t) ; Highlight immediately after
+                                        ; navigation
+  :diminish highlight-symbol-mode)
 
 
 ;;; Programming utilities
@@ -1409,24 +1388,88 @@ Taken from http://stackoverflow.com/a/3072831/355252."
     (let ((inhibit-read-only t))
       (ansi-color-apply-on-region (point-min) (point-max)))))
 
-(lunaryorn-after compile
-  (setq compilation-ask-about-save nil  ; Just save before compiling
-        compilation-always-kill t       ; Just kill old compile processes before
+(use-package compile
+  :bind (("C-c c" . compile)
+         ("C-c C" . recompile))
+  :config
+  (progn
+    (setq compilation-ask-about-save nil ; Just save before compiling
+          compilation-always-kill t     ; Just kill old compile processes before
                                         ; starting the new one
-        compilation-scroll-output 'first-error ; Automatically scroll to first
-                                               ; error
-        )
+          compilation-scroll-output 'first-error ; Automatically scroll to first
+                                        ; error
+          )
 
-  ;; Colorize output of Compilation Mode, see
-  ;; http://stackoverflow.com/a/3072831/355252
-  (require 'ansi-color)
-  (add-hook 'compilation-filter-hook #'lunaryorn-colorize-compilation-buffer))
+    ;; Colorize output of Compilation Mode, see
+    ;; http://stackoverflow.com/a/3072831/355252
+    (require 'ansi-color)
+    (add-hook 'compilation-filter-hook #'lunaryorn-colorize-compilation-buffer)))
 
 ;; Font lock for numeric literals
-(add-hook 'prog-mode-hook #'highlight-numbers-mode)
+(use-package highlight-numbers
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook #'highlight-numbers-mode))
+
+;; Font lock for color values
+(use-package rainbow-mode
+  :ensure t
+  :bind (("C-c t r" . rainbow-mode)))
+
+
+;;; Generic Lisp
+(use-package paredit
+  :ensure t
+  :defer t
+  :init
+  (dolist (hook '(eval-expression-minibuffer-setup-hook
+                  emacs-lisp-mode-hook
+                  inferior-emacs-lisp-mode-hook
+                  clojure-mode-hook))
+    (add-hook hook #'paredit-mode))
+  :diminish paredit-mode)
 
 
 ;;; Emacs Lisp
+(use-package elisp-slime-nav
+  :ensure t
+  :defer t
+  :init (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
+  :diminish elisp-slime-nav-mode)
+
+(use-package flycheck-cask
+  :ensure t
+  :defer t
+  :init (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
+
+(use-package flycheck-package
+  :ensure t
+  :defer t
+  :init (with-eval-after-load 'flycheck (flycheck-package-setup)))
+
+(use-package pcre2el
+  :ensure t
+  :init (rxt-global-mode))
+
+(use-package macrostep
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'lisp-mode
+    (bind-key "C-c e e" #'macrostep-expand emacs-lisp-mode-map)
+    (bind-key "C-c e e" #'macrostep-expand lisp-interaction-mode-map)))
+
+(use-package ielm
+  :bind (("C-c u z" . ielm)))
+
+(use-package lisp-mode
+  :defer t
+  :interpreter ("emacs" . emacs-lisp-mode)
+  :mode ("/Cask\\'" . emacs-lisp-mode)
+  :config
+  (progn
+    (require 'ert)))
 
 ;; Utility functions
 (defun lunaryorn-find-cask-file (other-window)
@@ -1443,14 +1486,6 @@ window."
       (funcall (if other-window #'find-file-other-window #'find-file)
                (expand-file-name "Cask" directory))))
 
-(defconst lunaryorn-imenu-generic-expression
-  `(("Lunaryorn packages"
-     ,(rx line-start (zero-or-more (syntax whitespace))
-          "(lunaryorn-after" (one-or-more (syntax whitespace))
-          (group-n 1 (one-or-more (or (syntax word)
-                                      (syntax symbol))))) 1))
-  "IMenu index expression for my config.")
-
 (defun lunaryorn-emacs-lisp-current-feature ()
   "Return the feature provided by the current buffer."
   (save-excursion
@@ -1458,50 +1493,8 @@ window."
     (when (search-forward-regexp (rx line-start "(provide '"))
       (symbol-name (symbol-at-point)))))
 
-;; Teach Emacs about Emacs scripts and Cask/Carton files
-(add-to-list 'interpreter-mode-alist '("emacs" . emacs-lisp-mode))
-(lunaryorn-auto-modes 'emacs-lisp-mode (rx "/" (or "Cask" "Carton") string-end))
-
-(lunaryorn-after paredit (diminish 'paredit-mode))
-
-(lunaryorn-after lisp-mode
-  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
-  ;; Check doc conventions when eval'ing expressions
-  (add-hook 'emacs-lisp-mode-hook #'checkdoc-minor-mode)
-
-  ;; Add our IMenu index keywords
-  (defun lunaryorn-emacs-lisp-setup-imenu ()
-    "Add my IMenu index keywords."
-    (setq imenu-generic-expression
-          (append imenu-generic-expression lunaryorn-imenu-generic-expression)))
-
-  (add-hook 'emacs-lisp-mode-hook #'lunaryorn-emacs-lisp-setup-imenu)
-
-  ;; Load ERT to support unit test writing and running
-  (require 'ert)
-
-  ;; Load Dash and enable font-locking for its special forms
-  (require 'dash)
-  (dash-enable-font-lock))
-
-;; Helpers for Emacs Lisp regexps
-(rxt-global-mode)                       ; Powerful explanation and conversion
-                                        ; functions for regular expressions in
-                                        ; the C-c / map
-
-(lunaryorn-after flycheck
-  (add-hook 'flycheck-mode-hook #'flycheck-cask-setup)
-  (flycheck-package-setup))
-
-(lunaryorn-after ielm
-  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
-  ;; Enable lexical binding in IELM
-  (add-hook 'ielm-mode-hook (lambda () (setq lexical-binding t))))
-
 ;; Hippie expand for Emacs Lisp
-(lunaryorn-after hippie-exp
+(lunaryorn-after 'hippie-exp
   (defun lunaryorn-try-complete-lisp-symbol-without-namespace (old)
     "Hippie expand \"try\" function which expands \"-foo\" to \"modname-foo\" in elisp."
     (unless old
@@ -1521,63 +1514,67 @@ window."
                 (append hippie-expand-try-functions-list
                         '(lunaryorn-try-complete-lisp-symbol-without-namespace))))
 
-  (lunaryorn-after lisp-mode
+  (lunaryorn-after 'lisp-mode
     (dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook))
       (add-hook hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
 
-  (lunaryorn-after ielm
+  (lunaryorn-after 'ielm
     (add-hook 'ielm-mode-hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
 
-;;; Diminish minor modes
-(lunaryorn-after elisp-slime-nav (diminish 'elisp-slime-nav-mode))
-(lunaryorn-after checkdoc (diminish 'checkdoc-minor-mode))
+(bind-key "C-c t d" #'toggle-debug-on-error)
 
 
 ;;; Clojure
 
-(lunaryorn-after clojure-mode
-  ;; Extra font-locking for Clojure
-  (require 'clojure-mode-extra-font-locking)
+(use-package clojure-mode
+  :ensure cider
+  :defer t
+  :config
+  (progn
+    (add-hook 'clojure-mode-hook #'paredit-mode)
+    (add-hook 'clojure-mode-hook #'cider-mode)))
 
-  (add-hook 'clojure-mode-hook #'paredit-mode)
-  (add-hook 'clojure-mode-hook #'cider-mode))
+;; Extra font-locking for Clojure
+(use-package clojure-mode-extra-font-locking
+  :ensure clojure-mode-extra-font-locking
+  :defer t
+  :init (with-eval-after-load 'clojure-mode
+          (require 'clojure-mode-extra-font-locking)))
 
-(lunaryorn-after nrepl-client
-  (setq nrepl-hide-special-buffers t))
+(use-package nrepl-client
+  :ensure cider
+  :defer t
+  :config (setq nrepl-hide-special-buffers t))
 
-(lunaryorn-after cider-repl
-  (add-hook 'cider-repl-mode-hook #'paredit-mode)
-
+(use-package cider-repl
+  :ensure cider
+  :defer t
   ;; Increase the history size and make it permanent
   (setq cider-repl-history-size 1000
         cider-repl-history-file (locate-user-emacs-file "cider-repl-history")))
 
 
 ;;; Python
+(use-package python
+  :defer t
+  :config
+  (progn
+    ;; PEP 8 compliant filling rules, 79 chars maximum
+    (add-hook 'python-mode-hook
+              (lambda () (setq fill-column 79)))
+    (add-hook 'python-mode-hook #'subword-mode)
+    ;; Lookup, navigation and completion
+    (add-hook 'python-mode-hook #'anaconda-mode)
+    ;; Pick Flycheck executables from current virtualenv automatically
+    (add-hook 'python-mode-hook #'lunaryorn-flycheck-setup-python)
 
-;; Fill according to PEP 8
-(defun lunaryorn-python-filling ()
-  "Configure filling for Python."
-  ;; PEP 8 recommends a maximum of 79 characters
-  (setq fill-column 79))
+    ;; Use a decent syntax and style checker
+    (setq python-check-command "pylint"
+          ;; Use IPython as interpreter
+          python-shell-interpreter "ipython"
+          python-shell-interpreter-args "-i"))
 
-(lunaryorn-after python
-  ;; PEP 8 compliant filling rules
-  (add-hook 'python-mode-hook #'lunaryorn-python-filling)
-  (add-hook 'python-mode-hook #'subword-mode)
-  ;; Lookup, navigation and completion
-  (add-hook 'python-mode-hook #'anaconda-mode)
-  ;; Pick Flycheck executables from current virtualenv automatically
-  (add-hook 'python-mode-hook #'lunaryorn-flycheck-setup-python)
-
-  ;; Use a decent syntax and style checker
-  (setq python-check-command "pylint")
-
-  ;; Use IPython as interpreter.  Stolen from Elpy
-  (setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i")
-
-  (lunaryorn-after flycheck
+  (lunaryorn-after 'flycheck
     (defun lunaryorn-flycheck-setup-python-executables ()
       "Setup Python executables based on the current virtualenv."
       (let ((exec-path (python-shell-calculate-exec-path)))
@@ -1591,32 +1588,48 @@ window."
       (add-hook 'hack-local-variables-hook
                 #'lunaryorn-flycheck-setup-python-executables 'local))))
 
-(lunaryorn-after company
-  (add-to-list 'company-backends 'company-anaconda)
+(use-package company-anaconda
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-anaconda)))
 
-  ;; Remove redundant company-ropemacs backend.  company-anaconda is superior.
-  (setq company-backends (delq 'company-ropemacs company-backends)))
-
-;; Requirements files
-(add-to-list 'auto-mode-alist '("requirements\\.txt\\'" . pip-requirements-mode))
+(use-package pip-requirements
+  :ensure t
+  :defer t)
 
 
 ;;; Ruby
-(lunaryorn-after ruby-mode
-  ;; Setup inf-ruby and Robe
-  (add-hook 'ruby-mode-hook #'robe-mode)
+(use-package inf-ruby
+  :ensure t
+  :defer t
+  :init
   (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode)
-
+  :config
   ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
   (inf-ruby-switch-setup))
 
-(lunaryorn-after company
-  (add-to-list 'company-backends 'company-robe))
+(use-package robe
+  :ensure t
+  :defer t
+  :init (with-eval-after-load 'company
+          (add-to-list 'company-backends 'company-robe)))
 
 
 ;;; Rust
-(lunaryorn-after flycheck
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+(use-package rust-mode
+  :ensure t
+  :defer t)
+
+(use-package toml-mode
+  :ensure t
+  :defer t)
+
+(use-package flycheck-rust
+  :ensure t
+  :defer t
+  :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 
 ;;; Haskell
@@ -1630,55 +1643,73 @@ window."
 ;; - https://github.com/chrisdone/ghci-ng
 ;; - https://github.com/chrisdone/structured-haskell-mode
 
-(lunaryorn-after haskell-mode
-  (add-hook 'haskell-mode-hook #'subword-mode)     ; Subword navigation
-  (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode) ; Scan and navigate
+(use-package haskell-mode
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (add-hook 'haskell-mode-hook #'subword-mode)           ; Subword navigation
+    (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode) ; Scan and navigate
                                         ; declarations
-  ;; Insert module templates into new buffers
-  (add-hook 'haskell-mode-hook #'haskell-auto-insert-module-template)
-  ;; Indentation and navigation on steroids
-  (add-hook 'haskell-mode-hook #'structured-haskell-mode)
-  ;; Better interactive repl, including Cabal project management
-  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+    ;; Insert module templates into new buffers
+    (add-hook 'haskell-mode-hook #'haskell-auto-insert-module-template)
 
-  ;; Automatically run hasktags
-  (setq haskell-tags-on-save t))
+    ;; Automatically run hasktags
+    (setq haskell-tags-on-save t
+          ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI
+          ;; loaded modules respectively
+          haskell-process-suggest-remove-import-lines t
+          haskell-process-auto-import-loaded-modules t
+          haskell-process-use-presentation-mode t ; Don't clutter the echo area
+          haskell-process-show-debug-tips nil     ; Disable tips
+          haskell-process-log t                   ; Log debugging information
+          ;; Suggest imports automatically with Hayoo.  Hayoo is slower because
+          ;; it's networked, but it covers all of hackage, which is really an
+          ;; advantage.
+          haskell-process-suggest-hoogle-imports nil
+          haskell-process-suggest-hayoo-imports t
+          ;; Use GHCI NG from https://github.com/chrisdone/ghci-ng
+          haskell-process-path-ghci "ghci-ng")
 
-;; Haskell settings
-(lunaryorn-after haskell-customize
-  ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI loaded
-  ;; modules respectively
-  (setq haskell-process-suggest-remove-import-lines t
-        haskell-process-auto-import-loaded-modules t
-        haskell-process-use-presentation-mode t ; Don't clutter the echo area
-        haskell-process-show-debug-tips nil ; Disable tips
-        haskell-process-log t           ; Log debugging information
-        ;; Suggest imports automatically with Hayoo.  Hayoo is slower because
-        ;; it's networked, but it covers all of hackage, which is really an
-        ;; advantage.
-        haskell-process-suggest-hoogle-imports nil
-        haskell-process-suggest-hayoo-imports t)
+    (add-to-list 'haskell-process-args-cabal-repl "--with-ghc=ghci-ng")
 
-  ;; Use GHCI NG from https://github.com/chrisdone/ghci-ng
-  (setq haskell-process-path-ghci "ghci-ng")
-  (add-to-list 'haskell-process-args-cabal-repl "--with-ghc=ghci-ng"))
+    (bind-key "C-c e d" #'haskell-describe haskell-mode-map)
+    (bind-key "C-c e h" #'haskell-hayoo haskell-mode-map)
+    (bind-key "C-c e H" #'haskell-hoogle haskell-mode-map)
+    (bind-key "C-c e i" #'haskell-navigate-imports)))
 
-(lunaryorn-after haskell-cabal
-  ;; Enable interactive Haskell for Cabal files, too
-  (add-hook 'haskell-cabal-mode #'interactive-haskell-mode))
+(use-package haskell-interactive-mode
+  :ensure haskell-mode
+  :defer t
+  :init (dolist (hook '(haskell-mode-hook
+                        haskell-cabal-mode-hook))
+          (add-hook hook  #'interactive-haskell-mode))
+  :config (progn
+            (add-hook 'haskell-interactive-mode-hook #'subword-mode)
 
-(lunaryorn-after shm
-  (require 'shm-case-split)
-  (diminish 'structured-haskell-mode))
+            (bind-key "C-c C-t" #'haskell-mode-show-type-at
+                      interactive-haskell-mode-map)
+            (bind-key "M-." #'haskell-mode-goto-loc
+                      interactive-haskell-mode-map)
+            (bind-key "C-c e u" #'haskell-mode-find-uses
+                      interactive-haskell-mode-map)))
 
-(lunaryorn-after haskell-interactive-mode
-  (add-hook 'haskell-interactive-mode-hook #'turn-on-ghci-completion)
-  (add-hook 'haskell-interactive-mode-hook #'subword-mode)
-  ;; Structured editing for the REPL
-  (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode))
+(use-package shm
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (add-hook 'haskell-mode-hook #'structured-haskell-mode)
+    (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode))
+  :config (progn
+            (require 'shm-case-split)
+            (bind-key "C-c e s" #'shm/case-split))
+  :diminish structured-haskell-mode)
 
-(lunaryorn-after flycheck
-  (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+(use-package flycheck-haskell
+  :ensure t
+  :defer t
+  :init (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
 ;;; OCaml
@@ -1704,29 +1735,37 @@ window."
 
 (lunaryorn-opam-init)
 
-(lunaryorn-after tuareg
+(use-package tuareg
+  :ensure t
+  :defer t
+  :config
   ;; Disable SMIE indentation in Tuareg.  It's just broken currently…
-  (setq tuareg-use-smie nil)
+  (setq tuareg-use-smie nil))
 
-  ;; Enable advanced completion engine for OCaml
-  (add-hook 'tuareg-mode-hook #'merlin-mode))
+;; Advanced completion engine for OCaml
+(use-package merlin
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'tuareg-mode-hook #'merlin-mode)
+  :config
+  ;; Use Merlin from current OPAM env
+  (setq merlin-command 'opam))
 
-(lunaryorn-after merlin
-  (setq merlin-command 'opam            ; Use Merlin from current OPAM env
-        ;; Disable Merlin's own error checking in favour of Flycheck
-        merlin-error-after-save nil)
-
-  ;; Enable Flycheck support for Merlin
-  (flycheck-ocaml-setup))
+(use-package flycheck-ocaml
+  :ensure t
+  :defer t
+  :init (with-eval-after-load 'flycheck
+          (flycheck-ocaml-setup))
+  :config (with-eval-after-load 'merlin
+            ;; Disable Merlin's own error checking in favour of Flycheck
+            (setq merlin-error-after-save nil)))
 
 
 ;;; Shell scripting
-
-;; Teach Emacs about Zsh scripts
-(lunaryorn-auto-modes 'sh-mode (rx ".zsh" string-end))
-
-;; Shell script indentation styles
-(lunaryorn-after sh-script
+(use-package sh-script
+  :mode ("\\.zsh\\'" . sh-mode)
+  :config
   ;; Use two spaces in shell scripts.
   (setq sh-indentation 2                ; The basic indentation
         sh-basic-offset 2               ; The offset for nested indentation
@@ -1734,60 +1773,43 @@ window."
 
 
 ;;; Misc programming languages
+(use-package puppet-mode
+  :ensure t
+  :defer t
+  :config
+  ;; Fontify variables in Puppet comments
+  (setq puppet-fontify-variables-in-comments t))
 
-;; Javascript: Indentation
-(lunaryorn-after js2-mode
-  (setq-default js2-basic-offset 2))
+(use-package js2-mode
+  :ensure t
+  :mode "\\.js\\(?:on\\)\\'"            ; For Javascript and KSON
+  :config (setq-default js2-basic-offset 2))
 
-(lunaryorn-auto-modes 'js2-mode (rx "." (or "js" "json") string-end))
+(use-package nxml-mode
+  :defer t
+  ;; Complete closing tags, and insert XML declarations into empty files
+  :config (setq nxml-slash-auto-complete-flag t
+                nxml-auto-insert-xml-declaration-flag t))
 
-;; XML: Complete closing tags, and insert XML declarations into empty files
-(lunaryorn-after nxml-mode
-  (setq nxml-slash-auto-complete-flag t
-        nxml-auto-insert-xml-declaration-flag t))
+(use-package feature-mode
+  :ensure t
+  :defer t
+  :config
+  (progn
+    ;; Add standard hooks for Feature Mode, since it is no derived mode
+    (add-hook 'feature-mode-hook #'whitespace-mode)
+    (add-hook 'feature-mode-hook #'whitespace-cleanup-mode)
+    (add-hook 'feature-mode-hook #'flyspell-mode)))
 
-;; Feature Mode
-(lunaryorn-after feature-mode
-  ;; Add standard hooks for Feature Mode, since it is no derived mode
-  (add-hook 'feature-mode-hook #'whitespace-mode)
-  (add-hook 'feature-mode-hook #'whitespace-cleanup-mode)
-  (add-hook 'feature-mode-hook #'flyspell-mode))
-
-(lunaryorn-after flycheck
-  (defun lunaryorn-discard-undesired-html-tidy-error (err)
-    "Discard ERR if it is undesired.
-
-Tidy is very verbose, so we prevent Flycheck from highlighting
-most errors from HTML Tidy."
-    ;; A non-nil result means to inhibit further processing (i.e. highlighting)
-    ;; of the error
-    (and (eq (flycheck-error-checker err) 'html-tidy)
-         ;; Only allow warnings about missing tags, or unexpected end tags being
-         ;; discarded
-         (not (string-match-p (rx (or "missing" "discarding"))
-                              (flycheck-error-message err)))))
-
-  (add-hook 'flycheck-process-error-functions
-            #'lunaryorn-discard-undesired-html-tidy-error))
+(use-package cmake-mode
+  :ensure t
+  :defer t)
 
 
 ;;; Proof General
-(eval-and-compile
-  ;; Load ProofGeneral if present
-  (load (locate-user-emacs-file "vendor/ProofGeneral/generic/proof-site")
-        'no-error))
-
-(when (boundp 'proof-general-version)
-  ;; If Proof General is loaded, do some additional setup
-  (add-to-list 'Info-directory-list (expand-file-name "doc/"))
-  (when (eq system-type 'darwin)
-    (let ((isabelle-bundle (lunaryorn-path-of-bundle "de.tum.in.isabelle")))
-      (when (and isabelle-bundle
-                 (not (executable-find "isabelle_process")))
-        (warn "Isabelle not in `exec-path'. Run the following command:
-%s/Isabelle/bin/isabelle install /usr/local/bin" isabelle-bundle)))))
-
-(lunaryorn-after proof-useropts
+(use-package proof-site
+  :load-path "vendor/ProofGeneral/generic"
+  :config
   (setq proof-three-window-enable nil   ; More predictable window management
         ;; Automatically process the script up to point when inserting a
         ;; terminator.  Really handy in Coq.
@@ -1797,10 +1819,14 @@ most errors from HTML Tidy."
 (defvar coq-one-command-per-line)
 (setq coq-one-command-per-line nil)
 
-(lunaryorn-after proof-script
+(use-package proof-script
+  :defer t
+  :config
   (add-hook 'proof-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
 
-(lunaryorn-after isar
+(use-package isar
+  :defer t
+  :config
   ;; Don't highlight overlong lines in Isar, since Unicode Tokens conceal the
   ;; true line length
   (add-hook 'isar-mode-hook #'lunaryorn-whitespace-style-no-long-lines 'append))
@@ -1811,8 +1837,9 @@ most errors from HTML Tidy."
 
 
 ;;; Documentation
-
-(lunaryorn-after info
+(use-package info
+  :defer t
+  :config
   ;; Fix the stupid `Info-quoted' face.  Courier is an abysmal face, so go back
   ;; to the default face.
   (set-face-attribute 'Info-quoted nil :family 'unspecified
@@ -1820,98 +1847,136 @@ most errors from HTML Tidy."
 
 
 ;;; General version control
-
-(lunaryorn-after vc-hooks
+(use-package vc-hooks
+  :defer t
   ;; Always follow symlinks to files in VCS repos
   (setq vc-follow-symlinks t))
 
-;; Highlight VCS diffs
-;; Highlight changes to the current file in the fringe
-(global-diff-hl-mode)
-;; Highlight changed files in the fringe of Dired
-(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
-;; Fall back to the display margin, if the fringe is unavailable
-(unless (display-graphic-p)
-  (diff-hl-margin-mode))
+(use-package diff-hl
+  :ensure t
+  :defer t
+  :init
+  (progn
+    ;; Highlight changes to the current file in the fringe
+    (global-diff-hl-mode)
+    ;; Highlight changed files in the fringe of Dired
+    (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+
+    ;; Fall back to the display margin, if the fringe is unavailable
+    (unless (display-graphic-p)
+      (diff-hl-margin-mode))))
 
 
 ;;; Git support
+(use-package magit
+  :ensure t
+  :bind (("C-c g" . magit-status))
+  :config
+  (progn
+    ;; Shut up, Magit!
+    (setq magit-save-some-buffers 'dontask
+          magit-stage-all-confirm nil
+          magit-unstage-all-confirm nil
+          ;; Except when you ask something useful…
+          magit-set-upstream-on-push t
+          ;; Use IDO for completion
+          magit-completing-read-function #'magit-ido-completing-read)
 
-;; The one and only Git frontend
-(lunaryorn-after magit
-  ;; Shut up, Magit!
-  (setq magit-save-some-buffers 'dontask
-        magit-stage-all-confirm nil
-        magit-unstage-all-confirm nil
-        ;; Except when you ask something useful…
-        magit-set-upstream-on-push t
-        ;; Use IDO for completion
-        magit-completing-read-function #'magit-ido-completing-read)
+    ;; Auto-revert files after Magit operations
+    (magit-auto-revert-mode))
+  :diminish magit-auto-revert-mode)
 
-  ;; Auto-revert files after Magit operations
-  (magit-auto-revert-mode)
-  (setq magit-auto-revert-mode-lighter ""))
+;; Git modes
+(use-package git-commit-mode            ; Git commit message mode
+  :ensure t
+  :defer t)
+(use-package gitconfig-mode             ; Git configuration mode
+  :ensure t
+  :defer t)
+(use-package gitignore-mode             ; .gitignore mode
+  :ensure t
+  :defer t)
+(use-package gitattributes-mode         ; Git attributes mode
+  :ensure t
+  :defer t)
+(use-package git-rebase-mode            ; Mode for git rebase -i
+  :ensure t
+  :defer t)
+
+;; Go back in Git time
+(use-package git-timemachine
+  :ensure t
+  :defer t)
 
 
 ;;; Tools and utilities
 
+(use-package locate
+  :defer t
+  :config
+  ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
+  (when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
+    (setq locate-command mdfind)))
+
 ;; Powerful file and code search
-(lunaryorn-after ag
-  (setq ag-reuse-buffers t              ; Don't spam buffer list with ag buffers
-        ag-highlight-search t           ; A little fanciness
+(use-package ag
+  :ensure t
+  :bind (("C-c a a" . ag-regexp)
+         ("C-c a A" . ag)
+         ("C-c a d" . ag-dired-regexp)
+         ("C-c a D" . ag-dired)
+         ("C-c a f" . ag-files)
+         ("C-c a k" . ag-kill-other-buffers)
+         ("C-c a K" . ag-kill-buffers))
+  :config
+  (setq ag-reuse-buffers t            ; Don't spam buffer list with ag buffers
+        ag-highlight-search t         ; A little fanciness
         ;; Use Projectile to find the project root
         ag-project-root-function (lambda (d) (let ((default-directory d))
                                                (projectile-project-root)))))
 
-(defvar lunaryorn-ag-project-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "a") #'ag-project-regexp)
-    (define-key map (kbd "A") #'ag-project)
-    (define-key map (kbd "d") #'ag-project-dired-regexp)
-    (define-key map (kbd "D") #'ag-project-dired)
-    (define-key map (kbd "f") #'ag-project-files)
+(use-package wgrep
+  :ensure t
+  :defer t)
+
+(use-package wgrep-ag
+  :ensure t
+  :defer t)
+
+;; Project management
+(use-package projectile
+  :ensure t
+  :defer t
+  :init (projectile-global-mode)
+  :config
+  (progn
+    (setq projectile-completion-system 'ido
+          projectile-find-dir-includes-top-level t
+          projectile-mode-line '(:propertize
+                                 (:eval (concat " " (projectile-project-name)))
+                                 face font-lock-constant-face))
+
+    ;; Replace Ack with Ag in Projectile commander
+    (def-projectile-commander-method ?a
+      "Find ag on project."
+      (call-interactively 'projectile-ag))
+
+    ;; Use ag to search in Projectile projects
+    (bind-key "s a" #'ag-project-regexp projectile-command-map)
+    (bind-key "s A" #'ag-project projectile-command-map)
+    (bind-key "s d" #'ag-project-dired-regexp projectile-command-map)
+    (bind-key "s D" #'ag-project-dired projectile-command-map)
+    (bind-key "s f" #'ag-project-files projectile-command-map)
     ;; For symmetry with `lunaryorn-ag-map'
-    (define-key map (kbd "k") #'ag-kill-other-buffers)
-    (define-key map (kbd "K") #'ag-kill-buffers)
-    map)
-  "Keymap for Ag's project commands.")
-
-;; Project interaction
-(lunaryorn-after projectile
-  (setq projectile-completion-system 'ido
-        projectile-find-dir-includes-top-level t
-        projectile-mode-line '(:propertize
-                               (:eval (concat " " (projectile-project-name)))
-                               face font-lock-constant-face))
-
-  ;; Replace Ack with Ag in Projectile commander
-  (def-projectile-commander-method ?a
-    "Find ag on project."
-    (call-interactively 'projectile-ag))
-
-  ;; Use our custom Ag bindings in Projectile.  We use functions from ag here,
-  ;; because they are way more powerful
-  (let ((prefix-map (lookup-key projectile-mode-map projectile-keymap-prefix)))
-    (define-key prefix-map "a" lunaryorn-ag-project-map))
-  (define-key projectile-mode-map [remap projectile-ag] nil)
-
-  ;; Remove Projectile from the minor mode list.  We already have it at a more
-  ;; prominent place, and don't need it twice
-  (diminish 'projectile-mode))
-(projectile-global-mode)
-
-;; Quickly switch to IELM
-(defun lunaryorn-switch-to-ielm ()
-  "Switch to an ielm window.
-
-Create a new ielm process if required."
-  (interactive)
-  (pop-to-buffer (get-buffer-create "*ielm*"))
-  (ielm))
+    (bind-key "s k" #'ag-kill-other-buffers projectile-command-map)
+    (bind-key "s K" #'ag-kill-buffers projectile-command-map))
+  :diminish projectile-mode)
 
 ;; Google from Emacs, under C-c /
-(google-this-mode)
-(lunaryorn-after google-this (diminish 'google-this-mode))
+(use-package google-this
+  :ensure t
+  :init (google-this-mode)
+  :diminish google-this-mode)
 
 ;; Insert date and time
 (defun lunaryorn-insert-current-date (iso)
@@ -1922,13 +1987,26 @@ Otherwise insert the date as Mar 04, 2014."
   (interactive "P")
   (insert (format-time-string (if iso "%F" "%b %d, %Y"))))
 
-(lunaryorn-after paradox
+;; Bug references
+(use-package bug-reference
+  :defer t
+  :init (progn (add-hook 'prog-mode-hook #'bug-reference-prog-mode)
+               (add-hook 'text-mode-hook #'bug-reference-mode)))
+
+(use-package paradox
+  :ensure t
+  :bind (("C-c l p" . paradox-list-packages))
+  :config
   ;; Don't ask for a token, please
   (setq paradox-github-token t))
 
+(bind-key "C-c o" #'occur)
+
 
 ;;; Calendar
-(lunaryorn-after calendar
+(use-package calendar
+  :defer t
+  :config
   ;; In Europe we start on Monday
   (setq calendar-week-start-day 1))
 
@@ -1936,88 +2014,94 @@ Otherwise insert the date as Mar 04, 2014."
 ;;; Net & Web
 
 ;; Web browsing
-(lunaryorn-after browse-url
-  (setq browse-url-browser-function #'eww-browse-url))
+(use-package browse-url
+  :defer t
+  :config (setq browse-url-browser-function #'eww-browse-url))
 
-(defun lunaryorn-eww-or-search ()
-  "Search the current region, or browse."
-  (interactive)
-  (call-interactively (if (region-active-p) #'eww-search-words #'eww)))
+(use-package eww
+  :bind (("C-c w b" . eww-list-bookmarks)
+         ("C-c w w" . eww)))
+
+(use-package sx
+  :ensure t
+  :bind (("C-c w s" . sx-tab-frontpage)
+         ("C-c w S" . sx-tab-newest)
+         ("C-c w a" . sx-ask)))
 
 ;; Settings for sending mail via my mail server
-(lunaryorn-after sendmail
-  (setq send-mail-function 'smtpmail-send-it))
+(use-package sendmail
+  :defer t
+  :config (setq send-mail-function 'smtpmail-send-it))
 
-(lunaryorn-after message
-  (setq message-send-mail-function 'smtpmail-send-it
-        message-kill-buffer-on-exit t)) ; Don't keep message buffers around
+(use-package message
+  :defer t
+  :config (setq message-send-mail-function 'smtpmail-send-it
+                ;; Don't keep message buffers around
+                message-kill-buffer-on-exit t))
 
-(lunaryorn-after smtpmail
-  (setq smtpmail-smtp-server "vega.uberspace.de"
-        smtpmail-smtp-service 587
-        smtpmail-stream-type 'starttls
-        smtpmail-smtp-user user-login-name))
+(use-package smtpmail
+  :defer t
+  :config (setq smtpmail-smtp-server "vega.uberspace.de"
+                smtpmail-smtp-service 587
+                smtpmail-stream-type 'starttls
+                smtpmail-smtp-user user-login-name))
 
 ;; IRC with ERC or rcirc
-(lunaryorn-after erc
-  ;; Default server and nick
-  (setq erc-server "chat.freenode.net"
-        erc-port 7000
-        erc-nick "lunaryorn"
-        erc-nick-uniquifier "_"
-        ;; Never open unencrypted ERC connections
-        erc-server-connect-function 'erc-open-tls-stream)
+(use-package erc
+  :defer t
+  :config
+  (progn
+    ;; Default server and nick
+    (setq erc-server "chat.freenode.net"
+          erc-port 7000
+          erc-nick "lunaryorn"
+          erc-nick-uniquifier "_"
+          ;; Never open unencrypted ERC connections
+          erc-server-connect-function 'erc-open-tls-stream)
 
-  ;; Spell-check ERC buffers
-  (add-to-list 'erc-modules 'spelling)
-  (erc-update-modules))
+    ;; Spell-check ERC buffers
+    (add-to-list 'erc-modules 'spelling)
+    (erc-update-modules)))
 
-(lunaryorn-after erc-join
+(use-package erc-join
+  :defer t
+  :config
   ;; Standard channels on Freenode
   (setq erc-autojoin-channels-alist '(("\\.freenode\\.net" . ("#emacs")))))
 
-(lunaryorn-after erc-track
+(use-package erc-track
+  :defer t
+  :config
   ;; Switch to newest buffer by default, and don't ask before rebinding the keys
   (setq erc-track-switch-direction 'newest
         erc-track-enable-keybindings t))
 
-(lunaryorn-after rcirc
-  (setq rcirc-default-full-name (format "%s (http://www.lunaryorn.com)"
-                                        user-full-name)
-        rcirc-default-nick "lunaryorn"
-        rcirc-time-format "%Y-%m-%d %H:%M "
-        rcirc-server-alist
-        '(("chat.freenode.not" :port 7000 :user-name "lunaryorn"
-           :encryption tls :channels ("#emacs" "#haskell" "#hakyll" "#zsh"))))
+(use-package rcirc
+  :defer t
+  :config
+  (progn
+    (setq rcirc-default-full-name (format "%s (http://www.lunaryorn.com)"
+                                          user-full-name)
+          rcirc-default-nick "lunaryorn"
+          rcirc-time-format "%Y-%m-%d %H:%M "
+          rcirc-server-alist
+          '(("chat.freenode.not" :port 7000 :user-name "lunaryorn"
+             :encryption tls :channels ("#emacs" "#haskell" "#hakyll" "#zsh"))))
 
-  (add-hook 'rcirc-mode-hook #'flyspell-mode)
+    (add-hook 'rcirc-mode-hook #'flyspell-mode)
 
-  (rcirc-track-minor-mode))
+    (rcirc-track-minor-mode)))
 
 
 ;;; Key bindings
 
-;; Kill some useless bindings
-(when (display-graphic-p)
-  ;; `suspend-frame' is entirely useless in graphic displays
-  (global-set-key (kbd "C-z") nil)
-  (global-set-key (kbd "C-x C-z") nil))
-
 ;; Improve standard bindings
-(global-set-key [remap execute-extended-command] #'smex)
-(global-set-key [remap list-buffers] #'ibuffer)
 (global-set-key [remap kill-whole-line] #'lunaryorn-smart-kill-whole-line)
 (global-set-key [remap move-beginning-of-line]
                 #'lunaryorn-back-to-indentation-or-beginning-of-line)
-(global-set-key [remap dabbrev-expand] #'hippie-expand)
-(global-set-key [remap just-one-space] #'cycle-spacing)
-(global-set-key [remap completion-at-point] #'company-complete)
-(define-key minibuffer-local-map (kbd "C-M-i") #'complete-symbol)
-;; Killing and marking on steroids
-(global-set-key [remap kill-ring-save] #'easy-kill)
-(global-set-key [remap mark-sexp] 'easy-mark)
+
 ;; Complement standard bindings (the comments indicate the related bindings)
-(global-set-key (kbd "M-X") #'smex-major-mode-commands)                  ; M-x
+
 (global-set-key (kbd "C-<backspace>") #'lunaryorn-smart-backward-kill-line) ; C-S-backspace
 (global-set-key (kbd "C-S-j") #'lunaryorn-smart-open-line)                  ; C-j
 (global-set-key (kbd "M-Z") #'zap-up-to-char)                            ; M-z
@@ -2026,33 +2110,6 @@ Otherwise insert the date as Mar 04, 2014."
 ;; Find definition sources fast with C-x F and C-x V
 (find-function-setup-keys)
 
-;; Key bindings for extension packages
-(global-set-key (kbd "C-=") #'er/expand-region)
-
-;; Personal keymaps
-(defvar lunaryorn-ag-map nil
-  "Keymap for Ag.")
-
-(define-prefix-command 'lunaryorn-ag 'lunaryorn-ag-map)
-(let ((map lunaryorn-ag-map))
-  (define-key map (kbd "a") #'ag-regexp)
-  (define-key map (kbd "A") #'ag)
-  (define-key map (kbd "d") #'ag-dired-regexp)
-  (define-key map (kbd "D") #'ag-dired)
-  (define-key map (kbd "f") #'ag-files)
-  (define-key map (kbd "k") #'ag-kill-other-buffers)
-  (define-key map (kbd "K") #'ag-kill-buffers)
-  map)
-
-(defvar lunaryorn-align-map nil
-  "Keymap for aligning text.")
-
-(define-prefix-command 'lunaryorn-align 'lunaryorn-align-map)
-(let ((map lunaryorn-align-map))
-  (define-key map (kbd "a") #'align)
-  (define-key map (kbd "c") #'align-current)
-  (define-key map (kbd "r") #'align-regexp))
-
 (defvar lunaryorn-files-map nil
   "Keymap for file operations.")
 
@@ -2060,157 +2117,30 @@ Otherwise insert the date as Mar 04, 2014."
 (let ((map lunaryorn-files-map))
   (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
   (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
-  (define-key map (kbd "L") #'add-dir-local-variable)
-  (define-key map (kbd "l") #'add-file-local-variable)
-  (define-key map (kbd "o") #'lunaryorn-launch-dwim)
-  (define-key map (kbd "p") #'add-file-local-variable-prop-line)
   (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
   (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
   (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill))
-
-(defvar lunaryorn-list-map nil
-  "Keymap to list things.")
-
-(define-prefix-command 'lunaryorn-list 'lunaryorn-list-map)
-(let ((map lunaryorn-list-map))
-  (define-key map (kbd "b") #'list-bookmarks)
-  (define-key map (kbd "e") #'list-flycheck-errors)
-  (define-key map (kbd "p") #'paradox-list-packages)
-  (define-key map (kbd "P") #'package-list-packages-no-fetch)
-  (define-key map (kbd "r") #'list-register)
-  (define-key map (kbd "t") #'list-tags))
-
-(defvar lunaryorn-multiple-cursors-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "e") #'mc/mark-more-like-this-extended)
-    (define-key map (kbd "h") #'mc/mark-all-like-this-dwim)
-    (define-key map (kbd "l") #'mc/edit-lines)
-    (define-key map (kbd "n") #'mc/mark-next-like-this)
-    (define-key map (kbd "p") #'mc/mark-previous-like-this)
-    (define-key map (kbd "r") #'vr/mc-mark)
-    (define-key map (kbd "C-a") #'mc/edit-beginnings-of-lines)
-    (define-key map (kbd "C-e") #'mc/edit-ends-of-lines)
-    (define-key map (kbd "C-s") #'mc/mark-all-in-region)
-    map)
-  "Keymap for multiple cursors.")
-
-(defvar lunaryorn-symbols-map nil
-  "Keymap for symbol operations.")
-
-(define-prefix-command 'lunaryorn-symbol 'lunaryorn-symbols-map)
-(let ((map lunaryorn-symbols-map))
-  (define-key map (kbd "o") #'highlight-symbol-occur)
-  (define-key map (kbd "a") #'highlight-symbol-ag)
-  (define-key map (kbd "%") #'highlight-symbol-query-replace)
-  (define-key map (kbd "n") #'highlight-symbol-next-in-defun)
-  (define-key map (kbd "p") #'highlight-symbol-prev-in-defun))
-
-(defvar lunaryorn-toggle-map nil
-  "Keymap to toggle buffer local settings.")
-
-(define-prefix-command 'lunaryorn-toggle 'lunaryorn-toggle-map)
-(let ((map lunaryorn-toggle-map))
-  (define-key map (kbd "d") #'toggle-debug-on-error) ; Debugging
-  (define-key map (kbd "f") #'flycheck-mode)     ; Syntax checking
-  (define-key map (kbd "l") #'nlinum-mode)       ; Line numbers in margin
-  (define-key map (kbd "s") #'flyspell-mode)     ; Spell checking
-  (define-key map (kbd "w") #'whitespace-mode)   ; Whitespace highlighting…
-  (define-key map (kbd "W") #'whitespace-cleanup-mode) ; …and cleanup
-  )
 
 (defvar lunaryorn-utilities-map nil
   "Keymap for various utilities.")
 
 (define-prefix-command 'lunaryorn-utility 'lunaryorn-utilities-map)
 (let ((map lunaryorn-utilities-map))
-  (define-key map (kbd "z") #'lunaryorn-switch-to-ielm)
   (define-key map (kbd "d") #'lunaryorn-insert-current-date))
 
-(defvar lunaryorn-web-map nil
-  "Keymap for the web!")
+(lunaryorn-after 'lisp-mode
+    (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file))
 
-(define-prefix-command 'lunaryorn-web 'lunaryorn-web-map)
-(let ((map lunaryorn-web-map))
-  (define-key map (kbd "w") #'lunaryorn-eww-or-search)
-  (define-key map (kbd "b") #'eww-list-bookmarks)
-  (define-key map (kbd "s") #'sx-tab-frontpage)
-  (define-key map (kbd "S") #'sx-tab-newest))
-
-;; User key bindings in the C-c space.  Do NOT bind C-c e here, because we leave
-;; that for mode-specific “edit” commands, i.e. key bindings specific to
-;; particular major modes.
-(global-set-key (kbd "C-c SPC") #'ace-jump-mode)
-(global-set-key (kbd "C-c a") #'lunaryorn-ag)
-(global-set-key (kbd "C-c A") #'lunaryorn-align)
-(global-set-key (kbd "C-c c") #'compile)
-(global-set-key (kbd "C-c C") #'recompile)
-(global-set-key (kbd "C-c f") #'lunaryorn-file)
-(global-set-key (kbd "C-c g") #'magit-status)
-(global-set-key (kbd "C-c i") #'imenu-anywhere)
-(global-set-key (kbd "C-c j") #'ace-jump-mode)
-(global-set-key (kbd "C-c J") #'ace-jump-mode-pop-mark)
-(global-set-key (kbd "C-c l") #'lunaryorn-list)
-(global-set-key (kbd "C-C M") #'recompile)
-(global-set-key (kbd "C-c m") lunaryorn-multiple-cursors-map)
-(global-set-key (kbd "C-c o") #'occur)
-(global-set-key (kbd "C-c r") #'vr/query-replace)
-(global-set-key (kbd "C-c R") #'vr/replace)
-(global-set-key (kbd "C-c s") #'lunaryorn-symbol)
-(global-set-key (kbd "C-c t") #'lunaryorn-toggle)
-(global-set-key (kbd "C-c u") #'lunaryorn-utility)
-(global-set-key (kbd "C-c w") #'lunaryorn-web)
-(global-set-key (kbd "C-c y") #'browse-kill-ring)
-
-(lunaryorn-after flyspell
-  ;; Free M-t in Flyspell Mode
-  (define-key flyspell-mode-map "\M-\t" nil))
-
-(lunaryorn-after lisp-mode
-  (define-key emacs-lisp-mode-map (kbd "C-c e e") #'macrostep-expand)
-  (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file)
-
-  (define-key lisp-interaction-mode-map (kbd "C-c e e") #'macrostep-expand))
-
-(lunaryorn-after markdown-mode
-  (define-key markdown-mode-map (kbd "C-c C-s C")
-    #'markdown-insert-gfm-code-block)
-  (define-key markdown-mode-map (kbd "C-c C-s P")
-    #'markdown-insert-gfm-code-block)
-
-  ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM Mode.
-  (define-key gfm-mode-map (kbd "M-q") (lambda ()
-                                         (interactive)
-                                         (message "Don't fill, boy!"))))
-
-(lunaryorn-after rst
-  (let ((map rst-mode-map))
-    ;; Free C-= for `expand-region'. `rst-adjust' is still on C-c C-= and C-c
-    ;; C-a C-a
-    (define-key map (kbd "C-=") nil)
-    ;; For similarity with AUCTeX
-    (define-key map (kbd "C-c C-j") #'rst-insert-list)))
-
-(lunaryorn-after haskell-mode
+(lunaryorn-after 'haskell-mode
   (let ((map haskell-mode-map))
-    (define-key map (kbd "C-c e h") #'haskell-hayoo)
-    (define-key map (kbd "C-c e H") #'haskell-hoogle)
-    (define-key map (kbd "C-c e d") #'haskell-describe)
+
     (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
-    ;; Some convenience bindings
-    (define-key map (kbd "C-c e i") #'haskell-navigate-imports)))
+        ))
 
-(lunaryorn-after haskell
-  (let ((map interactive-haskell-mode-map))
-    (define-key map (kbd "C-c C-t") #'haskell-mode-show-type-at)
-    (define-key map (kbd "M-.") #'haskell-mode-goto-loc)
-    (define-key map (kbd "C-c e u") #'haskell-mode-find-uses)))
-
-(lunaryorn-after tuareg
+(lunaryorn-after 'tuareg
   ;; Please, Tuareg, don't kill my imenu
   (define-key tuareg-mode-map [?\C-c ?i] nil))
 
-(lunaryorn-after shm
-  (define-key shm-map (kbd "C-c e s") 'shm/case-split))
 
 ;; Local Variables:
 ;; coding: utf-8

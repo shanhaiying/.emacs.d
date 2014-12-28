@@ -19,7 +19,7 @@
 /.emacs.desktop*
 /.mc-lists.el
 /.org-id-locations
-/.smex-items
+/smex-items
 /bookmarks
 /frame-restore-parameters
 /history
