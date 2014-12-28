@@ -1468,6 +1468,7 @@ window."
     (bind-key "C-c e h" #'haskell-hayoo haskell-mode-map)
     (bind-key "C-c e H" #'haskell-hoogle haskell-mode-map)
     (bind-key "C-c e i" #'haskell-navigate-imports haskell-mode-map)
+    (bind-key "C-c f c" #'haskell-cabal-visit-file haskell-mode-map)
 
     (bind-key "C-c C-t" #'haskell-mode-show-type-at
               interactive-haskell-mode-map)
@@ -1908,12 +1909,6 @@ Otherwise insert the date as Mar 04, 2014."
 
 (lunaryorn-after 'lisp-mode
     (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file))
-
-(lunaryorn-after 'haskell-mode
-  (let ((map haskell-mode-map))
-
-    (define-key map (kbd "C-c f c") #'haskell-cabal-visit-file)
-        ))
 
 ;; Local Variables:
 ;; coding: utf-8
