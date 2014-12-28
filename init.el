@@ -1680,23 +1680,21 @@ window."
     (bind-key "C-c e d" #'haskell-describe haskell-mode-map)
     (bind-key "C-c e h" #'haskell-hayoo haskell-mode-map)
     (bind-key "C-c e H" #'haskell-hoogle haskell-mode-map)
-    (bind-key "C-c e i" #'haskell-navigate-imports)))
+    (bind-key "C-c e i" #'haskell-navigate-imports haskell-mode-map)
+
+    (bind-key "C-c C-t" #'haskell-mode-show-type-at
+              interactive-haskell-mode-map)
+    (bind-key "M-." #'haskell-mode-goto-loc
+              interactive-haskell-mode-map)
+    (bind-key "C-c e u" #'haskell-mode-find-uses
+              interactive-haskell-mode-map)))
 
 (use-package haskell-interactive-mode
   :ensure haskell-mode
   :defer t
-  :init (dolist (hook '(haskell-mode-hook
-                        haskell-cabal-mode-hook))
-          (add-hook hook  #'interactive-haskell-mode))
-  :config (progn
-            (add-hook 'haskell-interactive-mode-hook #'subword-mode)
-
-            (bind-key "C-c C-t" #'haskell-mode-show-type-at
-                      interactive-haskell-mode-map)
-            (bind-key "M-." #'haskell-mode-goto-loc
-                      interactive-haskell-mode-map)
-            (bind-key "C-c e u" #'haskell-mode-find-uses
-                      interactive-haskell-mode-map)))
+  :init (dolist (hook '(haskell-mode-hook haskell-cabal-mode-hook))
+          (add-hook hook #'interactive-haskell-mode))
+  :config (add-hook 'haskell-interactive-mode-hook #'subword-mode))
 
 (use-package shm
   :ensure t
