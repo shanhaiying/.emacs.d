@@ -490,7 +490,9 @@ mouse-3: go to end"))))
 
 ;; Track recent files
 (use-package recentf
-  :init (recentf-mode)
+  :defer t
+  :idle (recentf-mode)
+  :idle-priority 10
   :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15
