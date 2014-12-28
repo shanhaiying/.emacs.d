@@ -130,64 +130,15 @@
         ;; Just in case we ever need these keys
         mac-function-modifier 'hyper))
 
-;; Trash support for OS X.  On OS X, Emacs doesn't support the system trash
-;; properly, so we try to work around it by providing our own trashing function.
-;; If that fails, disable trashing and warn!
-(defconst lunaryorn-darwin-trash-tool "trash"
-  "A CLI tool to trash files.")
-
-(defun lunaryorn-darwin-move-file-to-trash (file)
-  "Move FILE to trash on OS X."
-  (call-process lunaryorn-darwin-trash-tool nil nil nil (expand-file-name file)))
-
-(if (executable-find lunaryorn-darwin-trash-tool)
-    (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
-  (warn "Trash support not available!
+(use-package lunaryorn-osx
+  :if (eq system-type 'darwin)
+  :load-path "lisp/"
+  :init
+  (if (executable-find lunaryorn-darwin-trash-tool)
+      (defalias 'system-move-file-to-trash 'lunaryorn-darwin-move-file-to-trash)
+    (warn "Trash support not available!
 Install Trash from https://github.com/ali-rantakari/trash!
-Homebrew: brew install trash"))
-
-;; Utility functions for OS X
-(defun lunaryorn-id-of-bundle (bundle)
-  "Get the ID of a BUNDLE.
-
-BUNDLE is the user-visible name of the bundle as string.  Return
-the id of the bundle as string.
-
-These bundle IDs are normally constant.  Thus you may use this
-function to determine the ID once, and then hard-code it in your
-code."
-  (let ((script (format "id of app \"%s\"" bundle)))
-    (car (process-lines "osascript" "-e" script))))
-
-(defun lunaryorn-path-of-bundle (id)
-  "Get the path of a bundle with ID.
-
-ID is the bundle ID (see `lunaryorn-id-of-bundle' as string.  Return
-the directory path of the bundle as string."
-  (let ((query (format "kMDItemCFBundleIdentifier == '%s'" id)))
-    (car (process-lines "mdfind" query))))
-
-(defun lunaryorn-homebrew-prefix (&optional formula)
-  "Get the homebrew prefix for FORMULA.
-
-Without FORMULA, get the homebrew prefix itself.
-
-Return nil, if homebrew is not available, or if the prefix
-directory does not exist."
-  (let ((prefix (condition-case nil
-                    (car (apply #'process-lines "brew" "--prefix"
-                                (when formula (list formula))))
-                  (error nil))))
-    (when (and prefix (file-directory-p prefix))
-      prefix)))
-
-(defun lunaryorn-homebrew-installed-p (&optional formula)
-  "Determine whether a homebrew FORMULA is installed.
-
-Without FORMULA determine whether Homebrew itself is available."
-  (if formula
-      (when (lunaryorn-homebrew-prefix formula) t)
-    (when (executable-find "brew") t)))
+Homebrew: brew install trash")))
 
 
 ;;; User interface
