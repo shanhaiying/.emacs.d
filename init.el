@@ -474,13 +474,7 @@ mouse-3: go to end"))))
   :ensure t
   :defer t
   :idle (global-hardhat-mode)
-  :idle-priority 10
-  :config
-  ;; Add local homebrew prefix to the list of protected directories.  Hardhat
-  ;; itself only handles /usr/local/
-  (when (eq system-type 'darwin)
-    (when-let (prefix (lunaryorn-homebrew-prefix))
-      (add-to-list 'hardhat-fullpath-protected-regexps prefix))))
+  :idle-priority 10)
 
 ;; Save bookmarks immediately after a bookmark was added
 (use-package bookmark
