@@ -461,7 +461,7 @@ mouse-3: go to end"))))
     (setq dired-guess-shell-gnutar "tar")))
 
 ;; Update copyright when visiting files
-(add-hook 'find-file-hook 'copyright-update)
+(add-hook 'find-file-hook #'copyright-update)
 
 ;; Ignore uninteresting files
 (use-package ignoramus
