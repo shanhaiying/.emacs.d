@@ -1921,7 +1921,8 @@ Otherwise insert the date as Mar 04, 2014."
 (use-package find-func
   :defer t
   ;; Find function and variable definitions
-  :idle (find-function-setup-keys))
+  :idle (find-function-setup-keys)
+  :idle-priority 10)
 
 (bind-key "C-h A" #'apropos)
 
