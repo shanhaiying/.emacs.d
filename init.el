@@ -732,7 +732,8 @@ Disable the highlighting of overlong lines."
   :diminish volatile-highlights-mode)
 
 (use-package paren                      ; Paired delimiters
-  :init (show-paren-mode)
+  :defer t
+  :idle (show-paren-mode)
   :config (setq show-paren-when-point-inside-paren t
                 show-paren-when-point-in-periphery t))
 
@@ -1236,7 +1237,9 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 
 (use-package pcre2el
   :ensure t
-  :init (rxt-global-mode))
+  :defer t
+  :idle (rxt-global-mode)
+  :idle-priority 10)
 
 (use-package macrostep
   :ensure t
