@@ -41,8 +41,8 @@
 (defun lunaryorn-warn-about-outdated-build ()
   "Warn about outdated build."
   (let ((time-since-build (time-subtract (current-time) emacs-build-time)))
-  (when (> (time-to-number-of-days time-since-build) 7)
-    (lwarn 'emacs :warning "Your Emacs build is more than a week old!"))))
+    (when (> (time-to-number-of-days time-since-build) 7)
+      (lwarn 'emacs :warning "Your Emacs build is more than a week old!"))))
 
 (run-with-idle-timer 0 nil #'lunaryorn-warn-about-outdated-build)
 
