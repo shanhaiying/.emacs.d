@@ -1766,12 +1766,6 @@ window."
     (bind-key "s K" #'ag-kill-buffers projectile-command-map))
   :diminish projectile-mode)
 
-;; Google from Emacs, under C-c /
-(use-package google-this
-  :ensure t
-  :init (google-this-mode)
-  :diminish google-this-mode)
-
 ;; Insert date and time
 (defun lunaryorn-insert-current-date (iso)
   "Insert the current date at point.
