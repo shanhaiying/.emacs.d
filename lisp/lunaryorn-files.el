@@ -32,7 +32,9 @@
 ;;; Code:
 
 (require 'subr-x)
-(require 'recentf)
+
+;; We only access this variable if recentf is loaded
+(defvar recentf-list)
 
 ;; Assert the byte compiler that dired functions are defined, because we never
 ;; call them for non-dired buffers, so we can be sure that dired is always
@@ -104,9 +106,10 @@ non-directory part only."
 (defun lunaryorn-ido-find-recentf ()
   "Find a recent file with IDO."
   (interactive)
-  (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
-    (when file
-      (find-file file))))
+  (unless (bound-and-true-p recentf-mode)
+    (user-error "Recentf Mode disabled"))
+  (when-let (file (ido-completing-read "Find recent file: " recentf-list nil t))
+    (find-file file)))
 
 (defun lunaryorn-launch-dwim ()
   "Open the current file externally."
