@@ -503,16 +503,6 @@ mouse-3: go to end"))))
                               ;; And all other kinds of boring files
                               #'ignoramus-boring-p)))
 
-;; Open recent files with IDO, see
-;; http://emacsredux.com/blog/2013/04/05/recently-visited-files/
-(lunaryorn-after 'recentf
-  (defun lunaryorn-ido-find-recentf ()
-    "Find a recent file with IDO."
-    (interactive)
-    (let ((file (ido-completing-read "Find recent file: " recentf-list nil t)))
-      (when file
-        (find-file file)))))
-
 ;; Save position in files
 (use-package saveplace
   :config (setq-default save-place t))
@@ -526,85 +516,17 @@ mouse-3: go to end"))))
 ;; Open files in external programs
 (use-package launch
   :ensure t
-  :bind (("C-c f o" . lunaryorn-launch-dwim))
-  :init
-  (progn
-    (global-launch-mode)
+  :idle (global-launch-mode)
+  :idle-priority 10)
 
-    (defun lunaryorn-launch-dwim ()
-      "Open the current file externally."
-      (interactive)
-      (if (eq major-mode 'dired-mode)
-          (let ((marked-files (dired-get-marked-files)))
-            (if marked-files
-                (launch-files marked-files :confirm)
-              (launch-directory (dired-current-directory))))
-        (if (buffer-file-name)
-            (launch-file (buffer-file-name))
-          (user-error "The current buffer is not visiting a file"))))))
-
-;; Utility commands for working with files, see:
-;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
-;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
-;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
-;; https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
-(defun lunaryorn-current-file ()
-  "Gets the \"file\" of the current buffer.
-
-The file is the buffer's file name, or the `default-directory' in
-`dired-mode'."
-  (if (eq major-mode 'dired-mode)
-      default-directory
-    (buffer-file-name)))
-
-(defun lunaryorn-copy-filename-as-kill (&optional arg)
-  "Copy the name of the currently visited file to kill ring.
-
-With a zero prefix arg, copy the absolute file name.  With
-\\[universal-argument], copy the file name relative to the
-current buffer's `default-directory'.  Otherwise copy the
-non-directory part only."
-  (interactive "P")
-  (-if-let* ((filename (lunaryorn-current-file))
-             (name-to-copy (cond ((zerop (prefix-numeric-value arg)) filename)
-                                 ((consp arg) (file-relative-name filename))
-                                 (:else (file-name-nondirectory filename)))))
-    (progn
-      (kill-new name-to-copy)
-      (message "%s" name-to-copy))
-    (user-error "This buffer is not visiting a file")))
-
-(defun lunaryorn-rename-file-and-buffer ()
-  "Rename the current file and buffer."
-  (interactive)
-  (let* ((filename (buffer-file-name))
-         (old-name (if filename
-                       (file-name-nondirectory filename)
-                     (buffer-name)))
-         (new-name (read-file-name "New name: " nil nil nil old-name)))
-    (cond
-     ((not (and filename (file-exists-p filename))) (rename-buffer new-name))
-     ((vc-backend filename) (vc-rename-file filename new-name))
-     (:else
-      (rename-file filename new-name :force-overwrite)
-      (set-visited-file-name new-name :no-query :along-with-file)))))
-
-(defun lunaryorn-delete-file-and-buffer ()
-  "Delete the current file and kill the buffer."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (cond
-     ((not filename) (kill-buffer))
-     ((vc-backend filename) (vc-delete-file filename))
-     (:else
-      (delete-file filename)
-      (kill-buffer)))))
-
-;; Quickly edit init.el
-(defun lunaryorn-find-user-init-file-other-window ()
-  "Edit the `user-init-file', in another window."
-  (interactive)
-  (find-file-other-window user-init-file))
+(use-package lunaryorn-files
+  :load-path "lisp/"
+  :bind (("C-c f D" . lunaryorn-delete-file-and-buffer)
+         ("C-c f i" . lunaryorn-find-user-init-file-other-window)
+         ("C-c f o" . lunaryorn-launch-dwim)
+         ("C-c f r" . lunaryorn-ido-find-recentf)
+         ("C-c f R" . lunaryorn-rename-file-and-buffer)
+         ("C-c f w" . lunaryorn-copy-filename-as-kill)))
 
 ;;; Additional bindings for built-ins
 (bind-key "C-c f L" #'add-dir-local-variable)
@@ -2064,20 +1986,6 @@ Otherwise insert the date as Mar 04, 2014."
 
 (global-set-key (kbd "C-<backspace>") #'lunaryorn-smart-backward-kill-line) ; C-S-backspace
 (global-set-key (kbd "C-S-j") #'lunaryorn-smart-open-line)                  ; C-j
-
-;; Find definition sources fast with C-x F and C-x V
-(find-function-setup-keys)
-
-(defvar lunaryorn-files-map nil
-  "Keymap for file operations.")
-
-(define-prefix-command 'lunaryorn-file 'lunaryorn-files-map)
-(let ((map lunaryorn-files-map))
-  (define-key map (kbd "D") #'lunaryorn-delete-file-and-buffer)
-  (define-key map (kbd "i") #'lunaryorn-find-user-init-file-other-window)
-  (define-key map (kbd "R") #'lunaryorn-rename-file-and-buffer)
-  (define-key map (kbd "r") #'lunaryorn-ido-find-recentf)
-  (define-key map (kbd "w") #'lunaryorn-copy-filename-as-kill))
 
 (defvar lunaryorn-utilities-map nil
   "Keymap for various utilities.")
