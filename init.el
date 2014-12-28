@@ -954,8 +954,8 @@ Disable the highlighting of overlong lines."
 ;; Enable auto-completion
 (use-package company
   :ensure t
-  :diminish company-mode
-  :init (global-company-mode)
+  :defer t
+  :idle (global-company-mode)
   :config
   (progn
     ;; Use Company for completion
@@ -963,14 +963,15 @@ Disable the highlighting of overlong lines."
 
     (setq company-tooltip-align-annotations t
           ;; Easy navigation to candidates with M-<n>
-          company-show-numbers t)))
+          company-show-numbers t))
+  :diminish company-mode)
 
 (use-package company-math
   :ensure t
   :defer t
   :init
   ;; Add backend for math characters
-  (progn
+  (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-math-symbols-unicode)
     (add-to-list 'company-backends 'company-math-symbols-latex)))
 
@@ -1015,7 +1016,7 @@ Disable the highlighting of overlong lines."
   :ensure t
   :bind (("C-c l e" . list-flycheck-errors)
          ("C-c t f" . flycheck-mode))
-  :init (global-flycheck-mode)
+  :idle (global-flycheck-mode)
   :config
   (progn
     (setq flycheck-completion-system 'ido
