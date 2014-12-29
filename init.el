@@ -322,6 +322,10 @@ mouse-3: go to end"))))
 
 ;;; Buffer, Windows and Frames
 
+(setq frame-title-format
+      '(:eval (if (buffer-file-name)
+                  (abbreviate-file-name (buffer-file-name)) "%b")))
+
 ;;; Kill `suspend-frame'
 (global-set-key (kbd "C-z") nil)
 (global-set-key (kbd "C-x C-z") nil)
@@ -392,10 +396,6 @@ mouse-3: go to end"))))
   :defer t
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-
-(setq frame-title-format
-      '(:eval (if (buffer-file-name)
-                  (abbreviate-file-name (buffer-file-name)) "%b")))
 
 (use-package desktop
   ;; Save buffers, windows and frames
