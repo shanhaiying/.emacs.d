@@ -69,8 +69,6 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-(defalias 'lunaryorn-after 'with-eval-after-load)
-
 
 ;;; Requires
 
