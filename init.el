@@ -506,7 +506,7 @@ mouse-3: go to end"))))
 
 ;; Automatically revert files on external changes (e.g. git checkout)
 (use-package autorevert
-  :init (global-auto-revert-mode 1))
+  :init (global-auto-revert-mode))
 
 ;; Open files in external programs
 (use-package launch
