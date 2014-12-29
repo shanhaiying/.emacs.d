@@ -1078,24 +1078,11 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Symbol “awareness”
-(defun highlight-symbol-ag ()
-  "Call `ag-project-regexp' with the symbol at point.
-
-Needs ag.el from URL `https://github.com/Wilfred/ag.el'."
-  (interactive)
-  (unless (fboundp 'ag-project)
-    (error "Please install ag.el from https://github.com/Wilfred/ag.el"))
-  (if (thing-at-point 'symbol)
-      (let ((highlight-symbol-border-pattern '("\\b" . "\\b")))
-        (ag-project-regexp (highlight-symbol-get-symbol)))
-    (error "No symbol at point")))
-
 (use-package highlight-symbol
   :ensure t
   :defer t
   :bind
   (("C-c s %" . highlight-symbol-query-replace)
-   ("C-c s a" . highlight-symbol-ag)
    ("C-c s n" . highlight-symbol-next-in-defun)
    ("C-c s o" . highlight-symbol-occur)
    ("C-c s p" . highlight-symbol-prev-in-defun))
@@ -1110,6 +1097,10 @@ Needs ag.el from URL `https://github.com/Wilfred/ag.el'."
         highlight-symbol-on-navigation-p t) ; Highlight immediately after
                                         ; navigation
   :diminish highlight-symbol-mode)
+
+(use-package lunaryorn-symbols
+  :load-path "lisp/"
+  :bind (("C-c s a" . highlight-symbol-ag)))
 
 
 ;;; Programming utilities
