@@ -1584,6 +1584,9 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 
 
 ;;; Tools and utilities
+(use-package occur
+  :bind ("C-c o" . occur))
+
 (use-package locate
   :defer t
   :config
@@ -1653,14 +1656,16 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 
 (use-package paradox
   :ensure t
-  :bind (("C-c l p" . paradox-list-packages))
+  :bind (("C-c l p" . paradox-list-packages)
+         ("C-c l P" . package-list-packages-no-fetch))
   :config
   ;; Don't ask for a token, please
   (setq paradox-github-token t))
 
-(bind-key "C-c l P" #'package-list-packages-no-fetch)
-(bind-key "C-c o" #'occur)
-(bind-key "C-x p" #'proced)
+(use-package proced
+  ;; Proced isn't available on OS X
+  :if (not (eq system-type 'darwin))
+  :bind ("C-x p" . proced))
 
 
 ;;; Calendar
@@ -1761,7 +1766,8 @@ Taken from http://stackoverflow.com/a/3072831/355252."
          ("C-x V"   . find-variable)
          ("C-x 4 V" . find-variable-other-window)))
 
-(bind-key "C-h A" #'apropos)
+(use-package apropos
+  :bind ("C-h A" . apropos))
 
 ;; Local Variables:
 ;; coding: utf-8
