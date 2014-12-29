@@ -1766,6 +1766,8 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 (use-package apropos
   :bind ("C-h A" . apropos))
 
+(bind-key "C-c u b" #'describe-personal-keybindings)
+
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
