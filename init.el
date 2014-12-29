@@ -1159,8 +1159,8 @@ Disable the highlighting of overlong lines."
   :defer t
   :init
   (with-eval-after-load 'lisp-mode
-    (bind-key "C-c e e" #'macrostep-expand emacs-lisp-mode-map)
-    (bind-key "C-c e e" #'macrostep-expand lisp-interaction-mode-map)))
+    (bind-key "C-c e" #'macrostep-expand emacs-lisp-mode-map)
+    (bind-key "C-c e" #'macrostep-expand lisp-interaction-mode-map)))
 
 (use-package ielm                       ; Emacs Lisp REPL
   :bind (("C-c u z" . ielm)))
@@ -1320,10 +1320,10 @@ Disable the highlighting of overlong lines."
 
     (add-to-list 'haskell-process-args-cabal-repl "--with-ghc=ghci-ng")
 
-    (bind-key "C-c e d" #'haskell-describe haskell-mode-map)
-    (bind-key "C-c e h" #'haskell-hayoo haskell-mode-map)
-    (bind-key "C-c e H" #'haskell-hoogle haskell-mode-map)
-    (bind-key "C-c e i" #'haskell-navigate-imports haskell-mode-map)
+    (bind-key "C-c h d" #'haskell-describe haskell-mode-map)
+    (bind-key "C-c h h" #'haskell-hayoo haskell-mode-map)
+    (bind-key "C-c h H" #'haskell-hoogle haskell-mode-map)
+    (bind-key "C-c u i" #'haskell-navigate-imports haskell-mode-map)
     (bind-key "C-c f c" #'haskell-cabal-visit-file haskell-mode-map)))
 
 (use-package haskell
@@ -1337,7 +1337,7 @@ Disable the highlighting of overlong lines."
               interactive-haskell-mode-map)
     (bind-key "M-." #'haskell-mode-goto-loc
               interactive-haskell-mode-map)
-    (bind-key "C-c e u" #'haskell-mode-find-uses
+    (bind-key "C-c u u" #'haskell-mode-find-uses
               interactive-haskell-mode-map)))
 
 (use-package haskell-interactive-mode
@@ -1358,7 +1358,7 @@ Disable the highlighting of overlong lines."
   :ensure shm
   :commands (shm/case-split)
   :init (with-eval-after-load 'shm
-          (bind-key "C-c e s" #'shm/case-split shm-map)))
+          (bind-key "C-c u s" #'shm/case-split shm-map)))
 
 (use-package flycheck-haskell           ; Setup Flycheck from Cabal projects
   :ensure t
