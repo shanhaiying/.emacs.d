@@ -1491,7 +1491,9 @@ Disable the highlighting of overlong lines."
 
 (use-package magit                      ; The one and only Git frontend
   :ensure t
-  :bind (("C-c g" . magit-status))
+  :bind (("C-c g"   . magit-status)
+         ("C-c v g" . magit-status)
+         ("C-c v v" . magit-status))
   :config
   (progn
     ;; Shut up, Magit!
@@ -1529,7 +1531,7 @@ Disable the highlighting of overlong lines."
 
 (use-package git-timemachine            ; Go back in Git time
   :ensure t
-  :defer t)
+  :bind (("C-c v t" . git-timemachine)))
 
 
 ;;; Tools and utilities
