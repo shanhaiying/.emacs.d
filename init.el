@@ -196,42 +196,6 @@ Homebrew: brew install trash")))
 
 ;;; The mode line
 
-(use-package diminish
-  :ensure t
-  :defer t)
-
-;; Standard stuff
-(line-number-mode)
-(column-number-mode)
-
-(use-package fancy-battery
-  :ensure t
-  :init (fancy-battery-mode))
-
-;; Indicate position/total matches for incremental searches in the mode line
-(use-package anzu
-  :ensure t
-  :init (global-anzu-mode)
-  ;; Please don't mess with my mode line
-  :config (setq anzu-cons-mode-line-p nil)
-  :diminish anzu-mode)
-
-;; Show the current function name in the mode line
-(use-package which-func
-  :defer t
-  :idle (which-function-mode)
-  :idle-priority 1
-  :config
-  (setq which-func-unknown "⊥" ; The default is really boring…
-        which-func-format
-        `((:propertize (" ➤ " which-func-current)
-                       local-map ,which-func-keymap
-                       face which-func
-                       mouse-face mode-line-highlight
-                       help-echo "mouse-1: go to beginning\n\
-mouse-2: toggle rest visibility\n\
-mouse-3: go to end"))))
-
 (setq-default header-line-format
               '(which-func-mode ("" which-func-format " "))
               mode-line-format
@@ -275,6 +239,42 @@ mouse-3: go to end"))))
               ;; header line
               mode-line-misc-info
               (assq-delete-all 'which-func-mode mode-line-misc-info))
+
+(use-package diminish
+  :ensure t
+  :defer t)
+
+;; Standard stuff
+(line-number-mode)
+(column-number-mode)
+
+(use-package fancy-battery
+  :ensure t
+  :init (fancy-battery-mode))
+
+;; Indicate position/total matches for incremental searches in the mode line
+(use-package anzu
+  :ensure t
+  :init (global-anzu-mode)
+  ;; Please don't mess with my mode line
+  :config (setq anzu-cons-mode-line-p nil)
+  :diminish anzu-mode)
+
+;; Show the current function name in the mode line
+(use-package which-func
+  :defer t
+  :idle (which-function-mode)
+  :idle-priority 1
+  :config
+  (setq which-func-unknown "⊥" ; The default is really boring…
+        which-func-format
+        `((:propertize (" ➤ " which-func-current)
+                       local-map ,which-func-keymap
+                       face which-func
+                       mouse-face mode-line-highlight
+                       help-echo "mouse-1: go to beginning\n\
+mouse-2: toggle rest visibility\n\
+mouse-3: go to end"))))
 
 
 ;;; The minibuffer
