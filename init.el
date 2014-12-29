@@ -1042,11 +1042,6 @@ Disable the highlighting of overlong lines."
       (setq reftex-cite-format 'biblatex)))
   :diminish reftex-mode)
 
-;; Plug reftex into bib-cite
-(use-package bib-cite
-  :defer t
-  :config (setq bib-cite-use-reftex-view-crossref t))
-
 
 ;;; ReStructuredText editing
 (use-package rst
