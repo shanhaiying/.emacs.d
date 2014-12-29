@@ -549,7 +549,7 @@ mouse-3: go to end"))))
 
 (use-package whitespace-cleanup-mode    ; Cleanup whitespace in buffers
   :ensure t
-  :bind (("C-c t W" . whitespace-cleanup-mode))
+  :bind (("C-c T W" . whitespace-cleanup-mode))
   :init (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
           (add-hook hook #'whitespace-cleanup-mode))
   :diminish whitespace-cleanup-mode)
@@ -610,7 +610,7 @@ mouse-3: go to end"))))
 
 (use-package nlinum                     ; Line numbers in display margin
   :ensure t
-  :bind (("C-c t l" . nlinum-mode)))
+  :bind (("C-c T l" . nlinum-mode)))
 
 ;; Give us narrowing back!
 (put 'narrow-to-region 'disabled nil)
@@ -703,7 +703,7 @@ mouse-3: go to end"))))
 
 ;;; Highlights
 (use-package whitespace                 ; Highlight bad whitespace
-  :bind (("C-c t w" . whitespace-mode))
+  :bind (("C-c T w" . whitespace-mode))
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
     (add-hook hook #'whitespace-mode))
@@ -810,7 +810,7 @@ Disable the highlighting of overlong lines."
       (warn "No spell checker available.  Install Hunspell or ASpell for OS X."))))
 
 (use-package flyspell                   ; On-the-fly spell checking
-  :bind (("C-c t s" . flyspell-mode))
+  :bind (("C-c T s" . flyspell-mode))
   :init
   (progn
     (dolist (hook '(text-mode-hook message-mode-hook))
@@ -830,7 +830,7 @@ Disable the highlighting of overlong lines."
 (use-package flycheck                   ; On-the-fly syntax checking
   :ensure t
   :bind (("C-c l e" . list-flycheck-errors)
-         ("C-c t f" . flycheck-mode))
+         ("C-c T f" . flycheck-mode))
   :init (global-flycheck-mode)
   :config
   (progn
@@ -1091,7 +1091,7 @@ Disable the highlighting of overlong lines."
 
 (use-package rainbow-mode               ; Fontify color values in code
   :ensure t
-  :bind (("C-c t r" . rainbow-mode)))
+  :bind (("C-c T r" . rainbow-mode)))
 
 (use-package highlight-symbol           ; Highlighting and commands for symbols
   :ensure t
@@ -1179,7 +1179,7 @@ Disable the highlighting of overlong lines."
   :config (with-eval-after-load 'lisp-mode
             (bind-key "C-c f c" #'lunaryorn-find-cask-file emacs-lisp-mode-map)))
 
-(bind-key "C-c t d" #'toggle-debug-on-error)
+(bind-key "C-c T d" #'toggle-debug-on-error)
 
 
 ;;; Clojure
