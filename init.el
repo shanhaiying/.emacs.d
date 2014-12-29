@@ -110,9 +110,8 @@
 
 (use-package cus-edit
   :defer t
-  :config (setq custom-file lunaryorn-custom-file))
-
-(load lunaryorn-custom-file 'no-error 'no-message)
+  :config (setq custom-file lunaryorn-custom-file)
+  :init (load lunaryorn-custom-file 'no-error 'no-message))
 
 
 ;;; OS X support
@@ -445,7 +444,10 @@ mouse-3: go to end"))))
     (setq dired-guess-shell-gnutar "tar")))
 
 ;; Update copyright when visiting files
-(add-hook 'find-file-hook #'copyright-update)
+(use-package copyright
+  :defer t
+  :bind (("C-c u c" . copyright-update))
+  :init (add-hook 'find-file-hook #'copyright-update))
 
 ;; Ignore uninteresting files
 (use-package ignoramus
@@ -530,9 +532,6 @@ mouse-3: go to end"))))
 (setq indicate-empty-lines t
       require-final-newline t)
 
-;; Delete the selection instead of inserting
-(delete-selection-mode)
-
 (setq kill-ring-max 200                 ; More killed items
       ;; Save the contents of the clipboard to kill ring before killing
       save-interprogram-paste-before-kill t)
@@ -556,6 +555,11 @@ mouse-3: go to end"))))
 
 (use-package misc
   :bind (("M-Z" . zap-up-to-char)))
+
+;; Delete the selection instead of inserting
+(use-package delsel
+  :defer t
+  :init (delete-selection-mode))
 
 (use-package whitespace-cleanup-mode
   :ensure t
