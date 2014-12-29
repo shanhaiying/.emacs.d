@@ -1754,9 +1754,11 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 
 ;;; Online Help
 (use-package find-func
-  :defer t
-  ;; Find function and variable definitions
-  :idle (find-function-setup-keys))
+  :bind (("C-x F"   . find-function)
+         ("C-x 4 F" . find-function-other-window)
+         ("C-x K"   . find-function-on-key)
+         ("C-x V"   . find-variable)
+         ("C-x 4 V" . find-variable-other-window)))
 
 (bind-key "C-h A" #'apropos)
 
