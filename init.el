@@ -1400,27 +1400,10 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 
 
 ;;; OCaml
-(defun lunaryorn-opam-init ()
-  "Initialize OPAM in this Emacs."
-  (with-temp-buffer
-    (when-let (opam (executable-find "opam"))
-      (let ((exit-code (call-process "opam" nil t nil "config" "env" "--sexp")))
-        (if (not (equal exit-code 0))
-            (warn "opam config env failed with exit code %S and output:
-%s" exit-code (buffer-substring-no-properties (point-min) (point-max)))
-          (goto-char (point-min))
-          (let ((sexps (read (current-buffer))))
-            (skip-chars-forward "[:space:]")
-            (unless (eobp)
-              (warn "Trailing text in opam config env:\n%S"
-                    (buffer-substring-no-properties (point) (point-max))))
-            (pcase-dolist (`(,var ,value) sexps)
-              (setenv var value)))))))
-  ;; Now update `exec-path' and `load-path'
-  (setq exec-path (append (parse-colon-path (getenv "PATH"))
-                          (list exec-directory))))
 
-(lunaryorn-opam-init)
+(use-package opam
+  :load-path "lisp/"
+  :init (opam-init))
 
 (use-package tuareg
   :ensure t
