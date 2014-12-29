@@ -30,23 +30,7 @@
 
 ;;; Code:
 
-
-;;; Initialization
-(when (version< emacs-version "25")
-  (error "This configuration needs Emacs trunk, but this is %s!" emacs-version))
-
-;; And disable the site default settings
-(setq inhibit-default-init t)
-
-(defun lunaryorn-warn-about-outdated-build ()
-  "Warn about outdated build."
-  (let ((time-since-build (time-subtract (current-time) emacs-build-time)))
-    (when (> (time-to-number-of-days time-since-build) 7)
-      (lwarn 'emacs :warning "Your Emacs build is more than a week old!"))))
-
-(run-with-idle-timer 0 nil #'lunaryorn-warn-about-outdated-build)
-
-;; Debugging
+;;; Debugging
 (setq message-log-max 10000)
 
 
@@ -73,7 +57,23 @@
 
 (require 'subr-x)
 (require 'rx)
+(require 'time-date)
 
+
+;;; Initialization
+(when (version< emacs-version "25")
+  (warn "This configuration needs Emacs trunk, but this is %s!" emacs-version))
+
+;; And disable the site default settings
+(setq inhibit-default-init t)
+
+;; Warn if the current build is more than a week old
+(run-with-idle-timer
+ 2 nil
+ (lambda ()
+   (let ((time-since-build (time-subtract (current-time) emacs-build-time)))
+     (when (> (time-to-number-of-days time-since-build) 7)
+       (lwarn 'emacs :warning "Your Emacs build is more than a week old!")))))
 
 ;;; Environment fixup
 (use-package exec-path-from-shell
