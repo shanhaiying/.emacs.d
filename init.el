@@ -692,6 +692,7 @@ mouse-3: go to end"))))
   :diminish outline-minor-mode)
 
 (use-package imenu-anywhere
+  :ensure t
   :bind (("C-c i" . imenu-anywhere)))
 
 
