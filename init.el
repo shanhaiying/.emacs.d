@@ -1764,7 +1764,6 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
-;; flycheck-disabled-checkers: (emacs-lisp-package)
 ;; End:
 
 ;;; init.el ends here
