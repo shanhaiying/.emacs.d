@@ -222,6 +222,7 @@ Homebrew: brew install trash")))
 (use-package which-func
   :defer t
   :idle (which-function-mode)
+  :idle-priority 1
   :config
   (setq which-func-unknown "⊥" ; The default is really boring…
         which-func-format
@@ -466,14 +467,12 @@ mouse-3: go to end"))))
 (use-package ignoramus
   :ensure t
   :defer t
-  :idle (ignoramus-setup)
-  :idle-priority 10)
+  :idle (ignoramus-setup))
 
 (use-package hardhat
   :ensure t
   :defer t
-  :idle (global-hardhat-mode)
-  :idle-priority 10)
+  :idle (global-hardhat-mode))
 
 ;; Save bookmarks immediately after a bookmark was added
 (use-package bookmark
@@ -485,7 +484,6 @@ mouse-3: go to end"))))
 (use-package recentf
   :defer t
   :idle (recentf-mode)
-  :idle-priority 10
   :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15
@@ -513,8 +511,7 @@ mouse-3: go to end"))))
 ;; Open files in external programs
 (use-package launch
   :ensure t
-  :idle (global-launch-mode)
-  :idle-priority 10)
+  :idle (global-launch-mode))
 
 (use-package lunaryorn-files
   :load-path "lisp/"
@@ -727,8 +724,7 @@ Disable the highlighting of overlong lines."
   :init (global-hl-line-mode 1))
 
 (use-package paren                      ; Paired delimiters
-  :defer t
-  :idle (show-paren-mode)
+  :init (show-paren-mode)
   :config (setq show-paren-when-point-inside-paren t
                 show-paren-when-point-in-periphery t))
 
@@ -829,6 +825,7 @@ Disable the highlighting of overlong lines."
   :bind (("C-c l e" . list-flycheck-errors)
          ("C-c t f" . flycheck-mode))
   :idle (global-flycheck-mode)
+  :idle-priority 1
   :config
   (progn
     (setq flycheck-completion-system 'ido)
@@ -1884,8 +1881,7 @@ Otherwise insert the date as Mar 04, 2014."
 (use-package find-func
   :defer t
   ;; Find function and variable definitions
-  :idle (find-function-setup-keys)
-  :idle-priority 10)
+  :idle (find-function-setup-keys))
 
 (bind-key "C-h A" #'apropos)
 
