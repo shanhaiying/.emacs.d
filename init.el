@@ -830,8 +830,7 @@ Disable the highlighting of overlong lines."
   :ensure t
   :bind (("C-c l e" . list-flycheck-errors)
          ("C-c t f" . flycheck-mode))
-  :idle (global-flycheck-mode)
-  :idle-priority 1
+  :init (global-flycheck-mode)
   :config
   (progn
     (setq flycheck-completion-system 'ido)
