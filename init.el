@@ -560,7 +560,9 @@ mouse-3: go to end"))))
   :bind (([remap kill-whole-line]        . lunaryorn-smart-kill-whole-line)
          ([remap move-beginning-of-line] . lunaryorn-back-to-indentation-or-beginning-of-line)
          ("C-<backspace>"                . lunaryorn-smart-backward-kill-line)
-         ("C-S-j"                        . lunaryorn-smart-open-line))
+         ("C-S-j"                        . lunaryorn-smart-open-line)
+         ;; Additional utilities
+         ("C-c u d"                      . lunaryorn-insert-current-date))
   :commands (lunaryorn-auto-fill-comments-mode)
   ;; Auto-fill comments in programming modes
   :init (add-hook 'prog-mode-hook #'lunaryorn-auto-fill-comments-mode))
@@ -1643,15 +1645,6 @@ Taken from http://stackoverflow.com/a/3072831/355252."
     (bind-key "s K" #'ag-kill-buffers projectile-command-map))
   :diminish projectile-mode)
 
-;; Insert date and time
-(defun lunaryorn-insert-current-date (iso)
-  "Insert the current date at point.
-
-When ISO is non-nil, insert the date in ISO 8601 format.
-Otherwise insert the date as Mar 04, 2014."
-  (interactive "P")
-  (insert (format-time-string (if iso "%F" "%b %d, %Y"))))
-
 ;; Bug references
 (use-package bug-reference
   :defer t
@@ -1767,16 +1760,6 @@ Otherwise insert the date as Mar 04, 2014."
   :idle (find-function-setup-keys))
 
 (bind-key "C-h A" #'apropos)
-
-
-;;; Key bindings
-
-(defvar lunaryorn-utilities-map nil
-  "Keymap for various utilities.")
-
-(define-prefix-command 'lunaryorn-utility 'lunaryorn-utilities-map)
-(let ((map lunaryorn-utilities-map))
-  (define-key map (kbd "d") #'lunaryorn-insert-current-date))
 
 ;; Local Variables:
 ;; coding: utf-8

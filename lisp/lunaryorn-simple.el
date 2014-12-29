@@ -87,6 +87,15 @@ point reaches the beginning or end of the buffer, stop there."
     (kill-local-variable 'comment-auto-fill-only-comments)
     (auto-fill-mode -1))))
 
+;;;###autoload
+(defun lunaryorn-insert-current-date (iso)
+  "Insert the current date at point.
+
+When ISO is non-nil, insert the date in ISO 8601 format.
+Otherwise insert the date as Mar 04, 2014."
+  (interactive "P")
+  (insert (format-time-string (if iso "%F" "%b %d, %Y"))))
+
 (provide 'lunaryorn-simple)
 
 ;; Local Variables:
