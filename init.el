@@ -1261,21 +1261,12 @@ Taken from http://stackoverflow.com/a/3072831/355252."
     (setq python-check-command "pylint"
           ;; Use IPython as interpreter
           python-shell-interpreter "ipython"
-          python-shell-interpreter-args "-i"))
+          python-shell-interpreter-args "-i")))
 
-  (lunaryorn-after 'flycheck
-    (defun lunaryorn-flycheck-setup-python-executables ()
-      "Setup Python executables based on the current virtualenv."
-      (let ((exec-path (python-shell-calculate-exec-path)))
-        (setq-local flycheck-python-pylint-executable
-                    (executable-find "pylint"))
-        (setq-local flycheck-python-flake8-executable
-                    (executable-find "flake8"))))
-
-    (defun lunaryorn-flycheck-setup-python ()
-      "Setup Flycheck in Python buffers."
-      (add-hook 'hack-local-variables-hook
-                #'lunaryorn-flycheck-setup-python-executables 'local))))
+(use-package flycheck-virtualenv
+  :load-path "lisp/"
+  :commands (flycheck-virtualenv-setup)
+  :init (add-hook 'flycheck-mode-hook #'flycheck-virtualenv-setup))
 
 (use-package company-anaconda
   :ensure t
