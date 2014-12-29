@@ -1582,7 +1582,7 @@ Disable the highlighting of overlong lines."
   :bind ("C-x p" . proced))
 
 (use-package calendar                   ; Built-in calendar
-  :defer t
+  :bind ("C-c u c" . calendar)
   :config
   ;; In Europe we start on Monday
   (setq calendar-week-start-day 1))
