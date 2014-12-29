@@ -74,6 +74,7 @@
    (let ((time-since-build (time-subtract (current-time) emacs-build-time)))
      (when (> (time-to-number-of-days time-since-build) 7)
        (lwarn 'emacs :warning "Your Emacs build is more than a week old!")))))
+
 
 ;;; Environment fixup
 (use-package exec-path-from-shell
