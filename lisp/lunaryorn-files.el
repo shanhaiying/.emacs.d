@@ -47,7 +47,7 @@
 
 The file is the buffer's file name, or the `default-directory' in
 `dired-mode'."
-  (if (eq major-mode 'dired-mode)
+  (if (derived-mode-p 'dired-mode)
       default-directory
     (buffer-file-name)))
 
@@ -114,7 +114,7 @@ non-directory part only."
 (defun lunaryorn-launch-dwim ()
   "Open the current file externally."
   (interactive)
-  (if (eq major-mode 'dired-mode)
+  (if (derived-mode-p 'dired-mode)
       (let ((marked-files (dired-get-marked-files)))
         (if marked-files
             (launch-files marked-files 'confirm)
