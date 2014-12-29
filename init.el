@@ -496,9 +496,9 @@ mouse-3: go to end"))))
          ("C-c f w" . lunaryorn-copy-filename-as-kill)))
 
 ;;; Additional bindings for built-ins
-(bind-key "C-c f L" #'add-dir-local-variable)
-(bind-key "C-c f l" #'add-file-local-variable)
-(bind-key "C-c f p" #'add-file-local-variable-prop-line)
+(bind-key "C-c f v d" #'add-dir-local-variable)
+(bind-key "C-c f v l" #'add-file-local-variable)
+(bind-key "C-c f v p" #'add-file-local-variable-prop-line)
 
 
 ;;; Basic editing
