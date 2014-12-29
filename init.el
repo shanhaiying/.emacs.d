@@ -934,55 +934,11 @@ Disable the highlighting of overlong lines."
   :init (with-eval-after-load 'latex
           (auctex-latexmk-setup)))
 
-;; find Skim.app on OS X, for Sycntex support, which Preview.app lacks.
-(defun lunaryorn-find-skim-bundle ()
-    "Return the location of the Skim bundle, or nil if Skim is not installed.
-
-Skim is an advanced PDF viewer for OS X with SyncTex support.
-See http://skim-app.sourceforge.net/ for more information."
-    (lunaryorn-path-of-bundle "net.sourceforge.skim-app.skim"))
-
-(defun lunaryorn-find-skim-displayline ()
-  "Return the path of the displayline frontend of Skim.
-
-Return nil if Skim is not installed.  See `lunaryorn-find-skim-bundle'."
-  (when-let (skim-bundle (lunaryorn-find-skim-bundle))
-    (executable-find (expand-file-name "Contents/SharedSupport/displayline"
-                                       skim-bundle))))
-
-(lunaryorn-after 'tex
-  (defun lunaryorn-TeX-find-view-programs-os-x ()
-    "Find TeX view programs on OS X.
-
-Populate `TeX-view-program-list' with installed viewers."
-    ;; The default application, usually Preview
-    (add-to-list 'TeX-view-program-list
-                 '("Default application" "open %o"))
-    ;; Skim if installed
-    (when-let (skim-displayline (lunaryorn-find-skim-displayline))
-      (add-to-list 'TeX-view-program-list
-                   `("Skim" (,skim-displayline " -b -r %n %o %b")))))
-
-  (defun lunaryorn-TeX-select-view-programs-os-x ()
-    "Select the best view programs on OS X.
-
-Choose Skim if available, or fall back to the default application."
-    ;; Find view programs
-    (lunaryorn-TeX-find-view-programs-os-x)
-    (setq TeX-view-program-selection
-          `((output-dvi "Default application")
-            (output-html "Default application")
-            ;; Use Skim if installed for SyncTex support.
-            (output-pdf ,(if (assoc "Skim" TeX-view-program-list)
-                             "Skim" "Default application")))))
-
-  (defun lunaryorn-TeX-select-view-programs ()
-    "Select the best view programs for the current platform."
-    (when (eq system-type 'darwin)
-      (lunaryorn-TeX-select-view-programs-os-x)))
-
-  ;; Select best viewing programs
-  (lunaryorn-TeX-select-view-programs))
+(use-package auctex-skim
+  :load-path "lisp/"
+  :commands (auctex-skim-select)
+  :init (with-eval-after-load 'tex
+          (auctex-skim-select)))
 
 (use-package bibtex
   :defer t
