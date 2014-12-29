@@ -1675,7 +1675,7 @@ Disable the highlighting of overlong lines."
          ("C-x 4 V" . find-variable-other-window)))
 
 (use-package apropos                    ; Search symbols for documentation
-  :bind ("C-h A" . apropos))
+  :bind (("C-c h a" . apropos)))
 
 (use-package info                       ; Info manual viewer
   :defer t
@@ -1691,7 +1691,7 @@ Disable the highlighting of overlong lines."
   :init (add-hook 'yaml-mode-hook #'ansible-doc-mode)
   :diminish ansible-doc-mode)
 
-(bind-key "C-c u b" #'describe-personal-keybindings)
+(bind-key "C-c h b" #'describe-personal-keybindings)
 
 ;; Local Variables:
 ;; coding: utf-8
