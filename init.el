@@ -1077,32 +1077,6 @@ Disable the highlighting of overlong lines."
   (setq graphviz-dot-indent-width 4))
 
 
-;;; Symbol “awareness”
-(use-package highlight-symbol
-  :ensure t
-  :defer t
-  :bind
-  (("C-c s %" . highlight-symbol-query-replace)
-   ("C-c s n" . highlight-symbol-next-in-defun)
-   ("C-c s o" . highlight-symbol-occur)
-   ("C-c s p" . highlight-symbol-prev-in-defun))
-  :init
-  (progn
-    ;; Navigate occurrences of the symbol under point with M-n and M-p
-    (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
-    ;; Highlight symbol occurrences
-    (add-hook 'prog-mode-hook #'highlight-symbol-mode))
-  :config
-  (setq highlight-symbol-idle-delay 0.4     ; Highlight almost immediately
-        highlight-symbol-on-navigation-p t) ; Highlight immediately after
-                                        ; navigation
-  :diminish highlight-symbol-mode)
-
-(use-package lunaryorn-symbols
-  :load-path "lisp/"
-  :bind (("C-c s a" . highlight-symbol-ag)))
-
-
 ;;; Programming utilities
 
 ;; Compilation from Emacs
@@ -1143,6 +1117,31 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 (use-package rainbow-mode
   :ensure t
   :bind (("C-c t r" . rainbow-mode)))
+
+;; Symbol awareness
+(use-package highlight-symbol
+  :ensure t
+  :defer t
+  :bind
+  (("C-c s %" . highlight-symbol-query-replace)
+   ("C-c s n" . highlight-symbol-next-in-defun)
+   ("C-c s o" . highlight-symbol-occur)
+   ("C-c s p" . highlight-symbol-prev-in-defun))
+  :init
+  (progn
+    ;; Navigate occurrences of the symbol under point with M-n and M-p
+    (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
+    ;; Highlight symbol occurrences
+    (add-hook 'prog-mode-hook #'highlight-symbol-mode))
+  :config
+  (setq highlight-symbol-idle-delay 0.4     ; Highlight almost immediately
+        highlight-symbol-on-navigation-p t) ; Highlight immediately after
+                                        ; navigation
+  :diminish highlight-symbol-mode)
+
+(use-package lunaryorn-symbols
+  :load-path "lisp/"
+  :bind (("C-c s a" . highlight-symbol-ag)))
 
 
 ;;; Generic Lisp

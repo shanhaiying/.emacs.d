@@ -1,4 +1,4 @@
-;;; lunaryorn-symbols.el --- Utilities for working with symbols  -*- lexical-binding: t; -*-
+;;; lunaryorn-symbols.el --- Utilities for symbols  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2014  Sebastian Wiesner <swiesner@lunaryorn.com>
 
