@@ -697,6 +697,43 @@ mouse-3: go to end"))))
   :bind (("C-c i" . imenu-anywhere)))
 
 
+;;; Search
+(use-package occur
+  :bind ("C-c o" . occur))
+
+(use-package locate
+  :defer t
+  :config
+  ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
+  (when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
+    (setq locate-command mdfind)))
+
+;; Powerful file and code search
+(use-package ag
+  :ensure t
+  :bind (("C-c a a" . ag-regexp)
+         ("C-c a A" . ag)
+         ("C-c a d" . ag-dired-regexp)
+         ("C-c a D" . ag-dired)
+         ("C-c a f" . ag-files)
+         ("C-c a k" . ag-kill-other-buffers)
+         ("C-c a K" . ag-kill-buffers))
+  :config
+  (setq ag-reuse-buffers t            ; Don't spam buffer list with ag buffers
+        ag-highlight-search t         ; A little fanciness
+        ;; Use Projectile to find the project root
+        ag-project-root-function (lambda (d) (let ((default-directory d))
+                                               (projectile-project-root)))))
+
+(use-package wgrep
+  :ensure t
+  :defer t)
+
+(use-package wgrep-ag
+  :ensure t
+  :defer t)
+
+
 ;;; Highlights
 (use-package whitespace                 ; Bad whitespace
   :bind (("C-c t w" . whitespace-mode))
@@ -1582,42 +1619,6 @@ Taken from http://stackoverflow.com/a/3072831/355252."
 
 
 ;;; Tools and utilities
-(use-package occur
-  :bind ("C-c o" . occur))
-
-(use-package locate
-  :defer t
-  :config
-  ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
-  (when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
-    (setq locate-command mdfind)))
-
-;; Powerful file and code search
-(use-package ag
-  :ensure t
-  :bind (("C-c a a" . ag-regexp)
-         ("C-c a A" . ag)
-         ("C-c a d" . ag-dired-regexp)
-         ("C-c a D" . ag-dired)
-         ("C-c a f" . ag-files)
-         ("C-c a k" . ag-kill-other-buffers)
-         ("C-c a K" . ag-kill-buffers))
-  :config
-  (setq ag-reuse-buffers t            ; Don't spam buffer list with ag buffers
-        ag-highlight-search t         ; A little fanciness
-        ;; Use Projectile to find the project root
-        ag-project-root-function (lambda (d) (let ((default-directory d))
-                                               (projectile-project-root)))))
-
-(use-package wgrep
-  :ensure t
-  :defer t)
-
-(use-package wgrep-ag
-  :ensure t
-  :defer t)
-
-;; Project management
 (use-package projectile
   :ensure t
   :defer t
@@ -1665,8 +1666,6 @@ Taken from http://stackoverflow.com/a/3072831/355252."
   :if (not (eq system-type 'darwin))
   :bind ("C-x p" . proced))
 
-
-;;; Calendar
 (use-package calendar
   :defer t
   :config
