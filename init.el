@@ -115,7 +115,7 @@
 
 
 ;;; OS X support
-(use-package ns-win
+(use-package ns-win                     ; OS X window support
   :defer t
   :if (eq system-type 'darwin)
   :config
@@ -128,7 +128,7 @@
         ;; Just in case we ever need these keys
         mac-function-modifier 'hyper))
 
-(use-package lunaryorn-osx
+(use-package lunaryorn-osx              ; Personal OS X tools
   :if (eq system-type 'darwin)
   :load-path "lisp/"
   :defines (lunaryorn-darwin-trash-tool)
@@ -172,11 +172,11 @@ Homebrew: brew install trash")))
       (set-frame-font (format "%s-%s" font size) nil t)
     (lwarn 'emacs :warning "%S font is missing!" font)))
 
-(use-package unicode-fonts
+(use-package unicode-fonts              ; Map Unicode blocks to fonts
   :ensure t
   :init (unicode-fonts-setup))
 
-(use-package solarized
+(use-package solarized                  ; My colour theme
   :ensure solarized-theme
   :defer t
   :init (load-theme 'solarized-light 'no-confirm)
@@ -243,20 +243,17 @@ Homebrew: brew install trash")))
 (line-number-mode)
 (column-number-mode)
 
-(use-package fancy-battery
+(use-package fancy-battery              ; Fancy battery info for mode line
   :ensure t
   :init (fancy-battery-mode))
 
-;; Indicate position/total matches for incremental searches in the mode line
-(use-package anzu
+(use-package anzu                       ; Position/matches count for isearch
   :ensure t
   :init (global-anzu-mode)
-  ;; Please don't mess with my mode line
   :config (setq anzu-cons-mode-line-p nil)
   :diminish anzu-mode)
 
-;; Show the current function name in the mode line
-(use-package which-func
+(use-package which-func                 ; Current function name in header line
   :defer t
   :idle (which-function-mode)
   :idle-priority 1
@@ -273,17 +270,14 @@ mouse-3: go to end"))))
 
 
 ;;; The minibuffer
+(setq history-length 1000)              ; Store more history
 
-;; Increase Emacs' memory of the past
-(setq history-length 1000)
-
-;; Save a minibuffer input history
-(use-package savehist
+(use-package savehist                   ; Save minibuffer history
   :init (savehist-mode t)
   :config (setq savehist-save-minibuffer-history t
                 savehist-autosave-interval 180))
 
-(use-package ido
+(use-package ido                        ; Better minibuffer completion
   :init (progn
           (ido-mode)
           (ido-everywhere))
@@ -297,20 +291,19 @@ mouse-3: go to end"))))
         ido-default-buffer-method 'selected-window
         ido-use-faces nil))             ; Prefer flx ido faces
 
-(use-package ido-ubiquitous
+(use-package ido-ubiquitous             ; IDO everywhere, really!
   :ensure t
   :init (ido-ubiquitous-mode))
 
-(use-package flx-ido
+(use-package flx-ido                    ; Flex matching for IDO
   :ensure t
   :init (flx-ido-mode))
 
-(use-package ido-vertical-mode
+(use-package ido-vertical-mode          ; Vertical interface for IDO
   :ensure t
   :init (ido-vertical-mode))
 
-;; Configure Smex
-(use-package smex
+(use-package smex                       ; Better M-x
   :ensure t
   :bind (([remap execute-extended-command] . smex)
          ("M-X" . smex-major-mode-commands)))
@@ -329,7 +322,7 @@ mouse-3: go to end"))))
 (global-set-key (kbd "C-z") nil)
 (global-set-key (kbd "C-x C-z") nil)
 
-(use-package lunaryorn-buffers
+(use-package lunaryorn-buffers          ; Personal buffer tools
   :load-path "lisp/"
   :commands (lunaryorn-force-save-some-buffers
              lunaryorn-do-not-kill-important-buffers)
@@ -342,11 +335,10 @@ mouse-3: go to end"))))
     ;; http://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
     (add-hook 'focus-out-hook #'lunaryorn-force-save-some-buffers)))
 
-;; Make uniquify rename buffers like in path name notation
-(use-package uniquify
+(use-package uniquify                   ; Make buffer names unique
   :config (setq uniquify-buffer-name-style 'forward))
 
-(use-package ibuffer
+(use-package ibuffer                    ; Better buffer list
   :bind (([remap list-buffers] . ibuffer))
   ;; Show VC Status in ibuffer
   :config (setq ibuffer-formats
@@ -371,33 +363,28 @@ mouse-3: go to end"))))
                         (name 16 -1)
                         " " filename))))
 
-(use-package ibuffer-vc
+(use-package ibuffer-vc                 ; Group buffers by VC project and status
   :ensure t
   :defer t
-  ;; Group ibuffer by VC status
   :init (add-hook 'ibuffer-hook
                   (lambda ()
                     (ibuffer-vc-set-filter-groups-by-vc-root)
                     (unless (eq ibuffer-sorting-mode 'alphabetic)
                       (ibuffer-do-sort-by-alphabetic)))))
 
-(use-package windmove
-  ;; Move between windows with Shift + Arrow keys
+(use-package windmove                   ; Move between windows with Shift+Arrow
   :init (windmove-default-keybindings))
 
-(use-package winner
-  ;; Undo and redo window configurations with C-c Left and C-c Right
-  ;; respectively
+(use-package winner                     ; Undo and redo window configurations
   :init (winner-mode))
 
-;; Prevent Ediff from spamming the frame
 (use-package ediff-wind
   :defer t
   :config
+  ;; Prevent Ediff from spamming the frame
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
-(use-package desktop
-  ;; Save buffers, windows and frames
+(use-package desktop                    ; Save buffers, windows and frames
   :init (desktop-save-mode)
   :config (progn
             ;; Don't autosave desktops, it's too expensive.  Desktops aren't
@@ -418,17 +405,16 @@ mouse-3: go to end"))))
                                         ; systems
           (fboundp 'system-move-file-to-trash)))
 
-;; Store Tramp auto save files locally
-(use-package tramp
+(use-package tramp                      ; Access remote files
   :defer t
   :config
+  ;; Store auto-save files locally
   (setq tramp-auto-save-directory (locate-user-emacs-file "tramp-auto-save")))
 
-(use-package dired
+(use-package dired                      ; Edit directories
   :defer t
   :config
   (progn
-    ;; Power up dired
     (require 'dired-x)
 
     ;; Always revert Dired buffers on revisiting
@@ -436,38 +422,36 @@ mouse-3: go to end"))))
           dired-listing-switches "-alh" ; Human-readable sizes by default
           )))
 
-(use-package dired-x
+(use-package dired-x                    ; Additional tools for Dired
   :defer t
   :config
   (when (eq system-type 'darwin)
     ;; OS X bsdtar is mostly compatible with GNU Tar
     (setq dired-guess-shell-gnutar "tar")))
 
-;; Update copyright when visiting files
-(use-package copyright
+(use-package copyright                  ; Deal with copyright notices
   :defer t
   :bind (("C-c u c" . copyright-update))
+  ;; Update copyright when visiting files
   :init (add-hook 'find-file-hook #'copyright-update))
 
-;; Ignore uninteresting files
-(use-package ignoramus
+(use-package ignoramus                  ; Ignore uninteresting files everywhere
   :ensure t
   :defer t
   :idle (ignoramus-setup))
 
-(use-package hardhat
+(use-package hardhat                    ; Protect user-writable files
   :ensure t
   :defer t
   :idle (global-hardhat-mode))
 
-;; Save bookmarks immediately after a bookmark was added
-(use-package bookmark
+(use-package bookmark                   ; Bookmarks for Emacs buffers
   :defer t
   :bind (("C-c l b" . list-bookmarks))
+  ;; Save bookmarks immediately after a bookmark was added
   :config (setq bookmark-save-flag 1))
 
-;; Track recent files
-(use-package recentf
+(use-package recentf                    ; Save recently visited files
   :defer t
   :idle (recentf-mode)
   :config
@@ -483,19 +467,18 @@ mouse-3: go to end"))))
                               ;; And all other kinds of boring files
                               #'ignoramus-boring-p)))
 
-;; Save position in files
-(use-package saveplace
+(use-package saveplace                  ; Save point position in files
   :config (setq-default save-place t))
 
-;; View files read-only
-(setq view-read-only t)
+(setq view-read-only t)                 ; View read-only files
 
-;; Automatically revert files on external changes (e.g. git checkout)
-(use-package autorevert
+(use-package autorevert                 ; Auto-revert buffers of changed files
   :init (global-auto-revert-mode))
 
-;; Open files in external programs
-(use-package launch
+(use-package image-file                 ; Visit images as images
+  :init (auto-image-file-mode))
+
+(use-package launch                     ; Open files in external programs
   :ensure t
   :idle (global-launch-mode))
 
@@ -503,7 +486,7 @@ mouse-3: go to end"))))
   :ensure t
   :bind ("C-c f l" . ido-load-library-find))
 
-(use-package lunaryorn-files
+(use-package lunaryorn-files            ; Personal file tools
   :load-path "lisp/"
   :bind (("C-c f D" . lunaryorn-delete-file-and-buffer)
          ("C-c f i" . lunaryorn-find-user-init-file-other-window)
@@ -545,7 +528,7 @@ mouse-3: go to end"))))
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
-(use-package lunaryorn-simple
+(use-package lunaryorn-simple           ; Personal editing helpers
   :bind (([remap kill-whole-line]        . lunaryorn-smart-kill-whole-line)
          ([remap move-beginning-of-line] . lunaryorn-back-to-indentation-or-beginning-of-line)
          ("C-<backspace>"                . lunaryorn-smart-backward-kill-line)
@@ -560,49 +543,46 @@ mouse-3: go to end"))))
 (use-package misc
   :bind (("M-Z" . zap-up-to-char)))
 
-;; Delete the selection instead of inserting
-(use-package delsel
+(use-package delsel                     ; Delete the selection instead of insert
   :defer t
   :init (delete-selection-mode))
 
-(use-package whitespace-cleanup-mode
+(use-package whitespace-cleanup-mode    ; Cleanup whitespace in buffers
   :ensure t
   :bind (("C-c t W" . whitespace-cleanup-mode))
   :init (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
           (add-hook hook #'whitespace-cleanup-mode))
   :diminish whitespace-cleanup-mode)
 
-;; Subword/superword editing
-(use-package subword
+(use-package subword                    ; Subword/superword editing
   :defer t
   :diminish subword-mode)
 
-;; Choose wrap prefix automatically
-(use-package adaptive-wrap
+(use-package adaptive-wrap              ; Choose wrap prefix automatically
   :ensure t
   :defer t
   :init (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode))
 
-(use-package visual-regexp
+(use-package visual-regexp              ; Regexp replace with in-buffer display
   :ensure t
   :bind (("C-c r" . vr/query-replace)
          ("C-c R" . vr/replace)))
 
-(use-package browse-kill-ring
+(use-package browse-kill-ring           ; Browse kill ring interactively
   :ensure t
   :bind (("C-c y" . browse-kill-ring)))
 
-(use-package easy-kill
+(use-package easy-kill                  ; Easy killing and marking on C-w
   :ensure t
   :bind (([remap kill-ring-save] . easy-kill)
          ([remap mark-sexp]      . easy-mark)))
 
-(use-package align
+(use-package align                      ; Align text in buffers
   :bind (("C-c A a" . align)
          ("C-c A c" . align-current)
          ("C-c A r" . align-regexp)))
 
-(use-package multiple-cursors
+(use-package multiple-cursors           ; Edit text with multiple cursors
   :ensure t
   :bind (("C-c m e"   . mc/mark-more-like-this-extended)
          ("C-c m h"   . mc/mark-all-like-this-dwim)
@@ -619,18 +599,16 @@ mouse-3: go to end"))))
         '(:propertize (:eval (concat " " (number-to-string (mc/num-cursors))))
                       face font-lock-warning-face)))
 
-(use-package expand-region
+(use-package expand-region              ; Expand region by semantic units
   :ensure t
   :bind (("C-=" . er/expand-region)))
 
-;; Power up undo
-(use-package undo-tree
+(use-package undo-tree                  ; Branching undo
   :ensure t
   :init (global-undo-tree-mode)
   :diminish undo-tree-mode)
 
-;; Line numbers
-(use-package nlinum
+(use-package nlinum                     ; Line numbers in display margin
   :ensure t
   :bind (("C-c t l" . nlinum-mode)))
 
@@ -643,8 +621,7 @@ mouse-3: go to end"))))
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-;; An Emacs server for `emacsclient'
-(use-package server
+(use-package server                     ; The server of `emacsclient'
   :defer t
   :idle (server-start))
 
@@ -663,8 +640,7 @@ mouse-3: go to end"))))
       mouse-wheel-progressive-speed nil
       mouse-wheel-scroll-amount '(1))
 
-;; Jump to characters in buffers
-(use-package ace-jump-mode
+(use-package ace-jump-mode              ; Jump to characters in buffers
   :ensure t
   :bind (("C-c SPC" . ace-jump-mode)
          ("C-c j"   . ace-jump-mode)
@@ -673,37 +649,34 @@ mouse-3: go to end"))))
   ;; Sync marks with Emacs built-in commands
   (ace-jump-mode-enable-mark-sync))
 
-;; Nicify page breaks
-(use-package page-break-lines
+(use-package page-break-lines           ; Turn page breaks into lines
   :ensure t
   :init (global-page-break-lines-mode)
   :defer page-break-lines-modes)
 
-;; Outline commands
-(use-package outline
+(use-package outline                    ; Navigate outlines in buffers
   :defer t
   :init (dolist (hook '(text-mode-hook prog-mode-hook))
           (add-hook hook #'outline-minor-mode))
   :diminish outline-minor-mode)
 
-(use-package imenu-anywhere
+(use-package imenu-anywhere             ; IDO-based imenu across open buffers
   :ensure t
   :bind (("C-c i" . imenu-anywhere)))
 
 
 ;;; Search
-(use-package occur
+(use-package occur                      ; Search text in buffer
   :bind ("C-c o" . occur))
 
-(use-package locate
+(use-package locate                     ; Search files on the system
   :defer t
   :config
   ;; Use mdfind as locate substitute on OS X, to utilize the Spotlight database
   (when-let (mdfind (and (eq system-type 'darwin) (executable-find "mdfind")))
     (setq locate-command mdfind)))
 
-;; Powerful file and code search
-(use-package ag
+(use-package ag                         ; Search code in files/projects
   :ensure t
   :bind (("C-c a a" . ag-regexp)
          ("C-c a A" . ag)
@@ -719,17 +692,17 @@ mouse-3: go to end"))))
         ag-project-root-function (lambda (d) (let ((default-directory d))
                                                (projectile-project-root)))))
 
-(use-package wgrep
+(use-package wgrep                      ; Edit grep/occur/ag results in-place
   :ensure t
   :defer t)
 
-(use-package wgrep-ag
+(use-package wgrep-ag                   ; Wgrep for ag
   :ensure t
   :defer t)
 
 
 ;;; Highlights
-(use-package whitespace                 ; Bad whitespace
+(use-package whitespace                 ; Highlight bad whitespace
   :bind (("C-c t w" . whitespace-mode))
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
@@ -753,15 +726,15 @@ Disable the highlighting of overlong lines."
     (whitespace-mode -1)
     (whitespace-mode 1)))
 
-(use-package hl-line                    ; Current line
+(use-package hl-line                    ; Highlight the current line
   :init (global-hl-line-mode 1))
 
-(use-package paren                      ; Paired delimiters
+(use-package paren                      ; Highlight paired delimiters
   :init (show-paren-mode)
   :config (setq show-paren-when-point-inside-paren t
                 show-paren-when-point-in-periphery t))
 
-(use-package rainbow-delimiters         ; Delimiters by depth
+(use-package rainbow-delimiters         ; Highlight delimiters by depth
   :ensure t
   :defer t
   :init (dolist (hook '(text-mode-hook prog-mode-hook))
@@ -776,8 +749,7 @@ Disable the highlighting of overlong lines."
 ;; than five candidates.  Cycle instead.
 (setq completion-cycle-threshold 5)
 
-;; Configure hippie-expand reasonably
-(use-package hippie-exp
+(use-package hippie-exp                 ; Powerful expansion and completion
   :bind (([remap dabbrev-expand] . hippie-expand))
   :config
   (setq hippie-expand-try-functions-list
@@ -792,12 +764,11 @@ Disable the highlighting of overlong lines."
           try-complete-lisp-symbol
           lunaryorn-try-complete-lisp-symbol-without-namespace)))
 
-(use-package lunaryorn-hippie-exp
+(use-package lunaryorn-hippie-exp       ; Custom expansion functions
   :load-path "lisp/"
   :commands (lunaryorn-try-complete-lisp-symbol-without-namespace))
 
-;; Enable auto-completion
-(use-package company
+(use-package company                    ; Graphical (auto-)completion
   :ensure t
   :defer t
   :idle (global-company-mode)
@@ -811,7 +782,7 @@ Disable the highlighting of overlong lines."
           company-show-numbers t))
   :diminish company-mode)
 
-(use-package company-math
+(use-package company-math               ; Completion for Math symbols
   :ensure t
   :defer t
   :init
@@ -822,7 +793,7 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Spelling and syntax checking
-(use-package ispell
+(use-package ispell                     ; Spell checking
   :defer t
   :config
   (progn
@@ -838,7 +809,7 @@ Disable the highlighting of overlong lines."
     (unless ispell-program-name
       (warn "No spell checker available.  Install Hunspell or ASpell for OS X."))))
 
-(use-package flyspell
+(use-package flyspell                   ; On-the-fly spell checking
   :bind (("C-c t s" . flyspell-mode))
   :init
   (progn
@@ -856,8 +827,7 @@ Disable the highlighting of overlong lines."
     (define-key flyspell-mode-map "\M-\t" nil))
   :diminish flyspell-mode)
 
-;; On the fly syntax checking
-(use-package flycheck
+(use-package flycheck                   ; On-the-fly syntax checking
   :ensure t
   :bind (("C-c l e" . list-flycheck-errors)
          ("C-c t f" . flycheck-mode))
@@ -870,13 +840,13 @@ Disable the highlighting of overlong lines."
     (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic))
   :diminish flycheck-mode)
 
-(use-package flycheck-pos-tip
+(use-package flycheck-pos-tip           ; Show Flycheck messages in popups
   :ensure t
   :defer t
   :init
   (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
-(use-package lunaryorn-flycheck
+(use-package lunaryorn-flycheck         ; Personal Flycheck helpers
   :defer t
   :commands (lunaryorn-discard-undesired-html-tidy-error
              lunaryorn-flycheck-mode-line-status)
@@ -890,11 +860,10 @@ Disable the highlighting of overlong lines."
 
 
 ;;; LaTeX with AUCTeX
-(use-package tex-site
+(use-package tex-site                   ; AUCTeX initialization
   :ensure auctex)
 
-;; TeX editing
-(use-package tex
+(use-package tex                        ; TeX editing/processing
   :ensure auctex
   :defer t
   :config
@@ -918,13 +887,13 @@ Disable the highlighting of overlong lines."
     ;; Move to chktex
     (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 %s")))
 
-(use-package tex-buf
+(use-package tex-buf                    ; TeX buffer management
   :ensure auctex
   :defer t
   ;; Don't ask for confirmation when saving before processing
   :config (setq TeX-save-query nil))
 
-(use-package tex-style
+(use-package tex-style                  ; TeX style
   :ensure auctex
   :defer t
   :config
@@ -932,12 +901,12 @@ Disable the highlighting of overlong lines."
   (setq LaTeX-csquotes-close-quote "}"
         LaTeX-csquotes-open-quote "\\enquote{"))
 
-(use-package tex-fold
+(use-package tex-fold                   ; TeX folding
   :ensure auctex
   :defer t
   :init (add-hook 'TeX-mode-hook #'TeX-fold-mode))
 
-(use-package tex-mode
+(use-package tex-mode                   ; TeX mode
   :ensure auctex
   :defer t
   :config
@@ -948,7 +917,7 @@ Disable the highlighting of overlong lines."
                                   symbol-end)
                              . font-lock-warning-face))))
 
-(use-package latex
+(use-package latex                      ; LaTeX editing
   :ensure auctex
   :defer t
   :config
@@ -963,19 +932,19 @@ Disable the highlighting of overlong lines."
 
     (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)))    ; Easy math input
 
-(use-package auctex-latexmk
+(use-package auctex-latexmk             ; latexmk command for AUCTeX
   :ensure t
   :defer t
   :init (with-eval-after-load 'latex
           (auctex-latexmk-setup)))
 
-(use-package auctex-skim
+(use-package auctex-skim                ; Skim as viewer for AUCTeX
   :load-path "lisp/"
   :commands (auctex-skim-select)
   :init (with-eval-after-load 'tex
           (auctex-skim-select)))
 
-(use-package bibtex
+(use-package bibtex                     ; BibTeX editing
   :defer t
   :config
   (progn
@@ -1001,8 +970,7 @@ Disable the highlighting of overlong lines."
       (forward-list)
       (buffer-substring-no-properties beg (1- (point))))))
 
-;; Configure RefTeX
-(use-package reftex
+(use-package reftex                     ; TeX/BibTeX cross-reference management
   :defer t
   :init (add-hook 'LaTeX-mode-hook #'reftex-mode)
   :config
@@ -1043,8 +1011,8 @@ Disable the highlighting of overlong lines."
   :diminish reftex-mode)
 
 
-;;; ReStructuredText editing
-(use-package rst
+;;; Other markup languages
+(use-package rst                        ; ReStructuredText
   :defer t
   :config
   ;; Indent with 3 spaces after all kinds of literal blocks
@@ -1055,9 +1023,7 @@ Disable the highlighting of overlong lines."
   ;; For similarity with AUCTeX
   (bind-key  "C-c C-j" #'rst-insert-list rst-mode-map))
 
-
-;;; Markdown editing
-(use-package markdown-mode
+(use-package markdown-mode              ; Markdown
   :ensure t
   ;; Use GFM Mode for Markdown files from It's All Text.  It's better for most
   ;; sites to not add hard line breaks to content.
@@ -1078,9 +1044,7 @@ Disable the highlighting of overlong lines."
     ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM Mode.
     (bind-key "M-q" #'ignore gfm-mode-map)))
 
-
-;;; YAML
-(use-package yaml-mode
+(use-package yaml-mode                  ; YAML
   :ensure t
   :defer t
   :config
@@ -1091,15 +1055,7 @@ Disable the highlighting of overlong lines."
     (add-hook 'yaml-mode-hook #'lunaryorn-auto-fill-comments-mode)
     (add-hook 'yaml-mode-hook #'flyspell-prog-mode)))
 
-(use-package ansible-doc
-  :ensure t
-  :defer t
-  :init (add-hook 'yaml-mode-hook #'ansible-doc-mode)
-  :diminish ansible-doc-mode)
-
-
-;;; Graphviz
-(use-package graphviz-dot-mode
+(use-package graphviz-dot-mode          ; Graphviz
   :ensure t
   :defer t
   :config
@@ -1107,7 +1063,7 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Programming utilities
-(use-package compile
+(use-package compile                    ; Compile from Emacs
   :bind (("C-c c" . compile)
          ("C-c C" . recompile))
   :config
@@ -1119,7 +1075,7 @@ Disable the highlighting of overlong lines."
                                         ; error
           )))
 
-(use-package lunaryorn-compile
+(use-package lunaryorn-compile          ; Personal helpers for compilation
   :load-path "lisp/"
   :commands (lunaryorn-colorize-compilation-buffer)
   ;; Colorize output of Compilation Mode, see
@@ -1127,20 +1083,17 @@ Disable the highlighting of overlong lines."
   :init (add-hook 'compilation-filter-hook
                   #'lunaryorn-colorize-compilation-buffer))
 
-;; Font lock for numeric literals
-(use-package highlight-numbers
+(use-package highlight-numbers          ; Fontify number literals
   :ensure t
   :defer t
   :init
   (add-hook 'prog-mode-hook #'highlight-numbers-mode))
 
-;; Font lock for color values
-(use-package rainbow-mode
+(use-package rainbow-mode               ; Fontify color values in code
   :ensure t
   :bind (("C-c t r" . rainbow-mode)))
 
-;; Symbol awareness
-(use-package highlight-symbol
+(use-package highlight-symbol           ; Highlighting and commands for symbols
   :ensure t
   :defer t
   :bind
@@ -1160,13 +1113,13 @@ Disable the highlighting of overlong lines."
                                         ; navigation
   :diminish highlight-symbol-mode)
 
-(use-package lunaryorn-symbols
+(use-package lunaryorn-symbols          ; Personal symbol tools
   :load-path "lisp/"
   :bind (("C-c s a" . highlight-symbol-ag)))
 
 
 ;;; Generic Lisp
-(use-package paredit
+(use-package paredit                    ; Balanced sexp editing
   :ensure t
   :defer t
   :init
@@ -1179,29 +1132,29 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Emacs Lisp
-(use-package elisp-slime-nav
+(use-package elisp-slime-nav            ; Jump to definition of symbol at point
   :ensure t
   :defer t
   :init (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
   :diminish elisp-slime-nav-mode)
 
-(use-package flycheck-cask
+(use-package flycheck-cask              ; Setup Flycheck by Cask projects
   :ensure t
   :defer t
   :init (add-hook 'flycheck-mode-hook #'flycheck-cask-setup))
 
-(use-package flycheck-package
+(use-package flycheck-package           ; Check package conventions with Flycheck
   :ensure t
   :defer t
   :init (with-eval-after-load 'flycheck (flycheck-package-setup)))
 
-(use-package pcre2el
+(use-package pcre2el                    ; Convert regexps to RX and back
   :ensure t
   :defer t
   :idle (rxt-global-mode)
   :idle-priority 10)
 
-(use-package macrostep
+(use-package macrostep                  ; Interactively expand macros in code
   :ensure t
   :defer t
   :init
@@ -1209,10 +1162,10 @@ Disable the highlighting of overlong lines."
     (bind-key "C-c e e" #'macrostep-expand emacs-lisp-mode-map)
     (bind-key "C-c e e" #'macrostep-expand lisp-interaction-mode-map)))
 
-(use-package ielm
+(use-package ielm                       ; Emacs Lisp REPL
   :bind (("C-c u z" . ielm)))
 
-(use-package lisp-mode
+(use-package lisp-mode                  ; Emacs Lisp editing
   :defer t
   :interpreter ("emacs" . emacs-lisp-mode)
   :mode ("/Cask\\'" . emacs-lisp-mode)
@@ -1220,7 +1173,7 @@ Disable the highlighting of overlong lines."
   (progn
     (require 'ert)))
 
-(use-package lunaryorn-lisp
+(use-package lunaryorn-lisp             ; Personal tools for Emacs Lisp
   :load-path "lisp/"
   :commands (lunaryorn-find-cask-file)
   :config (with-eval-after-load 'lisp-mode
@@ -1230,7 +1183,6 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Clojure
-
 (use-package clojure-mode
   :ensure cider
   :defer t
@@ -1265,13 +1217,8 @@ Disable the highlighting of overlong lines."
   :config
   (progn
     ;; PEP 8 compliant filling rules, 79 chars maximum
-    (add-hook 'python-mode-hook
-              (lambda () (setq fill-column 79)))
+    (add-hook 'python-mode-hook (lambda () (setq fill-column 79)))
     (add-hook 'python-mode-hook #'subword-mode)
-    ;; Lookup, navigation and completion
-    (add-hook 'python-mode-hook #'anaconda-mode)
-    ;; Pick Flycheck executables from current virtualenv automatically
-    (add-hook 'python-mode-hook #'lunaryorn-flycheck-setup-python)
 
     ;; Use a decent syntax and style checker
     (setq python-check-command "pylint"
@@ -1279,25 +1226,30 @@ Disable the highlighting of overlong lines."
           python-shell-interpreter "ipython"
           python-shell-interpreter-args "-i")))
 
-(use-package flycheck-virtualenv
+(use-package flycheck-virtualenv        ; Setup Flycheck by virtualenv
   :load-path "lisp/"
   :commands (flycheck-virtualenv-setup)
   :init (add-hook 'flycheck-mode-hook #'flycheck-virtualenv-setup))
 
-(use-package company-anaconda
+(use-package anaconda                   ; Powerful Python backend for Emacs
+  :ensure t
+  :defer t
+  :init (add-hook 'python-mode-hook #'anaconda-mode))
+
+(use-package company-anaconda           ; Python backend for Company
   :ensure t
   :defer t
   :init
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-anaconda)))
 
-(use-package pip-requirements
+(use-package pip-requirements           ; requirements.txt files
   :ensure t
   :defer t)
 
 
 ;;; Ruby
-(use-package inf-ruby
+(use-package inf-ruby                   ; Ruby REPL
   :ensure t
   :defer t
   :init
@@ -1306,7 +1258,7 @@ Disable the highlighting of overlong lines."
   ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
   (inf-ruby-switch-setup))
 
-(use-package robe
+(use-package robe                       ; Ruby backend for Emacs
   :ensure t
   :defer t
   :init (with-eval-after-load 'company
@@ -1314,19 +1266,18 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Rust
-(use-package rust-mode
+(use-package rust-mode                  ; Rust
   :ensure t
   :defer t)
 
-(use-package toml-mode
-  :ensure t
-  :defer t)
-
-(use-package flycheck-rust
+(use-package flycheck-rust              ; Flycheck setup for Rust
   :ensure t
   :defer t
   :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
+(use-package toml-mode                  ; Toml for Cargo files
+  :ensure t
+  :defer t)
 
 ;;; Haskell
 
@@ -1394,7 +1345,7 @@ Disable the highlighting of overlong lines."
   :defer t
   :config (add-hook 'haskell-interactive-mode-hook #'subword-mode))
 
-(use-package shm
+(use-package shm                        ; Structured Haskell editing
   :ensure t
   :defer t
   :init
@@ -1403,25 +1354,24 @@ Disable the highlighting of overlong lines."
     (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode))
   :diminish structured-haskell-mode)
 
-(use-package shm-case-split
+(use-package shm-case-split             ; Split cases for sum types
   :ensure shm
   :commands (shm/case-split)
   :init (with-eval-after-load 'shm
           (bind-key "C-c e s" #'shm/case-split shm-map)))
 
-(use-package flycheck-haskell
+(use-package flycheck-haskell           ; Setup Flycheck from Cabal projects
   :ensure t
   :defer t
   :init (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
 ;;; OCaml
-
-(use-package opam
+(use-package opam                       ; Initialize Emacs with OPAM env
   :load-path "lisp/"
   :init (opam-init))
 
-(use-package tuareg
+(use-package tuareg                     ; OCaml editing
   :ensure t
   :defer t
   :config
@@ -1432,8 +1382,7 @@ Disable the highlighting of overlong lines."
     ;; Please, Tuareg, don't kill my imenu
     (define-key tuareg-mode-map [?\C-c ?i] nil)))
 
-;; Advanced completion engine for OCaml
-(use-package merlin
+(use-package merlin                     ; Powerful Emacs backend for OCaml
   :ensure t
   :defer t
   :init
@@ -1442,7 +1391,7 @@ Disable the highlighting of overlong lines."
   ;; Use Merlin from current OPAM env
   (setq merlin-command 'opam))
 
-(use-package flycheck-ocaml
+(use-package flycheck-ocaml             ; Check OCaml code with Merlin
   :ensure t
   :defer t
   :init (with-eval-after-load 'flycheck
@@ -1452,8 +1401,8 @@ Disable the highlighting of overlong lines."
             (setq merlin-error-after-save nil)))
 
 
-;;; Shell scripting
-(use-package sh-script
+;;; Misc programming languages
+(use-package sh-script                  ; Shell scripts
   :mode ("\\.zsh\\'" . sh-mode)
   :config
   ;; Use two spaces in shell scripts.
@@ -1461,27 +1410,25 @@ Disable the highlighting of overlong lines."
         sh-basic-offset 2               ; The offset for nested indentation
         ))
 
-
-;;; Misc programming languages
-(use-package puppet-mode
+(use-package puppet-mode                ; Puppet manifests
   :ensure t
   :defer t
   :config
   ;; Fontify variables in Puppet comments
   (setq puppet-fontify-variables-in-comments t))
 
-(use-package js2-mode
+(use-package js2-mode                   ; Javascript editing
   :ensure t
-  :mode "\\.js\\(?:on\\)\\'"            ; For Javascript and KSON
+  :mode "\\.js\\(?:on\\)\\'"
   :config (setq-default js2-basic-offset 2))
 
-(use-package nxml-mode
+(use-package nxml-mode                  ; XML editing
   :defer t
   ;; Complete closing tags, and insert XML declarations into empty files
   :config (setq nxml-slash-auto-complete-flag t
                 nxml-auto-insert-xml-declaration-flag t))
 
-(use-package feature-mode
+(use-package feature-mode               ; Feature files for ecukes/cucumber
   :ensure t
   :defer t
   :config
@@ -1491,7 +1438,7 @@ Disable the highlighting of overlong lines."
     (add-hook 'feature-mode-hook #'whitespace-cleanup-mode)
     (add-hook 'feature-mode-hook #'flyspell-mode)))
 
-(use-package cmake-mode
+(use-package cmake-mode                 ; CMake files
   :ensure t
   :defer t)
 
@@ -1514,7 +1461,7 @@ Disable the highlighting of overlong lines."
   :config
   (add-hook 'proof-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
 
-(use-package isar
+(use-package isar                       ; Isabelle syntax for PG
   :defer t
   :config
   ;; Don't highlight overlong lines in Isar, since Unicode Tokens conceal the
@@ -1522,27 +1469,13 @@ Disable the highlighting of overlong lines."
   (add-hook 'isar-mode-hook #'lunaryorn-whitespace-style-no-long-lines 'append))
 
 
-;;; Special modes
-(auto-image-file-mode)                  ; Visit images as images
-
-
-;;; Documentation
-(use-package info
-  :defer t
-  :config
-  ;; Fix the stupid `Info-quoted' face.  Courier is an abysmal face, so go back
-  ;; to the default face.
-  (set-face-attribute 'Info-quoted nil :family 'unspecified
-                      :inherit font-lock-constant-face))
-
-
-;;; General version control
-(use-package vc-hooks
+;;; Version control
+(use-package vc-hooks                   ; Simple version control
   :defer t
   ;; Always follow symlinks to files in VCS repos
   (setq vc-follow-symlinks t))
 
-(use-package diff-hl
+(use-package diff-hl                    ; Highlight hunks in fringe
   :ensure t
   :defer t
   :init
@@ -1556,9 +1489,7 @@ Disable the highlighting of overlong lines."
     (unless (display-graphic-p)
       (diff-hl-margin-mode))))
 
-
-;;; Git support
-(use-package magit
+(use-package magit                      ; The one and only Git frontend
   :ensure t
   :bind (("C-c g" . magit-status))
   :config
@@ -1576,31 +1507,33 @@ Disable the highlighting of overlong lines."
     (magit-auto-revert-mode))
   :diminish magit-auto-revert-mode)
 
-;; Git modes
 (use-package git-commit-mode            ; Git commit message mode
   :ensure t
   :defer t)
+
 (use-package gitconfig-mode             ; Git configuration mode
   :ensure t
   :defer t)
+
 (use-package gitignore-mode             ; .gitignore mode
   :ensure t
   :defer t)
+
 (use-package gitattributes-mode         ; Git attributes mode
   :ensure t
   :defer t)
+
 (use-package git-rebase-mode            ; Mode for git rebase -i
   :ensure t
   :defer t)
 
-;; Go back in Git time
-(use-package git-timemachine
+(use-package git-timemachine            ; Go back in Git time
   :ensure t
   :defer t)
 
 
 ;;; Tools and utilities
-(use-package projectile
+(use-package projectile                 ; Project management
   :ensure t
   :defer t
   :init (projectile-global-mode)
@@ -1628,13 +1561,12 @@ Disable the highlighting of overlong lines."
     (bind-key "s K" #'ag-kill-buffers projectile-command-map))
   :diminish projectile-mode)
 
-;; Bug references
-(use-package bug-reference
+(use-package bug-reference              ; Turn bug references into buttons
   :defer t
   :init (progn (add-hook 'prog-mode-hook #'bug-reference-prog-mode)
                (add-hook 'text-mode-hook #'bug-reference-mode)))
 
-(use-package paradox
+(use-package paradox                    ; Better package menu
   :ensure t
   :bind (("C-c l p" . paradox-list-packages)
          ("C-c l P" . package-list-packages-no-fetch))
@@ -1642,12 +1574,12 @@ Disable the highlighting of overlong lines."
   ;; Don't ask for a token, please
   (setq paradox-github-token t))
 
-(use-package proced
+(use-package proced                     ; Edit system processes
   ;; Proced isn't available on OS X
   :if (not (eq system-type 'darwin))
   :bind ("C-x p" . proced))
 
-(use-package calendar
+(use-package calendar                   ; Built-in calendar
   :defer t
   :config
   ;; In Europe we start on Monday
@@ -1655,42 +1587,38 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Net & Web
-
-;; Web browsing
-(use-package browse-url
+(use-package browse-url                 ; Browse URLs
   :defer t
   :config (setq browse-url-browser-function #'eww-browse-url))
 
-(use-package eww
+(use-package eww                        ; Emacs' built-in web browser
   :bind (("C-c w b" . eww-list-bookmarks)
          ("C-c w w" . eww)))
 
-(use-package sx
+(use-package sx                         ; StackExchange client for Emacs
   :ensure t
   :bind (("C-c w s" . sx-tab-frontpage)
          ("C-c w S" . sx-tab-newest)
          ("C-c w a" . sx-ask)))
 
-;; Settings for sending mail via my mail server
-(use-package sendmail
+(use-package sendmail                   ; Send mails from Emacs
   :defer t
   :config (setq send-mail-function 'smtpmail-send-it))
 
-(use-package message
+(use-package message                    ; Compose mails from Emacs
   :defer t
   :config (setq message-send-mail-function 'smtpmail-send-it
                 ;; Don't keep message buffers around
                 message-kill-buffer-on-exit t))
 
-(use-package smtpmail
+(use-package smtpmail                   ; Send mails via SMTP
   :defer t
   :config (setq smtpmail-smtp-server "vega.uberspace.de"
                 smtpmail-smtp-service 587
                 smtpmail-stream-type 'starttls
                 smtpmail-smtp-user user-login-name))
 
-;; IRC with ERC or rcirc
-(use-package erc
+(use-package erc                        ; Powerful IRC client
   :defer t
   :config
   (progn
@@ -1706,20 +1634,20 @@ Disable the highlighting of overlong lines."
     (add-to-list 'erc-modules 'spelling)
     (erc-update-modules)))
 
-(use-package erc-join
+(use-package erc-join                   ; Automatically join channels with ERC
   :defer t
   :config
   ;; Standard channels on Freenode
   (setq erc-autojoin-channels-alist '(("\\.freenode\\.net" . ("#emacs")))))
 
-(use-package erc-track
+(use-package erc-track                  ; Track status of ERC in mode line
   :defer t
   :config
   ;; Switch to newest buffer by default, and don't ask before rebinding the keys
   (setq erc-track-switch-direction 'newest
         erc-track-enable-keybindings t))
 
-(use-package rcirc
+(use-package rcirc                      ; Simply ERC client
   :defer t
   :config
   (progn
@@ -1737,15 +1665,29 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Online Help
-(use-package find-func
+(use-package find-func                  ; Find function/variable definitions
   :bind (("C-x F"   . find-function)
          ("C-x 4 F" . find-function-other-window)
          ("C-x K"   . find-function-on-key)
          ("C-x V"   . find-variable)
          ("C-x 4 V" . find-variable-other-window)))
 
-(use-package apropos
+(use-package apropos                    ; Search symbols for documentation
   :bind ("C-h A" . apropos))
+
+(use-package info                       ; Info manual viewer
+  :defer t
+  :config
+  ;; Fix the stupid `Info-quoted' face.  Courier is an abysmal face, so go back
+  ;; to the default face.
+  (set-face-attribute 'Info-quoted nil :family 'unspecified
+                      :inherit font-lock-constant-face))
+
+(use-package ansible-doc                ; Documentation lookup for Ansible
+  :ensure t
+  :defer t
+  :init (add-hook 'yaml-mode-hook #'ansible-doc-mode)
+  :diminish ansible-doc-mode)
 
 (bind-key "C-c u b" #'describe-personal-keybindings)
 
