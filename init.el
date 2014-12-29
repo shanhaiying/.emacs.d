@@ -240,10 +240,6 @@ Homebrew: brew install trash")))
               mode-line-misc-info
               (assq-delete-all 'which-func-mode mode-line-misc-info))
 
-(use-package diminish
-  :ensure t
-  :defer t)
-
 ;; Standard stuff
 (line-number-mode)
 (column-number-mode)
