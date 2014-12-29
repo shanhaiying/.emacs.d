@@ -44,9 +44,9 @@
   (read-from-minibuffer "Title: " (lunaryorn-default-title))
   "---\n"
   "title: " str "\n"
-  "tags: " ("Tag: " str ",")
-  resume: -1
-  "\n---\n\n"
+  "tags: " ("Tag: " str ",") & -1 "\n"
+  "published: " (format-time-string "%F") "\n"
+  "---\n\n"
   -)
 
 (provide 'lunaryorn-markdown)
