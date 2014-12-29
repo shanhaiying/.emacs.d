@@ -232,16 +232,6 @@ Homebrew: brew install trash")))
 mouse-2: toggle rest visibility\n\
 mouse-3: go to end"))))
 
-;; Improve our mode line
-(defvar lunaryorn-vc-mode-line
-  '(" " (:propertize
-         ;; Strip the backend name from the VC status information
-         (:eval (let ((backend (symbol-name (vc-backend (buffer-file-name)))))
-                  (substring vc-mode (+ (length backend) 2))))
-         face font-lock-variable-name-face))
-  "Mode line format for VC Mode.")
-(put 'lunaryorn-vc-mode-line 'risky-local-variable t)
-
 (setq-default header-line-format
               '(which-func-mode ("" which-func-format " "))
               mode-line-format
@@ -268,7 +258,7 @@ mouse-3: go to end"))))
                           ((not (bound-and-true-p whitespace-cleanup-mode))
                            (propertize " WSC" 'face 'warning)))))
                 (projectile-mode projectile-mode-line)
-                (vc-mode lunaryorn-vc-mode-line)   ; VC information
+                (vc-mode vc-mode)
                 (flycheck-mode flycheck-mode-line) ; Flycheck status
                 (anzu-mode (:eval                  ; isearch pos/matches
                             (when (> anzu--total-matched 0)
