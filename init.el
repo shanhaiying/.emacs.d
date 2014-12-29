@@ -758,7 +758,12 @@ Disable the highlighting of overlong lines."
           try-expand-all-abbrevs
           try-expand-list
           try-complete-lisp-symbol-partially
-          try-complete-lisp-symbol)))
+          try-complete-lisp-symbol
+          lunaryorn-try-complete-lisp-symbol-without-namespace)))
+
+(use-package lunaryorn-hippie-exp
+  :load-path "lisp/"
+  :commands (lunaryorn-try-complete-lisp-symbol-without-namespace))
 
 ;; Enable auto-completion
 (use-package company
@@ -1199,55 +1204,11 @@ Taken from http://stackoverflow.com/a/3072831/355252."
   (progn
     (require 'ert)))
 
-;; Utility functions
-(defun lunaryorn-find-cask-file (other-window)
-    "Find the Cask file for this buffer.
-
-When OTHER-WINDOW is non-nil, find the Cask file in another
-window."
-    (interactive "P")
-    (unless (buffer-file-name)
-      (user-error "The buffer has no file"))
-    (let ((directory (locate-dominating-file (buffer-file-name) "Cask")))
-      (unless directory
-        (user-error "No Cask file found for this file"))
-      (funcall (if other-window #'find-file-other-window #'find-file)
-               (expand-file-name "Cask" directory))))
-
-(defun lunaryorn-emacs-lisp-current-feature ()
-  "Return the feature provided by the current buffer."
-  (save-excursion
-    (goto-char (point-min))
-    (when (search-forward-regexp (rx line-start "(provide '"))
-      (symbol-name (symbol-at-point)))))
-
-;; Hippie expand for Emacs Lisp
-(lunaryorn-after 'hippie-exp
-  (defun lunaryorn-try-complete-lisp-symbol-without-namespace (old)
-    "Hippie expand \"try\" function which expands \"-foo\" to \"modname-foo\" in elisp."
-    (unless old
-      (he-init-string (he-lisp-symbol-beg) (point))
-      (when (string-prefix-p "-" he-search-string)
-        (let ((mod-name (lunaryorn-emacs-lisp-current-feature)))
-          (when mod-name
-            (setq he-expand-list (list (concat mod-name he-search-string)))))))
-
-    (when he-expand-list
-      (he-substitute-string (car he-expand-list))
-      (setq he-expand-list nil)
-      t))
-
-  (defun lunaryorn-emacs-lisp-setup-hippie-expand ()
-    (setq-local hippie-expand-try-functions-list
-                (append hippie-expand-try-functions-list
-                        '(lunaryorn-try-complete-lisp-symbol-without-namespace))))
-
-  (lunaryorn-after 'lisp-mode
-    (dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook))
-      (add-hook hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
-
-  (lunaryorn-after 'ielm
-    (add-hook 'ielm-mode-hook #'lunaryorn-emacs-lisp-setup-hippie-expand)))
+(use-package lunaryorn-lisp
+  :load-path "lisp/"
+  :commands (lunaryorn-find-cask-file)
+  :config (with-eval-after-load 'lisp-mode
+            (bind-key "C-c f c" #'lunaryorn-find-cask-file emacs-lisp-mode-map)))
 
 (bind-key "C-c t d" #'toggle-debug-on-error)
 
@@ -1845,12 +1806,10 @@ Otherwise insert the date as Mar 04, 2014."
 (let ((map lunaryorn-utilities-map))
   (define-key map (kbd "d") #'lunaryorn-insert-current-date))
 
-(lunaryorn-after 'lisp-mode
-    (define-key emacs-lisp-mode-map (kbd "C-c f c") #'lunaryorn-find-cask-file))
-
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
+;; flycheck-disabled-checkers: (emacs-lisp-package)
 ;; End:
 
 ;;; init.el ends here
