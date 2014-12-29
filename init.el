@@ -1460,8 +1460,15 @@ window."
     (bind-key "C-c e h" #'haskell-hayoo haskell-mode-map)
     (bind-key "C-c e H" #'haskell-hoogle haskell-mode-map)
     (bind-key "C-c e i" #'haskell-navigate-imports haskell-mode-map)
-    (bind-key "C-c f c" #'haskell-cabal-visit-file haskell-mode-map)
+    (bind-key "C-c f c" #'haskell-cabal-visit-file haskell-mode-map)))
 
+(use-package haskell
+  :ensure haskell-mode
+  :defer t
+  :init (dolist (hook '(haskell-mode-hook haskell-cabal-mode-hook))
+          (add-hook hook #'interactive-haskell-mode))
+  :config
+  (progn
     (bind-key "C-c C-t" #'haskell-mode-show-type-at
               interactive-haskell-mode-map)
     (bind-key "M-." #'haskell-mode-goto-loc
@@ -1472,8 +1479,6 @@ window."
 (use-package haskell-interactive-mode
   :ensure haskell-mode
   :defer t
-  :init (dolist (hook '(haskell-mode-hook haskell-cabal-mode-hook))
-          (add-hook hook #'interactive-haskell-mode))
   :config (add-hook 'haskell-interactive-mode-hook #'subword-mode))
 
 (use-package shm
