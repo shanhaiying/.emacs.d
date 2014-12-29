@@ -741,7 +741,6 @@ Disable the highlighting of overlong lines."
 
 
 ;;; Completion and expansion
-
 ;; In `completion-at-point', do not pop up silly completion buffers for less
 ;; than five candidates.  Cycle instead.
 (setq completion-cycle-threshold 5)
@@ -860,7 +859,6 @@ Disable the highlighting of overlong lines."
 
 
 ;;; LaTeX with AUCTeX
-
 (use-package tex-site
   :ensure auctex)
 
