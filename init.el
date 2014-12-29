@@ -744,7 +744,8 @@ Disable the highlighting of overlong lines."
   :init (global-hi-lock-mode))
 
 
-;;; Completion and expansion
+;;; Skeletons, completion and expansion
+
 ;; In `completion-at-point', do not pop up silly completion buffers for less
 ;; than five candidates.  Cycle instead.
 (setq completion-cycle-threshold 5)
@@ -1043,6 +1044,9 @@ Disable the highlighting of overlong lines."
 
     ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM Mode.
     (bind-key "M-q" #'ignore gfm-mode-map)))
+
+(use-package lunaryorn-markdown
+  :bind (("C-c t h" . lunaryorn-markdown-post-header)))
 
 (use-package yaml-mode                  ; YAML
   :ensure t
