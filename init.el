@@ -499,6 +499,10 @@ mouse-3: go to end"))))
   :ensure t
   :idle (global-launch-mode))
 
+(use-package ido-load-library           ; Load libraries with IDO
+  :ensure t
+  :bind ("C-c f l" . ido-load-library-find))
+
 (use-package lunaryorn-files
   :load-path "lisp/"
   :bind (("C-c f D" . lunaryorn-delete-file-and-buffer)
