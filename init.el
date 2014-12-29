@@ -1442,10 +1442,13 @@ window."
   (progn
     (add-hook 'haskell-mode-hook #'structured-haskell-mode)
     (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode))
-  :config (progn
-            (require 'shm-case-split)
-            (bind-key "C-c e s" #'shm/case-split))
   :diminish structured-haskell-mode)
+
+(use-package shm-case-split
+  :ensure shm
+  :commands (shm/case-split)
+  :init (with-eval-after-load 'shm
+          (bind-key "C-c e s" #'shm/case-split shm-map)))
 
 (use-package flycheck-haskell
   :ensure t
