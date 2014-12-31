@@ -25,6 +25,8 @@
 
 ;;; Code:
 
+(require 'rx)
+
 (defun lunaryorn-find-cask-file (other-window)
     "Find the Cask file for this buffer.
 
@@ -45,6 +47,18 @@ window."
     (goto-char (point-min))
     (when (search-forward-regexp (rx line-start "(provide '"))
       (symbol-name (symbol-at-point)))))
+
+(defconst lunaryorn-use-package-imenu-expression
+  `("Use Package" ,(rx "(use-package" (optional "-with-elapsed-timer")
+                       symbol-end (1+ (syntax whitespace)) symbol-start
+                       (group-n 1 (1+ (or (syntax word) (syntax symbol))))
+                       symbol-end) 1)
+  "IMenu expression for `use-package' declarations.")
+
+(defun lunaryorn-add-use-package-to-imenu ()
+  "Add `use-package' declarations to `imenu'."
+  (add-to-list 'imenu-generic-expression
+               lunaryorn-use-package-imenu-expression))
 
 (provide 'lunaryorn-lisp)
 
