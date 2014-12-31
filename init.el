@@ -1244,7 +1244,7 @@ Disable the highlighting of overlong lines."
   :commands (flycheck-virtualenv-setup)
   :init (add-hook 'flycheck-mode-hook #'flycheck-virtualenv-setup))
 
-(use-package anaconda                   ; Powerful Python backend for Emacs
+(use-package anaconda-mode              ; Powerful Python backend for Emacs
   :ensure t
   :defer t
   :init (add-hook 'python-mode-hook #'anaconda-mode))
