@@ -1180,8 +1180,9 @@ Disable the highlighting of overlong lines."
 (use-package lunaryorn-lisp             ; Personal tools for Emacs Lisp
   :load-path "lisp/"
   :commands (lunaryorn-find-cask-file)
-  :config (with-eval-after-load 'lisp-mode
-            (bind-key "C-c f c" #'lunaryorn-find-cask-file emacs-lisp-mode-map)))
+  :init
+  (with-eval-after-load 'lisp-mode
+    (bind-key "C-c f c" #'lunaryorn-find-cask-file emacs-lisp-mode-map)))
 
 (bind-key "C-c T d" #'toggle-debug-on-error)
 
