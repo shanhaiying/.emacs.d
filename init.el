@@ -372,6 +372,10 @@ mouse-3: go to end"))))
                     (unless (eq ibuffer-sorting-mode 'alphabetic)
                       (ibuffer-do-sort-by-alphabetic)))))
 
+(use-package ibuffer-projectile         ; Group buffers by Projectile project
+  :ensure t
+  :defer t)
+
 (use-package windmove                   ; Move between windows with Shift+Arrow
   :init (windmove-default-keybindings))
 
