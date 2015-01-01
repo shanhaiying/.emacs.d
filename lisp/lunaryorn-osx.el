@@ -1,6 +1,6 @@
 ;;; lunaryorn-osx.el --- Utilities for OS X          -*- lexical-binding: t; -*-
 
-;; Copyright (c) 2012-2014 Sebastian Wiesner <swiesner@lunaryorn.com>
+;; Copyright (c) 2012-2015 Sebastian Wiesner <swiesner@lunaryorn.com>
 ;;
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; URL: https://gihub.com/lunaryorn/.emacs.d

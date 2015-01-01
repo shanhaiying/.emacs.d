@@ -1,6 +1,6 @@
 ;;; opam.el --- OPAM tools for Emacs                 -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2014  Sebastian Wiesner <swiesner@lunaryorn.com>
+;; Copyright (C) 2014-2015  Sebastian Wiesner <swiesner@lunaryorn.com>
 
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; Keywords: convenience

@@ -1,6 +1,6 @@
 ;;; lunaryorn-flycheck.el --- Additional utilities for Flycheck  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2014  Sebastian Wiesner
+;; Copyright (C) 2014-2015  Sebastian Wiesner
 
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; URL: https://gihub.com/lunaryorn/.emacs.d

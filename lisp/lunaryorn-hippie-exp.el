@@ -1,5 +1,5 @@
 ;;; lunaryorn-hippie-exp.el --- Additional functions for Hippie Exp  -*- lexical-binding: t; -*-
-;; Copyright (C) 2014  Sebastian Wiesner <swiesner@lunaryorn.com>
+;; Copyright (C) 2014-2015  Sebastian Wiesner <swiesner@lunaryorn.com>
 
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; URL: https://gihub.com/lunaryorn/.emacs.d

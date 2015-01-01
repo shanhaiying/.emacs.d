@@ -1,6 +1,6 @@
 ;;; auctex-skim.el --- Add Skim as viewer to AUCTeX  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2012-2014  Sebastian Wiesner <swiesner@lunaryorn.com>
+;; Copyright (C) 2012-2015  Sebastian Wiesner <swiesner@lunaryorn.com>
 
 ;; Author: Sebastian Wiesner <swiesner@lunaryorn.com>
 ;; URL: https://gihub.com/lunaryorn/.emacs.d
