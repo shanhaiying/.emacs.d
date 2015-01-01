@@ -225,6 +225,8 @@ Homebrew: brew install trash")))
         solarized-height-plus-3 1.0
         solarized-height-plus-4 1.0))
 
+(bind-key "C-c t v" #'variable-pitch-mode)
+
 
 ;;; The mode line
 
