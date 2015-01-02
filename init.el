@@ -349,7 +349,8 @@ mouse-3: go to end"))))
 
 ;;; Buffer, Windows and Frames
 
-(setq frame-title-format
+(setq frame-resize-pixelwise t          ; Resize by pixels
+      frame-title-format
       '(:eval (if (buffer-file-name)
                   (abbreviate-file-name (buffer-file-name)) "%b")))
 
