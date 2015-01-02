@@ -1,13 +1,7 @@
 .emacs.d
 ========
 
-Emacs configuration of [Sebastian Wiesner](http://www.lunaryorn.com/about)
-
-Requirements
-------------
-
-- Emacs 24.4
-- [Cask][]
+My Emacs configuration
 
 Setup
 -----
@@ -15,7 +9,7 @@ Setup
 Clone the repo, and install all Emacs packages:
 
 ```console
-$ git clone --recursive https://github.com/lunaryorn/.emacs.d.git ~/.emacs.d
+$ git clone https://github.com/lunaryorn/.emacs.d.git ~/.emacs.d
 ```
 
 ### OS X support ###
@@ -49,13 +43,13 @@ $ cabal install hlint hasktags hoogle present
 ### Shell scripting ###
 
 ```console
-$ cabal install shellcheck
+$ brew install shellcheck
 ```
 
 ### Markdown support ###
 
 ```console
-$ cabal install pandoc
+$ brew install pandoc
 ```
 
 ### Ansible support ###
@@ -70,8 +64,12 @@ $ brew install ansible
 Usage
 -----
 
-The entire configuration is in `init.el`.  The key bindings are at the end of
-the file.
+My `init.el` only contains package configuration (with `use-package`) and Emacs
+settings, but no functions.  I keep my functions in separate files in the
+`lisp/` directory, which I load and configure with `use-package`.
+
+All 3rd party packages come from MELPA or GNU ELPA.  I use the `:ensure` feature
+of `use-package` to automatically install missing packages.
 
 Notable packages
 ----------------
