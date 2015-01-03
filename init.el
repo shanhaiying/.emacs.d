@@ -1467,6 +1467,13 @@ Disable the highlighting of overlong lines."
   ;; Fontify variables in Puppet comments
   (setq puppet-fontify-variables-in-comments t))
 
+(use-package css-mode
+  :defer t
+  :config
+  ;; Run Prog Mode hooks, because for whatever reason CSS Mode derives from
+  ;; `fundamental-mode'.
+  (add-hook 'css-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
+
 (use-package css-eldoc                  ; Basic Eldoc for CSS
   :ensure t
   :commands (turn-on-css-eldoc)
