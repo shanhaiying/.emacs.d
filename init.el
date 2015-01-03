@@ -1466,6 +1466,11 @@ Disable the highlighting of overlong lines."
   ;; Fontify variables in Puppet comments
   (setq puppet-fontify-variables-in-comments t))
 
+(use-package css-eldoc                  ; Basic Eldoc for CSS
+  :ensure t
+  :commands (turn-on-css-eldoc)
+  :init (add-hook 'css-mode-hook #'turn-on-css-eldoc))
+
 (use-package js2-mode                   ; Javascript editing
   :ensure t
   :mode "\\.js\\(?:on\\)\\'"
