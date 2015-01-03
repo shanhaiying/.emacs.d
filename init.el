@@ -1135,7 +1135,8 @@ Disable the highlighting of overlong lines."
 
 (use-package rainbow-mode               ; Fontify color values in code
   :ensure t
-  :bind (("C-c T r" . rainbow-mode)))
+  :bind (("C-c T r" . rainbow-mode))
+  :config (add-hook 'css-mode-hook #'rainbow-mode))
 
 (use-package highlight-symbol           ; Highlighting and commands for symbols
   :ensure t
