@@ -110,7 +110,13 @@
 
 (use-package cus-edit
   :defer t
-  :config (setq custom-file lunaryorn-custom-file)
+  :config
+  (setq custom-file lunaryorn-custom-file
+        custom-buffer-done-kill nil            ; Kill when existing
+        custom-buffer-verbose-help nil         ; Remove redundant help text
+        ;; Show me the real variable name
+        custom-unlispify-tag-names nil
+        custom-unlispify-menu-entries nil)
   :init (load lunaryorn-custom-file 'no-error 'no-message))
 
 
