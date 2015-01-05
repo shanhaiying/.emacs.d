@@ -569,6 +569,7 @@ mouse-3: go to end"))))
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
 (use-package lunaryorn-simple           ; Personal editing helpers
+  :load-path "lisp/"
   :bind (([remap kill-whole-line]        . lunaryorn-smart-kill-whole-line)
          ([remap move-beginning-of-line] . lunaryorn-back-to-indentation-or-beginning-of-line)
          ("C-<backspace>"                . lunaryorn-smart-backward-kill-line)
