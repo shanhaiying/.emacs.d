@@ -486,7 +486,6 @@ mouse-3: go to end"))))
   :idle (global-hardhat-mode))
 
 (use-package bookmark                   ; Bookmarks for Emacs buffers
-  :defer t
   :bind (("C-c l b" . list-bookmarks))
   ;; Save bookmarks immediately after a bookmark was added
   :config (setq bookmark-save-flag 1))
