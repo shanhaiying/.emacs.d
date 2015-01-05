@@ -1234,7 +1234,7 @@ Disable the highlighting of overlong lines."
 
 ;;; Clojure
 (use-package clojure-mode
-  :ensure cider
+  :ensure t
   :defer t
   :config
   (progn
