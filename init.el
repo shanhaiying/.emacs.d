@@ -549,9 +549,11 @@ mouse-3: go to end"))))
 ;; Make Tab complete if the line is indented
 (setq tab-always-indent 'complete)
 
-;; Electric pairing and code layout
-(electric-pair-mode)
-(electric-layout-mode)
+(use-package electric                   ; Electric code layout
+  :init (electric-layout-mode))
+
+(use-package elec-pair                  ; Electric pairs
+  :init (electric-pair-mode))
 
 ;; Indicate empty lines at the end of a buffer in the fringe, but require a
 ;; final new line
