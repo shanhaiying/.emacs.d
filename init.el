@@ -542,7 +542,6 @@ mouse-3: go to end"))))
 
 
 ;;; Basic editing
-;; Make `kill-whole-line' indentation aware
 
 ;; Disable tabs, but given them proper width
 (setq-default indent-tabs-mode nil
