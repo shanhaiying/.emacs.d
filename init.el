@@ -1169,6 +1169,10 @@ Disable the highlighting of overlong lines."
   :load-path "lisp/"
   :bind (("C-c s a" . highlight-symbol-ag)))
 
+(use-package elide-head                 ; Elide lengthy GPL headers
+  :bind (("C-c u h" . elide-head))
+  :init (add-hook 'prog-mode-hook #'elide-head))
+
 
 ;;; Generic Lisp
 (use-package paredit                    ; Balanced sexp editing
