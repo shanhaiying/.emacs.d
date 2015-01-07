@@ -709,6 +709,9 @@ mouse-3: go to end"))))
 
 
 ;;; Search
+(use-package isearch                    ; Search buffers
+  :bind (("C-c s s" . isearch-forward-symbol-at-point)))
+
 (use-package locate                     ; Search files on the system
   :defer t
   :config
