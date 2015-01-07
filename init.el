@@ -1178,11 +1178,15 @@ Disable the highlighting of overlong lines."
   :ensure t
   :defer t
   :init
-  (dolist (hook '(eval-expression-minibuffer-setup-hook
-                  emacs-lisp-mode-hook
-                  inferior-emacs-lisp-mode-hook
-                  clojure-mode-hook))
-    (add-hook hook #'paredit-mode))
+  (progn
+    (dolist (hook '(eval-expression-minibuffer-setup-hook
+                    emacs-lisp-mode-hook
+                    inferior-emacs-lisp-mode-hook
+                    clojure-mode-hook))
+      (add-hook hook #'paredit-mode))
+
+    (define-key paredit-mode-map (kbd "M-s") nil)
+    (define-key paredit-mode-map (kbd "M-S-<up>") #'paredit-splice-sexp))
   :diminish paredit-mode)
 
 
