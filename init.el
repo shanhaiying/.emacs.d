@@ -1085,6 +1085,7 @@ Disable the highlighting of overlong lines."
     (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
     ;; Use visual lines instead
     (add-hook 'gfm-mode-hook #'visual-line-mode)
+    (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)
 
     (bind-key "C-c C-s C" #'markdown-insert-gfm-code-block markdown-mode-map)
     (bind-key "C-c C-s P" #'markdown-insert-gfm-code-block markdown-mode-map)
@@ -1675,6 +1676,20 @@ Disable the highlighting of overlong lines."
   :bind (("C-c w s" . sx-tab-frontpage)
          ("C-c w S" . sx-tab-newest)
          ("C-c w a" . sx-ask)))
+
+(use-package sx-compose
+  :ensure sx
+  :defer t
+  :config
+  (progn
+    ;; Don't fill in SX questions/answers, and use visual lines instead.  Plays
+    ;; more nicely with the website.
+    (add-hook 'sx-compose-mode-hook #'turn-off-auto-fill)
+    (add-hook 'sx-compose-mode-hook #'visual-line-mode)
+    (add-hook 'sx-compose-mode-hook
+              #'lunaryorn-whitespace-style-no-long-lines)
+
+    (bind-key "M-q" #'ignore sx-compose-mode-map)))
 
 (use-package sendmail                   ; Send mails from Emacs
   :defer t
