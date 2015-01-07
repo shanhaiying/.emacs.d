@@ -581,8 +581,7 @@ mouse-3: go to end"))))
          ("C-<backspace>"                . lunaryorn-smart-backward-kill-line)
          ("C-S-j"                        . lunaryorn-smart-open-line)
          ;; Additional utilities
-         ("C-c u d"                      . lunaryorn-insert-current-date)
-         ("C-c u i"                      . lunaryorn-init-time))
+         ("C-c u d"                      . lunaryorn-insert-current-date))
   :commands (lunaryorn-auto-fill-comments-mode)
   ;; Auto-fill comments in programming modes
   :init (add-hook 'prog-mode-hook #'lunaryorn-auto-fill-comments-mode))
@@ -1660,6 +1659,9 @@ Disable the highlighting of overlong lines."
   :config
   ;; In Europe we start on Monday
   (setq calendar-week-start-day 1))
+
+(use-package time                       ; Show current time
+  :bind (("C-c u i" . emacs-init-time)))
 
 
 ;;; Net & Web

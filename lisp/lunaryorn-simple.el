@@ -96,17 +96,6 @@ Otherwise insert the date as Mar 04, 2014."
   (interactive "P")
   (insert (format-time-string (if iso "%F" "%b %d, %Y"))))
 
-(defun lunaryorn-init-time (&optional show)
-  "Get the total time for Emacs init in seconds.
-
-With SHOW non-nil, show the time in the echo area."
-  (interactive (list t))
-  (let ((diff (time-to-seconds (time-subtract after-init-time
-                                              before-init-time))))
-    (when show
-      (message "Init took %s seconds" diff))
-    diff))
-
 (provide 'lunaryorn-simple)
 
 ;; Local Variables:
