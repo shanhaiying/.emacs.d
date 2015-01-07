@@ -1691,6 +1691,12 @@ Disable the highlighting of overlong lines."
 
     (bind-key "M-q" #'ignore sx-compose-mode-map)))
 
+(use-package sx-question-mode
+  :ensure sx
+  :defer t
+  ;; Display questions in the same window
+  :config (setq sx-question-mode-display-buffer-function #'switch-to-buffer))
+
 (use-package sendmail                   ; Send mails from Emacs
   :defer t
   :config (setq send-mail-function 'smtpmail-send-it))
