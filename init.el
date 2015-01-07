@@ -1661,7 +1661,15 @@ Disable the highlighting of overlong lines."
   (setq calendar-week-start-day 1))
 
 (use-package time                       ; Show current time
-  :bind (("C-c u i" . emacs-init-time)))
+  :bind (("C-c u i" . emacs-init-time)
+         ("C-c u t" . display-time-world))
+  :config
+  (setq display-time-world-time-format "%H:%M %Z, %d. %b"
+        display-time-world-list '(("Europe/Berlin"    "Berlin")
+                                  ("Europe/London"    "London")
+                                  ("America/Winnipeg" "Winnipeg (CA)")
+                                  ("America/New_York" "New York (USA)")
+                                  ("Asia/Tokyo"       "Tokyo (JP)"))))
 
 
 ;;; Net & Web
