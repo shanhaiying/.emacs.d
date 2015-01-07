@@ -709,9 +709,6 @@ mouse-3: go to end"))))
 
 
 ;;; Search
-(use-package occur                      ; Search text in buffer
-  :bind ("C-c o" . occur))
-
 (use-package locate                     ; Search files on the system
   :defer t
   :config
