@@ -349,9 +349,6 @@ mouse-3: go to end"))))
   :bind (([remap execute-extended-command] . smex)
          ("M-X" . smex-major-mode-commands)))
 
-;; Tune `eval-expression'
-(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
-
 
 ;;; Buffer, Windows and Frames
 
@@ -1172,6 +1169,11 @@ Disable the highlighting of overlong lines."
 (use-package elide-head                 ; Elide lengthy GPL headers
   :bind (("C-c u h" . elide-head))
   :init (add-hook 'prog-mode-hook #'elide-head))
+
+(use-package eldoc                      ; Documentation in minibuffer
+  :defer t
+  ;; Enable Eldoc for `eval-expression', too
+  :init (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode))
 
 
 ;;; Generic Lisp
