@@ -1689,6 +1689,12 @@ Disable the highlighting of overlong lines."
     (add-hook 'sx-compose-mode-hook
               #'lunaryorn-whitespace-style-no-long-lines)
 
+    ;; Clean up whitespace before sending questions
+    (add-hook 'sx-compose-before-send-hook
+              (lambda ()
+                (whitespace-cleanup)
+                t))
+
     (bind-key "M-q" #'ignore sx-compose-mode-map)))
 
 (use-package sx-question-mode
