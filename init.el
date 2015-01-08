@@ -433,7 +433,9 @@ mouse-3: go to end"))))
             ;; Don't autosave desktops, it's too expensive.  Desktops aren't
             ;; that precious, and Emacs will save the desktop on exit anyway.
             (setq desktop-auto-save-timeout nil)
-            (add-to-list 'desktop-modes-not-to-save 'magit-mode)))
+
+            (dolist (mode '(magit-mode git-commit-mode))
+              (add-to-list 'desktop-modes-not-to-save mode))))
 
 (use-package writeroom-mode             ; Distraction-free editing
   :ensure t
