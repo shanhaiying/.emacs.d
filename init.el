@@ -435,6 +435,10 @@ mouse-3: go to end"))))
             (setq desktop-auto-save-timeout nil)
             (add-to-list 'desktop-modes-not-to-save 'magit-mode)))
 
+(use-package writeroom-mode             ; Distraction-free editing
+  :ensure t
+  :bind (("C-c T R" . writeroom-mode)))
+
 
 ;;; File handling
 
