@@ -1665,8 +1665,9 @@ Disable the highlighting of overlong lines."
   :bind (("C-c l p" . paradox-list-packages)
          ("C-c l P" . package-list-packages-no-fetch))
   :config
-  ;; Don't ask for a token, please
-  (setq paradox-github-token t))
+  ;; Don't ask for a token, please, and don't bug me about asynchronous updates
+  (setq paradox-github-token t
+        paradox-execute-asynchronously nil))
 
 (use-package proced                     ; Edit system processes
   ;; Proced isn't available on OS X
