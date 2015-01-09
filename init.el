@@ -286,7 +286,9 @@ Homebrew: brew install trash")))
 
 (use-package fancy-battery              ; Fancy battery info for mode line
   :ensure t
-  :init (fancy-battery-mode))
+  :defer t
+  :idle (fancy-battery-mode)
+  :idle-priority 10)
 
 (use-package anzu                       ; Position/matches count for isearch
   :ensure t
@@ -1465,16 +1467,15 @@ Disable the highlighting of overlong lines."
   (add-hook 'tuareg-mode-hook #'merlin-mode)
   :config
   ;; Use Merlin from current OPAM env
-  (setq merlin-command 'opam))
+  (setq merlin-command 'opam
+        ;; Disable Merlin's own error checking in favour of Flycheck
+        merlin-error-after-save nil))
 
 (use-package flycheck-ocaml             ; Check OCaml code with Merlin
   :ensure t
   :defer t
-  :init (with-eval-after-load 'flycheck
-          (flycheck-ocaml-setup))
-  :config (with-eval-after-load 'merlin
-            ;; Disable Merlin's own error checking in favour of Flycheck
-            (setq merlin-error-after-save nil)))
+  :init (with-eval-after-load 'merlin
+          (flycheck-ocaml-setup)))
 
 
 ;;; Misc programming languages
