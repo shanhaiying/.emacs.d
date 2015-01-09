@@ -6,8 +6,6 @@ My Emacs configuration
 Setup
 -----
 
-Clone the repo, and install all Emacs packages:
-
 ```console
 $ git clone https://github.com/lunaryorn/.emacs.d.git ~/.emacs.d
 ```
