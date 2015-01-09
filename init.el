@@ -528,6 +528,7 @@ mouse-3: go to end"))))
 
 (use-package launch                     ; Open files in external programs
   :ensure t
+  :defer t
   :idle (global-launch-mode))
 
 (use-package ido-load-library           ; Load libraries with IDO
