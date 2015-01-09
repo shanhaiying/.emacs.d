@@ -19,12 +19,8 @@ $ brew install trash coreutils
 ### Spell checking ###
 
 ```console
-$ brew install hunspell
+$ brew install aspell --with-lang-de --with-lang-en
 ```
-
-On OS X, download dictionaries from [OpenOffice][], and put them into
-`~/Library/Spelling`.  On Linux, install the Hunspell dictionaries from the
-package repositories, e.g. `apt-get install hunspell-en-us`.
 
 ### Python support ###
 
