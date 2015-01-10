@@ -1441,6 +1441,10 @@ Disable the highlighting of overlong lines."
   :init (with-eval-after-load 'shm
           (bind-key "C-c u s" #'shm/case-split shm-map)))
 
+(use-package hindent                    ; Automated Haskell indentation
+  :ensure t
+  :disabled t)
+
 (use-package flycheck-haskell           ; Setup Flycheck from Cabal projects
   :ensure t
   :defer t
