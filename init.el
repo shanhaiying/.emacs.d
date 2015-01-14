@@ -1743,6 +1743,14 @@ Disable the highlighting of overlong lines."
                                   ("Asia/Tokyo"       "Tokyo (JP)"))))
 
 
+;;; Terminal emulation and shells
+(use-package shell                      ; Dump shell in Emacs
+  :bind ("C-c u s" . shell))
+
+(use-package term                       ; Terminal emulator in Emacs
+  :bind ("C-c u S" . ansi-term))
+
+
 ;;; Net & Web
 (use-package browse-url                 ; Browse URLs
   :defer t
