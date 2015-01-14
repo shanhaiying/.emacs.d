@@ -459,6 +459,13 @@ mouse-3: go to end"))))
                                         ; systems
           (fboundp 'system-move-file-to-trash)))
 
+(use-package files
+  :defer t
+  :config
+  ;; Use GNU ls for Emacs
+  (when-let (gnu-ls (and (eq system-type 'darwin) (executable-find "gls")))
+    (setq insert-directory-program gnu-ls)))
+
 (use-package tramp                      ; Access remote files
   :defer t
   :config
