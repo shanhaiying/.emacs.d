@@ -484,7 +484,8 @@ mouse-3: go to end"))))
           ;; to file names (for better highlighting)
           dired-listing-switches "-alhF"
           dired-ls-F-marks-symlinks t   ; -F marks links with @
-          )
+          ;; Inhibit prompts for simple recursive operations
+          dired-recursive-copies 'always)
 
     (when (or (memq system-type '(gnu gnu/linux))
               (string= (file-name-nondirectory insert-directory-program) "gls"))
