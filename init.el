@@ -1467,7 +1467,7 @@ Disable the highlighting of overlong lines."
 (use-package haskell-simple-indent      ; Primitive Haskell indentation
   :ensure haskell-mode
   :defer t
-  :config (add-hook 'haskell-mode-hook 'haskell-simple-indent-mode))
+  :init (add-hook 'haskell-mode-hook #'haskell-simple-indent-mode))
 
 (use-package shm                        ; Structured Haskell editing
   :ensure t
