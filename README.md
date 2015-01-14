@@ -111,7 +111,7 @@ Notable packages
 - **Python**: [Anaconda Mode](https://github.com/proofit404/anaconda-mode) and
   [Company Anaconda](https://github.com/proofit404/company-anaconda)
 - **Haskell**: [Haskell Mode](https://github.com/haskell/haskell-mode/),
-  [Hi2](https://github.com/errge/hi2) and
+  [hindent](https://github.com/chrisdone/hindent/) and
   [Flycheck Haskell](https://github.com/flycheck/flycheck-haskell)
 - **Rust**: [Flycheck Rust](https://github.com/flycheck/flycheck-rust)
 - **OCaml**: [Tuareg](https://github.com/ocaml/tuareg/),

@@ -1371,12 +1371,11 @@ Disable the highlighting of overlong lines."
 
 ;; This Haskell setup needs:
 ;;
-;; cabal install hasktags haskell-docs hoogle haskell-stylish
+;; cabal install hasktags haskell-docs hoogle hindent
 ;;
 ;; Additionally, to be installed from source:
 ;;
 ;; - https://github.com/chrisdone/ghci-ng
-;; - https://github.com/chrisdone/structured-haskell-mode
 
 (use-package haskell-mode
   :ensure t
@@ -1433,8 +1432,14 @@ Disable the highlighting of overlong lines."
   :defer t
   :config (add-hook 'haskell-interactive-mode-hook #'subword-mode))
 
+(use-package haskell-simple-indent      ; Primitive Haskell indentation
+  :ensure haskell-mode
+  :defer t
+  :config (add-hook 'haskell-mode-hook 'haskell-simple-indent-mode))
+
 (use-package shm                        ; Structured Haskell editing
   :ensure t
+  :disabled t
   :defer t
   :init
   (progn
@@ -1444,13 +1449,15 @@ Disable the highlighting of overlong lines."
 
 (use-package shm-case-split             ; Split cases for sum types
   :ensure shm
+  :disabled t
   :commands (shm/case-split)
   :init (with-eval-after-load 'shm
           (bind-key "C-c u s" #'shm/case-split shm-map)))
 
 (use-package hindent                    ; Automated Haskell indentation
   :ensure t
-  :disabled t)
+  :defer t
+  :init (add-hook 'haskell-mode-hook #'hindent-mode))
 
 (use-package flycheck-haskell           ; Setup Flycheck from Cabal projects
   :ensure t
