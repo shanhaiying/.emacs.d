@@ -750,6 +750,18 @@ mouse-3: go to end"))))
 (use-package isearch                    ; Search buffers
   :bind (("C-c s s" . isearch-forward-symbol-at-point)))
 
+(use-package grep
+  :defer t
+  :config
+  (progn
+    (when-let (gnu-find (and (eq system-type 'darwin)
+                             (executable-find "gfind")))
+      (setq find-program gnu-find))
+
+    (when-let (gnu-xargs (and (eq system-type 'darwin)
+                              (executable-find "gxargs")))
+      (setq xargs-program gnu-xargs))))
+
 (use-package locate                     ; Search files on the system
   :defer t
   :config
