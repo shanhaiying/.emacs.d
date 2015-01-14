@@ -460,7 +460,7 @@ mouse-3: go to end"))))
           (fboundp 'system-move-file-to-trash)))
 
 (use-package files
-  :defer t
+  :bind (("C-c f u" . revert-buffer))
   :config
   ;; Use GNU ls for Emacs
   (when-let (gnu-ls (and (eq system-type 'darwin) (executable-find "gls")))
