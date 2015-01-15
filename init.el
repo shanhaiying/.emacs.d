@@ -1469,23 +1469,6 @@ Disable the highlighting of overlong lines."
   :defer t
   :init (add-hook 'haskell-mode-hook #'haskell-simple-indent-mode))
 
-(use-package shm                        ; Structured Haskell editing
-  :ensure t
-  :disabled t
-  :defer t
-  :init
-  (progn
-    (add-hook 'haskell-mode-hook #'structured-haskell-mode)
-    (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode))
-  :diminish structured-haskell-mode)
-
-(use-package shm-case-split             ; Split cases for sum types
-  :ensure shm
-  :disabled t
-  :commands (shm/case-split)
-  :init (with-eval-after-load 'shm
-          (bind-key "C-c u s" #'shm/case-split shm-map)))
-
 (use-package hindent                    ; Automated Haskell indentation
   :ensure t
   :defer t
