@@ -55,7 +55,7 @@ Return nil, if the tool was not found."
   "Setup Skim as viewer for AUCTeX."
   (add-to-list 'TeX-view-program-list '("Default application" "open %o"))
   (let ((displayline (auctex-skim-displayline-path)))
-    (when (file-executable-p displayline)
+    (when (and displayline (file-executable-p displayline))
       (add-to-list 'TeX-view-program-list
                    (list "Skim" (list displayline " -b -r %n %o %b"))))))
 
