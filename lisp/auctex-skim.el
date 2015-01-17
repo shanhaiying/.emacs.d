@@ -34,13 +34,20 @@
   :group 'TeX-View
   :type 'directory)
 
+(defcustom auctex-skim-displayline-path "Contents/SharedSupport/displayline"
+  "The path to the `displayline' executable.
+
+A relative path is relative to `auctex-skim-bundle'."
+  :group 'TeX-View
+  :type 'string)
+
 (defun auctex-skim-displayline-path ()
   "Get the path to the displayline tool of Skim.
 
 Return nil, if the tool was not found."
   (let ((bundle (file-name-as-directory auctex-skim-bundle)))
     (when (file-directory-p bundle)
-      (executable-find (expand-file-name "Contents/Shared Supported/displayline"
+      (executable-find (expand-file-name auctex-skim-displayline-path
                                          bundle)))))
 
 ;;;###autoload
