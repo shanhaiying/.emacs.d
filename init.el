@@ -430,7 +430,8 @@ mouse-3: go to end"))))
   :defer t
   :config
   ;; Prevent Ediff from spamming the frame
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+  (setq ediff-window-setup-function #'ediff-setup-windows-plain
+        ediff-split-window-function #'split-window-horizontally))
 
 (use-package desktop                    ; Save buffers, windows and frames
   :init (desktop-save-mode)
@@ -1856,7 +1857,7 @@ Disable the highlighting of overlong lines."
   ;; Fix the stupid `Info-quoted' face.  Courier is an abysmal face, so go back
   ;; to the default face.
   (set-face-attribute 'Info-quoted nil :family 'unspecified
-                      :inherit font-lock-constant-face))
+                      :inherit font-lock-type-face))
 
 (use-package ansible-doc                ; Documentation lookup for Ansible
   :ensure t
