@@ -1315,35 +1315,6 @@ Disable the highlighting of overlong lines."
 (bind-key "C-c T d" #'toggle-debug-on-error)
 
 
-;;; Clojure
-(use-package clojure-mode
-  :ensure t
-  :defer t
-  :config
-  (progn
-    (add-hook 'clojure-mode-hook #'paredit-mode)
-    (add-hook 'clojure-mode-hook #'cider-mode)))
-
-;; Extra font-locking for Clojure
-(use-package clojure-mode-extra-font-locking
-  :ensure clojure-mode-extra-font-locking
-  :defer t
-  :init (with-eval-after-load 'clojure-mode
-          (require 'clojure-mode-extra-font-locking)))
-
-(use-package nrepl-client
-  :ensure cider
-  :defer t
-  :config (setq nrepl-hide-special-buffers t))
-
-(use-package cider-repl
-  :ensure cider
-  :defer t
-  ;; Increase the history size and make it permanent
-  (setq cider-repl-history-size 1000
-        cider-repl-history-file (locate-user-emacs-file "cider-repl-history")))
-
-
 ;;; Python
 (use-package python
   :defer t
