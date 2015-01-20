@@ -1315,6 +1315,20 @@ Disable the highlighting of overlong lines."
 (bind-key "C-c T d" #'toggle-debug-on-error)
 
 
+;;; Scala
+(use-package scala-mode2
+  :ensure t
+  :disabled t)
+
+(use-package sbt-mode
+  :ensure t
+  :disabled t)
+
+(use-package ensime
+  :ensure t
+  :disabled t)
+
+
 ;;; Python
 (use-package python
   :defer t
