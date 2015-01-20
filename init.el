@@ -1595,6 +1595,11 @@ Disable the highlighting of overlong lines."
   (add-hook 'isar-mode-hook #'lunaryorn-whitespace-style-no-long-lines 'append))
 
 
+;;; Databases
+(use-package sql
+  :bind (("C-c d m" . sql-mysql)))
+
+
 ;;; Version control
 (use-package vc-hooks                   ; Simple version control
   :defer t
