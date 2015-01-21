@@ -969,6 +969,7 @@ Disable the highlighting of overlong lines."
           TeX-auto-save t               ; Automatically save style information
           TeX-electric-sub-and-superscript t ; Automatically insert braces after
                                         ; sub- and superscripts in math mode
+          TeX-electric-math '("\\(" "\\)")
           ;; Don't insert magic quotes right away.
           TeX-quote-after-quote t
           ;; Don't ask for confirmation when cleaning
