@@ -978,6 +978,7 @@ Disable the highlighting of overlong lines."
           TeX-source-correlate-method 'synctex)
     (setq-default TeX-master nil        ; Ask for the master file
                   TeX-engine 'luatex    ; Use a modern engine
+                  ;; Redundant in 11.88, but keep for older AUCTeX
                   TeX-PDF-mode t)
 
     ;; Move to chktex
