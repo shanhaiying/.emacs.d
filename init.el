@@ -1227,6 +1227,16 @@ Disable the highlighting of overlong lines."
   ;; Enable Eldoc for `eval-expression', too
   :init (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode))
 
+(use-package restclient                ; ReST REPL for Emacs
+  :ensure t
+  :defer t)
+
+(use-package company-restclient
+  :ensure t
+  :defer t
+  :init (with-eval-after-load 'company
+          (add-to-list 'company-backends 'company-restclient)))
+
 
 ;;; Generic Lisp
 (use-package paredit                    ; Balanced sexp editing
