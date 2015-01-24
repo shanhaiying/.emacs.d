@@ -1515,6 +1515,12 @@ Disable the highlighting of overlong lines."
 
 ;;; Web languages
 
+(use-package web-mode                   ; Template editing
+  :ensure t
+  :defer t
+  :config
+  (setq web-mode-markup-indent-offset 2))
+
 (use-package js2-mode                   ; Javascript editing
   :ensure t
   :mode "\\.js\\(?:on\\)\\'"
