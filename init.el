@@ -359,9 +359,13 @@ mouse-3: go to end"))))
       '(:eval (if (buffer-file-name)
                   (abbreviate-file-name (buffer-file-name)) "%b")))
 
-;;; Kill `suspend-frame'
-(global-set-key (kbd "C-z") nil)
-(global-set-key (kbd "C-x C-z") nil)
+(use-package frame
+  :bind (("C-c T F" . toggle-frame-fullscreen))
+  :init
+  (progn
+    ;; Kill `suspend-frame'
+    (global-set-key (kbd "C-z") nil)
+    (global-set-key (kbd "C-x C-z") nil)))
 
 (use-package lunaryorn-buffers          ; Personal buffer tools
   :load-path "lisp/"
