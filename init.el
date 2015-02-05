@@ -882,6 +882,11 @@ Disable the highlighting of overlong lines."
           company-show-numbers t))
   :diminish company-mode)
 
+(use-package company-quickhelp          ; Documentation popups for Company
+  :ensure t
+  :defer t
+  :init (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
+
 (use-package company-math               ; Completion for Math symbols
   :ensure t
   :defer t
