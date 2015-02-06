@@ -1541,9 +1541,13 @@ Disable the highlighting of overlong lines."
 (use-package css-mode
   :defer t
   :config
-  ;; Run Prog Mode hooks, because for whatever reason CSS Mode derives from
-  ;; `fundamental-mode'.
-  (add-hook 'css-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
+  (progn
+    ;; Run Prog Mode hooks, because for whatever reason CSS Mode derives from
+    ;; `fundamental-mode'.
+    (add-hook 'css-mode-hook (lambda () (run-hooks 'prog-mode-hook)))
+
+    ;; Mark css-indent-offset as safe local variable.  TODO: Report upstream
+    (put 'css-indent-offset 'safe-local-variable #'integerp)))
 
 (use-package css-eldoc                  ; Basic Eldoc for CSS
   :ensure t
