@@ -1159,15 +1159,7 @@ Disable the highlighting of overlong lines."
   :ensure t
   :defer t
   :config
-  (progn
-    ;; Whitespace handling and filling
-    (add-hook 'yaml-mode-hook #'whitespace-mode)
-    (add-hook 'yaml-mode-hook #'whitespace-cleanup-mode)
-    (add-hook 'yaml-mode-hook #'lunaryorn-auto-fill-comments-mode)
-    (add-hook 'yaml-mode-hook #'flyspell-prog-mode)
-    ;; Symbols
-    (add-hook 'yaml-mode-hook #'highlight-symbol-mode)
-    (add-hook 'yaml-mode-hook #'highlight-symbol-nav-mode)))
+  (add-hook 'yaml-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
 
 (use-package graphviz-dot-mode          ; Graphviz
   :ensure t
