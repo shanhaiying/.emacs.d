@@ -1554,6 +1554,9 @@ Disable the highlighting of overlong lines."
   :commands (turn-on-css-eldoc)
   :init (add-hook 'css-mode-hook #'turn-on-css-eldoc))
 
+(use-package php-mode                   ; Because sometimes you have to
+  :ensure t)
+
 
 ;;; Misc programming languages
 (use-package sh-script                  ; Shell scripts
