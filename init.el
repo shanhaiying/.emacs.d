@@ -519,7 +519,9 @@ mouse-3: go to end"))))
   :defer t
   :bind (("C-c u C" . copyright-update))
   ;; Update copyright when visiting files
-  :init (add-hook 'find-file-hook #'copyright-update))
+  :init (add-hook 'find-file-hook #'copyright-update)
+  ;; Use ranges to denote consecutive years
+  :config (setq copyright-year-ranges t))
 
 (use-package ignoramus                  ; Ignore uninteresting files everywhere
   :ensure t
