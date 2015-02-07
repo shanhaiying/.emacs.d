@@ -966,6 +966,12 @@ Disable the highlighting of overlong lines."
                 '(:eval (lunaryorn-flycheck-mode-line-status)))))
 
 
+;;; Text editing
+(use-package tildify
+  :bind (("C-c u s" . tildify-region))
+  :init (add-hook 'text-mode-hook #'tildify-mode))
+
+
 ;;; LaTeX with AUCTeX
 (use-package tex-site                   ; AUCTeX initialization
   :ensure auctex)
