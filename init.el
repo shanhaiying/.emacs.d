@@ -163,11 +163,17 @@ Homebrew: brew install trash")))
 (blink-cursor-mode -1)
 (setq ring-bell-function #'ignore
       inhibit-startup-screen t
-      initial-scratch-message nil)
+      initial-scratch-message "Hello there!\n")
 (fset 'yes-or-no-p #'y-or-n-p)
 ;; Opt out from the startup message in the echo area by simply disabling this
 ;; ridiculously bizarre thing entirely.
 (fset 'display-startup-echo-area-message #'ignore)
+
+(use-package lunaryorn-scratch          ; My logo in the scratch buffer
+  :commands (lunaryorn-insert-logo
+             lunaryorn-insert-logo-into-scratch)
+  :init
+  (add-hook 'after-init-hook #'lunaryorn-insert-logo-into-scratch))
 
 (use-package dynamic-fonts              ; Select best available font
   :ensure t
