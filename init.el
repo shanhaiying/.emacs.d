@@ -620,9 +620,6 @@ mouse-3: go to end"))))
   ;; Auto-fill comments in programming modes
   :init (add-hook 'prog-mode-hook #'lunaryorn-auto-fill-comments-mode))
 
-(use-package misc
-  :bind (("M-Z" . zap-up-to-char)))
-
 (use-package delsel                     ; Delete the selection instead of insert
   :defer t
   :init (delete-selection-mode))
@@ -658,6 +655,11 @@ mouse-3: go to end"))))
 (use-package browse-kill-ring           ; Browse kill ring interactively
   :ensure t
   :bind (("C-c y" . browse-kill-ring)))
+
+(use-package zop-to-char
+  :ensure t
+  :bind (("M-z" . zop-to-char)
+         ("M-Z" . zop-up-to-char)))
 
 (use-package easy-kill                  ; Easy killing and marking on C-w
   :ensure t
