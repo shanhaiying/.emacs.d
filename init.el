@@ -371,7 +371,8 @@ mouse-3: go to end"))))
   (progn
     ;; Kill `suspend-frame'
     (global-set-key (kbd "C-z") nil)
-    (global-set-key (kbd "C-x C-z") nil)))
+    (global-set-key (kbd "C-x C-z") nil))
+  :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
 
 (use-package lunaryorn-buffers          ; Personal buffer tools
   :load-path "lisp/"
