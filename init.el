@@ -521,7 +521,8 @@ mouse-3: go to end"))))
   ;; Update copyright when visiting files
   :init (add-hook 'find-file-hook #'copyright-update)
   ;; Use ranges to denote consecutive years
-  :config (setq copyright-year-ranges t))
+  :config (setq copyright-year-ranges t
+                copyright-names-regexp (regexp-quote user-full-name)))
 
 (use-package ignoramus                  ; Ignore uninteresting files everywhere
   :ensure t
