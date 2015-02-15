@@ -516,7 +516,8 @@ mouse-3: go to end"))))
 
     (when (eq system-type 'darwin)
       ;; OS X bsdtar is mostly compatible with GNU Tar
-      (setq dired-guess-shell-gnutar "tar"))))
+      (setq dired-guess-shell-gnutar "tar")))
+  :diminish ((dired-omit-mode . " ●")))
 
 (use-package copyright                  ; Deal with copyright notices
   :defer t
