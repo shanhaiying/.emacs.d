@@ -991,6 +991,13 @@ Disable the highlighting of overlong lines."
     (add-hook 'latex-mode-hook
               (lambda () (setq-local tildify-space-string "~")))))
 
+(use-package typo
+  :bind (("C-c T t" . typo-mode))
+  :idle (typo-global-mode)
+  :init (dolist (hook '(markdown-mode-hook
+                        rst-mode-hook))
+          (add-hook hook 'typo-mode)))
+
 
 ;;; LaTeX with AUCTeX
 (use-package tex-site                   ; AUCTeX initialization
