@@ -255,7 +255,12 @@ Homebrew: brew install trash")))
                 mode-line-buffer-identification " " mode-line-position
                 ;; Some specific information about the current buffer:
                 ;; - Paredit
+                ;; - Dired Omit Mode
                 (paredit-mode (:propertize " ()" face bold))
+                ;; A little complicated, pending
+                ;; https://github.com/rolandwalker/ignoramus/pull/3
+                (dired-omit-mode (:eval (when (derived-mode-p 'dired-mode)
+                                          " ●")))
                 ;; Warn if whitespace isn't highlighted or cleaned in this
                 ;; buffer.
                 (:eval (unless buffer-read-only
