@@ -755,7 +755,7 @@ mouse-3: go to end"))))
 (use-package page-break-lines           ; Turn page breaks into lines
   :ensure t
   :init (global-page-break-lines-mode)
-  :defer page-break-lines-modes)
+  :diminish page-break-lines-mode)
 
 (use-package outline                    ; Navigate outlines in buffers
   :defer t
