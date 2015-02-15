@@ -984,7 +984,7 @@ Disable the highlighting of overlong lines."
 
 ;;; Text editing
 (use-package tildify
-  :bind (("C-c u s" . tildify-region))
+  :bind (("C-c u t" . tildify-region))
   :init
   (progn
     (dolist (hook '(markdown-mode-hook
@@ -1783,7 +1783,7 @@ Disable the highlighting of overlong lines."
 
 (use-package time                       ; Show current time
   :bind (("C-c u i" . emacs-init-time)
-         ("C-c u t" . display-time-world))
+         ("C-c u T" . display-time-world))
   :config
   (setq display-time-world-time-format "%H:%M %Z, %d. %b"
         display-time-world-list '(("Europe/Berlin"    "Berlin")
