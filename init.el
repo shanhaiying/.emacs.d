@@ -980,7 +980,16 @@ Disable the highlighting of overlong lines."
 ;;; Text editing
 (use-package tildify
   :bind (("C-c u s" . tildify-region))
-  :init (add-hook 'text-mode-hook #'tildify-mode))
+  :init
+  (progn
+    (dolist (hook '(markdown-mode-hook
+                    latex-mode-hook
+                    rst-mode-hook))
+      (add-hook hook #'tildify-mode))
+
+    ;; Use the right space for LaTeX
+    (add-hook 'latex-mode-hook
+              (lambda () (setq-local tildify-space-string "~")))))
 
 
 ;;; LaTeX with AUCTeX
