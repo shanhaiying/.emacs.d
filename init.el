@@ -511,9 +511,12 @@ mouse-3: go to end"))))
 (use-package dired-x                    ; Additional tools for Dired
   :defer t
   :config
-  (when (eq system-type 'darwin)
-    ;; OS X bsdtar is mostly compatible with GNU Tar
-    (setq dired-guess-shell-gnutar "tar")))
+  (progn
+    (setq dired-omit-verbose nil)        ; Shut up, dired
+
+    (when (eq system-type 'darwin)
+      ;; OS X bsdtar is mostly compatible with GNU Tar
+      (setq dired-guess-shell-gnutar "tar"))))
 
 (use-package copyright                  ; Deal with copyright notices
   :defer t
