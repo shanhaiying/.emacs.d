@@ -997,6 +997,7 @@ Disable the highlighting of overlong lines."
               (lambda () (setq-local tildify-space-string "~")))))
 
 (use-package typo
+  :ensure t
   :bind (("C-c T t" . typo-mode))
   :idle (typo-global-mode)
   :init (dolist (hook '(markdown-mode-hook
